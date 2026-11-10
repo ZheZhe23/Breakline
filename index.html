@@ -736,7 +736,7 @@ let keys={};
 document.addEventListener('keydown',e=>{if(keys[e.code])return;keys[e.code]=true;const t=performance.now();if(e.code==='KeyJ')startAction(player,'light',t);if(e.code==='KeyK')startAction(player,'heavy',t);if(e.code==='KeyI')startAction(player,'grab',t);if(e.code.startsWith('Arrow')){e.preventDefault();const x=(keys.ArrowRight?1:0)-(keys.ArrowLeft?1:0),y=(keys.ArrowDown?1:0)-(keys.ArrowUp?1:0);applyJoy(x,y,t)}});
 document.addEventListener('keyup',e=>{keys[e.code]=false;const t=performance.now();if(e.code.startsWith('Arrow')){e.preventDefault();const x=(keys.ArrowRight?1:0)-(keys.ArrowLeft?1:0),y=(keys.ArrowDown?1:0)-(keys.ArrowUp?1:0);applyJoy(x,y,t)}});
 let swipeX=0;canvas.addEventListener('pointerdown',e=>{swipeX=e.clientX});canvas.addEventListener('pointerup',e=>{if(!started||ended)return;let dx=e.clientX-swipeX;if(Math.abs(dx)>52&&player&&player.action==='idle'&&player.recoveryUntil<performance.now())player.x=clamp(player.x+(dx>0?.025:-.025),.10,.90)});
-$('start').onclick=()=>{$('intro').style.display='none';started=true;fresh()};
+$('start').onclick=()=>{$('intro').style.display='none';started=true;fresh();sound=true;$('soundBtn').textContent='◖ ЗВУК: ВКЛ.';playRhythmBeat(0)};
 $('restart').onclick=fresh;
 $('soundBtn').onclick=()=>{sound=!sound;$('soundBtn').textContent=sound?'◖ ЗВУК: ВКЛ.':'◖ ЗВУК: ВЫКЛ.';if(sound){sfx(440);playRhythmBeat(0)}};
 window.addEventListener('blur',()=>{joyPointer=null;applyJoy(0,0,performance.now());if(player)player.guard=false});
