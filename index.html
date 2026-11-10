@@ -44,6 +44,8 @@ function motionStep(dir,t){
 }
 function matchMotion(pattern,t){
  const history=motionHistory.filter(e=>t-e.t<=SPECIAL_COMMAND_BEATS*BEAT_MS);
+ // The final direction must still be actively held: old gestures cannot trigger on a later attack.
+ if(!history.length||history.at(-1).dir!==pattern.at(-1)||t-history.at(-1).t>BEAT_MS*.75)return false;
  let i=pattern.length-1;
  for(let j=history.length-1;j>=0&&i>=0;j--){if(history[j].dir===pattern[i])i--;}
  return i<0;
