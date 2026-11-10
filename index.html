@@ -469,7 +469,7 @@ function missedAttack(att,t,reason){
 // L = punch/hand, H = kick/leg. Each character has a distinct recipe tree.
 const FIGHTERS={
  boxer:{name:'БОКСЁР',desc:'Боковая качка в ритм, короткие скоростные серии.',colors:['#c4d0d7','#5d7381','#e1b493'],body:.99,reach:1,stance:'sway',bias:'hands',combos:[
- ['LLL','ТРЁХУДАРНАЯ СЕРИЯ','quick'],['LLH','ЛОУ-КИК ПОСЛЕ ДЖЕБОВ','quick'],['LHL','ВСТРЕЧНЫЙ КРОСС','quick'],['HLL','АППЕРКОТ','quick'],['LLLL','ПУЛЕМЁТ','quick'],['LLHL','БОКОВОЙ УДАР','quick'],['LHHLL','НОКАУТИРУЮЩИЙ ХУК','power']]},
+ ['LLL','ТРЁХУДАРНАЯ СЕРИЯ','quick'],['LLH','ЛОУ-КИК ПОСЛЕ ДЖЕБОВ','quick'],['LHL','ВСТРЕЧНЫЙ КРОСС','quick'],['HLL','АППЕРКОТ','quick'],['HHHH','ПУЛЕМЁТ','quick'],['LHHH','БОКОВОЙ УДАР','quick'],['HHLHL','НОКАУТИРУЮЩИЙ ХУК','power']]},
  kickboxer:{name:'КИКБОКСЁР',desc:'Лёгкие прыжки на носках вперёд-назад, баланс ударов.',colors:['#d3d8ca','#718681','#e5be9d'],body:1,reach:1,stance:'bounce',bias:'balanced',combos:[
  ['LLH','ГРОМОВОЙ ПИНОК','power'],['LHL','ОБРАТНЫЙ УДАР','quick'],['HLL','РАЗВОРОТНЫЙ ХУК','quick'],['HLH','ВЕРТУШКА','power'],['LHHL','ШКВАЛ','quick'],['HHLL','ДВОЙНОЙ РАЗВОРОТ','power']]},
  power:{name:'ТЯЖЕЛОВЕС',desc:'Тяжёлая устойчивая стойка, размеренный перенос веса, силовые финалы.',colors:['#b99e8a','#6b5449','#deb399'],body:1.13,reach:1.02,stance:'grounded',bias:'power',combos:[
@@ -1146,7 +1146,7 @@ function fighter(f,t){
  if(f.diveArmed){ctx.rotate(.19);ctx.translate(0,8)}
  if(frozen&&f.powerFreezeRole==='defender'&&f.action!=='down'){ctx.rotate(-.14);ctx.translate(-8,4)}
  const directionalLean=(f.dir==='back'?-.09:f.dir==='forward'?.16:f.dir==='up'?-.11:f.dir==='downBack'?-.06:f.dir==='downForward'?.12:0)*reach;
- const lean=(light?reach*.08:heavy?reach*.22:0)+((form-2)*.06*flourish*reach)+(tech===1?-.30:tech===2?.30:tech===3?-.24:tech===4?.23:tech===5?.12:0)*reach+directionalLean+(comboTwo&&!low?-reach*.21:0)+(comboFinal&&!low?reach*.18:0)-reaction*.14+(f.action==='idle'?Math.sin(t*.0037+(ai?1.6:0))*.018:0);
+ const lean=(profile.bias==='power'&&heavy?reach*.11:profile.bias==='legs'&&heavy?-reach*.07:0)+(light?reach*.08:heavy?reach*.22:0)+((form-2)*.06*flourish*reach)+(tech===1?-.30:tech===2?.30:tech===3?-.24:tech===4?.23:tech===5?.12:0)*reach+directionalLean+(comboTwo&&!low?-reach*.21:0)+(comboFinal&&!low?reach*.18:0)-reaction*.14+(f.action==='idle'?Math.sin(t*.0037+(ai?1.6:0))*.018:0);
  ctx.transform(1,0,lean,1,0,0);
  ctx.lineCap='round';ctx.lineJoin='round';
  const limb=(x1,y1,x2,y2,w,c)=>{ctx.strokeStyle=c;ctx.lineWidth=w;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke()};
@@ -1154,8 +1154,8 @@ function fighter(f,t){
  const finisherKick=comboFinal&&[0,3,5].includes(tech);
  const kicking=(heavy&&!f.finisher||finisherKick||sweep)?reach:0;
  // Alternate front / rear leg and strike height while keeping every contact frame independent.
- const rearKick=(tech===3||tech===5||(form===1||form===3)&&tech===-1)&&kicking>0;
- const kickHeight=(f.attackLow?24:tech===0?82:tech===3?115:tech===5?104:50)+(form%3)*13*flourish;
+ const rearKick=(tech===3||tech===5||(form===1||form===3)&&tech===-1||profile.bias==='legs'&&form%2===0)&&kicking>0;
+ const kickHeight=(f.attackLow?24:tech===0?82:tech===3?115:tech===5?104:profile.bias==='legs'?84:profile.bias==='hands'?30:50)+(form%3)*13*flourish;
  const backKnee={x:-17+(rearKick?kicking*21:-kicking*4),y:-32+(rearKick?-kicking*17:kicking*4)},backFoot={x:-26+(rearKick?kicking*103:-kicking*5),y:-3-(rearKick?kicking*kickHeight:0)};
  if(standing&&profile.stance==='bounce'){backKnee.x-=idleLift*.7;backFoot.x-=idleLift*1.2}
  if(standing&&profile.stance==='capoeira'){backKnee.x-=idleSway*.45;backFoot.x-=idleSway*.7}
@@ -1209,6 +1209,8 @@ function fighter(f,t){
 }
  limb(-18,-104,rearElbow.x,rearElbow.y,12,col);limb(rearElbow.x,rearElbow.y,rearHand.x,rearHand.y,11,skin);
  let elbow={x:27,y:-89},hand={x:26,y:-94};
+ if(profile.bias==='power'&&heavy&&!f.finisher){elbow.x-=reach*13;hand.y+=reach*13}
+ if(profile.bias==='legs'&&light){elbow.y-=reach*9;hand.x+=reach*11}
  if(standing){if(profile.stance==='sway'){elbow.x+=idleSway*.4;hand.x+=idleSway*.55;hand.y-=2*Math.abs(idleLean)*10}
  else if(profile.stance==='bounce'){hand.y-=Math.abs(idleBob)*.6;elbow.y-=Math.abs(idleBob)*.4}
  else if(profile.stance==='grounded'){hand.y-=Math.abs(idleSway)*.3}
