@@ -315,7 +315,7 @@ async function checkForUpdate(){
 addEventListener('pageshow',()=>checkForUpdate());
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')checkForUpdate()});
 const rng=(a,b)=>a+Math.random()*(b-a),clamp=(n,a,b)=>Math.max(a,Math.min(b,n));function resize(){dpr=Math.min(window.devicePixelRatio||1,2);W=innerWidth;H=innerHeight;canvas.width=Math.floor(W*dpr);canvas.height=Math.floor(H*dpr);ctx.setTransform(dpr,0,0,dpr,0,0)}window.addEventListener('resize',resize);resize();
-function makeFighter(ai,x){return {ai,x,hp:320,score:0,hitStreak:0,maxStreak:0,comboSuccess:0,lastScoredAt:0,rhythm:0,rhythmGrade:'off',rhythmSlowUntil:0,flowUntil:0,rhythmHits:0,rhythmPerfects:0,rhythmAttempts:0,visualLevel:1,actionVariant:0,throwVariantIndex:0,animationSeed:0,action:'idle',actionStart:0,actionEnd:0,hitAt:0,hitDone:false,guard:false,guardAt:-1e5,stunnedUntil:0,invulUntil:0,cooldown:0,facing:ai?-1:1,history:[],lastAction:'',feet:0,windup:'',nextThink:0,stepUntil:0,stepDir:0,combo:0,moveHeld:0,moveSpeed:0,lightStreak:0,lastLightAt:-1e5,readAttackId:0,readAt:0,readHandled:false,comboStep:0,comboDeadline:0,comboHits:0,comboSeq:'',finisher:false,powerFinisher:false,finisherName:'',recoveryUntil:0,downStart:0,downUntil:0,clinchSide:'',dir:'neutral',throwVariant:'forward',crouch:false,crouchUntil:0,attackLow:false,jumpStart:0,jumpUntil:0,jumpVector:0,jumpHeight:0,diveArmed:false,diveHitDone:false,stanceRequest:false,stanceUntil:0,stanceTransition:'',jumpPendingAt:0,landingRecoverUntil:0,lowChainUntil:0,lowSweep:false,airFollowUntil:0,airFollowReady:false,airFollowAttack:false,wasAirborne:false,stanceHeldSince:0,throwStyle:'neutral',throwLow:false,downStyle:'normal',downSide:1,hitReactUntil:0,hitReactStart:0,hitReactPower:0,hitReactLow:false,attackRange:0,whiffUntil:0,whiffCount:0,counterHits:0,aiStyle:'universal',aiWaitUntil:0,aiRetreats:0,aiAttacks:0,aiGuards:0,throwProtectionUntil:0,lastThrowAt:-1e5,grabReadId:0,grabCounters:0};}const AI_STYLES=[
+function makeFighter(ai,x){return {ai,x,hp:320,score:0,hitStreak:0,maxStreak:0,comboSuccess:0,lastScoredAt:0,rhythm:0,rhythmGrade:'off',rhythmSlowUntil:0,flowUntil:0,rhythmHits:0,rhythmPerfects:0,rhythmAttempts:0,visualLevel:1,actionVariant:0,throwVariantIndex:0,animationSeed:0,action:'idle',actionStart:0,actionEnd:0,hitAt:0,hitDone:false,guard:false,guardAt:-1e5,stunnedUntil:0,invulUntil:0,cooldown:0,facing:ai?-1:1,history:[],lastAction:'',feet:0,windup:'',nextThink:0,stepUntil:0,stepDir:0,combo:0,moveHeld:0,moveSpeed:0,lightStreak:0,lastLightAt:-1e5,readAttackId:0,readAt:0,readHandled:false,comboStep:0,comboDeadline:0,comboHits:0,comboSeq:'',finisher:false,powerFinisher:false,finisherStyle:-1,finisherName:'',recoveryUntil:0,downStart:0,downUntil:0,clinchSide:'',dir:'neutral',throwVariant:'forward',crouch:false,crouchUntil:0,attackLow:false,jumpStart:0,jumpUntil:0,jumpVector:0,jumpHeight:0,diveArmed:false,diveHitDone:false,stanceRequest:false,stanceUntil:0,stanceTransition:'',jumpPendingAt:0,landingRecoverUntil:0,lowChainUntil:0,lowSweep:false,airFollowUntil:0,airFollowReady:false,airFollowAttack:false,wasAirborne:false,stanceHeldSince:0,throwStyle:'neutral',throwLow:false,downStyle:'normal',downSide:1,hitReactUntil:0,hitReactStart:0,hitReactPower:0,hitReactLow:false,attackRange:0,whiffUntil:0,whiffCount:0,counterHits:0,aiStyle:'universal',aiWaitUntil:0,aiRetreats:0,aiAttacks:0,aiGuards:0,throwProtectionUntil:0,lastThrowAt:-1e5,grabReadId:0,grabCounters:0};}const AI_STYLES=[
  {id:'aggressor',name:'АГРЕССОР',subtitle:'Наступает и давит сериями',pace:[310,570],approach:.18,guard:.08,retreat:.04},
  {id:'counter',name:'КОНТРАТАКУЮЩИЙ',subtitle:'Держит дистанцию и ловит промахи',pace:[500,800],approach:.265,guard:.42,retreat:.45},
  {id:'universal',name:'УНИВЕРСАЛ',subtitle:'Меняет стойки и изучает привычки',pace:[470,820],approach:.23,guard:.20,retreat:.16}
@@ -402,7 +402,7 @@ function startAction(f,kind,t){
   const last=chain?f.comboSeq:'';
   f.comboSeq=(f.crouch||lowFollow||airFollow)?'':comboNext(last,kind==='light'?'L':'H');
   const recipe=COMBO_RECIPES.find(v=>v[0]===f.comboSeq);
-  f.finisher=!!recipe;f.powerFinisher=recipe?.[2]==='power';f.finisherName=recipe?recipe[1]:'';
+  f.finisher=!!recipe;f.powerFinisher=recipe?.[2]==='power';f.finisherStyle=recipe?COMBO_RECIPES.indexOf(recipe):-1;f.finisherName=recipe?recipe[1]:'';
   f.comboStep=f.finisher?3:f.comboSeq.length;
   if(f.finisher){if(f.powerFinisher){fightVoice('heavy',f);fightFoley('whoosh',true)}setMessage('✹ '+f.finisherName+' ✹',f.powerFinisher?'СИЛОВОЙ ФИНАЛ — на следующую долю!':'БЫСТРЫЙ ФИНАЛ — сразу в бит!',850);emit(f.x,'#ffe0a1',f.powerFinisher?17:10)}
   else if(!f.ai&&f.comboSeq.length>=2)setMessage('КОМБО: '+comboText(f.comboSeq),'Продолжай серию руки и ноги',460);
@@ -799,7 +799,7 @@ function fighter(f,t){
  const comboTwo=light&&f.comboSeq.length>=2,comboFinal=f.finisher,low=(light||heavy)&&f.attackLow;
  const anim=f.actionVariant||0,form=anim%5,accent=Math.floor(anim/5),tier=rhythmLevel(f);
  const flourish=Math.min(1,(tier-1)*.27),energy=f.finisher?1.25:1;
- const flip=anim%2?-1:1;
+ const flip=anim%2?-1:1,tech=f.finisher?f.finisherStyle:-1;
  const sweep=heavy&&f.lowSweep,airFollow=light&&f.airFollowAttack;
  // Short acceleration into contact, then slower recoil: the limbs move continuously.
  const strikeTime=Math.max(1,f.hitAt-f.actionStart);
@@ -819,8 +819,8 @@ function fighter(f,t){
  ctx.scale(1,stanceScale);
  // Reusable attack layers: torso torque and small acrobatic hop are independent of hitbox/timing.
  const activeAttack=light||heavy;
- if(activeAttack&&flourish){const pulse=Math.sin(Math.PI*Math.min(1,progress));const hop=(form===2||form===4?11:3)*flourish*pulse;
- ctx.translate(0,-hop);ctx.rotate((form===0?.09:form===1?-.13:form===2?.18:form===3?-.19:.24)*reach*flourish*energy);
+ if(activeAttack&&flourish){const pulse=Math.sin(Math.PI*Math.min(1,progress));const hop=(form===2||form===4?11:3)*flourish*pulse+(tech===5?18:pulse>0&&tech===3?8:0)*pulse;
+ ctx.translate(0,-hop);ctx.rotate(((form===0?.09:form===1?-.13:form===2?.18:form===3?-.19:.24)*flourish+(tech===3?-.34:tech===5?.17:tech===2?.11:0))*reach*energy);
  }
  if(f.action==='down'){
  // Controlled knockdown: distinct tumble arcs, not continuous uncontrolled spinning.
@@ -850,16 +850,16 @@ function fighter(f,t){
 }else if(f.action==='caught')ctx.translate(f.ai?-7:7,-3);
  if(f.diveArmed){ctx.rotate(.19);ctx.translate(0,8)}
  const directionalLean=(f.dir==='back'?-.09:f.dir==='forward'?.16:f.dir==='up'?-.11:f.dir==='downBack'?-.06:f.dir==='downForward'?.12:0)*reach;
- const lean=(light?reach*.08:heavy?reach*.22:0)+((form-2)*.06*flourish*reach)+directionalLean+(comboTwo&&!low?-reach*.21:0)+(comboFinal&&!low?reach*.18:0)-reaction*.14+(f.action==='idle'?Math.sin(t*.0037+(ai?1.6:0))*.018:0);
+ const lean=(light?reach*.08:heavy?reach*.22:0)+((form-2)*.06*flourish*reach)+(tech===1?-.30:tech===2?.30:tech===3?-.24:tech===4?.23:tech===5?.12:0)*reach+directionalLean+(comboTwo&&!low?-reach*.21:0)+(comboFinal&&!low?reach*.18:0)-reaction*.14+(f.action==='idle'?Math.sin(t*.0037+(ai?1.6:0))*.018:0);
  ctx.transform(1,0,lean,1,0,0);
  ctx.lineCap='round';ctx.lineJoin='round';
  const limb=(x1,y1,x2,y2,w,c)=>{ctx.strokeStyle=c;ctx.lineWidth=w;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke()};
  // Exactly TWO articulated legs: moving a leg repositions its existing knee and foot.
- const finisherKick=comboFinal&&(f.finisherName.includes('ПИНОК')||f.finisherName.includes('ВЕРТУШКА')||f.finisherName.includes('РАЗВОРОТ'));
+ const finisherKick=comboFinal&&[0,3,5].includes(tech);
  const kicking=(heavy&&!f.finisher||finisherKick||sweep)?reach:0;
  // Alternate front / rear leg and strike height while keeping every contact frame independent.
- const rearKick=(form===1||form===3)&&kicking>0;
- const kickHeight=(f.attackLow?24:50)+(form%3)*13*flourish;
+ const rearKick=(tech===3||tech===5||(form===1||form===3)&&tech===-1)&&kicking>0;
+ const kickHeight=(f.attackLow?24:tech===0?82:tech===3?115:tech===5?104:50)+(form%3)*13*flourish;
  const backKnee={x:-17+(rearKick?kicking*21:-kicking*4),y:-32+(rearKick?-kicking*17:kicking*4)},backFoot={x:-26+(rearKick?kicking*103:-kicking*5),y:-3-(rearKick?kicking*kickHeight:0)};
  const lowDirection=f.dir==='downBack'?-1:f.dir==='downForward'?1:0;
  const frontKnee={x:17+(rearKick?0:kicking*26)+(low?reach*lowDirection*7:0),y:-30+(rearKick?0:kicking*(low?14:-16))};
@@ -877,6 +877,9 @@ function fighter(f,t){
  const rearElbow={x:-30,y:guarding?-108:-82};
  const rearHand={x:guarding?-8:heavy?-22:-6,y:guarding?(f.crouch?-96:-130):heavy?-125:-105};
  if(comboTwo&&light&&!low){rearElbow.x=-15+reach*(18+form*4);rearElbow.y=-105-(accent*5);rearHand.x=15+reach*(66+form*9);rearHand.y=-113-reach*(13+accent*7)}
+ if(comboFinal&&tech===1){rearElbow.x=9+reach*38;rearElbow.y=-125+reach*12;rearHand.x=40+reach*45;rearHand.y=-125+reach*9}
+ if(comboFinal&&tech===2){rearElbow.x=-12+reach*38;rearElbow.y=-127;rearHand.x=18+reach*108;rearHand.y=-146+reach*24}
+ if(comboFinal&&tech===4){rearElbow.x=-9+reach*35;rearElbow.y=-118;rearHand.x=23+reach*106;rearHand.y=-120+reach*18}
  if(grab){
  const v=clinch?clinch.variant:f.throwStyle;
  const back=v==='back'||v==='downBack',lowG=f.throwLow||v==='down'||v==='downForward'||v==='downBack';
@@ -917,7 +920,12 @@ function fighter(f,t){
      elbow={x:24+reach*(17+d*16),y:-86+d*6};
      hand={x:26+reach*(75+d*24),y:-74+reach*(19-d*12)}
    }
-   else if(comboFinal){elbow={x:16+reach*(32+form*7),y:-122+reach*(14+accent*5)};hand={x:5+reach*(82+form*13),y:-133+reach*(24+flip*accent*10)}}
+   else if(comboFinal){
+    if(tech===1){elbow={x:35+reach*9,y:-107};hand={x:45+reach*54,y:-109+reach*21}}
+    else if(tech===2){elbow={x:14+reach*38,y:-137};hand={x:16+reach*110,y:-152+reach*23}}
+    else if(tech===4){elbow={x:28+reach*21,y:-92};hand={x:26+reach*112,y:-92+reach*16}}
+    else {elbow={x:16+reach*(32+form*7),y:-122+reach*(14+accent*5)};hand={x:5+reach*(82+form*13),y:-133+reach*(24+flip*accent*10)}}
+   }
    else{
      const d=f.dir;
      if(d==='up'){elbow={x:15+reach*24,y:-141-reach*10};hand={x:8+reach*62,y:-155-reach*78}}
