@@ -77,6 +77,40 @@ function kickDrum(when){
  osc.connect(gain);gain.connect(audio.destination);
  osc.start(when);osc.stop(when+.21);
 }
+// Quiet synthesized arcade foley; vocalizations are short formant-like tones, no external samples.
+function fightVoice(kind,actor){
+ if(!sound||!audio)return;
+ try{
+  const nowA=audio.currentTime+.007;
+  const voice={hurt:[172,104,.15],heavy:[130,75,.31],jump:[190,280,.20],crouch:[122,96,.11],throw:[155,82,.18]}[kind];
+  if(!voice)return;
+  const [start,end,dur]=voice,variation=actor?.ai?.92:1.08;
+  const osc=audio.createOscillator(),filter=audio.createBiquadFilter(),gain=audio.createGain();
+  osc.type='sawtooth';osc.frequency.setValueAtTime(start*variation,nowA);
+  osc.frequency.exponentialRampToValueAtTime(end*variation,nowA+dur);
+  filter.type='bandpass';filter.frequency.setValueAtTime(kind==='jump'?740:kind==='heavy'?560:850,nowA);filter.Q.value=.72;
+  gain.gain.setValueAtTime(.0001,nowA);
+  gain.gain.exponentialRampToValueAtTime(kind==='heavy'?.027:.019,nowA+.018);
+  gain.gain.exponentialRampToValueAtTime(.0001,nowA+dur);
+  osc.connect(filter);filter.connect(gain);gain.connect(audio.destination);
+  osc.start(nowA);osc.stop(nowA+dur+.02);
+ }catch(e){}
+}
+function fightFoley(kind,heavy=false){
+ if(!sound||!audio)return;
+ try{
+  const at=audio.currentTime+.005;
+  if(kind==='whoosh'){noiseHit(at,heavy?.16:.075,heavy?.044:.021,heavy?850:1700);return}
+  if(kind==='jump'){noiseHit(at,.20,.026,1700);return}
+  if(kind==='impact'){
+   noiseHit(at,heavy?.14:.09,heavy?.11:.064,heavy?520:940);
+   tone(heavy?97:154,at,heavy?.13:.075,heavy?.075:.041,'triangle',880);
+   return;
+  }
+  if(kind==='block'){noiseHit(at,.08,.052,2400);return}
+  if(kind==='slam'){noiseHit(at,.18,.095,550);tone(78,at,.19,.067,'sine',440)}
+ }catch(e){}
+}
 function playRhythmBeat(index){
  if(!sound)return;
  try{
@@ -172,7 +206,7 @@ function rememberStance(type,t){stanceEvents.push({type,t});stanceEvents=stanceE
 function recentStance(type,t){return stanceEvents.filter(e=>e.type===type&&t-e.t<14000).length}
 function beginJump(f,t){
  if(f.action!=='idle'||t<f.stunnedUntil||t<f.recoveryUntil||t<f.landingRecoverUntil||f.jumpUntil>t)return false;
- gradeAction(f,t,'jump');
+ gradeAction(f,t,'jump');fightVoice('jump',f);fightFoley('jump');
  const rise=f.crouch||f.stanceRequest||f.stanceTransition==='crouch';
  f.jumpPendingAt=t+(rise?BEAT_MS*.29:BEAT_MS*.17)*rhythmSpeed(f,t);f.stanceRequest=false;f.crouch=false;f.stanceTransition='takeoff';f.stanceUntil=f.jumpPendingAt;f.guard=false;
  if(!f.ai)rememberStance('jump',t);
@@ -187,6 +221,7 @@ function strikeRange(f,kind,dir){
  return dir==='forward'?.276:dir==='back'?.166:dir==='up'?.211:.227;
 }
 function missedAttack(att,t,reason){
+ fightFoley('whoosh',att.action==='heavy');
  if(att.action!=='heavy')return;
  // Full recovery is measured beyond the original animation, not just after contact.
  att.recoveryUntil=Math.max(att.recoveryUntil,att.actionEnd+(att.lowSweep?270:att.dir==='back'?260:520));
@@ -201,7 +236,7 @@ function startAction(f,kind,t){
  if(clinch)return clinchInput(f,kind,t);
  if(!started||ended||f.action==='down'||t<f.stunnedUntil||t<f.recoveryUntil||t<f.jumpPendingAt||t<f.landingRecoverUntil||((f.stanceTransition==='rise'||f.stanceTransition==='crouch')&&t<f.stanceUntil))return false;
  // Aerial heavy is armed mid-flight and resolves when both feet land.
- if(kind==='heavy'&&f.jumpUntil>t&&f.jumpHeight>7&&!f.diveArmed){gradeAction(f,t,'dive');f.diveArmed=true;f.diveHitDone=false;f.guard=false;f.comboStep=0;f.action='dive';f.actionStart=t;f.actionEnd=f.jumpUntil+260;f.cooldown=f.jumpUntil+430;setMessage(f.ai?'УДАР СВЕРХУ!':'АТАКА С ПРИЗЕМЛЕНИЕМ','Попадёт при посадке, если хватит дистанции',650);sfx(470,'triangle',.10);return true}
+ if(kind==='heavy'&&f.jumpUntil>t&&f.jumpHeight>7&&!f.diveArmed){fightVoice('heavy',f);fightFoley('whoosh',true);gradeAction(f,t,'dive');f.diveArmed=true;f.diveHitDone=false;f.guard=false;f.comboStep=0;f.action='dive';f.actionStart=t;f.actionEnd=f.jumpUntil+260;f.cooldown=f.jumpUntil+430;setMessage(f.ai?'УДАР СВЕРХУ!':'АТАКА С ПРИЗЕМЛЕНИЕМ','Попадёт при посадке, если хватит дистанции',650);sfx(470,'triangle',.10);return true}
  if(f.diveArmed||f.action==='dive')return false;
  const lowFollow=kind==='heavy'&&f.crouch&&f.hitDone&&t<f.lowChainUntil;
  const airFollow=kind==='light'&&f.airFollowReady&&t<f.airFollowUntil&&f.jumpUntil<=t;
@@ -220,6 +255,7 @@ function startAction(f,kind,t){
   if(!f.ai)record('grab');return true;
  }
  if(kind==='light'||kind==='heavy'){
+  if(kind==='heavy'){fightVoice('heavy',f);fightFoley('whoosh',true)}
   gradeAction(f,t,kind);
   if(f.crouch&&f.jumpUntil<=t&&f===player)f.moveHeld=0;
   const comboCandidate=chain && !f.crouch && (kind==='light'&&f.comboStep===1 || kind==='heavy'&&f.comboStep===2);
@@ -253,7 +289,7 @@ function startAction(f,kind,t){
 }
 function step(f,direction,t){if(!started||ended||t<f.stunnedUntil||t<f.stanceUntil||t<f.landingRecoverUntil||f.action!=='idle'||f.guard||f.crouch)return;f.stepDir=direction;f.stepUntil=t+350;f.x=clamp(f.x+direction*.018,.12,.88);if(!f.ai)record('step')}
 function knockDown(f,t,damage,label){
- if(clinch)clinch=null;f.stanceTransition='';f.stanceRequest=false;f.crouch=false;f.jumpPendingAt=0;f.airFollowReady=false;f.lowChainUntil=0;f.diveArmed=false;f.diveHitDone=true;f.jumpUntil=t;f.jumpHeight=0;f.hp=Math.max(0,f.hp-damage);f.guard=false;f.action='down';f.downStart=t;f.downUntil=t+1750;f.stunnedUntil=f.downUntil;f.actionEnd=f.downUntil;f.cooldown=f.downUntil+90;f.x=clamp(f.x+f.facing*.025,.12,.88);emit(f.x,'#f8d18a',22);impact(f,t,1.8,false);shake=9;sfx(88,'sawtooth',.25);setMessage(label,'Падение → подъём · короткое окно уязвимости',950);if(f.hp<=0)finish(!f.ai);
+ if(clinch)clinch=null;f.stanceTransition='';f.stanceRequest=false;f.crouch=false;f.jumpPendingAt=0;f.airFollowReady=false;f.lowChainUntil=0;f.diveArmed=false;f.diveHitDone=true;f.jumpUntil=t;f.jumpHeight=0;f.hp=Math.max(0,f.hp-damage);f.guard=false;f.action='down';f.downStart=t;f.downUntil=t+1750;f.stunnedUntil=f.downUntil;f.actionEnd=f.downUntil;f.cooldown=f.downUntil+90;f.x=clamp(f.x+f.facing*.025,.12,.88);emit(f.x,'#f8d18a',22);impact(f,t,1.8,false);shake=9;sfx(88,'sawtooth',.25);fightFoley('slam');fightVoice('hurt',f);setMessage(label,'Падение → подъём · короткое окно уязвимости',950);if(f.hp<=0)finish(!f.ai);
 }
 function escapeGrab(att,def,t,reason){
  att.action='stunned';att.actionStart=t;att.actionEnd=t+430;att.stunnedUntil=t+430;
@@ -276,7 +312,7 @@ function beginThrow(att,def,t,instant=false){
  def.throwStyle=variant;def.action='caught';def.actionStart=t;def.actionEnd=slamBeat;def.guard=false;
  def.x=clamp(att.x+att.facing*.075,.12,.88);
  setMessage('1 — ЗАХВАТ','2 — нажми БРОСОК в бит, чтобы вырваться · 3 — падение · 4 — подъём',1100);
- sfx(180,'triangle',.13);
+ fightVoice('throw',att);sfx(180,'triangle',.13);
 }
 function endThrow(t,message){if(!clinch)return;let c=clinch;clinch=null;for(let f of [c.a,c.d]){f.action='idle';f.actionEnd=t;f.cooldown=t+290}c.d.x=clamp(c.d.x+c.a.facing*.075,.12,.90);setMessage(message,'',700)}
 function clinchInput(f,kind,t){
@@ -343,7 +379,7 @@ function resolveDive(att,def,t){
  def.x=clamp(def.x+att.facing*.047,.12,.88);
  att.airFollowReady=true;att.airFollowUntil=t+670;att.actionEnd=t+145;att.cooldown=t+145;att.landingRecoverUntil=t+120;
  if(def.crouch)def.stunnedUntil=t+660;
- emit(def.x,'#ffe0a0',28);impact(def,t,1.7,false);shake=9;sfx(105,'sawtooth',.18);
+ emit(def.x,'#ffe0a0',28);impact(def,t,1.7,false);shake=9;fightFoley('impact',true);fightVoice('hurt',def);
  setMessage('УДАР С ПРИЗЕМЛЕНИЕМ!','Успех! Нажми ЛЁГКИЙ для воздушного комбо',850);
  
  if(def.hp<=0)finish(!def.ai);
@@ -355,20 +391,20 @@ function strike(att,def,t){
   if(att.comboStep===3)att.recoveryUntil=Math.max(att.recoveryUntil,t+1050);
   missedAttack(att,t,'Недостаточная дистанция');
   if(att.action!=='heavy'&&!att.ai)setMessage('ПРОМАХ','Выбери более дальнюю атаку или сблизься',520);
-  sfx(120,'sine',.06);return;
+  fightFoley('whoosh',att.action==='heavy');return;
  }
  const action=att.action,dir=att.dir||'neutral';if(t<def.invulUntil){if(!def.ai)setMessage('УКЛОНЕНИЕ','Провоцируй промахи и контратакуй',650);emit(def.x,'#c4edf0',8);missedAttack(att,t,'Соперник уклонился');return}
 // Standing attacks cannot connect with a crouching opponent, even while defending.
 if(action!=='grab'&&def.crouch&&!att.attackLow){
  if(!att.ai)setMessage('МИМО НАД ГОЛОВОЙ','Против приседа атакуй из приседа',650);
- emit(def.x,'#bad7ca',6);missedAttack(att,t,'Соперник пригнулся');sfx(230,'sine',.07);return;
+ emit(def.x,'#bad7ca',6);missedAttack(att,t,'Соперник пригнулся');fightFoley('whoosh',att.action==='heavy');return;
 }
 // Low strikes cannot hit a fighter who is clearly airborne.
 // Attack height is fixed at the moment the strike begins.
 if(action!=='grab'&&att.attackLow&&def.jumpUntil>t&&(def.jumpHeight||0)>9){
  if(!att.ai)setMessage('НИЗКИЙ УДАР МИМО','Соперник перепрыгнул атаку',580);
  else setMessage('ПРЫЖОК НАД УДАРОМ','Низкая атака не достала',640);
- emit(def.x,'#c4e9ea',10);missedAttack(att,t,'Соперник перепрыгнул удар');sfx(460,'sine',.09);return;
+ emit(def.x,'#c4e9ea',10);missedAttack(att,t,'Соперник перепрыгнул удар');fightFoley('whoosh',att.action==='heavy');return;
 }
 // Standing strikes interrupt airborne opponents and cancel their landing attack.
 if(action!=='grab'&&!att.attackLow&&att.jumpUntil<=t&&def.jumpUntil>t&&def.jumpHeight>10){
@@ -389,8 +425,8 @@ if(att.lowSweep&&action==='heavy'&&!def.crouch&&def.action!=='down'&&!def.guard)
 if(def===player){def.guard=(def.action==='idle'&&def.jumpUntil<=t&&joyX*def.facing<=.18&&t>=def.stunnedUntil)}
 const counterWindow=def.whiffUntil>t&&def.action!=='down'&&def.action!=='caught';
 const isLow=!!att.attackLow;const blockHigh=def.guard&&!def.crouch&&!isLow;const blockLow=def.guard&&def.crouch&&isLow;
-if(blockHigh||blockLow){const damage=(action==='heavy'?7:2)*(isLow?.5:1);def.hp-=damage;def.guard=false;setMessage(def.ai?(blockLow?'НИЖНИЙ БЛОК ИИ':'ЗАЩИТА ИИ'):(blockLow?'НИЖНИЙ БЛОК':'ВЕРХНИЙ БЛОК'),'Блок снижает урон; ритм усиливает точные атаки',570);emit(def.x,'#aab8c1',7);impact(def,t,.7,isLow,true);sfx(180,'triangle',.08);shake=2}else{const lightPenalty=(!att.ai&&action==='light')?Math.max(0,att.lightStreak-2)*2:0;const dirDamage=dir==='up'?1.12:isLow?.89:dir==='back'?.92:dir==='forward'?1.06:1;const comboBoost=att.comboStep===3?1.12:1;const damage=(action==='heavy'?25:Math.max(6,13-lightPenalty))*dirDamage*(isLow?.58:1)*comboBoost*(counterWindow?1.25:1)*rhythmDamage(att,t);def.hp-=damage;def.stunnedUntil=t+(action==='heavy'?380:(!att.ai&&att.lightStreak>=3?85:160))+(counterWindow?190:0);
-if(counterWindow){att.counterHits++;def.whiffUntil=0;def.recoveryUntil=Math.max(def.recoveryUntil,t+400);}def.x=clamp(def.x+att.facing*(action==='heavy'?.041:.025)+(isLow&&!def.crouch?att.facing*.014:0),.12,.88);if(att.comboStep>0)att.comboHits++;emit(def.x,action==='heavy'?'#ffd7a4':'#e1d4b9',action==='heavy'?18:10);impact(def,t,action==='heavy'?1.4:.75,isLow);sfx(action==='heavy'?110:190,'sawtooth',.11);shake=action==='heavy'?6:2;setMessage(counterWindow?'✦ КОНТРАТАКА! +25% УРОНА':att.airFollowAttack?'ВОЗДУШНОЕ КОМБО!':att.lowSweep?'НИЗКАЯ ПОДСЕЧКА!':att.comboStep===3?'✹ ФИНАЛЬНЫЙ УДАР!':(action==='heavy'?'СИЛЬНЫЙ: ':'')+DIR_NAMES[dir],isLow?'Низкая атака отталкивает стоящего':'',460)}if(def.hp<=0){def.hp=0;finish(!def.ai)} }
+if(blockHigh||blockLow){const damage=(action==='heavy'?7:2)*(isLow?.5:1);def.hp-=damage;def.guard=false;setMessage(def.ai?(blockLow?'НИЖНИЙ БЛОК ИИ':'ЗАЩИТА ИИ'):(blockLow?'НИЖНИЙ БЛОК':'ВЕРХНИЙ БЛОК'),'Блок снижает урон; ритм усиливает точные атаки',570);emit(def.x,'#aab8c1',7);impact(def,t,.7,isLow,true);fightFoley('block');shake=2}else{const lightPenalty=(!att.ai&&action==='light')?Math.max(0,att.lightStreak-2)*2:0;const dirDamage=dir==='up'?1.12:isLow?.89:dir==='back'?.92:dir==='forward'?1.06:1;const comboBoost=att.comboStep===3?1.12:1;const damage=(action==='heavy'?25:Math.max(6,13-lightPenalty))*dirDamage*(isLow?.58:1)*comboBoost*(counterWindow?1.25:1)*rhythmDamage(att,t);def.hp-=damage;def.stunnedUntil=t+(action==='heavy'?380:(!att.ai&&att.lightStreak>=3?85:160))+(counterWindow?190:0);
+if(counterWindow){att.counterHits++;def.whiffUntil=0;def.recoveryUntil=Math.max(def.recoveryUntil,t+400);}def.x=clamp(def.x+att.facing*(action==='heavy'?.041:.025)+(isLow&&!def.crouch?att.facing*.014:0),.12,.88);if(att.comboStep>0)att.comboHits++;emit(def.x,action==='heavy'?'#ffd7a4':'#e1d4b9',action==='heavy'?18:10);impact(def,t,action==='heavy'?1.4:.75,isLow);fightFoley('impact',action==='heavy');fightVoice('hurt',def);shake=action==='heavy'?6:2;setMessage(counterWindow?'✦ КОНТРАТАКА! +25% УРОНА':att.airFollowAttack?'ВОЗДУШНОЕ КОМБО!':att.lowSweep?'НИЗКАЯ ПОДСЕЧКА!':att.comboStep===3?'✹ ФИНАЛЬНЫЙ УДАР!':(action==='heavy'?'СИЛЬНЫЙ: ':'')+DIR_NAMES[dir],isLow?'Низкая атака отталкивает стоящего':'',460)}if(def.hp<=0){def.hp=0;finish(!def.ai)} }
 function finish(lose){ended=true;$('resultTitle').textContent=lose?'ПОРАЖЕНИЕ':'ПОБЕДА';$('resultTitle').style.color=lose?'#ed9f8b':'#f3dda9';$('resultInfo').textContent='Ритм: '+(player.rhythmAttempts?Math.round(player.rhythmHits/player.rhythmAttempts*100):0)+'% точных действий · Идеально: '+player.rhythmPerfects+' из '+player.rhythmAttempts+'. '+(lose?'Попробуй ловить долю перед атакой.':'Продолжай развивать чувство ритма!');$('restartOverlay').classList.add('show');}
 function emit(x,col,num){let px=W*x,py=H*.61;for(let i=0;i<num;i++)particles.push({x:px,y:py,vx:rng(-3.8,3.8),vy:rng(-5,-1),life:rng(300,650),total:650,r:rng(1.5,4),col})}
 function impact(f,t,power=1,low=false,blocked=false){
@@ -778,7 +814,7 @@ function applyJoy(x,y,t){
  if(dir!==oldDir)chooseDir(dir,t);
  if(player){
  const wantCrouch=joyY>.43;
- if(player.stanceRequest!==wantCrouch){if(wantCrouch)gradeAction(player,t,'crouch');player.stanceRequest=wantCrouch;
+ if(player.stanceRequest!==wantCrouch){if(wantCrouch){gradeAction(player,t,'crouch');fightVoice('crouch',player)}player.stanceRequest=wantCrouch;
   if(!wantCrouch&&player.crouch){player.crouch=false;player.stanceTransition='rise';player.stanceUntil=t+BEAT_MS*.20*rhythmSpeed(player,t);player.guard=false}
  }
  player.moveHeld=wantCrouch?0:(joyX>.22?1:joyX<-.22?-1:0);
