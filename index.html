@@ -791,7 +791,10 @@ function fighter(f,t){
  const ai=f.ai,col=ai?'#c7775f':'#d3d8ca',shade=ai?'#783e33':'#718681',skin=ai?'#e0a98b':'#e5be9d';
  const elapsed=Math.max(0,t-f.actionStart),duration=Math.max(1,f.actionEnd-f.actionStart),progress=clamp(elapsed/duration,0,1);
  const light=f.action==='light',heavy=f.action==='heavy',grab=['grab','caught','throwing'].includes(f.action);
- const comboTwo=light&&f.comboSeq.length>=2,comboFinal=heavy&&f.finisher,low=(light||heavy)&&f.attackLow;
+ const comboTwo=light&&f.comboSeq.length>=2,comboFinal=f.finisher,low=(light||heavy)&&f.attackLow;
+ const anim=f.actionVariant||0,form=anim%5,accent=Math.floor(anim/5),tier=rhythmLevel(f);
+ const flourish=Math.min(1,(tier-1)*.27),energy=f.finisher?1.25:1;
+ const flip=anim%2?-1:1;
  const sweep=heavy&&f.lowSweep,airFollow=light&&f.airFollowAttack;
  // Short acceleration into contact, then slower recoil: the limbs move continuously.
  const strikeTime=Math.max(1,f.hitAt-f.actionStart);
@@ -809,6 +812,11 @@ function fighter(f,t){
  else if(f.stanceTransition==='takeoff'){const p=clamp(1-(f.stanceUntil-t)/85,0,1);stanceScale=1-.10*Math.sin(Math.PI*p)}
  ctx.save();ctx.translate(x,ground-(f.jumpHeight||0));ctx.scale(scale*f.facing,scale);
  ctx.scale(1,stanceScale);
+ // Reusable attack layers: torso torque and small acrobatic hop are independent of hitbox/timing.
+ const activeAttack=light||heavy;
+ if(activeAttack&&flourish){const pulse=Math.sin(Math.PI*Math.min(1,progress));const hop=(form===2||form===4?11:3)*flourish*pulse;
+ ctx.translate(0,-hop);ctx.rotate((form===0?.09:form===1?-.13:form===2?.18:form===3?-.19:.24)*reach*flourish*energy);
+ }
  if(f.action==='down'){
  // Controlled knockdown: distinct tumble arcs, not continuous uncontrolled spinning.
  const downAge=Math.max(0,t-f.downStart);
@@ -825,26 +833,32 @@ function fighter(f,t){
  const backwards=v==='back'||v==='downBack',upwards=v==='up';
  const lowThrow=clinch.low||v==='down'||v==='downBack'||v==='downForward';
  if(victim){
-  const shift=backwards?-30:upwards?26:v==='forward'?48:v==='downBack'?-25:v==='downForward'?42:20;
+  const style=clinch.d.throwVariantIndex||0;
+  const shift=(backwards?-30:upwards?26:v==='forward'?48:v==='downBack'?-25:v==='downForward'?42:20)+(style%5-2)*5;
   ctx.translate(shift*motion,-(upwards?75:lowThrow?8:31)*Math.sin(Math.PI*motion));
-  ctx.rotate((backwards?1.45:upwards?-1.58:v==='downForward'?.62:lowThrow?1.12:-1.05)*motion);
+  ctx.rotate(((backwards?1.45:upwards?-1.58:v==='downForward'?.62:lowThrow?1.12:-1.05)+(style%4)*.12)*motion);
  }else{
-  ctx.translate((backwards?-8:10)*motion,0);
-  ctx.rotate((lowThrow?-.39:backwards?-.48:upwards?.38:.26)*motion);
+  const variation=clinch.a.throwVariantIndex||0;
+  ctx.translate(((backwards?-8:10)+(variation%5-2)*3)*motion,-(variation%3)*4*Math.sin(Math.PI*motion));
+  ctx.rotate(((lowThrow?-.39:backwards?-.48:upwards?.38:.26)+(variation%5-2)*.09)*motion);
  }
 }else if(f.action==='caught')ctx.translate(f.ai?-7:7,-3);
  if(f.diveArmed){ctx.rotate(.19);ctx.translate(0,8)}
  const directionalLean=(f.dir==='back'?-.09:f.dir==='forward'?.16:f.dir==='up'?-.11:f.dir==='downBack'?-.06:f.dir==='downForward'?.12:0)*reach;
- const lean=(light?reach*.08:heavy?reach*.22:0)+directionalLean+(comboTwo&&!low?-reach*.21:0)+(comboFinal&&!low?reach*.18:0)-reaction*.14+(f.action==='idle'?Math.sin(t*.0037+(ai?1.6:0))*.018:0);
+ const lean=(light?reach*.08:heavy?reach*.22:0)+((form-2)*.06*flourish*reach)+directionalLean+(comboTwo&&!low?-reach*.21:0)+(comboFinal&&!low?reach*.18:0)-reaction*.14+(f.action==='idle'?Math.sin(t*.0037+(ai?1.6:0))*.018:0);
  ctx.transform(1,0,lean,1,0,0);
  ctx.lineCap='round';ctx.lineJoin='round';
  const limb=(x1,y1,x2,y2,w,c)=>{ctx.strokeStyle=c;ctx.lineWidth=w;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke()};
  // Exactly TWO articulated legs: moving a leg repositions its existing knee and foot.
- const kicking=heavy&&!f.finisher?reach:sweep?reach:0; // Fast leg attacks distinct from slow power finishers.
- const backKnee={x:-17-kicking*4,y:-32+kicking*4},backFoot={x:-26-kicking*5,y:-3};
+ const finisherKick=comboFinal&&(f.finisherName.includes('ПИНОК')||f.finisherName.includes('ВЕРТУШКА')||f.finisherName.includes('РАЗВОРОТ'));
+ const kicking=(heavy&&!f.finisher||finisherKick||sweep)?reach:0;
+ // Alternate front / rear leg and strike height while keeping every contact frame independent.
+ const rearKick=(form===1||form===3)&&kicking>0;
+ const kickHeight=(f.attackLow?24:50)+(form%3)*13*flourish;
+ const backKnee={x:-17+(rearKick?kicking*21:-kicking*4),y:-32+(rearKick?-kicking*17:kicking*4)},backFoot={x:-26+(rearKick?kicking*103:-kicking*5),y:-3-(rearKick?kicking*kickHeight:0)};
  const lowDirection=f.dir==='downBack'?-1:f.dir==='downForward'?1:0;
- const frontKnee={x:17+kicking*26+(low?reach*lowDirection*7:0),y:-30+kicking*(low?14:-16)};
- const frontFoot={x:25+kicking*85+(low?reach*lowDirection*24:0),y:-3-kicking*(low?15:72)};
+ const frontKnee={x:17+(rearKick?0:kicking*26)+(low?reach*lowDirection*7:0),y:-30+(rearKick?0:kicking*(low?14:-16))};
+ const frontFoot={x:25+(rearKick?0:kicking*(78+form*6))+(low?reach*lowDirection*24:0),y:-3-(rearKick?0:kicking*(low?15:kickHeight+18))};
  limb(-11,-58,backKnee.x,backKnee.y,15,shade);limb(backKnee.x,backKnee.y,backFoot.x,backFoot.y,13,shade);
  limb(12,-58,frontKnee.x,frontKnee.y,15,shade);limb(frontKnee.x,frontKnee.y,frontFoot.x,frontFoot.y,13,shade);
  limb(backFoot.x-4,backFoot.y,backFoot.x-14,backFoot.y,10,'#252a2b');
@@ -857,7 +871,7 @@ function fighter(f,t){
  const guarding=f.guard&&!light&&!heavy&&!grab;
  const rearElbow={x:-30,y:guarding?-108:-82};
  const rearHand={x:guarding?-8:heavy?-22:-6,y:guarding?(f.crouch?-96:-130):heavy?-125:-105};
- if(comboTwo&&light&&!low){rearElbow.x=-15+reach*18;rearElbow.y=-105;rearHand.x=15+reach*66;rearHand.y=-113-reach*13}
+ if(comboTwo&&light&&!low){rearElbow.x=-15+reach*(18+form*4);rearElbow.y=-105-(accent*5);rearHand.x=15+reach*(66+form*9);rearHand.y=-113-reach*(13+accent*7)}
  if(grab){
  const v=clinch?clinch.variant:f.throwStyle;
  const back=v==='back'||v==='downBack',lowG=f.throwLow||v==='down'||v==='downForward'||v==='downBack';
@@ -888,17 +902,17 @@ function fighter(f,t){
      if(d==='up'){elbow={x:19+reach*30,y:-120-reach*18};hand={x:22+reach*56,y:-120-reach*68}}
      else if(d==='back'){elbow={x:9+reach*37,y:-116};hand={x:15+reach*75,y:-108-reach*17}}
      else if(d==='forward'){elbow={x:26+reach*40,y:-104};hand={x:28+reach*99,y:-101}}
-     else{elbow={x:24+reach*23,y:-102};hand={x:25+reach*78,y:-100}}
+     else{elbow={x:24+reach*(23+form*5),y:-102-accent*4};hand={x:25+reach*(78+form*8),y:-100+flip*accent*11}}
    }
  }else if(heavy){
-   if(!f.finisher&&!sweep){elbow={x:29-reach*12,y:-97};hand={x:19-reach*16,y:-118}}
+   if(!f.finisher&&!sweep){elbow={x:29-reach*(12+form*3),y:-97-accent*4};hand={x:19-reach*(16+form*4),y:-118+flip*accent*7}}
    else if(sweep){elbow={x:25+reach*11,y:-84};hand={x:29+reach*49,y:-68+reach*11}}
    else if(low){
      const d=f.dir==='downBack'?-1:f.dir==='downForward'?1:0;
      elbow={x:24+reach*(17+d*16),y:-86+d*6};
      hand={x:26+reach*(75+d*24),y:-74+reach*(19-d*12)}
    }
-   else if(comboFinal){elbow={x:16+reach*45,y:-122+reach*14};hand={x:5+reach*116,y:-133+reach*24}}
+   else if(comboFinal){elbow={x:16+reach*(32+form*7),y:-122+reach*(14+accent*5)};hand={x:5+reach*(82+form*13),y:-133+reach*(24+flip*accent*10)}}
    else{
      const d=f.dir;
      if(d==='up'){elbow={x:15+reach*24,y:-141-reach*10};hand={x:8+reach*62,y:-155-reach*78}}
