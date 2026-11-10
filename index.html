@@ -4,9 +4,9 @@
 #joystick{width:136px;height:136px;position:relative;border-radius:50%;border:2px solid #a0b5b080;background:radial-gradient(circle,#34484bdc,#152429ee);touch-action:none;box-shadow:inset 0 0 25px #0008;pointer-events:auto;flex-shrink:0}#joystick:before,#joystick:after{position:absolute;pointer-events:none;color:#d6ded6aa;font-weight:800;font-size:17px}#joystick:before{content:'↑';top:7px;left:calc(50% - 6px)}#joystick:after{content:'↓';bottom:7px;left:calc(50% - 6px)}#stick{position:absolute;left:50%;top:50%;width:59px;height:59px;border-radius:50%;transform:translate(-50%,-50%);background:linear-gradient(140deg,#9daea4,#435a58);border:2px solid #dde7d5;box-shadow:0 3px 11px #0008;pointer-events:none}#joystick .lr{position:absolute;left:7px;right:7px;top:calc(50% - 12px);display:flex;justify-content:space-between;pointer-events:none;color:#c4d2ceaa}.cluster.right{max-width:55vw}.ctl.strong{background:linear-gradient(145deg,#99584d,#542f30);border-color:#e5a99c;min-width:75px;height:82px}.ctl.grab{height:80px;min-width:77px}.ctl.attack{height:86px;min-width:82px}#help{bottom:150px;max-width:min(400px,52vw)}
 @media(max-height:500px){#joystick{width:108px;height:108px}#stick{width:48px;height:48px}#help{bottom:100px;font-size:10px}#clinchPanel{top:32%}}
 @media(max-width:620px) and (orientation:portrait){#joystick{width:118px;height:118px}#stick{width:52px;height:52px}#controls{gap:4px}.cluster.right{gap:5px}.ctl.strong{min-width:62px;height:72px}.ctl.grab{min-width:65px;height:72px}.ctl.attack{min-width:65px;height:78px}#help{bottom:145px;max-width:65vw;font-size:9px}}
-</style></head><body><div id="app"><canvas id="game"></canvas><div id="hud"><div class="header"><div class="person"><div class="name">ТЫ · БОЕЦ</div><div class="bar"><div class="fill" id="ph"></div></div><div class="balance"><div class="fill" id="pp"></div></div><div class="meter">ЗДОРОВЬЕ / ДИСБАЛАНС</div></div><div class="brand">BREAKLINE<small>ВЕРСИЯ 1.8</small></div><div class="person right enemy"><div class="name">ПРОТИВНИК · ИИ</div><div class="bar"><div class="fill" id="eh"></div></div><div class="balance"><div class="fill" id="ep"></div></div><div class="meter">ЗДОРОВЬЕ / ДИСБАЛАНС</div></div></div></div><div id="clinchPanel" style="display:none"><div id="clinchLabel">ЗАХВАТ</div><div id="counterCircle" class="counterCircle"><span id="counterIcon">✊</span></div><div id="clinchTip">Жди светящегося круга</div></div><div id="distance">ДИСТАНЦИЯ: —</div><div id="message"></div><div id="subtext"></div><button id="soundBtn">◖ ЗВУК: ВЫКЛ.</button><div id="help">ТРИ КОМБО: стойка Л–Л–С; присед Л–С; прыжок С–Л после приземления. Переходы не мгновенные.</div><div id="dirSelected">ПРИЁМ: ПРЯМОЙ</div><div id="controls"><div class="cluster"><div id="joystick" aria-label="Джойстик движения"><div class="lr"><span>‹</span><span>›</span></div><div id="stick"></div></div></div><div class="cluster right"><button class="ctl strong" id="heavy"><span>✹</span>СИЛЬНЫЙ</button><button class="ctl grab" id="grab"><span>✊</span>БРОСОК<small>только вплотную</small></button><button class="ctl attack" id="attack"><span>✦</span>ЛЁГКИЙ<small>серия × 2</small></button></div></div><div id="intro"><div class="introInner"><h1>BREAKLINE</h1><p>Контролируй дистанцию и меняй ритм: противник замечает однообразные лёгкие удары и начинает их парировать.</p><div class="tips"><div class="tip"><b>ДЖОЙСТИК</b> — влево/вправо ходьба, вниз присесть, вверх прыгнуть. Диагональ вверх — прыжок с перемещением.</div><div class="tip"><b>ТРИ ПОЗИЦИИ</b> — стойка сбивает прыжок, присед атакует стойку, прыжок пробивает присед. Переходы имеют небольшую задержку.</div><div class="tip"><b>КОМБО</b> — стоя: лёгкий → лёгкий → сильный; в приседе: лёгкий → сильный; в прыжке: сильный → лёгкий после попадания при посадке.</div><div class="tip"><b>ПРИСЕД</b> — вниз, вниз-вперёд и вниз-назад дают разные удары и броски. Для броска подойди вплотную.</div></div><button class="mainBtn" id="start">НАЧАТЬ ДУЭЛЬ</button><p class="mini">Работает прямо в браузере · Сенсор / клавиатура: J, K, L, I, ←, →</p></div></div><div id="restartOverlay"><div id="resultTitle"></div><div id="resultInfo"></div><button class="mainBtn" id="restart">ЕЩЁ ОДНА ДУЭЛЬ</button></div></div><script>
+</style></head><body><div id="app"><canvas id="game"></canvas><div id="hud"><div class="header"><div class="person"><div class="name">ТЫ · БОЕЦ</div><div class="bar"><div class="fill" id="ph"></div></div><div class="balance"><div class="fill" id="pp"></div></div><div class="meter">ЗДОРОВЬЕ / ДИСБАЛАНС</div></div><div class="brand">BREAKLINE<small>ВЕРСИЯ 1.9</small></div><div class="person right enemy"><div class="name">ПРОТИВНИК · ИИ</div><div class="bar"><div class="fill" id="eh"></div></div><div class="balance"><div class="fill" id="ep"></div></div><div class="meter">ЗДОРОВЬЕ / ДИСБАЛАНС</div></div></div></div><div id="clinchPanel" style="display:none"><div id="clinchLabel">ЗАХВАТ</div><div id="counterCircle" class="counterCircle"><span id="counterIcon">✊</span></div><div id="clinchTip">Жди светящегося круга</div></div><div id="distance">ДИСТАНЦИЯ: —</div><div id="message"></div><div id="subtext"></div><button id="soundBtn">◖ ЗВУК: ВЫКЛ.</button><div id="help">ТРИ КОМБО: стойка Л–Л–С; присед Л–С; прыжок С–Л после приземления. Переходы не мгновенные.</div><div id="dirSelected">ПРИЁМ: ПРЯМОЙ</div><div id="controls"><div class="cluster"><div id="joystick" aria-label="Джойстик движения"><div class="lr"><span>‹</span><span>›</span></div><div id="stick"></div></div></div><div class="cluster right"><button class="ctl strong" id="heavy"><span>✹</span>СИЛЬНЫЙ</button><button class="ctl grab" id="grab"><span>✊</span>БРОСОК<small>только вплотную</small></button><button class="ctl attack" id="attack"><span>✦</span>ЛЁГКИЙ<small>серия × 2</small></button></div></div><div id="intro"><div class="introInner"><h1>BREAKLINE</h1><p>Контролируй дистанцию и меняй ритм: противник замечает однообразные лёгкие удары и начинает их парировать.</p><div class="tips"><div class="tip"><b>ДЖОЙСТИК</b> — влево/вправо ходьба, вниз присесть, вверх прыгнуть. Диагональ вверх — прыжок с перемещением.</div><div class="tip"><b>ТРИ ПОЗИЦИИ</b> — стойка сбивает прыжок, присед атакует стойку, прыжок пробивает присед. Переходы имеют небольшую задержку.</div><div class="tip"><b>КОМБО</b> — стоя: лёгкий → лёгкий → сильный; в приседе: лёгкий → сильный; в прыжке: сильный → лёгкий после попадания при посадке.</div><div class="tip"><b>ПРИСЕД</b> — вниз, вниз-вперёд и вниз-назад дают разные удары и броски. Для броска подойди вплотную.</div></div><button class="mainBtn" id="start">НАЧАТЬ ДУЭЛЬ</button><p class="mini">Работает прямо в браузере · Сенсор / клавиатура: J, K, L, I, ←, →</p></div></div><div id="restartOverlay"><div id="resultTitle"></div><div id="resultInfo"></div><button class="mainBtn" id="restart">ЕЩЁ ОДНА ДУЭЛЬ</button></div></div><script>
 (()=>{'use strict';const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');let W=0,H=0,dpr=1,now=0,last=0,started=false,ended=false,round=0,shake=0,particles=[],impacts=[],logs=[],audio=null,sound=false;const $=id=>document.getElementById(id);let player,enemy,clinch=null,clinchSeq=0;let selectedDir='neutral',selectedAt=0;const heldDirs=[];let joyX=0,joyY=0,joyPointer=null;let stanceEvents=[];let jumpLatch=false;let jumpQueuedUntil=0;
-const GAME_VERSION='1.8';
+const GAME_VERSION='1.9';
 let updateCheckRunning=false;
 async function checkForUpdate(){
  if(updateCheckRunning||document.visibilityState==='hidden')return;
@@ -298,7 +298,9 @@ function fighter(f,t){
  const wind=clamp(elapsed/strikeTime,0,1);
  const reach=(light||heavy)?(elapsed<=strikeTime?wind*wind*(3-2*wind):Math.max(0,1-(elapsed-strikeTime)/Math.max(120,duration-strikeTime))):0;
  const load=heavy?Math.sin(Math.PI*Math.min(1,wind))*(1-reach)*.25:0;
- const grabPose=grab?Math.sin(Math.PI*progress):0;
+ const throwProgress=clinch&&(clinch.a===f||clinch.d===f)?clamp((t-clinch.start)/(clinch.end-clinch.start),0,1):0;
+ const throwMotion=throwProgress>0.28?Math.sin(Math.PI*clamp((throwProgress-.28)/.72,0,1)):0;
+ const grabPose=grab?(clinch?Math.max(.35,throwMotion):Math.sin(Math.PI*progress)):0;
  const hitPhase=clamp((t-f.hitReactStart)/Math.max(1,f.hitReactUntil-f.hitReactStart),0,1);
  const reaction=t<f.hitReactUntil?Math.sin(Math.PI*hitPhase)*f.hitReactPower:0;
  let stanceScale=f.crouch?.72:1;
@@ -323,22 +325,22 @@ function fighter(f,t){
  const backwards=v==='back'||v==='downBack',upwards=v==='up';
  const lowThrow=clinch.low||v==='down'||v==='downBack'||v==='downForward';
  if(victim){
-  const shift=backwards?-39:upwards?34:v==='forward'?46:22;
-  ctx.translate(shift*motion,-(upwards?58:lowThrow?13:29)*Math.sin(Math.PI*motion));
-  ctx.rotate((backwards?1.18:upwards?-1.32:lowThrow?.88:-.93)*motion);
+  const shift=backwards?-30:upwards?26:v==='forward'?48:v==='downBack'?-25:v==='downForward'?42:20;
+  ctx.translate(shift*motion,-(upwards?75:lowThrow?8:31)*Math.sin(Math.PI*motion));
+  ctx.rotate((backwards?1.45:upwards?-1.58:v==='downForward'?.62:lowThrow?1.12:-1.05)*motion);
  }else{
   ctx.translate((backwards?-8:10)*motion,0);
-  ctx.rotate((lowThrow?-.28:backwards?-.33:.22)*motion);
+  ctx.rotate((lowThrow?-.39:backwards?-.48:upwards?.38:.26)*motion);
  }
 }else if(f.action==='caught')ctx.translate(f.ai?-7:7,-3);
  if(f.diveArmed){ctx.rotate(.19);ctx.translate(0,8)}
- const directionalLean=(f.dir==='back'?-.20:f.dir==='forward'?.16:f.dir==='up'?-.11:f.dir==='downBack'?-.11:f.dir==='downForward'?.12:0)*reach;
+ const directionalLean=(f.dir==='back'?-.09:f.dir==='forward'?.16:f.dir==='up'?-.11:f.dir==='downBack'?-.06:f.dir==='downForward'?.12:0)*reach;
  const lean=(light?reach*.08:heavy?reach*.22:0)+directionalLean+(comboTwo&&!low?-reach*.21:0)+(comboFinal&&!low?reach*.18:0)-reaction*.14+(f.action==='idle'?Math.sin(t*.0037+(ai?1.6:0))*.018:0);
  ctx.transform(1,0,lean,1,0,0);
  ctx.lineCap='round';ctx.lineJoin='round';
  const limb=(x1,y1,x2,y2,w,c)=>{ctx.strokeStyle=c;ctx.lineWidth=w;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke()};
  // Exactly TWO articulated legs: moving a leg repositions its existing knee and foot.
- const kicking=sweep?reach:comboFinal?reach*.72:0;
+ const kicking=sweep?reach:0; // Standing combo finishes with the arms, not a third kick.
  const backKnee={x:-17-kicking*4,y:-32+kicking*4},backFoot={x:-26-kicking*5,y:-3};
  const lowDirection=f.dir==='downBack'?-1:f.dir==='downForward'?1:0;
  const frontKnee={x:17+kicking*22+(low?reach*lowDirection*7:0),y:-30+kicking*15};
@@ -357,21 +359,21 @@ function fighter(f,t){
  const rearHand={x:guarding?-8:heavy?-22:-6,y:guarding?(f.crouch?-96:-130):heavy?-125:-105};
  if(comboTwo&&light&&!low){rearElbow.x=-15+reach*18;rearElbow.y=-105;rearHand.x=15+reach*66;rearHand.y=-113-reach*13}
  if(grab){
- const v=clinch&&clinch.a===f?clinch.variant:f.throwStyle;
+ const v=clinch?clinch.variant:f.throwStyle;
  const back=v==='back'||v==='downBack',lowG=f.throwLow||v==='down'||v==='downForward'||v==='downBack';
- rearElbow.x=back?-29+grabPose*13:-5+grabPose*18;
+ rearElbow.x=back?-18+grabPose*32:-5+grabPose*18;
  rearElbow.y=lowG?-79:-103;
- rearHand.x=back?-13-grabPose*23:13+grabPose*39;
+ rearHand.x=back?-8+grabPose*43:13+grabPose*39;
  rearHand.y=lowG?-72+grabPose*16:v==='up'?-138-grabPose*25:-110+grabPose*15
 }
  limb(-18,-104,rearElbow.x,rearElbow.y,12,col);limb(rearElbow.x,rearElbow.y,rearHand.x,rearHand.y,11,skin);
  let elbow={x:27,y:-89},hand={x:26,y:-94};
  if(guarding){elbow={x:26,y:-109};hand={x:10,y:f.crouch?-88:-131}}
  else if(grab){
-   const v=clinch&&clinch.a===f?clinch.variant:f.throwStyle;
+   const v=clinch?clinch.variant:f.throwStyle;
    const back=v==='back'||v==='downBack',lowG=f.throwLow||v==='down'||v==='downForward'||v==='downBack';
-   elbow={x:back?2+grabPose*12:25+grabPose*20,y:lowG?-79:v==='up'?-129:-97};
-   hand={x:back?-12-grabPose*46:25+grabPose*63,y:lowG?-65+grabPose*17:v==='up'?-146-grabPose*45:-105+grabPose*8};
+   elbow={x:back?9+grabPose*28:25+grabPose*20,y:lowG?-79:v==='up'?-129:-97};
+   hand={x:back?16+grabPose*55:25+grabPose*63,y:lowG?-65+grabPose*17:v==='up'?-146-grabPose*45:-105+grabPose*8};
  }
  else if(light){
    if(comboTwo&&!low){elbow={x:22-reach*23,y:-109};hand={x:13-reach*35,y:-110-reach*8}}
@@ -384,7 +386,7 @@ function fighter(f,t){
    else{
      const d=f.dir;
      if(d==='up'){elbow={x:19+reach*30,y:-120-reach*18};hand={x:22+reach*56,y:-120-reach*68}}
-     else if(d==='back'){elbow={x:13-reach*28,y:-112};hand={x:16-reach*52,y:-109-reach*20}}
+     else if(d==='back'){elbow={x:9+reach*37,y:-116};hand={x:15+reach*75,y:-108-reach*17}}
      else if(d==='forward'){elbow={x:26+reach*40,y:-104};hand={x:28+reach*99,y:-101}}
      else{elbow={x:24+reach*23,y:-102};hand={x:25+reach*78,y:-100}}
    }
@@ -395,17 +397,23 @@ function fighter(f,t){
      elbow={x:24+reach*(17+d*16),y:-86+d*6};
      hand={x:26+reach*(75+d*24),y:-74+reach*(19-d*12)}
    }
-   else if(comboFinal){elbow={x:18+reach*33,y:-129+reach*38};hand={x:10+reach*81,y:-150+reach*70}}
+   else if(comboFinal){elbow={x:16+reach*45,y:-122+reach*14};hand={x:5+reach*116,y:-133+reach*24}}
    else{
      const d=f.dir;
      if(d==='up'){elbow={x:15+reach*24,y:-141-reach*10};hand={x:8+reach*62,y:-155-reach*78}}
-     else if(d==='back'){elbow={x:5-reach*25,y:-133};hand={x:-4-reach*48,y:-155+reach*17}}
+     else if(d==='back'){elbow={x:6+reach*46,y:-125};hand={x:4+reach*103,y:-137+reach*26}}
      else if(d==='forward'){elbow={x:17+reach*52,y:-136+reach*33};hand={x:8+reach*103,y:-150+reach*54}}
      else{elbow={x:15+reach*40,y:-136+reach*29};hand={x:6+reach*84,y:-150+reach*56}}
    }
  }
  limb(17,-104,elbow.x,elbow.y,12,col);limb(elbow.x,elbow.y,hand.x,hand.y,11,skin);
  ctx.fillStyle=skin;ctx.beginPath();ctx.arc(hand.x,hand.y,8,0,2*Math.PI);ctx.fill();ctx.beginPath();ctx.arc(rearHand.x,rearHand.y,7,0,2*Math.PI);ctx.fill();
+ if(grab&&clinch&&clinch.a===f){
+   const v=clinch.variant,phase=clamp((throwProgress-.28)/.72,0,1);
+   if(phase>.01){ctx.globalAlpha=.25+phase*.42;ctx.strokeStyle=v==='up'?'#f0d6ad':v==='back'||v==='downBack'?'#c8b8ed':'#b6e6ce';ctx.lineWidth=4;ctx.beginPath();
+   if(v==='up')ctx.arc(34,-137,40,-2.9,-.3);else if(v==='back'||v==='downBack')ctx.arc(17,-88,52,-2.8,-.55);else if(v==='down'||v==='downForward')ctx.arc(29,-57,55,-.4,1.7);else ctx.arc(38,-105,52,-1.3,.8);
+   ctx.stroke();ctx.globalAlpha=1}
+ }
  if((light||heavy)&&reach>.25){
    ctx.strokeStyle=sweep||low?'#a4efd1':ai?'#ffac97':heavy?'#ffda90':'#d3efdb';
    ctx.lineWidth=heavy?5:2.5;ctx.globalAlpha=reach*(heavy?.72:.48);
