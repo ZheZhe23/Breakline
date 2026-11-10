@@ -712,7 +712,7 @@ function finish(lose,byPoints=false,forfeit=false){
  if(!tie){
   winner.powerFreezeUntil=0;finale.loser.powerFreezeUntil=0;
   winner.action='celebrate';winner.actionStart=now;winner.actionEnd=Infinity;winner.guard=false;
-  if(byPoints){finale.loser.action='defeated';finale.loser.actionStart=now;finale.loser.actionEnd=Infinity;finale.loser.guard=false}
+  if(byPoints||forfeit){finale.loser.action='defeated';finale.loser.actionStart=now;finale.loser.actionEnd=Infinity;finale.loser.guard=false}
   else{finale.loser.action='down';finale.loser.downStart=now-450;finale.loser.downUntil=Infinity}
  }
  if(sound)endSignal();
@@ -766,7 +766,8 @@ function updateFinale(t){
 }
 function emit(x,col,num){let px=W*x,py=H*.61;for(let i=0;i<num;i++)particles.push({x:px,y:py,vx:rng(-3.8,3.8),vy:rng(-5,-1),life:rng(300,650),total:650,r:rng(1.5,4),col})}
 function freezePowerPose(f,t,role){
- const duration=role==='attacker'?Math.max(150,f.actionEnd-t):Math.max(150,(f===player?enemy:player).actionEnd-t);
+ const actionEnd=role==='attacker'?f.actionEnd:(f===player?enemy:player).actionEnd;
+ const duration=Math.max(50,actionEnd-t-95);
  f.powerFreezeAt=t;f.powerFreezeUntil=t+duration;f.powerFreezeRole=role;
  if(role==='defender'){f.guard=false;f.stunnedUntil=Math.max(f.stunnedUntil,f.powerFreezeUntil);f.cooldown=Math.max(f.cooldown,f.powerFreezeUntil)}
 }
@@ -975,7 +976,7 @@ if(f.stanceTransition==='crouch'&&t>=f.stanceUntil&&f.jumpPendingAt===0){
 if(f.stanceTransition==='rise'&&t>=f.stanceUntil)f.stanceTransition='';
 if(f.wasAirborne&&t>=f.jumpUntil){f.wasAirborne=false;f.landingRecoverUntil=Math.max(f.landingRecoverUntil,t+120);}
 if(f===player){
- if(t<f.powerFreezeUntil){f.moveHeld=0;f.guard=false;}
+ if(t<f.powerFreezeUntil){f.guard=false;}
  if(jumpQueuedUntil>t&&joyY<-.38&&f.jumpPendingAt===0&&f.action==='idle'&&t>=f.stunnedUntil&&t>=f.recoveryUntil&&t>=f.landingRecoverUntil){if(beginJump(f,t))jumpQueuedUntil=0;}
  if(t>=jumpQueuedUntil)jumpQueuedUntil=0;
  f.guard=f.action==='idle'&&t>=f.jumpUntil&&f.jumpPendingAt===0&&t>=f.stanceUntil&&joyX*f.facing<=.18&&t>=f.stunnedUntil&&t>=f.landingRecoverUntil;
@@ -1024,7 +1025,7 @@ function fighter(f,t){
  const x=W*f.x,ground=H*.75,scale=clamp(Math.min(W/790,H/500),.68,1.18);
  const ai=f.ai,profile=FIGHTERS[f.fighterId]||FIGHTERS.kickboxer;
  const [col,shade,skin]=profile.colors;
- const frozen=t<f.powerFreezeUntil,poseTime=frozen?f.powerFreezeAt:t;
+ const frozen=t<f.powerFreezeUntil,poseTime=frozen&&f.powerFreezeRole==='defender'?f.powerFreezeAt:t;
  const elapsed=Math.max(0,poseTime-f.actionStart),duration=Math.max(1,f.actionEnd-f.actionStart),progress=clamp(elapsed/duration,0,1);
  const light=f.action==='light',heavy=f.action==='heavy',grab=['grab','caught','throwing'].includes(f.action);
  const comboTwo=light&&f.comboSeq.length>=2,comboFinal=f.finisher,low=(light||heavy)&&f.attackLow;
@@ -1035,12 +1036,16 @@ function fighter(f,t){
  // Short acceleration into contact, then slower recoil: the limbs move continuously.
  const strikeTime=Math.max(1,f.hitAt-f.actionStart);
  const wind=clamp(elapsed/strikeTime,0,1);
- // Strong finishers build anticipation in their existing timing window, then snap
- // forward over the final 95 ms and hold their fully extended contact pose.
+ // Power finisher visual: quick extension -> long hold at maximum reach -> fast recoil.
+ // Gameplay hitAt remains unchanged; only the displayed pose changes.
  const strongSnap=f.powerFinisher&&f.hitAt>f.actionStart;
- const snapStart=Math.max(0,strikeTime-95);
- const snap=clamp((elapsed-snapStart)/Math.max(1,strikeTime-snapStart),0,1);
- const reach=(light||heavy)?strongSnap?(snap*snap*(3-2*snap)):(elapsed<=strikeTime?wind*wind*(3-2*wind):Math.max(0,1-(elapsed-strikeTime)/Math.max(120,duration-strikeTime))):0;
+ const extension=clamp((elapsed-45)/135,0,1);
+ const extensionEase=extension*extension*(3-2*extension);
+ const returnStart=Math.max(240,duration-95);
+ const returning=clamp((elapsed-returnStart)/95,0,1);
+ const recoil=1-returning*returning*(3-2*returning);
+ const snap=extensionEase*recoil;
+ const reach=(light||heavy)?strongSnap?snap:(elapsed<=strikeTime?wind*wind*(3-2*wind):Math.max(0,1-(elapsed-strikeTime)/Math.max(120,duration-strikeTime))):0;
  const load=heavy?Math.sin(Math.PI*Math.min(1,wind))*(1-reach)*.25:0;
  const throwProgress=clinch&&(clinch.a===f||clinch.d===f)?clamp((t-clinch.start)/(clinch.end-clinch.start),0,1):0;
  const throwMotion=throwProgress>0.28?Math.sin(Math.PI*clamp((throwProgress-.28)/.72,0,1)):0;
@@ -1337,7 +1342,7 @@ function playerDirection(){
  const toward=joyX*(player?player.facing:1);
  return joyY>.42?(toward>.28?'downForward':toward<-.28?'downBack':'down'):joyY<-.43?'up':toward>.23?'forward':toward<-.23?'back':'neutral';
 }
-function applyJoy(x,y,t){
+function applyJoy(x,y,t){if(paused)return;
  const mag=Math.hypot(x,y),scale=mag>1?1/mag:1;joyX=x*scale;joyY=y*scale;
  stick.style.transform='translate(calc(-50% + '+(joyX*37)+'px),calc(-50% + '+(joyY*37)+'px))';
  const oldDir=selectedDir;
@@ -1360,16 +1365,16 @@ function applyJoy(x,y,t){
 }
 function joyEvent(e){
  const r=joystick.getBoundingClientRect(),x=(e.clientX-r.left-r.width/2)/(r.width*.36),y=(e.clientY-r.top-r.height/2)/(r.height*.36);
- applyJoy(x,y,performance.now());
+ applyJoy(x,y,gameClock());
 }
 joystick.addEventListener('pointerdown',e=>{e.preventDefault();joyPointer=e.pointerId;joystick.setPointerCapture(e.pointerId);joyEvent(e)});
 joystick.addEventListener('pointermove',e=>{if(e.pointerId===joyPointer){e.preventDefault();joyEvent(e)}});
 function joyRelease(e){if(e.pointerId!==joyPointer)return;joyPointer=null;applyJoy(0,0,gameClock())}
 joystick.addEventListener('pointerup',joyRelease);joystick.addEventListener('pointercancel',joyRelease);
 let keys={};
-document.addEventListener('keydown',e=>{if(keys[e.code])return;keys[e.code]=true;const t=performance.now();if(e.code==='KeyJ')startAction(player,'light',t);if(e.code==='KeyK')startAction(player,'heavy',t);if(e.code==='KeyI')startAction(player,'grab',t);if(e.code.startsWith('Arrow')){e.preventDefault();const x=(keys.ArrowRight?1:0)-(keys.ArrowLeft?1:0),y=(keys.ArrowDown?1:0)-(keys.ArrowUp?1:0);applyJoy(x,y,t)}});
-document.addEventListener('keyup',e=>{keys[e.code]=false;const t=performance.now();if(e.code.startsWith('Arrow')){e.preventDefault();const x=(keys.ArrowRight?1:0)-(keys.ArrowLeft?1:0),y=(keys.ArrowDown?1:0)-(keys.ArrowUp?1:0);applyJoy(x,y,t)}});
-let swipeX=0;canvas.addEventListener('pointerdown',e=>{swipeX=e.clientX});canvas.addEventListener('pointerup',e=>{if(!started||ended)return;let dx=e.clientX-swipeX;if(Math.abs(dx)>52&&player&&player.action==='idle'&&player.recoveryUntil<performance.now())player.x=clamp(player.x+(dx>0?.025:-.025),.10,.90)});
+document.addEventListener('keydown',e=>{if(paused){if(e.code==='Escape')resumePause();return}if(e.code==='Escape'&&started&&!ended){openPause();return}if(keys[e.code])return;keys[e.code]=true;const t=gameClock();if(paused)return;if(e.code==='KeyJ')startAction(player,'light',t);if(e.code==='KeyK')startAction(player,'heavy',t);if(e.code==='KeyI')startAction(player,'grab',t);if(e.code.startsWith('Arrow')){e.preventDefault();const x=(keys.ArrowRight?1:0)-(keys.ArrowLeft?1:0),y=(keys.ArrowDown?1:0)-(keys.ArrowUp?1:0);applyJoy(x,y,t)}});
+document.addEventListener('keyup',e=>{keys[e.code]=false;if(paused)return;const t=gameClock();if(e.code.startsWith('Arrow')){e.preventDefault();const x=(keys.ArrowRight?1:0)-(keys.ArrowLeft?1:0),y=(keys.ArrowDown?1:0)-(keys.ArrowUp?1:0);applyJoy(x,y,t)}});
+let swipeX=0;canvas.addEventListener('pointerdown',e=>{swipeX=e.clientX});canvas.addEventListener('pointerup',e=>{if(!started||ended)return;let dx=e.clientX-swipeX;if(Math.abs(dx)>52&&player&&player.action==='idle'&&player.recoveryUntil<gameClock())player.x=clamp(player.x+(dx>0?.025:-.025),.10,.90)});
 for(const button of document.querySelectorAll('[data-difficulty]')){
  button.addEventListener('click',()=>{
   rhythmDifficulty=button.dataset.difficulty;
