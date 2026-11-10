@@ -4,9 +4,9 @@
 #joystick{width:136px;height:136px;position:relative;border-radius:50%;border:2px solid #a0b5b080;background:radial-gradient(circle,#34484bdc,#152429ee);touch-action:none;box-shadow:inset 0 0 25px #0008;pointer-events:auto;flex-shrink:0}#joystick:before,#joystick:after{position:absolute;pointer-events:none;color:#d6ded6aa;font-weight:800;font-size:17px}#joystick:before{content:'↑';top:7px;left:calc(50% - 6px)}#joystick:after{content:'↓';bottom:7px;left:calc(50% - 6px)}#stick{position:absolute;left:50%;top:50%;width:59px;height:59px;border-radius:50%;transform:translate(-50%,-50%);background:linear-gradient(140deg,#9daea4,#435a58);border:2px solid #dde7d5;box-shadow:0 3px 11px #0008;pointer-events:none}#joystick .lr{position:absolute;left:7px;right:7px;top:calc(50% - 12px);display:flex;justify-content:space-between;pointer-events:none;color:#c4d2ceaa}.cluster.right{max-width:55vw}.ctl.strong{background:linear-gradient(145deg,#99584d,#542f30);border-color:#e5a99c;min-width:75px;height:82px}.ctl.grab{height:80px;min-width:77px}.ctl.attack{height:86px;min-width:82px}#help{bottom:150px;max-width:min(400px,52vw)}
 @media(max-height:500px){#joystick{width:108px;height:108px}#stick{width:48px;height:48px}#help{bottom:100px;font-size:10px}#clinchPanel{top:32%}}
 @media(max-width:620px) and (orientation:portrait){#joystick{width:118px;height:118px}#stick{width:52px;height:52px}#controls{gap:4px}.cluster.right{gap:5px}.ctl.strong{min-width:62px;height:72px}.ctl.grab{min-width:65px;height:72px}.ctl.attack{min-width:65px;height:78px}#help{bottom:145px;max-width:65vw;font-size:9px}}
-</style></head><body><div id="app"><canvas id="game"></canvas><div id="hud"><div class="header"><div class="person"><div class="name">ТЫ · БОЕЦ</div><div class="bar"><div class="fill" id="ph"></div></div><div class="balance"><div class="fill" id="pp"></div></div><div class="meter">ЗДОРОВЬЕ / ДИСБАЛАНС</div></div><div class="brand">BREAKLINE<small>ВЕРСИЯ 1.3</small></div><div class="person right enemy"><div class="name">ПРОТИВНИК · ИИ</div><div class="bar"><div class="fill" id="eh"></div></div><div class="balance"><div class="fill" id="ep"></div></div><div class="meter">ЗДОРОВЬЕ / ДИСБАЛАНС</div></div></div></div><div id="clinchPanel" style="display:none"><div id="clinchLabel">ЗАХВАТ</div><div id="counterCircle" class="counterCircle"><span id="counterIcon">✊</span></div><div id="clinchTip">Жди светящегося круга</div></div><div id="distance">ДИСТАНЦИЯ: —</div><div id="message"></div><div id="subtext"></div><button id="soundBtn">◖ ЗВУК: ВЫКЛ.</button><div id="help">СТОЙКА бьёт прыжок → ПРЫЖОК бьёт присед → ПРИСЕД бьёт стойку. В воздухе нажми СИЛЬНЫЙ для удара при посадке.</div><div id="dirSelected">ПРИЁМ: ПРЯМОЙ</div><div id="controls"><div class="cluster"><div id="joystick" aria-label="Джойстик движения"><div class="lr"><span>‹</span><span>›</span></div><div id="stick"></div></div></div><div class="cluster right"><button class="ctl strong" id="heavy"><span>✹</span>СИЛЬНЫЙ</button><button class="ctl grab" id="grab"><span>✊</span>БРОСОК<small>только вплотную</small></button><button class="ctl attack" id="attack"><span>✦</span>ЛЁГКИЙ<small>серия × 2</small></button></div></div><div id="intro"><div class="introInner"><h1>BREAKLINE</h1><p>Контролируй дистанцию и меняй ритм: противник замечает однообразные лёгкие удары и начинает их парировать.</p><div class="tips"><div class="tip"><b>ДЖОЙСТИК</b> — влево/вправо ходьба, вниз присесть, вверх прыгнуть. Диагональ вверх — прыжок с перемещением.</div><div class="tip"><b>ТРИ ПОЗИЦИИ</b> — стоя атакуй прыгающих; приседая — стоящих; прыгая — присевших. Соперник может перехватить тебя в воздухе.</div><div class="tip"><b>УДАР В ПРЫЖКЕ</b> — нажми СИЛЬНЫЙ в воздухе: при приземлении мощный удар сверху, попадающий в любой стойке, если ты достаточно близко.</div><div class="tip"><b>ПРИСЕД</b> — вниз, вниз-вперёд и вниз-назад дают разные удары и броски. Для броска подойди вплотную.</div></div><button class="mainBtn" id="start">НАЧАТЬ ДУЭЛЬ</button><p class="mini">Работает прямо в браузере · Сенсор / клавиатура: J, K, L, I, ←, →</p></div></div><div id="restartOverlay"><div id="resultTitle"></div><div id="resultInfo"></div><button class="mainBtn" id="restart">ЕЩЁ ОДНА ДУЭЛЬ</button></div></div><script>
-(()=>{'use strict';const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');let W=0,H=0,dpr=1,now=0,last=0,started=false,ended=false,round=0,shake=0,particles=[],logs=[],audio=null,sound=false;const $=id=>document.getElementById(id);let player,enemy,clinch=null,clinchSeq=0;let selectedDir='neutral',selectedAt=0;const heldDirs=[];let joyX=0,joyY=0,joyPointer=null;
-const GAME_VERSION='1.3';
+</style></head><body><div id="app"><canvas id="game"></canvas><div id="hud"><div class="header"><div class="person"><div class="name">ТЫ · БОЕЦ</div><div class="bar"><div class="fill" id="ph"></div></div><div class="balance"><div class="fill" id="pp"></div></div><div class="meter">ЗДОРОВЬЕ / ДИСБАЛАНС</div></div><div class="brand">BREAKLINE<small>ВЕРСИЯ 1.4</small></div><div class="person right enemy"><div class="name">ПРОТИВНИК · ИИ</div><div class="bar"><div class="fill" id="eh"></div></div><div class="balance"><div class="fill" id="ep"></div></div><div class="meter">ЗДОРОВЬЕ / ДИСБАЛАНС</div></div></div></div><div id="clinchPanel" style="display:none"><div id="clinchLabel">ЗАХВАТ</div><div id="counterCircle" class="counterCircle"><span id="counterIcon">✊</span></div><div id="clinchTip">Жди светящегося круга</div></div><div id="distance">ДИСТАНЦИЯ: —</div><div id="message"></div><div id="subtext"></div><button id="soundBtn">◖ ЗВУК: ВЫКЛ.</button><div id="help">ТРИ КОМБО: стойка Л–Л–С; присед Л–С; прыжок С–Л после приземления. Переходы не мгновенные.</div><div id="dirSelected">ПРИЁМ: ПРЯМОЙ</div><div id="controls"><div class="cluster"><div id="joystick" aria-label="Джойстик движения"><div class="lr"><span>‹</span><span>›</span></div><div id="stick"></div></div></div><div class="cluster right"><button class="ctl strong" id="heavy"><span>✹</span>СИЛЬНЫЙ</button><button class="ctl grab" id="grab"><span>✊</span>БРОСОК<small>только вплотную</small></button><button class="ctl attack" id="attack"><span>✦</span>ЛЁГКИЙ<small>серия × 2</small></button></div></div><div id="intro"><div class="introInner"><h1>BREAKLINE</h1><p>Контролируй дистанцию и меняй ритм: противник замечает однообразные лёгкие удары и начинает их парировать.</p><div class="tips"><div class="tip"><b>ДЖОЙСТИК</b> — влево/вправо ходьба, вниз присесть, вверх прыгнуть. Диагональ вверх — прыжок с перемещением.</div><div class="tip"><b>ТРИ ПОЗИЦИИ</b> — стойка сбивает прыжок, присед атакует стойку, прыжок пробивает присед. Переходы имеют небольшую задержку.</div><div class="tip"><b>КОМБО</b> — стоя: лёгкий → лёгкий → сильный; в приседе: лёгкий → сильный; в прыжке: сильный → лёгкий после попадания при посадке.</div><div class="tip"><b>ПРИСЕД</b> — вниз, вниз-вперёд и вниз-назад дают разные удары и броски. Для броска подойди вплотную.</div></div><button class="mainBtn" id="start">НАЧАТЬ ДУЭЛЬ</button><p class="mini">Работает прямо в браузере · Сенсор / клавиатура: J, K, L, I, ←, →</p></div></div><div id="restartOverlay"><div id="resultTitle"></div><div id="resultInfo"></div><button class="mainBtn" id="restart">ЕЩЁ ОДНА ДУЭЛЬ</button></div></div><script>
+(()=>{'use strict';const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');let W=0,H=0,dpr=1,now=0,last=0,started=false,ended=false,round=0,shake=0,particles=[],logs=[],audio=null,sound=false;const $=id=>document.getElementById(id);let player,enemy,clinch=null,clinchSeq=0;let selectedDir='neutral',selectedAt=0;const heldDirs=[];let joyX=0,joyY=0,joyPointer=null;let stanceEvents=[];
+const GAME_VERSION='1.4';
 let updateCheckRunning=false;
 async function checkForUpdate(){
  if(updateCheckRunning||document.visibilityState==='hidden')return;
@@ -32,7 +32,7 @@ async function checkForUpdate(){
 addEventListener('pageshow',()=>checkForUpdate());
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')checkForUpdate()});
 const rng=(a,b)=>a+Math.random()*(b-a),clamp=(n,a,b)=>Math.max(a,Math.min(b,n));function resize(){dpr=Math.min(window.devicePixelRatio||1,2);W=innerWidth;H=innerHeight;canvas.width=Math.floor(W*dpr);canvas.height=Math.floor(H*dpr);ctx.setTransform(dpr,0,0,dpr,0,0)}window.addEventListener('resize',resize);resize();
-function makeFighter(ai,x){return {ai,x,hp:160,post:0,action:'idle',actionStart:0,actionEnd:0,hitAt:0,hitDone:false,guard:false,guardAt:-1e5,stunnedUntil:0,invulUntil:0,cooldown:0,facing:ai?-1:1,history:[],lastAction:'',feet:0,windup:'',nextThink:0,stepUntil:0,stepDir:0,combo:0,moveHeld:0,moveSpeed:0,lightStreak:0,lastLightAt:-1e5,readAttackId:0,readAt:0,readHandled:false,comboStep:0,comboDeadline:0,comboHits:0,recoveryUntil:0,downStart:0,downUntil:0,clinchSide:'',toppleReady:false,dir:'neutral',throwVariant:'forward',crouch:false,crouchUntil:0,attackLow:false,jumpStart:0,jumpUntil:0,jumpVector:0,jumpHeight:0,diveArmed:false,diveHitDone:false};}function fresh(){round++;player=makeFighter(false,.35);enemy=makeFighter(true,.65);enemy.nextThink=performance.now()+rng(1000,1450);ended=false;clinch=null;clinchSeq=0;heldDirs.length=0;joyX=joyY=0;chooseDir('neutral',0);particles=[];logs=[];shake=0;setMessage('РАУНД '+round,'Стойка > прыжок > присед > стойка. В прыжке нажми СИЛЬНЫЙ.',1600);updateHud();$('restartOverlay').classList.remove('show');}
+function makeFighter(ai,x){return {ai,x,hp:160,post:0,action:'idle',actionStart:0,actionEnd:0,hitAt:0,hitDone:false,guard:false,guardAt:-1e5,stunnedUntil:0,invulUntil:0,cooldown:0,facing:ai?-1:1,history:[],lastAction:'',feet:0,windup:'',nextThink:0,stepUntil:0,stepDir:0,combo:0,moveHeld:0,moveSpeed:0,lightStreak:0,lastLightAt:-1e5,readAttackId:0,readAt:0,readHandled:false,comboStep:0,comboDeadline:0,comboHits:0,recoveryUntil:0,downStart:0,downUntil:0,clinchSide:'',toppleReady:false,dir:'neutral',throwVariant:'forward',crouch:false,crouchUntil:0,attackLow:false,jumpStart:0,jumpUntil:0,jumpVector:0,jumpHeight:0,diveArmed:false,diveHitDone:false,stanceRequest:false,stanceUntil:0,stanceTransition:'',jumpPendingAt:0,landingRecoverUntil:0,lowChainUntil:0,lowSweep:false,airFollowUntil:0,airFollowReady:false,airFollowAttack:false};}function fresh(){round++;player=makeFighter(false,.35);enemy=makeFighter(true,.65);enemy.nextThink=performance.now()+rng(1000,1450);ended=false;clinch=null;clinchSeq=0;heldDirs.length=0;stanceEvents=[];joyX=joyY=0;chooseDir('neutral',0);particles=[];logs=[];shake=0;setMessage('РАУНД '+round,'Стойка Л–Л–С · присед Л–С · прыжок С–Л.',1600);updateHud();$('restartOverlay').classList.remove('show');}
 function setMessage(a,b='',duration=700){$('message').textContent=a;$('subtext').textContent=b;$('message').style.opacity='1';$('subtext').style.opacity='1';if(duration){const token=++messageToken;setTimeout(()=>{if(token===messageToken){$('message').style.opacity='0';$('subtext').style.opacity='0';}},duration)}}let messageToken=0;
 function sfx(freq=240,type='triangle',dur=.07){if(!sound)return;try{audio??=new (window.AudioContext||window.webkitAudioContext)();let o=audio.createOscillator(),g=audio.createGain();o.type=type;o.frequency.setValueAtTime(freq,audio.currentTime);o.frequency.exponentialRampToValueAtTime(Math.max(55,freq*.55),audio.currentTime+dur);g.gain.setValueAtTime(.09,audio.currentTime);g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+dur);o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+dur)}catch(e){}}
 const DIR_NAMES={neutral:'ПРЯМОЙ',up:'В ПРЫЖКЕ',down:'НИЗКИЙ',back:'КОРОТКИЙ',forward:'С ВЫПАДОМ',downForward:'НИЗКИЙ ВЫПАД',downBack:'НИЗКИЙ КОНТР'};
@@ -41,18 +41,29 @@ function chooseDir(dir,t){selectedDir=dir;selectedAt=t;$('dirSelected').textCont
 function pressDir(dir,t){const i=heldDirs.indexOf(dir);if(i!==-1)heldDirs.splice(i,1);heldDirs.push(dir);chooseDir(dir,t)}
 function releaseDir(dir,t){const i=heldDirs.indexOf(dir);if(i!==-1)heldDirs.splice(i,1);chooseDir(heldDirs.at(-1)||'neutral',t)}
 function currentDir(t){return selectedDir}
-function record(kind){player.history.push(kind);if(player.history.length>8)player.history.shift();}function startAction(f,kind,t){
+function record(kind){player.history.push(kind);if(player.history.length>8)player.history.shift();}
+function rememberStance(type,t){stanceEvents.push({type,t});stanceEvents=stanceEvents.filter(e=>t-e.t<18000).slice(-24)}
+function recentStance(type,t){return stanceEvents.filter(e=>e.type===type&&t-e.t<14000).length}
+function beginJump(f,t){
+ if(f.action!=='idle'||t<f.stunnedUntil||t<f.recoveryUntil||t<f.landingRecoverUntil||f.jumpUntil>t)return false;
+ f.jumpPendingAt=t+125;f.stanceTransition='takeoff';f.stanceUntil=f.jumpPendingAt;f.guard=false;
+ if(!f.ai)rememberStance('jump',t);
+ return true;
+}
+function startAction(f,kind,t){
  if(clinch)return clinchInput(f,kind,t);
- if(!started||ended||f.action==='down'||t<f.stunnedUntil||t<f.recoveryUntil)return false;
+ if(!started||ended||f.action==='down'||t<f.stunnedUntil||t<f.recoveryUntil||t<f.jumpPendingAt||t<f.landingRecoverUntil)return false;
  // Aerial heavy is armed mid-flight and resolves when both feet land.
  if(kind==='heavy'&&f.jumpUntil>t&&f.jumpHeight>7&&!f.diveArmed){f.diveArmed=true;f.diveHitDone=false;f.guard=false;f.comboStep=0;f.action='dive';f.actionStart=t;f.actionEnd=f.jumpUntil+260;f.cooldown=f.jumpUntil+430;setMessage(f.ai?'УДАР СВЕРХУ!':'АТАКА С ПРИЗЕМЛЕНИЕМ','Попадёт при посадке, если хватит дистанции',650);sfx(470,'triangle',.10);return true}
  if(f.diveArmed||f.action==='dive')return false;
+ const lowFollow=kind==='heavy'&&f.crouch&&f.hitDone&&t<f.lowChainUntil;
+ const airFollow=kind==='light'&&f.airFollowReady&&t<f.airFollowUntil&&f.jumpUntil<=t;
  const chain=(f.action==='light'||f.action==='idle')&&f.hitDone&&t>=f.actionStart+180&&t<f.comboDeadline&&f.comboStep>0;
- if(t<f.cooldown&&!chain || (f.action!=='idle'&&t<f.actionEnd&&!chain))return false;
+ if((t<f.cooldown&&!chain&&!lowFollow&&!airFollow) || (f.action!=='idle'&&t<f.actionEnd&&!chain&&!lowFollow&&!airFollow))return false;
  if(kind==='guard')return false;
  if(kind==='dodge')return false;
  if(kind==='grab'){
-  f.comboStep=0;f.comboHits=0;f.guard=false;
+  f.comboStep=0;f.comboHits=0;f.lowChainUntil=0;f.airFollowReady=false;f.guard=false;
   f.dir=f.ai?'neutral':(f.jumpUntil>t?'up':f.crouch?(joyX>.28?'downForward':joyX<-.28?'downBack':'down'):currentDir(t));
   f.action='grab';f.actionStart=t;f.actionEnd=t+620;f.hitAt=t+245;f.hitDone=false;f.cooldown=t+720;
   if(!f.ai)record('grab');return true;
@@ -60,6 +71,9 @@ function record(kind){player.history.push(kind);if(player.history.length>8)playe
  if(kind==='light'||kind==='heavy'){
   if(f.crouch&&f.jumpUntil<=t&&f===player)f.moveHeld=0;
   const comboCandidate=chain && (kind==='light'&&f.comboStep===1 || kind==='heavy'&&f.comboStep===2);
+  f.lowSweep=!!lowFollow;f.airFollowAttack=!!airFollow;
+  if(airFollow){f.airFollowReady=false;f.airFollowUntil=0;f.comboStep=0;setMessage('ВОЗДУШНОЕ КОМБО ×2','Добивающий удар после приземления',690);emit(f.x,'#e8dea1',13)}
+  if(lowFollow){f.lowChainUntil=0;f.comboStep=0;setMessage('НИЗКОЕ КОМБО ×2','Подсечка после низкого удара',650);emit(f.x,'#a5e4cf',12)}
   if(comboCandidate){f.comboStep++;}else{f.comboStep=kind==='light'?1:0;f.comboHits=0;}
   if(!f.ai&&f.comboStep===2){setMessage('КОМБО ×2','Обратный удар → заверши сильным!',480);emit(f.x,'#c8e7cc',7)}
   f.guard=false;
@@ -67,9 +81,10 @@ function record(kind){player.history.push(kind);if(player.history.length>8)playe
   f.dir=f.ai?(f.crouch?'down':(['neutral','up','forward'][Math.floor(Math.random()*3)])):(f.jumpUntil>t?'up':f.crouch?(joyX>.28?'downForward':joyX<-.28?'downBack':'down'):currentDir(t));
   f.action=kind;f.actionStart=t;
   const combo=f.comboStep>1;
-  const duration=kind==='light'?(combo?335:410):(combo?570:790);
-  f.actionEnd=t+duration;f.hitAt=t+(kind==='light'?(combo?135:170):(combo?335:490));
-  f.hitDone=false;f.cooldown=t+(combo?200:duration+45);
+  const duration=f.airFollowAttack?350:f.lowSweep?530:kind==='light'?(combo?335:410):(combo?570:790);
+  f.actionEnd=t+duration;f.hitAt=t+(f.airFollowAttack?155:f.lowSweep?300:kind==='light'?(combo?135:170):(combo?335:490));
+  f.hitDone=false;f.cooldown=t+(f.airFollowAttack?300:f.lowSweep?duration+310:combo?200:duration+45);
+  if(f.crouch&&kind==='light')f.lowChainUntil=t+820;
   f.comboDeadline=t+(kind==='light'?820:0);
   if(combo&&f.comboStep===3){f.comboDeadline=0;f.recoveryUntil=t+duration+720;f.cooldown=f.recoveryUntil;setMessage('✹ ФИНАЛ КОМБО ✹','Размашистый удар → затем уязвимость',850);emit(f.x,'#ffdb9a',22);shake=5;sfx(360,'sawtooth',.15)}
   if(!f.ai){if(kind==='light'){f.lightStreak=(t-f.lastLightAt<2300)?Math.min(5,f.lightStreak+1):1;f.lastLightAt=t}else f.lightStreak=0;record(kind)}
@@ -79,7 +94,7 @@ function record(kind){player.history.push(kind);if(player.history.length>8)playe
 }
 function step(f,direction,t){if(!started||ended||t<f.stunnedUntil||f.action!=='idle'||f.guard)return;f.stepDir=direction;f.stepUntil=t+350;f.x=clamp(f.x+direction*.018,.12,.88);if(!f.ai)record('step')}
 function knockDown(f,t,damage,label){
- if(clinch)clinch=null;f.diveArmed=false;f.diveHitDone=true;f.jumpUntil=t;f.jumpHeight=0;f.hp=Math.max(0,f.hp-damage);f.post=35;f.toppleReady=false;f.guard=false;f.action='down';f.downStart=t;f.downUntil=t+1750;f.stunnedUntil=f.downUntil;f.actionEnd=f.downUntil;f.cooldown=f.downUntil+90;f.x=clamp(f.x+f.facing*.025,.12,.88);emit(f.x,'#f8d18a',22);shake=12;sfx(88,'sawtooth',.25);setMessage(label,'Падение → подъём · короткое окно уязвимости',950);if(f.hp<=0)finish(!f.ai);
+ if(clinch)clinch=null;f.stanceTransition='';f.jumpPendingAt=0;f.airFollowReady=false;f.lowChainUntil=0;f.diveArmed=false;f.diveHitDone=true;f.jumpUntil=t;f.jumpHeight=0;f.hp=Math.max(0,f.hp-damage);f.post=35;f.toppleReady=false;f.guard=false;f.action='down';f.downStart=t;f.downUntil=t+1750;f.stunnedUntil=f.downUntil;f.actionEnd=f.downUntil;f.cooldown=f.downUntil+90;f.x=clamp(f.x+f.facing*.025,.12,.88);emit(f.x,'#f8d18a',22);shake=12;sfx(88,'sawtooth',.25);setMessage(label,'Падение → подъём · короткое окно уязвимости',950);if(f.hp<=0)finish(!f.ai);
 }
 function beginThrow(att,def,t,instant=false){
  if(clinch)return;
@@ -114,7 +129,7 @@ function resolveDive(att,def,t){
  att.diveArmed=false;att.diveHitDone=true;att.action='dive';
  att.actionStart=t-160;att.actionEnd=t+320;att.cooldown=t+430;
  const diff=Math.abs(att.x-def.x);
- if(def.action==='down'||diff>.205){
+ if(def.action==='down'||diff>.205){att.airFollowReady=false;
   setMessage('ПРОМАХ УДАРА СВЕРХУ','Не удалось приземлиться рядом с соперником',640);
   emit(att.x,'#e5d8a7',9);sfx(160,'sine',.08);return;
  }
@@ -123,8 +138,10 @@ function resolveDive(att,def,t){
  def.hp=Math.max(0,def.hp-damage);def.post=Math.min(100,def.post+34);def.guard=false;
  def.stunnedUntil=t+520;def.action='stunned';def.actionStart=t;def.actionEnd=t+520;def.cooldown=t+580;
  def.x=clamp(def.x+att.facing*.047,.12,.88);
+ att.airFollowReady=true;att.airFollowUntil=t+670;att.actionEnd=t+185;att.cooldown=t+185;att.landingRecoverUntil=t+185;
+ if(def.crouch)def.stunnedUntil=t+660;
  emit(def.x,'#ffe0a0',28);shake=11;sfx(105,'sawtooth',.18);
- setMessage('УДАР С ПРИЗЕМЛЕНИЕМ!','Атака сверху пробивает присед и обычный блок',850);
+ setMessage('УДАР С ПРИЗЕМЛЕНИЕМ!','Успех! Нажми ЛЁГКИЙ для воздушного комбо',850);
  if(def.post>=100){def.post=100;def.toppleReady=true;def.stunnedUntil=t+1350;def.actionEnd=t+1350;def.cooldown=t+1350}
  if(def.hp<=0)finish(!def.ai);
 }
@@ -143,13 +160,10 @@ if(action!=='grab'&&att.attackLow&&def.jumpUntil>t&&(def.jumpHeight||0)>9){
 }
 // Standing strikes interrupt airborne opponents and cancel their landing attack.
 if(action!=='grab'&&!att.attackLow&&att.jumpUntil<=t&&def.jumpUntil>t&&def.jumpHeight>10){
- const damage=action==='heavy'?23:13;
- def.hp=Math.max(0,def.hp-damage);def.post=Math.min(100,def.post+27);
  def.jumpUntil=t;def.jumpHeight=0;def.diveArmed=false;def.diveHitDone=true;
- def.action='stunned';def.actionStart=t;def.actionEnd=t+510;def.stunnedUntil=t+510;def.cooldown=t+580;def.guard=false;
- def.x=clamp(def.x+att.facing*.042,.12,.88);shake=8;emit(def.x,'#ffcf9c',18);sfx(150,'sawtooth',.13);
- setMessage('ПЕРЕХВАТ В ПРЫЖКЕ','Стоячая атака сбила соперника в воздухе',850);
- if(def.hp<=0)finish(!def.ai);
+ def.stanceTransition='';def.jumpPendingAt=0;
+ knockDown(def,t,action==='heavy'?19:12,'СБИТ В ПРЫЖКЕ!');
+ def.x=clamp(def.x+att.facing*.045,.12,.88);sfx(150,'sawtooth',.13);
  return;
 }
 const recentParry=def.ai&&def.guard&&t-def.guardAt<=285&&t-def.guardAt>=50&&def.post<55;
@@ -158,10 +172,11 @@ if(action==='grab'){
  if(def.action==='down'){att.post+=10;setMessage('СОПЕРНИК НА ЗЕМЛЕ','Подожди, пока он встанет',650);return}
  if(def.toppleReady&&t<def.stunnedUntil){beginThrow(att,def,t);return}
  beginThrow(att,def,t);return}
+if(att.lowSweep&&action==='heavy'&&!def.crouch&&def.action!=='down'&&!def.guard){knockDown(def,t,12,'ПОДСЕЧКА!');return}
 if(action==='heavy'&&def.toppleReady&&t<def.stunnedUntil){knockDown(def,t,19,'НОКДАУН ОТ СИЛЬНОГО УДАРА');return}
 if(def===player){def.guard=(def.action==='idle'&&def.jumpUntil<=t&&joyX<=.18&&t>=def.stunnedUntil)}
 const isLow=!!att.attackLow;const blockHigh=def.guard&&!def.crouch&&!isLow;const blockLow=def.guard&&def.crouch&&isLow;
-if(blockHigh||blockLow){const damage=(action==='heavy'?7:2)*(isLow?.5:1);def.hp-=damage;def.post+=(action==='heavy'?37:15)*(blockLow?1.30:1);def.guard=false;setMessage(def.ai?(blockLow?'НИЖНИЙ БЛОК ИИ':'ЗАЩИТА ИИ'):(blockLow?'НИЖНИЙ БЛОК':'ВЕРХНИЙ БЛОК'),blockLow?'Присед: дисбаланс накапливается быстрее':'Блок снижает урон, но копит дисбаланс',570);emit(def.x,'#aab8c1',7);sfx(180,'triangle',.08);shake=3}else{const lightPenalty=(!att.ai&&action==='light')?Math.max(0,att.lightStreak-2)*2:0;const dirDamage=dir==='up'?1.12:isLow?.89:dir==='back'?.92:dir==='forward'?1.06:1;const comboBoost=att.comboStep===3?1.12:1;const damage=(action==='heavy'?25:Math.max(6,13-lightPenalty))*dirDamage*(isLow?.58:1)*comboBoost;def.hp-=damage;def.post+=(action==='heavy'?28:18)*(isLow?.7:dir==='up'?1.1:1);def.stunnedUntil=t+(action==='heavy'?380:(!att.ai&&att.lightStreak>=3?85:160));def.x=clamp(def.x+att.facing*(action==='heavy'?.041:.025),.12,.88);if(att.comboStep>0)att.comboHits++;emit(def.x,action==='heavy'?'#ffd7a4':'#e1d4b9',16);sfx(action==='heavy'?110:190,'sawtooth',.11);shake=action==='heavy'?8:4;setMessage(att.comboStep===3?'✹ ФИНАЛЬНЫЙ УДАР!':(action==='heavy'?'СИЛЬНЫЙ: ':'')+DIR_NAMES[dir],isLow?'Удар из приседа: урон снижен':'',460)}if(def.post>=100&&!def.toppleReady){def.post=100;def.guard=false;def.toppleReady=true;def.stunnedUntil=t+1600;def.action='stunned';def.actionEnd=t+1600;def.cooldown=t+1600;emit(def.x,'#f9ca82',24);sfx(90,'sawtooth',.23);shake=9;setMessage(def.ai?'ПРОТИВНИК ПОТЕРЯЛ РАВНОВЕСИЕ':'ТЫ ПОТЕРЯЛ РАВНОВЕСИЕ','Сильный удар или захват → нокдаун',1100)}if(def.hp<=0){def.hp=0;finish(!def.ai)} }
+if(blockHigh||blockLow){const damage=(action==='heavy'?7:2)*(isLow?.5:1);def.hp-=damage;def.post+=(action==='heavy'?37:15)*(blockLow?1.30:1);def.guard=false;setMessage(def.ai?(blockLow?'НИЖНИЙ БЛОК ИИ':'ЗАЩИТА ИИ'):(blockLow?'НИЖНИЙ БЛОК':'ВЕРХНИЙ БЛОК'),blockLow?'Присед: дисбаланс накапливается быстрее':'Блок снижает урон, но копит дисбаланс',570);emit(def.x,'#aab8c1',7);sfx(180,'triangle',.08);shake=3}else{const lightPenalty=(!att.ai&&action==='light')?Math.max(0,att.lightStreak-2)*2:0;const dirDamage=dir==='up'?1.12:isLow?.89:dir==='back'?.92:dir==='forward'?1.06:1;const comboBoost=att.comboStep===3?1.12:1;const damage=(action==='heavy'?25:Math.max(6,13-lightPenalty))*dirDamage*(isLow?.58:1)*comboBoost;def.hp-=damage;def.post+=(action==='heavy'?28:18)*(isLow?.7:dir==='up'?1.1:1)+(isLow&&!def.crouch?12:0);def.stunnedUntil=t+(action==='heavy'?380:(!att.ai&&att.lightStreak>=3?85:160));def.x=clamp(def.x+att.facing*(action==='heavy'?.041:.025)+(isLow&&!def.crouch?att.facing*.014:0),.12,.88);if(att.comboStep>0)att.comboHits++;emit(def.x,action==='heavy'?'#ffd7a4':'#e1d4b9',16);sfx(action==='heavy'?110:190,'sawtooth',.11);shake=action==='heavy'?8:4;setMessage(att.airFollowAttack?'ВОЗДУШНОЕ КОМБО!':att.lowSweep?'НИЗКАЯ ПОДСЕЧКА!':att.comboStep===3?'✹ ФИНАЛЬНЫЙ УДАР!':(action==='heavy'?'СИЛЬНЫЙ: ':'')+DIR_NAMES[dir],isLow?'Низкая атака отталкивает стоящего':'',460)}if(def.post>=100&&!def.toppleReady){def.post=100;def.guard=false;def.toppleReady=true;def.stunnedUntil=t+1600;def.action='stunned';def.actionEnd=t+1600;def.cooldown=t+1600;emit(def.x,'#f9ca82',24);sfx(90,'sawtooth',.23);shake=9;setMessage(def.ai?'ПРОТИВНИК ПОТЕРЯЛ РАВНОВЕСИЕ':'ТЫ ПОТЕРЯЛ РАВНОВЕСИЕ','Сильный удар или захват → нокдаун',1100)}if(def.hp<=0){def.hp=0;finish(!def.ai)} }
 function finish(lose){ended=true;$('resultTitle').textContent=lose?'ПОРАЖЕНИЕ':'ПОБЕДА';$('resultTitle').style.color=lose?'#ed9f8b':'#f3dda9';let guards=player.history.filter(a=>a==='guard').length;$('resultInfo').textContent=lose?'Подходи удержанием ›, меняй направления ударов и уходи от бросков по таймингу.': 'Хорошая дуэль! Попробуй выиграть с несколькими вариантами ударов и бросков.';$('restartOverlay').classList.add('show');}
 function emit(x,col,num){let px=W*x,py=H*.61;for(let i=0;i<num;i++)particles.push({x:px,y:py,vx:rng(-3.8,3.8),vy:rng(-5,-1),life:rng(300,650),total:650,r:rng(1.5,4),col})}
 function updateHud(){$('ph').style.width=clamp(player.hp/160*100,0,100)+'%';$('pp').style.width=clamp(player.post,0,100)+'%';$('eh').style.width=clamp(enemy.hp/160*100,0,100)+'%';$('ep').style.width=clamp(enemy.post,0,100)+'%'}
