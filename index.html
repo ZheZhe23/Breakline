@@ -29,6 +29,17 @@ function barSlots(bar){
  if(rhythmDifficulty==='medium')return bar%4===3?EIGHTHS:QUARTERS;
  return HARD_PATTERNS[Math.floor(bar/2)%HARD_PATTERNS.length];
 }
+function rhythmActionScale(t){
+ const slots=barSlots(barIndexAt(t));
+ if(slots===QUARTERS)return 1;
+ if(rhythmDifficulty==='medium')return .57;
+ // Hard patterns retain the tactical distinction between light and heavy moves.
+ return slots.some(v=>v%2!==0)?.48:.60;
+}
+function nextRhythmNoteAfter(t,minDelay){
+ const notes=rhythmTimesNear(t+minDelay).map(n=>n.at).filter(v=>v>=t+minDelay-1);
+ return notes.length?Math.min(...notes):nextBeatAfter(t,minDelay);
+}
 function rhythmTimesNear(t){
  const beatBar=BEAT_MS*4,bar=Math.floor((t-rhythmStart)/beatBar),candidates=[];
  for(let b=Math.max(0,bar-1);b<=bar+1;b++)
@@ -295,7 +306,7 @@ function startAction(f,kind,t){
  if(f.diveArmed||f.action==='dive')return false;
  const lowFollow=kind==='heavy'&&f.crouch&&f.hitDone&&t<f.lowChainUntil;
  const airFollow=kind==='light'&&f.airFollowReady&&t<f.airFollowUntil&&f.jumpUntil<=t;
- const chain=(f.action==='light'||f.action==='idle')&&f.hitDone&&t>=f.actionStart+BEAT_MS*.12&&t<f.comboDeadline&&f.comboStep>0;
+ const chain=(f.action==='light'||f.action==='idle')&&f.hitDone&&t>=f.actionStart+BEAT_MS*.12*rhythmActionScale(t)&&t<f.comboDeadline&&f.comboStep>0;
  if((t<f.cooldown&&!chain&&!lowFollow&&!airFollow) || (f.action!=='idle'&&t<f.actionEnd&&!chain&&!lowFollow&&!airFollow))return false;
  if(kind==='guard')return false;
  if(kind==='dodge')return false;
@@ -306,7 +317,7 @@ function startAction(f,kind,t){
   f.throwStyle=f.dir;f.throwLow=!!f.crouch;
   f.attackRange=strikeRange(f,kind,f.dir);
   f.grabAnchor=rhythmStart+Math.round((t-rhythmStart)/BEAT_MS)*BEAT_MS;
-  f.action='grab';f.actionStart=t;f.hitAt=t+BEAT_MS*.09*rhythmSpeed(f,t);f.actionEnd=t+BEAT_MS*.65;f.hitDone=false;f.cooldown=t+BEAT_MS*.75;
+  f.action='grab';f.actionStart=t;f.hitAt=t+BEAT_MS*.09*rhythmSpeed(f,t);f.actionEnd=t+BEAT_MS*.65*rhythmActionScale(t);f.hitDone=false;f.cooldown=t+BEAT_MS*.75*rhythmActionScale(t);
   if(!f.ai)record('grab');return true;
  }
  if(kind==='light'||kind==='heavy'){
@@ -326,16 +337,16 @@ function startAction(f,kind,t){
   f.whiffUntil=0;
   f.action=kind;f.actionStart=t;
   const combo=f.comboStep>1;
-  const speed=rhythmSpeed(f,t);
+  const speed=rhythmSpeed(f,t)*rhythmActionScale(t);
   const duration=BEAT_MS*(f.airFollowAttack?.75:f.lowSweep?1.65:kind==='light'?(combo?.68:.72):(combo?1.75:f.dir==='back'?1.58:1.86))*speed;
   f.actionEnd=t+duration;
   // Light attack reaches contact within one beat; heavy lands on the next beat.
   const attackBeat=rhythmStart+Math.round((t-rhythmStart)/BEAT_MS)*BEAT_MS;
-  f.hitAt=kind==='heavy'?Math.max(t+BEAT_MS*.30,attackBeat+BEAT_MS)*speed+t*(1-speed):t+BEAT_MS*(f.airFollowAttack?.10:combo?.09:.085)*speed;
+  f.hitAt=kind==='heavy'?(rhythmDifficulty==='easy'?Math.max(t+BEAT_MS*.30,attackBeat+BEAT_MS):nextRhythmNoteAfter(t,BEAT_MS*.38))*rhythmSpeed(f,t)+t*(1-rhythmSpeed(f,t)):t+BEAT_MS*(f.airFollowAttack?.10:combo?.09:.085)*rhythmSpeed(f,t);
   f.actionEnd=Math.max(f.actionEnd,f.hitAt+BEAT_MS*.45);
-  f.hitDone=false;f.cooldown=t+(f.airFollowAttack?300:f.lowSweep?duration+310:combo?200:duration+45);
-  if(f.crouch&&kind==='light')f.lowChainUntil=t+BEAT_MS*1.65;
-  f.comboDeadline=t+(kind==='light'?BEAT_MS*1.8:0);
+  f.hitDone=false;f.cooldown=t+(f.airFollowAttack?BEAT_MS*.6*rhythmActionScale(t): f.lowSweep?duration+BEAT_MS*.5:combo?BEAT_MS*.40*rhythmActionScale(t):duration+BEAT_MS*.09);
+  if(f.crouch&&kind==='light')f.lowChainUntil=t+BEAT_MS*1.65*rhythmActionScale(t);
+  f.comboDeadline=t+(kind==='light'?BEAT_MS*1.8*rhythmActionScale(t):0);
   if(combo&&f.comboStep===3){f.comboDeadline=0;f.recoveryUntil=t+duration+720;f.cooldown=f.recoveryUntil;setMessage('✹ ФИНАЛ КОМБО ✹','Размашистый удар → затем уязвимость',850);emit(f.x,'#ffdb9a',22);shake=5;sfx(360,'sawtooth',.15)}
   if(!f.ai){if(kind==='light'){f.lightStreak=(t-f.lastLightAt<2300)?Math.min(5,f.lightStreak+1):1;f.lastLightAt=t}else f.lightStreak=0;record(kind)}
   return true;
