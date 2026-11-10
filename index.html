@@ -419,7 +419,7 @@ if(action!=='grab'&&recentParry){att.stunnedUntil=t+850;att.action='stunned';att
 if(action==='grab'){
  if(t<def.throwProtectionUntil){escapeGrab(att,def,t,'ЗАЩИТА ПОСЛЕ ПОДЪЁМА');return}
  if(def.action==='down'){setMessage('СОПЕРНИК НА ЗЕМЛЕ','Подожди, пока он встанет',650);return}
- if(def.ai&&t>=def.stunnedUntil&&def.action==='idle'&&Math.random()<(def.aiStyle==='counter'?.42:def.aiStyle==='aggressor'?.22:.32)){escapeGrab(att,def,t,'ИИ ОТБИЛ ЗАХВАТ');return}
+ // Once grab connects, defense is resolved on the second musical beat.
  beginThrow(att,def,t);return}
 if(att.lowSweep&&action==='heavy'&&!def.crouch&&def.action!=='down'&&!def.guard){knockDown(def,t,12,'ПОДСЕЧКА!');return}
 if(def===player){def.guard=(def.action==='idle'&&def.jumpUntil<=t&&joyX*def.facing<=.18&&t>=def.stunnedUntil)}
