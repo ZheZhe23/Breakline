@@ -4,9 +4,9 @@
 #joystick{width:136px;height:136px;position:relative;border-radius:50%;border:2px solid #a0b5b080;background:radial-gradient(circle,#34484bdc,#152429ee);touch-action:none;box-shadow:inset 0 0 25px #0008;pointer-events:auto;flex-shrink:0}#joystick:before,#joystick:after{position:absolute;pointer-events:none;color:#d6ded6aa;font-weight:800;font-size:17px}#joystick:before{content:'↑';top:7px;left:calc(50% - 6px)}#joystick:after{content:'↓';bottom:7px;left:calc(50% - 6px)}#stick{position:absolute;left:50%;top:50%;width:59px;height:59px;border-radius:50%;transform:translate(-50%,-50%);background:linear-gradient(140deg,#9daea4,#435a58);border:2px solid #dde7d5;box-shadow:0 3px 11px #0008;pointer-events:none}#joystick .lr{position:absolute;left:7px;right:7px;top:calc(50% - 12px);display:flex;justify-content:space-between;pointer-events:none;color:#c4d2ceaa}.cluster.right{max-width:55vw}.ctl.strong{background:linear-gradient(145deg,#99584d,#542f30);border-color:#e5a99c;min-width:75px;height:82px}.ctl.grab{height:80px;min-width:77px}.ctl.attack{height:86px;min-width:82px}#help{bottom:150px;max-width:min(400px,52vw)}
 @media(max-height:500px){#joystick{width:108px;height:108px}#stick{width:48px;height:48px}#help{bottom:100px;font-size:10px}#clinchPanel{top:32%}}
 @media(max-width:620px) and (orientation:portrait){#joystick{width:118px;height:118px}#stick{width:52px;height:52px}#controls{gap:4px}.cluster.right{gap:5px}.ctl.strong{min-width:62px;height:72px}.ctl.grab{min-width:65px;height:72px}.ctl.attack{min-width:65px;height:78px}#help{bottom:145px;max-width:65vw;font-size:9px}}
-</style></head><body><div id="app"><canvas id="game"></canvas><div id="hud"><div class="header"><div class="person"><div class="name">ТЫ · БОЕЦ</div><div class="bar"><div class="fill" id="ph"></div></div><div class="balance"><div class="fill" id="pp"></div></div><div class="meter">ЗДОРОВЬЕ / ДИСБАЛАНС</div></div><div class="brand">BREAKLINE<small>ВЕРСИЯ 2.0</small></div><div class="person right enemy"><div class="name">ПРОТИВНИК · ИИ</div><div class="bar"><div class="fill" id="eh"></div></div><div class="balance"><div class="fill" id="ep"></div></div><div class="meter">ЗДОРОВЬЕ / ДИСБАЛАНС</div></div></div></div><div id="clinchPanel" style="display:none"><div id="clinchLabel">ЗАХВАТ</div><div id="counterCircle" class="counterCircle"><span id="counterIcon">✊</span></div><div id="clinchTip">Жди светящегося круга</div></div><div id="distance">ДИСТАНЦИЯ: —</div><div id="message"></div><div id="subtext"></div><button id="soundBtn">◖ ЗВУК: ВЫКЛ.</button><div id="help">ТРИ КОМБО: стойка Л–Л–С; присед Л–С; прыжок С–Л после приземления. Переходы не мгновенные.</div><div id="dirSelected">ПРИЁМ: ПРЯМОЙ</div><div id="controls"><div class="cluster"><div id="joystick" aria-label="Джойстик движения"><div class="lr"><span>‹</span><span>›</span></div><div id="stick"></div></div></div><div class="cluster right"><button class="ctl strong" id="heavy"><span>✹</span>СИЛЬНЫЙ</button><button class="ctl grab" id="grab"><span>✊</span>БРОСОК<small>только вплотную</small></button><button class="ctl attack" id="attack"><span>✦</span>ЛЁГКИЙ<small>серия × 2</small></button></div></div><div id="intro"><div class="introInner"><h1>BREAKLINE</h1><p>Контролируй дистанцию и меняй ритм: противник замечает однообразные лёгкие удары и начинает их парировать.</p><div class="tips"><div class="tip"><b>ДЖОЙСТИК</b> — влево/вправо ходьба, вниз присесть, вверх прыгнуть. Диагональ вверх — прыжок с перемещением.</div><div class="tip"><b>ТРИ ПОЗИЦИИ</b> — стойка сбивает прыжок, присед атакует стойку, прыжок пробивает присед. Переходы имеют небольшую задержку.</div><div class="tip"><b>КОМБО</b> — стоя: лёгкий → лёгкий → сильный; в приседе: лёгкий → сильный; в прыжке: сильный → лёгкий после попадания при посадке.</div><div class="tip"><b>ПРИСЕД</b> — вниз, вниз-вперёд и вниз-назад дают разные удары и броски. Для броска подойди вплотную.</div></div><button class="mainBtn" id="start">НАЧАТЬ ДУЭЛЬ</button><p class="mini">Работает прямо в браузере · Сенсор / клавиатура: J, K, L, I, ←, →</p></div></div><div id="restartOverlay"><div id="resultTitle"></div><div id="resultInfo"></div><button class="mainBtn" id="restart">ЕЩЁ ОДНА ДУЭЛЬ</button></div></div><script>
+</style></head><body><div id="app"><canvas id="game"></canvas><div id="hud"><div class="header"><div class="person"><div class="name">ТЫ · БОЕЦ</div><div class="bar"><div class="fill" id="ph"></div></div><div class="balance"><div class="fill" id="pp"></div></div><div class="meter">ЗДОРОВЬЕ / ДИСБАЛАНС</div></div><div class="brand">BREAKLINE<small>ВЕРСИЯ 2.1</small></div><div class="person right enemy"><div class="name" id="aiName">ПРОТИВНИК · ИИ</div><div class="bar"><div class="fill" id="eh"></div></div><div class="balance"><div class="fill" id="ep"></div></div><div class="meter">ЗДОРОВЬЕ / ДИСБАЛАНС</div></div></div></div><div id="clinchPanel" style="display:none"><div id="clinchLabel">ЗАХВАТ</div><div id="counterCircle" class="counterCircle"><span id="counterIcon">✊</span></div><div id="clinchTip">Жди светящегося круга</div></div><div id="distance">ДИСТАНЦИЯ: —</div><div id="message"></div><div id="subtext"></div><button id="soundBtn">◖ ЗВУК: ВЫКЛ.</button><div id="help">ТРИ КОМБО: стойка Л–Л–С; присед Л–С; прыжок С–Л после приземления. Переходы не мгновенные.</div><div id="dirSelected">ПРИЁМ: ПРЯМОЙ</div><div id="controls"><div class="cluster"><div id="joystick" aria-label="Джойстик движения"><div class="lr"><span>‹</span><span>›</span></div><div id="stick"></div></div></div><div class="cluster right"><button class="ctl strong" id="heavy"><span>✹</span>СИЛЬНЫЙ</button><button class="ctl grab" id="grab"><span>✊</span>БРОСОК<small>только вплотную</small></button><button class="ctl attack" id="attack"><span>✦</span>ЛЁГКИЙ<small>серия × 2</small></button></div></div><div id="intro"><div class="introInner"><h1>BREAKLINE</h1><p>Контролируй дистанцию и меняй ритм: противник замечает однообразные лёгкие удары и начинает их парировать.</p><div class="tips"><div class="tip"><b>ДЖОЙСТИК</b> — влево/вправо ходьба, вниз присесть, вверх прыгнуть. Диагональ вверх — прыжок с перемещением.</div><div class="tip"><b>ТРИ ПОЗИЦИИ</b> — стойка сбивает прыжок, присед атакует стойку, прыжок пробивает присед. Переходы имеют небольшую задержку.</div><div class="tip"><b>КОМБО</b> — стоя: лёгкий → лёгкий → сильный; в приседе: лёгкий → сильный; в прыжке: сильный → лёгкий после попадания при посадке.</div><div class="tip"><b>ПРИСЕД</b> — вниз, вниз-вперёд и вниз-назад дают разные удары и броски. Для броска подойди вплотную.</div></div><button class="mainBtn" id="start">НАЧАТЬ ДУЭЛЬ</button><p class="mini">Работает прямо в браузере · Сенсор / клавиатура: J, K, L, I, ←, →</p></div></div><div id="restartOverlay"><div id="resultTitle"></div><div id="resultInfo"></div><button class="mainBtn" id="restart">ЕЩЁ ОДНА ДУЭЛЬ</button></div></div><script>
 (()=>{'use strict';const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');let W=0,H=0,dpr=1,now=0,last=0,started=false,ended=false,round=0,shake=0,particles=[],impacts=[],logs=[],audio=null,sound=false;const $=id=>document.getElementById(id);let player,enemy,clinch=null,clinchSeq=0;let selectedDir='neutral',selectedAt=0;const heldDirs=[];let joyX=0,joyY=0,joyPointer=null;let stanceEvents=[];let jumpLatch=false;let jumpQueuedUntil=0;
-const GAME_VERSION='2.0';
+const GAME_VERSION='2.1';
 let updateCheckRunning=false;
 async function checkForUpdate(){
  if(updateCheckRunning||document.visibilityState==='hidden')return;
@@ -32,7 +32,13 @@ async function checkForUpdate(){
 addEventListener('pageshow',()=>checkForUpdate());
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')checkForUpdate()});
 const rng=(a,b)=>a+Math.random()*(b-a),clamp=(n,a,b)=>Math.max(a,Math.min(b,n));function resize(){dpr=Math.min(window.devicePixelRatio||1,2);W=innerWidth;H=innerHeight;canvas.width=Math.floor(W*dpr);canvas.height=Math.floor(H*dpr);ctx.setTransform(dpr,0,0,dpr,0,0)}window.addEventListener('resize',resize);resize();
-function makeFighter(ai,x){return {ai,x,hp:160,post:0,action:'idle',actionStart:0,actionEnd:0,hitAt:0,hitDone:false,guard:false,guardAt:-1e5,stunnedUntil:0,invulUntil:0,cooldown:0,facing:ai?-1:1,history:[],lastAction:'',feet:0,windup:'',nextThink:0,stepUntil:0,stepDir:0,combo:0,moveHeld:0,moveSpeed:0,lightStreak:0,lastLightAt:-1e5,readAttackId:0,readAt:0,readHandled:false,comboStep:0,comboDeadline:0,comboHits:0,recoveryUntil:0,downStart:0,downUntil:0,clinchSide:'',toppleReady:false,dir:'neutral',throwVariant:'forward',crouch:false,crouchUntil:0,attackLow:false,jumpStart:0,jumpUntil:0,jumpVector:0,jumpHeight:0,diveArmed:false,diveHitDone:false,stanceRequest:false,stanceUntil:0,stanceTransition:'',jumpPendingAt:0,landingRecoverUntil:0,lowChainUntil:0,lowSweep:false,airFollowUntil:0,airFollowReady:false,airFollowAttack:false,wasAirborne:false,stanceHeldSince:0,throwStyle:'neutral',throwLow:false,downStyle:'normal',downSide:1,hitReactUntil:0,hitReactStart:0,hitReactPower:0,hitReactLow:false,attackRange:0,whiffUntil:0,whiffCount:0,counterHits:0};}function fresh(){round++;player=makeFighter(false,.35);enemy=makeFighter(true,.65);enemy.nextThink=performance.now()+rng(1000,1450);ended=false;clinch=null;clinchSeq=0;heldDirs.length=0;stanceEvents=[];jumpLatch=false;jumpQueuedUntil=0;joyX=joyY=0;chooseDir('neutral',0);particles=[];impacts=[];logs=[];shake=0;setMessage('РАУНД '+round,'Стойка Л–Л–С · присед Л–С · прыжок С–Л.',1600);updateHud();$('restartOverlay').classList.remove('show');}
+function makeFighter(ai,x){return {ai,x,hp:160,post:0,action:'idle',actionStart:0,actionEnd:0,hitAt:0,hitDone:false,guard:false,guardAt:-1e5,stunnedUntil:0,invulUntil:0,cooldown:0,facing:ai?-1:1,history:[],lastAction:'',feet:0,windup:'',nextThink:0,stepUntil:0,stepDir:0,combo:0,moveHeld:0,moveSpeed:0,lightStreak:0,lastLightAt:-1e5,readAttackId:0,readAt:0,readHandled:false,comboStep:0,comboDeadline:0,comboHits:0,recoveryUntil:0,downStart:0,downUntil:0,clinchSide:'',toppleReady:false,dir:'neutral',throwVariant:'forward',crouch:false,crouchUntil:0,attackLow:false,jumpStart:0,jumpUntil:0,jumpVector:0,jumpHeight:0,diveArmed:false,diveHitDone:false,stanceRequest:false,stanceUntil:0,stanceTransition:'',jumpPendingAt:0,landingRecoverUntil:0,lowChainUntil:0,lowSweep:false,airFollowUntil:0,airFollowReady:false,airFollowAttack:false,wasAirborne:false,stanceHeldSince:0,throwStyle:'neutral',throwLow:false,downStyle:'normal',downSide:1,hitReactUntil:0,hitReactStart:0,hitReactPower:0,hitReactLow:false,attackRange:0,whiffUntil:0,whiffCount:0,counterHits:0,aiStyle:'universal',aiWaitUntil:0,aiRetreats:0,aiAttacks:0,aiGuards:0};}const AI_STYLES=[
+ {id:'aggressor',name:'АГРЕССОР',subtitle:'Наступает и давит сериями',pace:[310,570],approach:.18,guard:.08,retreat:.04},
+ {id:'counter',name:'КОНТРАТАКУЮЩИЙ',subtitle:'Держит дистанцию и ловит промахи',pace:[500,800],approach:.265,guard:.42,retreat:.45},
+ {id:'universal',name:'УНИВЕРСАЛ',subtitle:'Меняет стойки и изучает привычки',pace:[470,820],approach:.23,guard:.20,retreat:.16}
+];
+function aiSettings(){return AI_STYLES.find(s=>s.id===enemy.aiStyle)||AI_STYLES[2]}
+function fresh(){round++;player=makeFighter(false,.35);enemy=makeFighter(true,.65);enemy.aiStyle=AI_STYLES[(round-1)%3].id;enemy.nextThink=performance.now()+rng(900,1250);$('aiName').textContent='ИИ · '+aiSettings().name;ended=false;clinch=null;clinchSeq=0;heldDirs.length=0;stanceEvents=[];jumpLatch=false;jumpQueuedUntil=0;joyX=joyY=0;chooseDir('neutral',0);particles=[];impacts=[];logs=[];shake=0;setMessage('РАУНД '+round+' · '+aiSettings().name,aiSettings().subtitle+' · контратаки работают как прежде',1800);updateHud();$('restartOverlay').classList.remove('show');}
 function setMessage(a,b='',duration=700){$('message').textContent=a;$('subtext').textContent=b;$('message').style.opacity='1';$('subtext').style.opacity='1';if(duration){const token=++messageToken;setTimeout(()=>{if(token===messageToken){$('message').style.opacity='0';$('subtext').style.opacity='0';}},duration)}}let messageToken=0;
 function sfx(freq=240,type='triangle',dur=.07){if(!sound)return;try{audio??=new (window.AudioContext||window.webkitAudioContext)();let o=audio.createOscillator(),g=audio.createGain();o.type=type;o.frequency.setValueAtTime(freq,audio.currentTime);o.frequency.exponentialRampToValueAtTime(Math.max(55,freq*.55),audio.currentTime+dur);g.gain.setValueAtTime(.09,audio.currentTime);g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+dur);o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+dur)}catch(e){}}
 const DIR_NAMES={neutral:'ПРЯМОЙ',up:'В ПРЫЖКЕ',down:'НИЗКИЙ',back:'КОРОТКИЙ',forward:'С ВЫПАДОМ',downForward:'НИЗКИЙ ВЫПАД',downBack:'НИЗКИЙ КОНТР'};
@@ -235,57 +241,124 @@ function easeOut(n){return 1-Math.pow(1-clamp(n,0,1),3)}
 function updateHud(){$('ph').style.width=clamp(player.hp/160*100,0,100)+'%';$('pp').style.width=clamp(player.post,0,100)+'%';$('eh').style.width=clamp(enemy.hp/160*100,0,100)+'%';$('ep').style.width=clamp(enemy.post,0,100)+'%'}
 function aiDecide(t){
  if(clinch||ended||!started||t<enemy.nextThink||t<enemy.stunnedUntil||t<enemy.jumpPendingAt)return;
- if(enemy.airFollowReady&&t<enemy.airFollowUntil&&t>=enemy.actionEnd){startAction(enemy,'light',t);enemy.nextThink=t+350;return}
- if(enemy.lowChainUntil>t&&enemy.crouch&&enemy.hitDone&&t>enemy.actionStart+225&&Math.random()<.68){
-  startAction(enemy,'heavy',t);enemy.nextThink=t+410;return
+ const cfg=aiSettings(),style=cfg.id,dist=Math.abs(enemy.x-player.x);
+ // Combo follow-ups are available to every style, but aggressors use them more often.
+ if(enemy.airFollowReady&&t<enemy.airFollowUntil&&t>=enemy.actionEnd){
+   if(Math.random()<(style==='aggressor'?.91:style==='counter'?.55:.75))startAction(enemy,'light',t);
+   enemy.nextThink=t+270;return;
+ }
+ if(enemy.lowChainUntil>t&&enemy.crouch&&enemy.hitDone&&t>enemy.actionStart+225&&Math.random()<(style==='aggressor'?.87:style==='counter'?.4:.7)){
+   startAction(enemy,'heavy',t);enemy.nextThink=t+330;return;
  }
  if(enemy.action!=='idle'&&t<enemy.actionEnd)return;
- if(enemy.jumpUntil>t){if(enemy.jumpHeight>13&&!enemy.diveArmed)startAction(enemy,'heavy',t);enemy.nextThink=t+180;return}
+ if(enemy.jumpUntil>t){
+   if(enemy.jumpHeight>13&&!enemy.diveArmed)startAction(enemy,'heavy',t);
+   enemy.nextThink=t+170;return;
+ }
  if(t<enemy.stanceUntil||t<enemy.landingRecoverUntil)return;
- const dist=Math.abs(enemy.x-player.x);
+ enemy.nextThink=t+rng(cfg.pace[0],cfg.pace[1]);
  const recent=player.history.slice(-7),count=kind=>recent.filter(x=>x===kind).length;
  const crouchHabit=recentStance('crouch',t)>=3||(player.crouch&&t-player.stanceHeldSince>1900);
  const jumpHabit=recentStance('jump',t)>=3;
- enemy.nextThink=t+rng(480,860);
- if((player.whiffUntil>t||player.recoveryUntil>t)&&t>=player.actionEnd&&dist<.305){
-  if(dist>.215){enemy.x=clamp(enemy.x-.035,.12,.88);enemy.nextThink=t+130}
-  else if(dist<.11&&Math.random()<.35)startAction(enemy,'grab',t);
-  else startAction(enemy,dist>.17?'heavy':'light',t);
-  return;
+ const playerRecovering=t>=player.actionEnd&&(player.whiffUntil>t||player.recoveryUntil>t);
+ const playerWindup=(player.action==='heavy'||player.action==='light')&&!player.hitDone&&t<player.hitAt;
+ const beginAttack=kind=>{
+   enemy.guard=false;
+   const ok=startAction(enemy,kind,t);
+   if(ok)enemy.aiAttacks++;
+   return ok;
+ };
+ const reposition=(direction)=>{
+   enemy.guard=false;
+   step(enemy,direction,t);
+   if(direction>0)enemy.aiRetreats++;
+ };
+ const cover=()=>{
+   enemy.guard=true;enemy.guardAt=t-350;enemy.aiGuards++;enemy.nextThink=t+(style==='counter'?rng(250,410):rng(185,320));
+ };
+ // Do not know the player's future inputs: punish only a visible missed attack.
+ if(playerRecovering&&dist<.31){
+   const chance=style==='counter'?.92:style==='aggressor'?.73:.79;
+   if(Math.random()<chance){
+     if(dist>.24){reposition(-1);enemy.nextThink=t+105}
+     else if(dist<.105&&Math.random()<(style==='aggressor'?.47:.24))beginAttack('grab');
+     else beginAttack(dist>.20?'heavy':'light');
+     return;
+   }
  }
- if(dist>.295){enemy.crouchUntil=0;enemy.guard=false;step(enemy,-1,t);enemy.nextThink=t+320;return}
- // Recognition of a habit changes probabilities; it never reveals hidden player input.
- if(player.jumpUntil>t&&player.jumpHeight>15){
-   enemy.crouchUntil=0;
-   if(Math.random()<(jumpHabit?.83:.57)){startAction(enemy,Math.random()<.7?'light':'heavy',t);return}
+ // Each style maintains a different preferred combat distance.
+ if(dist>cfg.approach+.035){
+   if(style==='counter'&&playerWindup&&Math.random()<.45){cover();return}
+   reposition(-1);enemy.nextThink=t+(style==='aggressor'?190:340);return;
+ }
+ if(style==='counter'){
+   if(dist<.13&&player.action==='idle'&&Math.random()<.75){
+     reposition(1);enemy.nextThink=t+170;return;
+   }
+   if(playerWindup&&Math.random()<.66){cover();return}
+   if(dist<.18&&player.action==='idle'&&Math.random()<cfg.retreat){
+     reposition(1);enemy.nextThink=t+240;return;
+   }
+   if(player.jumpUntil>t&&player.jumpHeight>16&&dist<.255){beginAttack('light');return}
+   if(player.crouch&&dist<.25){
+     if(Math.random()<.34&&beginJump(enemy,t)){enemy.nextThink=t+300;return}
+     enemy.crouchUntil=t+920;enemy.nextThink=t+220;return;
+   }
+   if(Math.random()<cfg.guard){cover();return}
+   if(dist<.11&&Math.random()<.22)beginAttack('grab');
+   else beginAttack(dist>.21?'heavy':Math.random()<.7?'light':'heavy');
+   return;
+ }
+ if(style==='aggressor'){
+   if(player.jumpUntil>t&&player.jumpHeight>16&&dist<.26){beginAttack('light');return}
+   if(player.crouch&&dist<.255){
+     if(Math.random()<.54&&beginJump(enemy,t)){enemy.nextThink=t+260;return}
+     enemy.crouchUntil=t+850;
+     if(enemy.crouch)beginAttack(Math.random()<.55?'light':'heavy');
+     else enemy.nextThink=t+160;
+     return;
+   }
+   if(enemy.crouch){enemy.crouchUntil=0;enemy.nextThink=t+140;return}
+   if(dist<.105&&Math.random()<.25){beginAttack('grab');return}
+   if(playerWindup&&Math.random()<.11){cover();return}
+   if(Math.random()<cfg.guard){cover();return}
+   if(dist>.21)beginAttack('heavy');
+   else beginAttack(Math.random()<.71?'light':'heavy');
+   return;
+ }
+ // Universal retains the habit-sensitive decisions from version 2.0.
+ if(player.jumpUntil>t&&player.jumpHeight>15&&dist<.265){
+   if(Math.random()<(jumpHabit?.83:.57)){beginAttack(Math.random()<.7?'light':'heavy');return}
  }
  if(player.crouch){
-   if(dist<.245&&Math.random()<(crouchHabit?.62:.33)){
+   if(dist<.25&&Math.random()<(crouchHabit?.62:.33)){
      enemy.crouchUntil=0;
      if(beginJump(enemy,t)){enemy.nextThink=t+320;return}
    }
    enemy.crouchUntil=t+1000;
-   if(enemy.crouch&&dist<.25&&Math.random()<.72){startAction(enemy,Math.random()<.64?'light':'heavy',t);return}
-   enemy.nextThink=t+220;return;
+   if(enemy.crouch&&dist<.25&&Math.random()<.72)beginAttack(Math.random()<.64?'light':'heavy');
+   else enemy.nextThink=t+220;
+   return;
  }
- if((count('light')>=3||jumpHabit)&&Math.random()<.36){enemy.guard=true;enemy.guardAt=t-350;enemy.nextThink=t+280;return}
+ if((count('light')>=3||jumpHabit)&&Math.random()<.36){cover();return}
  if(count('heavy')>=2&&Math.random()<.33){enemy.crouchUntil=t+800;enemy.nextThink=t+270;return}
  if(enemy.crouch){enemy.crouchUntil=0;enemy.nextThink=t+190;return}
- if(player.action==='stunned'&&dist<.22){startAction(enemy,'heavy',t);return}
- if(dist>.23&&dist<.29){startAction(enemy,'heavy',t);return}
+ if(playerWindup&&dist<.22&&Math.random()<cfg.guard){cover();return}
+ if(player.action==='stunned'&&dist<.22){beginAttack('heavy');return}
+ if(dist>.23&&dist<.29){beginAttack('heavy');return}
  const r=Math.random();
- if(r<.16){enemy.guard=true;enemy.guardAt=t-350;enemy.nextThink=t+390}
- else if(r<.56)startAction(enemy,'light',t);
- else if(r<.84)startAction(enemy,'heavy',t);
- else if(dist<.116)startAction(enemy,'grab',t);
- else step(enemy,-1,t);
+ if(r<cfg.guard)cover();
+ else if(r<.57)beginAttack('light');
+ else if(r<.86)beginAttack('heavy');
+ else if(dist<.116)beginAttack('grab');
+ else reposition(-1);
 }
 function readRepetitiveAttack(t){
 // React to a visible wind-up instead of reading an input instantly.
 if(player.action!=='light'||player.hitDone||player.lightStreak<3||t>=player.hitAt){enemy.readAttackId=0;return}
 if(enemy.action!=='idle'||enemy.stunnedUntil>t||Math.abs(enemy.x-player.x)>.255)return;
 if(enemy.readAttackId!==player.actionStart){enemy.readAttackId=player.actionStart;enemy.readAt=player.actionStart+85+rng(12,33);enemy.readHandled=false}
-if(!enemy.readHandled&&t>=enemy.readAt){enemy.readHandled=true;if(Math.random()<.79){enemy.guard=true;enemy.guardAt=t;enemy.nextThink=t+550;setMessage('ПРОТИВНИК ЧИТАЕТ СЕРИЮ','Прерви шаблон: тяжёлый удар, захват или уход',570)}}
+if(!enemy.readHandled&&t>=enemy.readAt){enemy.readHandled=true;if(Math.random()<(enemy.aiStyle==='counter'?.84:enemy.aiStyle==='aggressor'?.43:.79)){enemy.guard=true;enemy.guardAt=t;enemy.nextThink=t+550;setMessage('ПРОТИВНИК ЧИТАЕТ СЕРИЮ','Прерви шаблон: тяжёлый удар, захват или уход',570)}}
 }
 function update(t,dt){if(!started||ended)return;updateClinch(t);readRepetitiveAttack(t);for(const f of [player,enemy]){f.facing=f===player?1:-1;if(f.action==='down'&&t>=f.downUntil){f.downStyle='normal';f.action='idle';f.post=Math.min(f.post,35);f.cooldown=t+160;f.toppleReady=false}else if(f.action==='stunned'&&f.toppleReady&&t>=f.stunnedUntil){f.toppleReady=false;f.post=36;f.action='idle';f.cooldown=t+250}else if(!clinch&&f.action!=='idle'&&t>f.actionEnd)f.action='idle';if(f.guard&&t-f.guardAt>1000&&f.ai)f.guard=false;
 // Stance transitions have anticipation frames. During the transition no auto-guard applies.
