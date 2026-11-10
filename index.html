@@ -297,6 +297,12 @@ function playRhythmBeat(index){
   // Closed hats on eighth notes, slightly accented offbeat.
   noiseHit(when,.035,.032,5000);
   noiseHit(when+quarter*.5,.045,.045,4400);
+  // Last four bars: a rising, restrained noisy countdown beneath the groove.
+  if(index>=(roundBars-4)*4&&index<roundBars*4){
+   const progress=(index-(roundBars-4)*4)/16;
+   noiseHit(when,.23+progress*.24,.007+progress*.025,1800-progress*950);
+   if(beat===0)tone(560+progress*390,when,.16,.013,'triangle',1900);
+  }
   // Bouncy octave bass. The offbeat eighth gives the groove its movement.
   const bassPattern=[1,1,1.5,1,1,2,1.5,1];
   tone(root*bassPattern[(index*2)%8],when,.19,.055,'sawtooth',430);
@@ -633,8 +639,73 @@ const counterWindow=def.whiffUntil>t&&def.action!=='down'&&def.action!=='caught'
 const isLow=!!att.attackLow;const blockHigh=def.guard&&!def.crouch&&!isLow;const blockLow=def.guard&&def.crouch&&isLow;
 if(blockHigh||blockLow){const damage=(att.powerFinisher?7:att.finisher?4:action==='heavy'?3:2)*(isLow?.5:1);def.hp-=damage;def.guard=false;breakStreak(att);breakStreak(def);setMessage(def.ai?(blockLow?'НИЖНИЙ БЛОК ИИ':'ЗАЩИТА ИИ'):(blockLow?'НИЖНИЙ БЛОК':'ВЕРХНИЙ БЛОК'),'Блок снижает урон; ритм усиливает точные атаки',570);emit(def.x,'#aab8c1',7);impact(def,t,.7,isLow,true);fightFoley('block');shake=2}else{const lightPenalty=(!att.ai&&action==='light')?Math.max(0,att.lightStreak-2)*2:0;const dirDamage=dir==='up'?1.12:isLow?.89:dir==='back'?.92:dir==='forward'?1.06:1;const comboBoost=att.finisher?1.12:1;const damage=(att.powerFinisher?25:att.finisher?19:action==='heavy'?15:Math.max(6,13-lightPenalty))*dirDamage*(isLow?.58:1)*comboBoost*(counterWindow?1.25:1)*rhythmDamage(att,t);def.hp-=damage;registerHit(att,def,t,att.finisher?145:action==='heavy'?85:65,att.finisher);def.stunnedUntil=t+(att.powerFinisher?380:att.finisher?250:action==='heavy'?195:(!att.ai&&att.lightStreak>=3?85:160))+(counterWindow?190:0);
 if(counterWindow){att.counterHits++;def.whiffUntil=0;def.recoveryUntil=Math.max(def.recoveryUntil,t+400);}def.x=clamp(def.x+att.facing*(att.powerFinisher?.045:att.finisher?.034:action==='heavy'?.03:.025)+(isLow&&!def.crouch?att.facing*.014:0),.12,.88);if(att.comboStep>0)att.comboHits++;emit(def.x,att.finisher?'#ffd7a4':'#e1d4b9',att.finisher?18:10);impact(def,t,att.powerFinisher?1.4:att.finisher?1.05:.85,isLow);fightFoley('impact',att.powerFinisher,att);fightVoice('hurt',def);shake=att.powerFinisher?6:att.finisher?4:2;setMessage(counterWindow?'✦ КОНТРАТАКА! +25% УРОНА':att.airFollowAttack?'ВОЗДУШНОЕ КОМБО!':att.lowSweep?'НИЗКАЯ ПОДСЕЧКА!':att.finisher?'✹ '+att.finisherName+'!':(action==='heavy'?'НОГА: ':'')+DIR_NAMES[dir],isLow?'Низкая атака отталкивает стоящего':'',460)}if(def.hp<=0){def.hp=0;finish(!def.ai)} }
-function finish(lose,byPoints=false){if(ended)return;ended=true;
- if(byPoints){lose=player.score<enemy.score;const tie=player.score===enemy.score;$('resultTitle').textContent=tie?'НИЧЬЯ ПО ОЧКАМ':lose?'ПОРАЖЕНИЕ ПО ОЧКАМ':'ПОБЕДА ПО ОЧКАМ'}if(!byPoints)$('resultTitle').textContent=lose?'НОКАУТ · ПОРАЖЕНИЕ':'НОКАУТ · ПОБЕДА';$('resultTitle').style.color=lose?'#ed9f8b':'#f3dda9';$('resultInfo').textContent='ОЧКИ '+player.score.toLocaleString('ru-RU')+' : '+enemy.score.toLocaleString('ru-RU')+' · HP '+Math.ceil(player.hp)+' : '+Math.ceil(enemy.hp)+' · Комбо: '+player.comboSuccess+' · Лучшая серия: '+player.maxStreak+' · Ритм: '+(player.rhythmAttempts?Math.round(player.rhythmHits/player.rhythmAttempts*100):0)+'%';$('restartOverlay').classList.add('show');}
+// Every ending is a short scene, never an abrupt result overlay.
+function finish(lose,byPoints=false){
+ if(ended)return;
+ ended=true;clinch=null;stopMusic();
+ const tie=byPoints&&player.score===enemy.score;
+ if(byPoints)lose=player.score<enemy.score;
+ const winner=tie?null:lose?enemy:player;
+ finale={start:now,at:Math.max(0,now-roundStart),winner,loser:tie?null:lose?player:enemy,
+         knockout:!byPoints,tie,lose,byPoints,jingleDone:false,shown:false};
+ $('roundAlarm').classList.remove('active','critical');
+ $('roundAlarm').classList.add('final');
+ $('roundClock').textContent='00:00';
+ $('rhythmLevelNotice').classList.remove('show');
+ if(!tie){
+  winner.action='celebrate';winner.actionStart=now;winner.actionEnd=Infinity;winner.guard=false;
+  if(byPoints){finale.loser.action='defeated';finale.loser.actionStart=now;finale.loser.actionEnd=Infinity;finale.loser.guard=false}
+  else{finale.loser.action='down';finale.loser.downStart=now-450;finale.loser.downUntil=Infinity}
+ }
+ if(sound)endSignal();
+ const result=byPoints?(tie?'НИЧЬЯ ПО ОЧКАМ':lose?'ПОБЕДИЛ ПРОТИВНИК':'ПОБЕДИЛ ТЫ'):
+   (lose?'НОКАУТ · ПОБЕДИЛ ПРОТИВНИК':'НОКАУТ · ПОБЕДИЛ ТЫ');
+ $('resultTitle').textContent=result;
+ $('resultTitle').style.color=tie?'#e5dfcf':lose?'#ed9f8b':'#f3dda9';
+ $('resultInfo').textContent='ОЧКИ '+player.score.toLocaleString('ru-RU')+' : '+enemy.score.toLocaleString('ru-RU')+
+   ' · HP '+Math.ceil(player.hp)+' : '+Math.ceil(enemy.hp)+' · Комбо: '+player.comboSuccess+
+   ' · Лучшая серия: '+player.maxStreak+
+   ' · Ритм: '+(player.rhythmAttempts?Math.round(player.rhythmHits/player.rhythmAttempts*100):0)+'%';
+}
+function endSignal(){
+ if(!audio)return;
+ try{
+  const t=audio.currentTime+.012;
+  // Hard stop cue, then space before the victory/defeat motif.
+  tone(710,t,.16,.095,'square',1600);
+  tone(360,t+.17,.32,.074,'sawtooth',950);
+  noiseHit(t,.16,.065,900);
+ }catch(e){}
+}
+function outcomeJingle(){
+ if(!audio||!sound||!finale)return;
+ try{
+  const t=audio.currentTime+.01,win=!finale.lose&&!finale.tie;
+  const tones=finale.tie?[392,440,392]:win?[440,554.37,659.25,880]:[440,392,329.63,220];
+  tones.forEach((freq,i)=>tone(freq,t+i*.16,win?.32:.39,win?.070:.049,win?'triangle':'sine',1700));
+  // Layered, softly filtered crowd reaction; generated in-game, not copyrighted recordings.
+  if(!finale.tie){
+   const dur=win?1.3:1.0;
+   const noise=audio.createBufferSource(),f=audio.createBiquadFilter(),gain=audio.createGain();
+   noise.buffer=noiseSample(audio);noise.loop=true;f.type='bandpass';f.frequency.value=win?900:460;f.Q.value=.7;
+   gain.gain.setValueAtTime(.0001,t+.13);
+   gain.gain.linearRampToValueAtTime(win?.040:.027,t+.36);
+   gain.gain.exponentialRampToValueAtTime(.0001,t+dur);
+   noise.connect(f);f.connect(gain);gain.connect(audio.destination);
+   noise.start(t+.13);noise.stop(t+dur+.01);
+   for(let i=0;i<5;i++){
+    const freq=win?220+i*31:160+i*22;
+    tone(freq,t+.24+i*.10,.32,win?.010:.008,'sine',1100);
+   }
+  }
+ }catch(e){}
+}
+function updateFinale(t){
+ if(!finale)return;
+ const elapsed=t-finale.start;
+ if(elapsed>=750&&!finale.jingleDone){finale.jingleDone=true;outcomeJingle()}
+ if(elapsed>=2050&&!finale.shown){finale.shown=true;$('restartOverlay').classList.add('show');$('roundAlarm').classList.remove('final')}
+}
 function emit(x,col,num){let px=W*x,py=H*.61;for(let i=0;i<num;i++)particles.push({x:px,y:py,vx:rng(-3.8,3.8),vy:rng(-5,-1),life:rng(300,650),total:650,r:rng(1.5,4),col})}
 function impact(f,t,power=1,low=false,blocked=false){
  const x=W*f.x,y=H*(low?.685:.57)-(f.jumpHeight||0)*.8;
@@ -893,6 +964,14 @@ function fighter(f,t){
  else if(f.stanceTransition==='takeoff'){const p=clamp(1-(f.stanceUntil-t)/85,0,1);stanceScale=1-.10*Math.sin(Math.PI*p)}
  ctx.save();ctx.translate(x,ground-(f.jumpHeight||0));ctx.scale(scale*f.facing,scale);
  ctx.scale(1,stanceScale);
+ if(finale&&finale.winner===f){
+   const age=Math.max(0,t-finale.start),bounce=Math.abs(Math.sin(age*.010))*13;
+   ctx.translate(0,-bounce);ctx.rotate(Math.sin(age*.006)*.045);
+ }
+ if(finale&&finale.loser===f&&!finale.knockout){
+   const age=Math.max(0,t-finale.start),p=Math.min(1,age/500);
+   ctx.translate(0,13*p);ctx.rotate(-.13*p);
+ }
  // Layered power appearance. All effects are local to fighter transform so they survive
  // stance changes, knockdowns, throws and independent combo poses.
  const powered=tier>=2,peak=tier>=5,beatPulse=.5+.5*Math.sin(t*.009+(ai?1.9:0));
@@ -947,6 +1026,7 @@ function fighter(f,t){
  const angle=style==='back'||style==='downBack'?1.04:style==='up'?-.95:style==='down'||style==='downForward'?.97:-1.22;
  ctx.translate((style==='back'||style==='downBack'?-18:14)*pose,-arc);
  ctx.rotate(angle*pose);ctx.translate(0,65*pose);
+ if(finale&&finale.knockout&&finale.loser===f)ctx.translate(0,Math.sin(t*.012)*2.6);
 }else if(clinch&&(f===clinch.a||f===clinch.d)){
  const v=clinch.variant,p=clamp((t-clinch.start)/(clinch.end-clinch.start),0,1);
  const active=clamp((p-.28)/.72,0,1),motion=active*active*(3-2*active);
@@ -1006,6 +1086,8 @@ function fighter(f,t){
  const guarding=f.guard&&!light&&!heavy&&!grab;
  const rearElbow={x:-30,y:guarding?-108:-82};
  const rearHand={x:guarding?-8:heavy?-22:-6,y:guarding?(f.crouch?-96:-130):heavy?-125:-105};
+ if(finale&&finale.winner===f){rearElbow.x=-25;rearElbow.y=-136;rearHand.x=-12;rearHand.y=-191}
+ if(finale&&finale.loser===f&&!finale.knockout){rearElbow.x=-27;rearElbow.y=-93;rearHand.x=-8;rearHand.y=-143}
  if(comboTwo&&light&&!low){rearElbow.x=-15+reach*(18+form*4);rearElbow.y=-105-(accent*5);rearHand.x=15+reach*(66+form*9);rearHand.y=-113-reach*(13+accent*7)}
  if(comboFinal&&tech===1){rearElbow.x=9+reach*38;rearElbow.y=-125+reach*12;rearHand.x=40+reach*45;rearHand.y=-125+reach*9}
  if(comboFinal&&tech===2){rearElbow.x=-12+reach*38;rearElbow.y=-127;rearHand.x=18+reach*108;rearHand.y=-146+reach*24}
@@ -1064,6 +1146,8 @@ function fighter(f,t){
      else{elbow={x:15+reach*40,y:-136+reach*29};hand={x:6+reach*84,y:-150+reach*56}}
    }
  }
+ if(finale&&finale.winner===f){elbow={x:38,y:-137};hand={x:29,y:-188}}
+ if(finale&&finale.loser===f&&!finale.knockout){elbow={x:28,y:-92};hand={x:4,y:-132}}
  limb(17,-104,elbow.x,elbow.y,12,col);limb(elbow.x,elbow.y,hand.x,hand.y,11,skin);
  ctx.fillStyle=skin;ctx.beginPath();ctx.arc(hand.x,hand.y,8,0,2*Math.PI);ctx.fill();ctx.beginPath();ctx.arc(rearHand.x,rearHand.y,7,0,2*Math.PI);ctx.fill();
  if(grab&&clinch&&clinch.a===f){
