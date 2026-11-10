@@ -44,7 +44,7 @@ function currentDir(t){return selectedDir}
 function record(kind){player.history.push(kind);if(player.history.length>8)player.history.shift();}function startAction(f,kind,t){
  if(clinch)return clinchInput(f,kind,t);
  if(!started||ended||f.action==='down'||t<f.stunnedUntil||t<f.recoveryUntil)return false;
- const chain=f.action==='light'&&f.hitDone&&t>=f.actionStart+225&&t<f.comboDeadline;
+ const chain=(f.action==='light'||f.action==='idle')&&f.hitDone&&t>=f.actionStart+180&&t<f.comboDeadline&&f.comboStep>0;
  if(t<f.cooldown&&!chain || (f.action!=='idle'&&t<f.actionEnd&&!chain))return false;
  if(kind==='guard')return false;
  if(kind==='dodge')return false;
@@ -65,7 +65,7 @@ function record(kind){player.history.push(kind);if(player.history.length>8)playe
   const duration=kind==='light'?(combo?335:410):(combo?570:790);
   f.actionEnd=t+duration;f.hitAt=t+(kind==='light'?(combo?135:170):(combo?335:490));
   f.hitDone=false;f.cooldown=t+(combo?200:duration+45);
-  f.comboDeadline=t+(kind==='light'?670:0);
+  f.comboDeadline=t+(kind==='light'?820:0);
   if(combo&&f.comboStep===3){f.comboDeadline=0;f.recoveryUntil=t+duration+720;f.cooldown=f.recoveryUntil;setMessage('ФИНАЛ КОМБО','После финального удара — уязвимость',700)}
   if(!f.ai){if(kind==='light'){f.lightStreak=(t-f.lastLightAt<2300)?Math.min(5,f.lightStreak+1):1;f.lastLightAt=t}else f.lightStreak=0;record(kind)}
   return true;
@@ -104,7 +104,7 @@ function updateClinch(t){const panel=$('clinchPanel');if(!clinch){panel.style.di
  if(c.d.ai&&!c.instant&&active&&t>=c.aiCounterAt){c.aiCounterAt=Infinity;if(Math.random()<c.counterChance){c.a.post=Math.min(100,c.a.post+14);endThrow(t,'ПРОТИВНИК ВЫРВАЛСЯ');sfx(530,'triangle',.15);emit(c.d.x,'#a8e9f1',14);return}}
  if(t>=c.end){const a=c.a,d=c.d,v=c.variant;clinch=null;a.action='idle';a.cooldown=t+370;const damages={neutral:17,up:23,down:15,back:20,forward:16};knockDown(d,t,damages[v]||17,THROW_NAMES[v]+'!');d.post=v==='down'?Math.min(100,d.post+19):d.post;d.downUntil+=v==='back'?320:v==='up'?220:0;d.stunnedUntil=d.downUntil;d.actionEnd=d.downUntil;d.x=clamp(d.x+a.facing*(v==='forward'?.11:.045),.12,.88)}
 }
-function strike(att,def,t){const diff=Math.abs(att.x-def.x);const range=att.action==='grab'?.113:(att.action==='heavy'?.255:.235);att.hitDone=true;if(diff>range){if(att.comboStep===3)att.recoveryUntil=t+1050;if(!att.ai)setMessage('ПРОМАХ','После серии соперник может сблизиться и бросить',550);sfx(120,'sine',.06);return}const action=att.action,dir=att.dir||'neutral';if(t<def.invulUntil){if(!def.ai)setMessage('УКЛОНЕНИЕ','Провоцируй промахи и контратакуй',650);att.post+=9;emit(def.x,'#c4edf0',8);return}
+function strike(att,def,t){const diff=Math.abs(att.x-def.x);const range=att.action==='grab'?.113:(att.action==='heavy'?.255:.235);att.hitDone=true;if(diff>range){if(att.comboStep===3)att.recoveryUntil=Math.max(att.recoveryUntil,t+1050);if(!att.ai)setMessage('ПРОМАХ','После серии соперник может сблизиться и бросить',550);sfx(120,'sine',.06);return}const action=att.action,dir=att.dir||'neutral';if(t<def.invulUntil){if(!def.ai)setMessage('УКЛОНЕНИЕ','Провоцируй промахи и контратакуй',650);att.post+=9;emit(def.x,'#c4edf0',8);return}
 const recentParry=def.ai&&def.guard&&t-def.guardAt<=285&&t-def.guardAt>=50&&def.post<55;
 if(action!=='grab'&&recentParry){att.post+=35;att.stunnedUntil=t+850;att.action='stunned';att.actionEnd=t+720;att.cooldown=t+720;def.post=Math.max(0,def.post-12);if(def.ai){enemy.nextThink=t+180;enemy.guard=false}setMessage(def.ai?'ПРОТИВНИК ПАРИРОВАЛ':'ИДЕАЛЬНОЕ ПАРИРОВАНИЕ',def.ai?'Меняй ритм атак':'Контратакуй сейчас!',800);emit(def.x,'#a8e9f1',14);sfx(670,'triangle',.12);shake=6;return}
 if(action==='grab'){
@@ -120,7 +120,7 @@ function emit(x,col,num){let px=W*x,py=H*.61;for(let i=0;i<num;i++)particles.pus
 function updateHud(){$('ph').style.width=clamp(player.hp/160*100,0,100)+'%';$('pp').style.width=clamp(player.post,0,100)+'%';$('eh').style.width=clamp(enemy.hp/160*100,0,100)+'%';$('ep').style.width=clamp(enemy.post,0,100)+'%'}
 function aiDecide(t){if(clinch||t<enemy.nextThink||t<enemy.stunnedUntil||enemy.action!=='idle'&&t<enemy.actionEnd||ended)return;enemy.nextThink=t+rng(550,950);const dist=enemy.x-player.x;const recent=player.history.slice(-6);const count=kind=>recent.filter(x=>x===kind).length;const close=dist<.165;const playerWindup=(player.action==='heavy'||player.action==='light')&&t<player.hitAt;
 if(dist>.245){step(enemy,-1,t);enemy.nextThink=t+420;return}if(playerWindup&&Math.random()<.26){enemy.guard=true;enemy.guardAt=t-350;return}
-if(player.recoveryUntil>t&&dist<.25){enemy.guard=false;enemy.x=clamp(player.x+.092,.12,.88);startAction(enemy,'grab',t);return}if(count('light')>=3&&Math.random()<.7){enemy.guard=true;enemy.guardAt=t-350;enemy.nextThink=t+330;return}let r=Math.random();if(player.action==='stunned'&&close){startAction(enemy,'heavy',t);return}if(r<.23){enemy.guard=true;enemy.guardAt=t-350;enemy.nextThink=t+400}else if(r<.63)startAction(enemy,'light',t);else if(r<.87)startAction(enemy,'heavy',t);else if(close)startAction(enemy,'grab',t);else step(enemy,-1,t)}
+if(player.recoveryUntil>t&&t>=player.actionEnd&&dist<.25){enemy.guard=false;enemy.x=clamp(player.x+.092,.12,.88);startAction(enemy,'grab',t);return}if(count('light')>=3&&Math.random()<.7){enemy.guard=true;enemy.guardAt=t-350;enemy.nextThink=t+330;return}let r=Math.random();if(player.action==='stunned'&&close){startAction(enemy,'heavy',t);return}if(r<.23){enemy.guard=true;enemy.guardAt=t-350;enemy.nextThink=t+400}else if(r<.63)startAction(enemy,'light',t);else if(r<.87)startAction(enemy,'heavy',t);else if(close)startAction(enemy,'grab',t);else step(enemy,-1,t)}
 function readRepetitiveAttack(t){
 // React to a visible wind-up instead of reading an input instantly.
 if(player.action!=='light'||player.hitDone||player.lightStreak<3||t>=player.hitAt){enemy.readAttackId=0;return}
