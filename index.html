@@ -5,9 +5,9 @@
 @media(max-height:500px){#joystick{width:108px;height:108px}#stick{width:48px;height:48px}#help{bottom:100px;font-size:10px}#clinchPanel{top:32%}}
 @media(max-width:620px) and (orientation:portrait){#joystick{width:118px;height:118px}#stick{width:52px;height:52px}#controls{gap:4px}.cluster.right{gap:5px}.ctl.strong{min-width:62px;height:72px}.ctl.grab{min-width:65px;height:72px}.ctl.attack{min-width:65px;height:78px}#help{bottom:145px;max-width:65vw;font-size:9px}}
 #rhythmHud{position:absolute;z-index:4;top:calc(env(safe-area-inset-top) + 98px);left:50%;transform:translateX(-50%);width:min(360px,78vw);padding:6px 10px 9px;border:1px solid #7e998b66;border-radius:10px;background:#111d21dc;pointer-events:none}.rhythmTop{display:flex;justify-content:space-between;align-items:center;font-size:10px;font-weight:800;letter-spacing:.05em;color:#d0e7d4;gap:8px}#rhythmGrade{color:#f8d492}#flowLabel{color:#8fd5b7}#beatTrack{height:12px;position:relative;margin-top:6px;border-radius:7px;background:linear-gradient(90deg,#32424a,#455b51,#6d7552,#455b51,#32424a);box-shadow:inset 0 1px 4px #000c;overflow:hidden}#beatNeedle{position:absolute;top:0;bottom:0;width:5px;border-radius:2px;background:#ffe7b0;box-shadow:0 0 11px #ffe4a9;left:0;transition:none}.beatMark{position:absolute;top:0;bottom:0;width:1px;background:#e4f6cf77}.rhythmFill{height:8px;position:relative;border:1px solid #a3c7a566;background:#1c302d}.rhythmFill .fill{background:linear-gradient(90deg,#6aa897,#b5d897,#f4e095)!important;transition:width .12s linear}#app.flowActive #rhythmHud{border-color:#f6d288;box-shadow:0 0 20px #ffd18752}#app.flowActive .rhythmFill .fill{background:linear-gradient(90deg,#e5c884,#fff3bc)!important}#app.beatPulse #beatTrack{box-shadow:0 0 18px #c8ebaa88,inset 0 1px 4px #000c}@media(max-width:620px) and (orientation:portrait){#rhythmHud{top:calc(env(safe-area-inset-top) + 95px);width:min(320px,86vw);padding:5px 8px 7px}.rhythmTop{font-size:9px}#help{max-width:80vw}}@media(max-height:500px){#rhythmHud{top:65px;width:230px}.rhythmTop{font-size:8px}#beatTrack{height:7px}}
-</style></head><body><div id="app"><canvas id="game"></canvas><div id="hud"><div class="header"><div class="person"><div class="name">ТЫ · БОЕЦ</div><div class="bar"><div class="fill" id="ph"></div></div><div class="balance rhythmFill"><div class="fill" id="pp"></div></div><div class="meter">ЗДОРОВЬЕ / РИТМ</div></div><div class="brand">BREAKLINE<small>ВЕРСИЯ 2.3</small></div><div class="person right enemy"><div class="name" id="aiName">ПРОТИВНИК · ИИ</div><div class="bar"><div class="fill" id="eh"></div></div><div class="balance rhythmFill"><div class="fill" id="ep"></div></div><div class="meter">ЗДОРОВЬЕ / РИТМ</div></div></div></div><div id="clinchPanel" style="display:none"><div id="clinchLabel">ЗАХВАТ</div><div id="counterCircle" class="counterCircle"><span id="counterIcon">✊</span></div><div id="clinchTip">Жди светящегося круга</div></div><div id="distance">ДИСТАНЦИЯ: —</div><div id="rhythmHud"><div class="rhythmTop"><span id="beatLabel">♪ 120 BPM</span><span id="rhythmGrade">ЛОВИ РИТМ</span><span id="flowLabel">ПОТОК · 0/5</span></div><div id="beatTrack"><div id="beatNeedle"></div><div class="beatMark" style="left:25%"></div><div class="beatMark" style="left:50%"></div><div class="beatMark" style="left:75%"></div></div></div><div id="message"></div><div id="subtext"></div><button id="soundBtn">◖ ЗВУК: ВЫКЛ.</button><div id="help">РИТМ: точно в долю = энергия и урон. Мимо доли = замедление. Полная шкала = ПОТОК. Комбо стоя Л–Л–С, присед Л–С.</div><div id="dirSelected">ПРИЁМ: ПРЯМОЙ</div><div id="controls"><div class="cluster"><div id="joystick" aria-label="Джойстик движения"><div class="lr"><span>‹</span><span>›</span></div><div id="stick"></div></div></div><div class="cluster right"><button class="ctl strong" id="heavy"><span>✹</span>СИЛЬНЫЙ</button><button class="ctl grab" id="grab"><span>✊</span>БРОСОК<small>только вплотную</small></button><button class="ctl attack" id="attack"><span>✦</span>ЛЁГКИЙ<small>серия × 2</small></button></div></div><div id="intro"><div class="introInner"><h1>BREAKLINE</h1><p>Музыкальный файтинг: атака, присед, прыжок и захват в долю усиливают ритм. Полная шкала открывает режим ПОТОК.</p><div class="tips"><div class="tip"><b>ДЖОЙСТИК</b> — влево/вправо ходьба, вниз присесть, вверх прыгнуть. Диагональ вверх — прыжок с перемещением.</div><div class="tip"><b>ТРИ ПОЗИЦИИ</b> — стойка сбивает прыжок, присед атакует стойку, прыжок пробивает присед. Переходы имеют небольшую задержку.</div><div class="tip"><b>КОМБО</b> — стоя: лёгкий → лёгкий → сильный; в приседе: лёгкий → сильный; в прыжке: сильный → лёгкий после попадания при посадке.</div><div class="tip"><b>ПОТОК</b> — играй в бит, заполни шкалу ритма, чтобы временно усилить урон и ускорить действия.</div></div><button class="mainBtn" id="start">НАЧАТЬ ДУЭЛЬ</button><p class="mini">Работает прямо в браузере · Сенсор / клавиатура: J, K, L, I, ←, →</p></div></div><div id="restartOverlay"><div id="resultTitle"></div><div id="resultInfo"></div><button class="mainBtn" id="restart">ЕЩЁ ОДНА ДУЭЛЬ</button></div></div><script>
+</style></head><body><div id="app"><canvas id="game"></canvas><div id="hud"><div class="header"><div class="person"><div class="name">ТЫ · БОЕЦ</div><div class="bar"><div class="fill" id="ph"></div></div><div class="balance rhythmFill"><div class="fill" id="pp"></div></div><div class="meter">ЗДОРОВЬЕ / РИТМ</div></div><div class="brand">BREAKLINE<small>ВЕРСИЯ 2.4</small></div><div class="person right enemy"><div class="name" id="aiName">ПРОТИВНИК · ИИ</div><div class="bar"><div class="fill" id="eh"></div></div><div class="balance rhythmFill"><div class="fill" id="ep"></div></div><div class="meter">ЗДОРОВЬЕ / РИТМ</div></div></div></div><div id="clinchPanel" style="display:none"><div id="clinchLabel">ЗАХВАТ</div><div id="counterCircle" class="counterCircle"><span id="counterIcon">✊</span></div><div id="clinchTip">Жди светящегося круга</div></div><div id="distance">ДИСТАНЦИЯ: —</div><div id="rhythmHud"><div class="rhythmTop"><span id="beatLabel">♪ 120 BPM</span><span id="rhythmGrade">ЛОВИ РИТМ</span><span id="flowLabel">ПОТОК · 0/5</span></div><div id="beatTrack"><div id="beatNeedle"></div><div class="beatMark" style="left:25%"></div><div class="beatMark" style="left:50%"></div><div class="beatMark" style="left:75%"></div></div></div><div id="message"></div><div id="subtext"></div><button id="soundBtn">◖ ЗВУК: ВЫКЛ.</button><div id="help">РИТМ: точно в долю = энергия и урон. Мимо доли = замедление. Полная шкала = ПОТОК. Комбо стоя Л–Л–С, присед Л–С.</div><div id="dirSelected">ПРИЁМ: ПРЯМОЙ</div><div id="controls"><div class="cluster"><div id="joystick" aria-label="Джойстик движения"><div class="lr"><span>‹</span><span>›</span></div><div id="stick"></div></div></div><div class="cluster right"><button class="ctl strong" id="heavy"><span>✹</span>СИЛЬНЫЙ</button><button class="ctl grab" id="grab"><span>✊</span>БРОСОК<small>только вплотную</small></button><button class="ctl attack" id="attack"><span>✦</span>ЛЁГКИЙ<small>серия × 2</small></button></div></div><div id="intro"><div class="introInner"><h1>BREAKLINE</h1><p>Музыкальный файтинг: атака, присед, прыжок и захват в долю усиливают ритм. Полная шкала открывает режим ПОТОК.</p><div class="tips"><div class="tip"><b>ДЖОЙСТИК</b> — влево/вправо ходьба, вниз присесть, вверх прыгнуть. Диагональ вверх — прыжок с перемещением.</div><div class="tip"><b>ТРИ ПОЗИЦИИ</b> — стойка сбивает прыжок, присед атакует стойку, прыжок пробивает присед. Переходы имеют небольшую задержку.</div><div class="tip"><b>КОМБО</b> — стоя: лёгкий → лёгкий → сильный; в приседе: лёгкий → сильный; в прыжке: сильный → лёгкий после попадания при посадке.</div><div class="tip"><b>ПОТОК</b> — играй в бит, заполни шкалу ритма, чтобы временно усилить урон и ускорить действия.</div></div><button class="mainBtn" id="start">НАЧАТЬ ДУЭЛЬ</button><p class="mini">Работает прямо в браузере · Сенсор / клавиатура: J, K, L, I, ←, →</p></div></div><div id="restartOverlay"><div id="resultTitle"></div><div id="resultInfo"></div><button class="mainBtn" id="restart">ЕЩЁ ОДНА ДУЭЛЬ</button></div></div><script>
 (()=>{'use strict';const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');let W=0,H=0,dpr=1,now=0,last=0,started=false,ended=false,round=0,shake=0,particles=[],impacts=[],logs=[],audio=null,sound=false;const $=id=>document.getElementById(id);let player,enemy,clinch=null,clinchSeq=0;let selectedDir='neutral',selectedAt=0;const heldDirs=[];let joyX=0,joyY=0,joyPointer=null;let stanceEvents=[];let jumpLatch=false;let jumpQueuedUntil=0;
-const GAME_VERSION='2.3';
+const GAME_VERSION='2.4';
 const RHYTHM_BPM=120,BEAT_MS=60000/RHYTHM_BPM;
 let rhythmStart=0,rhythmNextIndex=0;
 function rhythmJudge(t){
@@ -157,7 +157,7 @@ function startAction(f,kind,t){
  if(f.diveArmed||f.action==='dive')return false;
  const lowFollow=kind==='heavy'&&f.crouch&&f.hitDone&&t<f.lowChainUntil;
  const airFollow=kind==='light'&&f.airFollowReady&&t<f.airFollowUntil&&f.jumpUntil<=t;
- const chain=(f.action==='light'||f.action==='idle')&&f.hitDone&&t>=f.actionStart+BEAT_MS*.25&&t<f.comboDeadline&&f.comboStep>0;
+ const chain=(f.action==='light'||f.action==='idle')&&f.hitDone&&t>=f.actionStart+BEAT_MS*.12&&t<f.comboDeadline&&f.comboStep>0;
  if((t<f.cooldown&&!chain&&!lowFollow&&!airFollow) || (f.action!=='idle'&&t<f.actionEnd&&!chain&&!lowFollow&&!airFollow))return false;
  if(kind==='guard')return false;
  if(kind==='dodge')return false;
@@ -167,7 +167,8 @@ function startAction(f,kind,t){
   f.dir=f.ai?(f.crouch?'down':Math.random()<.36?'back':Math.random()<.5?'forward':'neutral'):(f.jumpUntil>t?'up':f.crouch?(joyX>.28?'downForward':joyX<-.28?'downBack':'down'):currentDir(t));
   f.throwStyle=f.dir;f.throwLow=!!f.crouch;
   f.attackRange=strikeRange(f,kind,f.dir);
-  f.action='grab';f.actionStart=t;const speed=rhythmSpeed(f,t);f.hitAt=nextBeatAfter(t,BEAT_MS*.38)*speed+t*(1-speed);f.actionEnd=Math.max(t+BEAT_MS*1.25*speed,f.hitAt+BEAT_MS*.5);f.hitDone=false;f.cooldown=f.actionEnd+BEAT_MS*.20;
+  f.grabAnchor=rhythmStart+Math.round((t-rhythmStart)/BEAT_MS)*BEAT_MS;
+  f.action='grab';f.actionStart=t;f.hitAt=t+BEAT_MS*.09*rhythmSpeed(f,t);f.actionEnd=t+BEAT_MS*.65;f.hitDone=false;f.cooldown=t+BEAT_MS*.75;
   if(!f.ai)record('grab');return true;
  }
  if(kind==='light'||kind==='heavy'){
@@ -187,10 +188,11 @@ function startAction(f,kind,t){
   f.action=kind;f.actionStart=t;
   const combo=f.comboStep>1;
   const speed=rhythmSpeed(f,t);
-  const duration=BEAT_MS*(f.airFollowAttack?.76:f.lowSweep?1.75:kind==='light'?(combo?.78:.92):(combo?1.78:f.dir==='back'?1.6:1.95))*speed;
+  const duration=BEAT_MS*(f.airFollowAttack?.75:f.lowSweep?1.65:kind==='light'?(combo?.68:.72):(combo?1.75:f.dir==='back'?1.58:1.86))*speed;
   f.actionEnd=t+duration;
   // Light attack reaches contact within one beat; heavy lands on the next beat.
-  f.hitAt=kind==='heavy'?nextBeatAfter(t,BEAT_MS*.75)*speed+t*(1-speed):t+BEAT_MS*(f.airFollowAttack?.38:combo?.35:.40)*speed;
+  const attackBeat=rhythmStart+Math.round((t-rhythmStart)/BEAT_MS)*BEAT_MS;
+  f.hitAt=kind==='heavy'?Math.max(t+BEAT_MS*.30,attackBeat+BEAT_MS)*speed+t*(1-speed):t+BEAT_MS*(f.airFollowAttack?.10:combo?.09:.085)*speed;
   f.actionEnd=Math.max(f.actionEnd,f.hitAt+BEAT_MS*.45);
   f.hitDone=false;f.cooldown=t+(f.airFollowAttack?300:f.lowSweep?duration+310:combo?200:duration+45);
   if(f.crouch&&kind==='light')f.lowChainUntil=t+BEAT_MS*1.65;
@@ -217,13 +219,15 @@ function escapeGrab(att,def,t,reason){
 function beginThrow(att,def,t,instant=false){
  if(clinch)return;
  const repeated=t-att.lastThrowAt<3300;att.lastThrowAt=t;
- const variant=att.throwStyle||att.dir||'neutral';const minDuration=BEAT_MS*(variant==='up'?1.70:variant==='down'?1.26:variant==='back'||variant==='downBack'?1.6:variant==='downForward'?1.43:1.35);
- const duration=Math.max(minDuration,nextBeatAfter(t,minDuration)-t)*rhythmSpeed(att,t);
- clinch={a:att,d:def,phase:'throw',start:t,end:t+duration,instant,variant,low:!!att.throwLow,aiCounterAt:t+duration*(.43+Math.random()*.13),counterChance:def.ai?(def.rhythm>=85?.24:def.rhythm>=50?.39:.64)+(repeated?.15:0):0,seq:++clinchSeq};
- att.action='throwing';att.actionStart=t;att.actionEnd=t+duration+160;att.cooldown=t+duration+280;
- def.throwStyle=variant;def.action='caught';def.actionStart=t;def.actionEnd=t+duration+160;def.guard=false;
+ const variant=att.throwStyle||att.dir||'neutral';const anchor=att.grabAnchor||rhythmStart+Math.round((t-rhythmStart)/BEAT_MS)*BEAT_MS;
+ // Musical four-count: 1 connect, 2 escape, 3 slam, 4 get up.
+ const escapeBeat=anchor+BEAT_MS,slamBeat=anchor+BEAT_MS*2,getupBeat=anchor+BEAT_MS*3;
+ clinch={a:att,d:def,phase:'hold',start:t,end:slamBeat,escapeBeat,slamBeat,getupBeat,anchor,instant,variant,low:!!att.throwLow,
+   aiCounterAt:escapeBeat,counterChance:def.ai?(def.rhythm>=85?.23:def.rhythm>=50?.38:.59)+(repeated?.12:0):0,seq:++clinchSeq};
+ att.action='throwing';att.actionStart=t;att.actionEnd=slamBeat;att.cooldown=slamBeat+BEAT_MS*.35;
+ def.throwStyle=variant;def.action='caught';def.actionStart=t;def.actionEnd=slamBeat;def.guard=false;
  def.x=clamp(att.x+att.facing*.075,.12,.88);
- setMessage('ПОПЫТКА БРОСКА: '+THROW_NAMES[variant],'ЗАХВАТ во время жёлтой вспышки, чтобы уйти',1150);
+ setMessage('1 — ЗАХВАТ','2 — нажми БРОСОК в бит, чтобы вырваться · 3 — падение · 4 — подъём',1100);
  sfx(180,'triangle',.13);
 }
 function endThrow(t,message){if(!clinch)return;let c=clinch;clinch=null;for(let f of [c.a,c.d]){f.action='idle';f.actionEnd=t;f.cooldown=t+290}c.d.x=clamp(c.d.x+c.a.facing*.075,.12,.90);setMessage(message,'',700)}
@@ -231,34 +235,49 @@ function clinchInput(f,kind,t){
  if(!clinch)return false;const c=clinch;
  if(f!==c.d||kind!=='grab')return true;
  if(c.instant)return true;
- const progress=(t-c.start)/(c.end-c.start);
  const grade=gradeAction(f,t,'escape');
- if(progress>=.20&&progress<=.85&&grade!=='off'){
-   endThrow(t,grade==='perfect'?'✦ ИДЕАЛЬНЫЙ ВЫХОД ИЗ ЗАХВАТА!':'УХОД ОТ БРОСКА!');
+ const delta=Math.abs(t-c.escapeBeat);
+ if(delta<=BEAT_MS*.27&&grade!=='off'){
+   endThrow(t,grade==='perfect'?'✦ ИДЕАЛЬНЫЙ ВЫХОД НА «ДВА»!':'УХОД ОТ БРОСКА НА «ДВА»!');
    sfx(540,'triangle',.15);emit(f.x,'#a8e9f1',14);
  }else{
-   setMessage(grade==='off'?'НЕ В РИТМ — ЗАХВАТ ПРОДОЛЖАЕТСЯ':'НЕ ТОТ МОМЕНТ',grade==='off'?'Нажми БРОСОК в музыкальную долю':'Совмести круг и музыкальную долю',610);
+   setMessage('НЕ ПОПАЛ В «ДВА»','Освобождение возможно только на второй доле',550);
  }
  return true;
 }
-function updateClinch(t){const panel=$('clinchPanel');if(!clinch){panel.style.display='none';return}
- const c=clinch,p=clamp((t-c.start)/(c.end-c.start),0,1),active=p>=.20&&p<=.85;
- panel.style.display='block';$('counterCircle').style.setProperty('--p',(p*100)+'%');$('counterCircle').classList.toggle('ready',active&&!c.instant);
- $('counterIcon').textContent=active?'✊':'◌';$('clinchLabel').textContent=active?'СЕЙЧАС!':'ЗАХВАТ';
- $('clinchTip').textContent=c.d===player?'Нажми БРОСОК, когда круг светится':'Противник пытается вырваться';
- if(c.d.ai&&!c.instant&&active&&t>=c.aiCounterAt){c.aiCounterAt=Infinity;if(Math.random()<c.counterChance){gradeAction(c.d,t,'escape');endThrow(t,'ПРОТИВНИК ВЫРВАЛСЯ');sfx(530,'triangle',.15);emit(c.d.x,'#a8e9f1',14);return}}
- if(t>=c.end){
- const a=c.a,d=c.d,v=c.variant;clinch=null;
- a.action='idle';a.cooldown=t+370;a.actionEnd=t;
- const damages={neutral:17,up:23,down:15,back:20,forward:16,downForward:18,downBack:19};
- d.downStyle=v;d.downSide=a.facing;knockDown(d,t,(damages[v]||17)*rhythmDamage(a,t),THROW_NAMES[v]+'!');
- d.downStyle=v;d.downSide=a.facing;
- 
- d.downUntil+=v==='back'||v==='downBack'?320:v==='up'?220:0;
- d.throwProtectionUntil=d.downUntil+800;
- d.stunnedUntil=d.downUntil;d.actionEnd=d.downUntil;
- d.x=clamp(d.x+a.facing*(v==='forward'?.10:v==='back'||v==='downBack'?-.065:.045),.12,.88)
-}
+function updateClinch(t){
+ const panel=$('clinchPanel');
+ if(!clinch){panel.style.display='none';return}
+ const c=clinch;
+ const delta=Math.abs(t-c.escapeBeat);
+ const active=delta<=BEAT_MS*.27;
+ const p=clamp((t-c.anchor)/(BEAT_MS*2),0,1);
+ panel.style.display='block';
+ $('counterCircle').style.setProperty('--p',(p*100)+'%');
+ $('counterCircle').classList.toggle('ready',active&&!c.instant);
+ $('counterIcon').textContent=active?'✊':t<c.escapeBeat?'1':t<c.slamBeat?'2':'3';
+ $('clinchLabel').textContent=active?'2 — ВЫРЫВАЙСЯ!':t<c.escapeBeat?'1 — ЗАХВАТ':'3 — БРОСОК';
+ $('clinchTip').textContent=c.d===player?'Нажми БРОСОК точно на второй доле':'Контрприём — только на второй доле';
+ if(c.d.ai&&!c.instant&&t>=c.aiCounterAt){
+   c.aiCounterAt=Infinity;
+   if(Math.random()<c.counterChance){
+     gradeAction(c.d,c.escapeBeat,'escape');endThrow(t,'ИИ ВЫРВАЛСЯ НА «ДВА»');
+     sfx(530,'triangle',.15);emit(c.d.x,'#a8e9f1',14);return;
+   }
+ }
+ if(t>=c.slamBeat){
+   const a=c.a,d=c.d,v=c.variant;clinch=null;
+   a.action='idle';a.cooldown=t+BEAT_MS*.25;a.actionEnd=t;
+   const damages={neutral:17,up:23,down:15,back:20,forward:16,downForward:18,downBack:19};
+   d.downStyle=v;d.downSide=a.facing;
+   knockDown(d,t,(damages[v]||17)*rhythmDamage(a,t),THROW_NAMES[v]+'! · 3 — БРОСОК');
+   d.downStyle=v;d.downSide=a.facing;
+   // Fourth beat is the first standing frame. Preserve short anti-regrab protection.
+   d.downUntil=Math.max(t+BEAT_MS*.3,c.getupBeat);
+   d.throwProtectionUntil=d.downUntil+BEAT_MS*.7;
+   d.stunnedUntil=d.downUntil;d.actionEnd=d.downUntil;
+   d.x=clamp(d.x+a.facing*(v==='forward'?.10:v==='back'||v==='downBack'?-.065:.045),.12,.88);
+ }
 }
 function resolveDive(att,def,t){
  if(!att.diveArmed||att.diveHitDone)return;
