@@ -19,7 +19,8 @@ function rhythmJudge(t){
 function flowOn(f,t){return f.flowUntil>t}
 function rhythmLevel(f){return Math.min(5,1+Math.floor(Math.min(99,f.rhythm)/20))}
 function gradeAction(f,t,type){
- const grade=f.ai?(Math.random()<.24?'perfect':Math.random()<.57?'good':'off'):rhythmJudge(t);
+ const chance=f.ai?Math.random():-1;
+ const grade=f.ai?(chance<.24?'perfect':chance<.66?'good':'off'):rhythmJudge(t);
  f.rhythmGrade=grade;f.rhythmAttempts++;
  if(grade==='perfect')f.rhythmPerfects++;
  if(grade!=='off')f.rhythmHits++;
@@ -28,7 +29,7 @@ function gradeAction(f,t,type){
    f.rhythm=clamp(f.rhythm+(grade==='perfect'?14:grade==='good'?6:-5),0,100);
    if(f.rhythm>=100){f.rhythm=100;f.flowUntil=t+6500;if(!f.ai)setMessage('✦ ПОТОК АКТИВИРОВАН ✦','6,5 секунд усиленных ударов и быстрых действий',1100)}
  }
- if(grade==='off')f.rhythmSlowUntil=t+480;
+ if(grade==='off')f.rhythmSlowUntil=t+170;
  f.visualLevel=rhythmLevel(f);
  if(!f.ai){
   $('rhythmGrade').textContent=grade==='perfect'?'✦ ИДЕАЛЬНО':grade==='good'?'✓ В РИТМ':'Мимо доли';
@@ -37,6 +38,7 @@ function gradeAction(f,t,type){
  return grade;
 }
 function rhythmSlow(f,t){return !flowOn(f,t)&&f.rhythmSlowUntil>t}
+function rhythmSpeed(f,t){return rhythmSlow(f,t)?1.055:flowOn(f,t)?.90:1}
 function rhythmDamage(f,t){return 1+f.rhythm*.003+(flowOn(f,t)?.14:0)}
 function playRhythmBeat(index){
  if(!sound)return;
@@ -107,7 +109,7 @@ function makeFighter(ai,x){return {ai,x,hp:160,rhythm:0,rhythmGrade:'off',rhythm
  {id:'universal',name:'УНИВЕРСАЛ',subtitle:'Меняет стойки и изучает привычки',pace:[470,820],approach:.23,guard:.20,retreat:.16}
 ];
 function aiSettings(){return AI_STYLES.find(s=>s.id===enemy.aiStyle)||AI_STYLES[2]}
-function fresh(){round++;rhythmStart=performance.now();rhythmNextSound=0;rhythmNextIndex=0;player=makeFighter(false,.35);enemy=makeFighter(true,.65);enemy.aiStyle=AI_STYLES[(round-1)%3].id;enemy.nextThink=performance.now()+rng(900,1250);$('aiName').textContent='ИИ · '+aiSettings().name;ended=false;clinch=null;clinchSeq=0;heldDirs.length=0;stanceEvents=[];jumpLatch=false;jumpQueuedUntil=0;joyX=joyY=0;chooseDir('neutral',0);particles=[];impacts=[];logs=[];shake=0;setMessage('РАУНД '+round+' · '+aiSettings().name,'Атака / прыжок / присед в бит = шкала ритма · ПОТОК при 100%',1800);updateHud();$('restartOverlay').classList.remove('show');}
+function fresh(){round++;rhythmStart=performance.now();rhythmNextIndex=0;player=makeFighter(false,.35);enemy=makeFighter(true,.65);enemy.aiStyle=AI_STYLES[(round-1)%3].id;enemy.nextThink=performance.now()+rng(900,1250);$('aiName').textContent='ИИ · '+aiSettings().name;ended=false;clinch=null;clinchSeq=0;heldDirs.length=0;stanceEvents=[];jumpLatch=false;jumpQueuedUntil=0;joyX=joyY=0;chooseDir('neutral',0);particles=[];impacts=[];logs=[];shake=0;setMessage('РАУНД '+round+' · '+aiSettings().name,'Атака / прыжок / присед в бит = шкала ритма · ПОТОК при 100%',1800);updateHud();$('restartOverlay').classList.remove('show');}
 function setMessage(a,b='',duration=700){$('message').textContent=a;$('subtext').textContent=b;$('message').style.opacity='1';$('subtext').style.opacity='1';if(duration){const token=++messageToken;setTimeout(()=>{if(token===messageToken){$('message').style.opacity='0';$('subtext').style.opacity='0';}},duration)}}let messageToken=0;
 function sfx(freq=240,type='triangle',dur=.07){if(!sound)return;try{audio??=new (window.AudioContext||window.webkitAudioContext)();let o=audio.createOscillator(),g=audio.createGain();o.type=type;o.frequency.setValueAtTime(freq,audio.currentTime);o.frequency.exponentialRampToValueAtTime(Math.max(55,freq*.55),audio.currentTime+dur);g.gain.setValueAtTime(.09,audio.currentTime);g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+dur);o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+dur)}catch(e){}}
 const DIR_NAMES={neutral:'ПРЯМОЙ',up:'В ПРЫЖКЕ',down:'НИЗКИЙ',back:'КОРОТКИЙ',forward:'С ВЫПАДОМ',downForward:'НИЗКИЙ ВЫПАД',downBack:'НИЗКИЙ КОНТР'};
@@ -123,7 +125,7 @@ function beginJump(f,t){
  if(f.action!=='idle'||t<f.stunnedUntil||t<f.recoveryUntil||t<f.landingRecoverUntil||f.jumpUntil>t)return false;
  gradeAction(f,t,'jump');
  const rise=f.crouch||f.stanceRequest||f.stanceTransition==='crouch';
- f.jumpPendingAt=t+(rise?150:85)*(rhythmSlow(f,t)?1.32:flowOn(f,t)?.82:1);f.stanceRequest=false;f.crouch=false;f.stanceTransition='takeoff';f.stanceUntil=f.jumpPendingAt;f.guard=false;
+ f.jumpPendingAt=t+(rise?BEAT_MS*.29:BEAT_MS*.17)*rhythmSpeed(f,t);f.stanceRequest=false;f.crouch=false;f.stanceTransition='takeoff';f.stanceUntil=f.jumpPendingAt;f.guard=false;
  if(!f.ai)rememberStance('jump',t);
  return true;
 }
@@ -164,7 +166,7 @@ function startAction(f,kind,t){
   f.dir=f.ai?(f.crouch?'down':Math.random()<.36?'back':Math.random()<.5?'forward':'neutral'):(f.jumpUntil>t?'up':f.crouch?(joyX>.28?'downForward':joyX<-.28?'downBack':'down'):currentDir(t));
   f.throwStyle=f.dir;f.throwLow=!!f.crouch;
   f.attackRange=strikeRange(f,kind,f.dir);
-  f.action='grab';f.actionStart=t;const slow=rhythmSlow(f,t)?1.20:flowOn(f,t)?.85:1;f.actionEnd=t+630*slow;f.hitAt=t+295*slow;f.hitDone=false;f.cooldown=t+760*slow;
+  f.action='grab';f.actionStart=t;const speed=rhythmSpeed(f,t);f.actionEnd=t+BEAT_MS*1.25*speed;f.hitAt=t+BEAT_MS*.55*speed;f.hitDone=false;f.cooldown=t+BEAT_MS*1.45*speed;
   if(!f.ai)record('grab');return true;
  }
  if(kind==='light'||kind==='heavy'){
@@ -183,11 +185,14 @@ function startAction(f,kind,t){
   f.whiffUntil=0;
   f.action=kind;f.actionStart=t;
   const combo=f.comboStep>1;
-  const duration=(f.airFollowAttack?350:f.lowSweep?530:kind==='light'?(combo?335:410):(combo?570:f.dir==='back'?620:f.dir==='forward'?830:790))*(rhythmSlow(f,t)?1.2:flowOn(f,t)?.86:1);
-  f.actionEnd=t+duration;f.hitAt=t+(f.airFollowAttack?155:f.lowSweep?300:kind==='light'?(combo?135:170):(combo?335:f.dir==='back'?380:f.dir==='forward'?520:490))*(rhythmSlow(f,t)?1.2:flowOn(f,t)?.86:1);
+  const speed=rhythmSpeed(f,t);
+  const duration=BEAT_MS*(f.airFollowAttack?.76:f.lowSweep?1.75:kind==='light'?(combo?.78:.92):(combo?1.78:f.dir==='back'?1.6:1.95))*speed;
+  f.actionEnd=t+duration;
+  // Light attack reaches contact within one beat; heavy lands on the next beat.
+  f.hitAt=t+BEAT_MS*(f.airFollowAttack?.38:f.lowSweep?1.05:kind==='light'?(combo?.35:.40):combo?.96:1.08)*speed;
   f.hitDone=false;f.cooldown=t+(f.airFollowAttack?300:f.lowSweep?duration+310:combo?200:duration+45);
-  if(f.crouch&&kind==='light')f.lowChainUntil=t+820;
-  f.comboDeadline=t+(kind==='light'?820:0);
+  if(f.crouch&&kind==='light')f.lowChainUntil=t+BEAT_MS*1.65;
+  f.comboDeadline=t+(kind==='light'?BEAT_MS*1.8:0);
   if(combo&&f.comboStep===3){f.comboDeadline=0;f.recoveryUntil=t+duration+720;f.cooldown=f.recoveryUntil;setMessage('✹ ФИНАЛ КОМБО ✹','Размашистый удар → затем уязвимость',850);emit(f.x,'#ffdb9a',22);shake=5;sfx(360,'sawtooth',.15)}
   if(!f.ai){if(kind==='light'){f.lightStreak=(t-f.lastLightAt<2300)?Math.min(5,f.lightStreak+1):1;f.lastLightAt=t}else f.lightStreak=0;record(kind)}
   return true;
@@ -210,7 +215,7 @@ function escapeGrab(att,def,t,reason){
 function beginThrow(att,def,t,instant=false){
  if(clinch)return;
  const repeated=t-att.lastThrowAt<3300;att.lastThrowAt=t;
- const variant=att.throwStyle||att.dir||'neutral';const duration=variant==='up'?800:variant==='down'?680:variant==='back'||variant==='downBack'?780:variant==='downForward'?720:660;
+ const variant=att.throwStyle||att.dir||'neutral';const duration=BEAT_MS*(variant==='up'?1.85:variant==='down'?1.5:variant==='back'||variant==='downBack'?1.8:variant==='downForward'?1.65:1.55)*rhythmSpeed(att,t);
  clinch={a:att,d:def,phase:'throw',start:t,end:t+duration,instant,variant,low:!!att.throwLow,aiCounterAt:t+duration*(.43+Math.random()*.13),counterChance:def.ai?(def.rhythm>=85?.24:def.rhythm>=50?.39:.64)+(repeated?.15:0):0,seq:++clinchSeq};
  att.action='throwing';att.actionStart=t;att.actionEnd=t+duration+160;att.cooldown=t+duration+280;
  def.throwStyle=variant;def.action='caught';def.actionStart=t;def.actionEnd=t+duration+160;def.guard=false;
@@ -474,14 +479,14 @@ if(f.jumpPendingAt>0&&t>=f.jumpPendingAt&&f.action==='idle'&&t>=f.stunnedUntil){
 }
 if(f.ai){
  const wantCrouch=t<f.crouchUntil&&f.jumpUntil<=t&&f.action!=='down'&&!clinch;
- if(wantCrouch&&!f.crouch&&f.stanceTransition!=='crouch'&&t>=f.stanceUntil){f.stanceTransition='crouch';f.stanceUntil=t+100*(rhythmSlow(f,t)?1.45:flowOn(f,t)?.8:1);}
+ if(wantCrouch&&!f.crouch&&f.stanceTransition!=='crouch'&&t>=f.stanceUntil){f.stanceTransition='crouch';f.stanceUntil=t+BEAT_MS*.20*rhythmSpeed(f,t);}
  if(!wantCrouch&&f.stanceTransition==='crouch')f.stanceTransition='';
  if(!wantCrouch&&f.crouch){f.crouch=false;f.stanceTransition='rise';f.stanceUntil=t+100;}
  if(!f.crouch&&f.crouchUntil<t)f.crouchUntil=0;
  f.jumpHeight=t<f.jumpUntil?Math.sin(Math.PI*clamp((t-f.jumpStart)/(f.jumpUntil-f.jumpStart),0,1))*72:0;
 }else{
  const wantCrouch=f.stanceRequest&&t>=f.jumpUntil&&f.jumpPendingAt===0;
- if(wantCrouch&&!f.crouch&&f.stanceTransition!=='crouch'&&t>=f.stanceUntil){f.stanceTransition='crouch';f.stanceUntil=t+95*(rhythmSlow(f,t)?1.45:flowOn(f,t)?.8:1);}
+ if(wantCrouch&&!f.crouch&&f.stanceTransition!=='crouch'&&t>=f.stanceUntil){f.stanceTransition='crouch';f.stanceUntil=t+BEAT_MS*.19*rhythmSpeed(f,t);}
  if(!wantCrouch&&f.stanceTransition==='crouch')f.stanceTransition='';
  if(!wantCrouch&&f.crouch){f.crouch=false;f.stanceTransition='rise';f.stanceUntil=t+100;}
  f.jumpHeight=t<f.jumpUntil?Math.sin(Math.PI*clamp((t-f.jumpStart)/(f.jumpUntil-f.jumpStart),0,1))*72:0;
@@ -502,7 +507,7 @@ if(f.diveArmed&&t>=f.jumpUntil){resolveDive(f,f===player?enemy:player,t)}if(f.st
  const airborne=t<f.jumpUntil;
  const horizontal=airborne?(f.moveHeld||f.jumpVector*.80):f.moveHeld;
  if(horizontal&&(f.action==='idle'||airborne&&f.action==='dive')){
-  const speed=(airborne?.00053:.00026)*(rhythmSlow(f,t)?.83:flowOn(f,t)?1.12:1);
+  const speed=(airborne?.00053:.00026)*(rhythmSlow(f,t)?.96:flowOn(f,t)?1.10:1);
   f.x=clamp(f.x+horizontal*dt*speed,.10,.90);
  }
 }if((f.action==='light'||f.action==='heavy'||f.action==='grab')&&!f.hitDone&&t>=f.hitAt){let target=f===player?enemy:player;let d=Math.abs(f.x-target.x);let r=f.attackRange||strikeRange(f,f.action,f.dir);if(f.action!=='grab'&&f.dir==='forward'&&d>r&&d<r+.045)f.x=clamp(f.x+f.facing*Math.min(d-r+.004,.035),.10,.90)}if((f.action==='light'||f.action==='heavy'||f.action==='grab')&&!f.hitDone&&t>=f.hitAt)strike(f,f===player?enemy:player,t);}// Fighters may cross while airborne or when moving past a downed opponent.
@@ -704,7 +709,7 @@ function applyJoy(x,y,t){
  if(player){
  const wantCrouch=joyY>.43;
  if(player.stanceRequest!==wantCrouch){if(wantCrouch)gradeAction(player,t,'crouch');player.stanceRequest=wantCrouch;
-  if(!wantCrouch&&player.crouch){player.crouch=false;player.stanceTransition='rise';player.stanceUntil=t+100*(rhythmSlow(player,t)?1.3:1);player.guard=false}
+  if(!wantCrouch&&player.crouch){player.crouch=false;player.stanceTransition='rise';player.stanceUntil=t+BEAT_MS*.20*rhythmSpeed(player,t);player.guard=false}
  }
  player.moveHeld=wantCrouch?0:(joyX>.22?1:joyX<-.22?-1:0);
  if(joyY<-.62&&!jumpLatch){
