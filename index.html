@@ -314,7 +314,7 @@ function makeFighter(ai,x){return {ai,x,hp:160,rhythm:0,rhythmGrade:'off',rhythm
  {id:'universal',name:'УНИВЕРСАЛ',subtitle:'Меняет стойки и изучает привычки',pace:[470,820],approach:.23,guard:.20,retreat:.16}
 ];
 function aiSettings(){return AI_STYLES.find(s=>s.id===enemy.aiStyle)||AI_STYLES[2]}
-function fresh(){round++;rhythmStart=performance.now();rhythmNextIndex=0;shownRhythmBar=-1;drawRhythmBar(0);player=makeFighter(false,.35);enemy=makeFighter(true,.65);enemy.aiStyle=AI_STYLES[(round-1)%3].id;enemy.nextThink=performance.now()+rng(900,1250);$('aiName').textContent='ИИ · '+aiSettings().name;ended=false;clinch=null;clinchSeq=0;heldDirs.length=0;stanceEvents=[];jumpLatch=false;jumpQueuedUntil=0;joyX=joyY=0;chooseDir('neutral',0);particles=[];impacts=[];logs=[];shake=0;setMessage('РАУНД '+round+' · '+aiSettings().name,'Атака / прыжок / присед в бит = шкала ритма · ПОТОК при 100%',1800);updateHud();$('restartOverlay').classList.remove('show');}
+function fresh(){round++;rhythmStart=performance.now();rhythmNextIndex=0;shownRhythmBar=-1;drawRhythmBar(0);player=makeFighter(false,.35);enemy=makeFighter(true,.65);enemy.aiStyle=AI_STYLES[(round-1)%3].id;enemy.nextThink=performance.now()+rng(900,1250);$('aiName').textContent='ИИ · '+aiSettings().name;ended=false;clinch=null;clinchSeq=0;heldDirs.length=0;stanceEvents=[];jumpLatch=false;jumpQueuedUntil=0;joyX=joyY=0;chooseDir('neutral',0);$('comboHint').textContent='КОМБО: —';particles=[];impacts=[];logs=[];shake=0;setMessage('РАУНД '+round+' · '+aiSettings().name,'Атака / прыжок / присед в бит = шкала ритма · ПОТОК при 100%',1800);updateHud();$('restartOverlay').classList.remove('show');}
 function setMessage(a,b='',duration=700){$('message').textContent=a;$('subtext').textContent=b;$('message').style.opacity='1';$('subtext').style.opacity='1';if(duration){const token=++messageToken;setTimeout(()=>{if(token===messageToken){$('message').style.opacity='0';$('subtext').style.opacity='0';}},duration)}}let messageToken=0;
 function sfx(freq=240,type='triangle',dur=.07){if(!sound)return;try{audio??=new (window.AudioContext||window.webkitAudioContext)();let o=audio.createOscillator(),g=audio.createGain();o.type=type;o.frequency.setValueAtTime(freq,audio.currentTime);o.frequency.exponentialRampToValueAtTime(Math.max(55,freq*.55),audio.currentTime+dur);g.gain.setValueAtTime(.09,audio.currentTime);g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+dur);o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+dur)}catch(e){}}
 const DIR_NAMES={neutral:'ПРЯМОЙ',up:'В ПРЫЖКЕ',down:'НИЗКИЙ',back:'КОРОТКИЙ',forward:'С ВЫПАДОМ',downForward:'НИЗКИЙ ВЫПАД',downBack:'НИЗКИЙ КОНТР'};
@@ -350,7 +350,7 @@ function missedAttack(att,t,reason){
  att.cooldown=Math.max(att.cooldown,att.recoveryUntil);
  att.whiffUntil=att.recoveryUntil;
  att.whiffCount++;
- if(!att.ai)setMessage('СИЛЬНЫЙ УДАР МИМО',reason+' · противник может контратаковать',720);
+ if(!att.ai)setMessage('ФИНАЛ КОМБО МИМО',reason+' · противник может контратаковать',720);
  else setMessage('ПРОТИВНИК ПРОМАХНУЛСЯ','Пока он восстанавливается — контратакуй!',850);
  emit(att.x,'#f4c79b',6);
 }
@@ -368,7 +368,7 @@ function startAction(f,kind,t){
  if(clinch)return clinchInput(f,kind,t);
  if(!started||ended||f.action==='down'||t<f.stunnedUntil||t<f.recoveryUntil||t<f.jumpPendingAt||t<f.landingRecoverUntil||((f.stanceTransition==='rise'||f.stanceTransition==='crouch')&&t<f.stanceUntil))return false;
  // Aerial heavy is armed mid-flight and resolves when both feet land.
- if(kind==='heavy'&&f.jumpUntil>t&&f.jumpHeight>7&&!f.diveArmed){fightVoice('heavy',f);fightFoley('whoosh',true);gradeAction(f,t,'dive');f.diveArmed=true;f.diveHitDone=false;f.guard=false;f.comboStep=0;f.action='dive';f.actionStart=t;f.actionEnd=f.jumpUntil+260;f.cooldown=f.jumpUntil+430;setMessage(f.ai?'УДАР СВЕРХУ!':'АТАКА С ПРИЗЕМЛЕНИЕМ','Попадёт при посадке, если хватит дистанции',650);sfx(470,'triangle',.10);return true}
+ if(kind==='heavy'&&f.jumpUntil>t&&f.jumpHeight>7&&!f.diveArmed){fightVoice('heavy',f);fightFoley('whoosh',true);gradeAction(f,t,'dive');f.diveArmed=true;f.diveHitDone=false;f.guard=false;f.comboStep=0;f.comboSeq='';f.finisher=false;f.action='dive';f.actionStart=t;f.actionEnd=f.jumpUntil+260;f.cooldown=f.jumpUntil+430;setMessage(f.ai?'УДАР СВЕРХУ!':'АТАКА С ПРИЗЕМЛЕНИЕМ','Попадёт при посадке, если хватит дистанции',650);sfx(470,'triangle',.10);return true}
  if(f.diveArmed||f.action==='dive')return false;
  const lowFollow=kind==='heavy'&&f.crouch&&f.hitDone&&t<f.lowChainUntil;
  const airFollow=kind==='light'&&f.airFollowReady&&t<f.airFollowUntil&&f.jumpUntil<=t;
@@ -430,7 +430,7 @@ function knockDown(f,t,damage,label){
 function escapeGrab(att,def,t,reason){
  att.action='stunned';att.actionStart=t;att.actionEnd=t+430;att.stunnedUntil=t+430;
  att.recoveryUntil=Math.max(att.recoveryUntil,t+650);att.cooldown=att.recoveryUntil;
- att.comboStep=0;
+ att.comboStep=0;att.comboSeq='';att.finisher=false;
  att.x=clamp(att.x-att.facing*.052,.10,.90);
  def.guard=false;def.grabCounters++;
  emit(att.x,'#a8e9f1',13);sfx(520,'triangle',.14);
@@ -923,7 +923,7 @@ function fighter(f,t){
  if(f.diveArmed){ctx.fillStyle='#ffe0a0';ctx.font='bold 12px system-ui';ctx.fillText('УДАР СВЕРХУ ↓',x,ground-(f.jumpHeight||0)-210*scale)}
  if((comboTwo||comboFinal)&&!low&&t<f.actionEnd){ctx.fillStyle=comboFinal?'#ffda8a':'#b8f0cd';ctx.font='900 15px system-ui';ctx.fillText(comboFinal?'✹ КОМБО ×3':'КОМБО ×2',x,ground-209*scale)}
  if(sweep&&t<f.actionEnd){ctx.fillStyle='#a6f1d3';ctx.font='900 13px system-ui';ctx.fillText('НИЗКАЯ ПОДСЕЧКА',x,ground-194*scale)}
- if((light||heavy)&&t<f.hitAt){ctx.fillStyle=heavy?'#ffd4a1':'#e4ebdc';ctx.font='bold 10px system-ui';ctx.fillText((heavy?'СИЛЬНЫЙ: ':'')+DIR_NAMES[f.dir||'neutral'],x,ground-184*scale)}
+ if((light||heavy)&&t<f.hitAt){ctx.fillStyle=heavy?'#ffd4a1':'#e4ebdc';ctx.font='bold 10px system-ui';ctx.fillText((f.finisher?'✹ ФИНАЛ: ':heavy?'НОГА: ':'')+DIR_NAMES[f.dir||'neutral'],x,ground-184*scale)}
  if(f.action==='grab'&&t<f.hitAt){ctx.fillStyle='#ffbe88';ctx.font='bold 10px system-ui';ctx.fillText('БРОСОК: '+THROW_NAMES[f.dir||'neutral'],x,ground-180*scale)}
 }
 function render(t){ctx.save();if(shake)ctx.translate(rng(-shake,shake),rng(-shake,shake));bg();if(player&&enemy){fighter(player,t);fighter(enemy,t)}for(let p of particles){ctx.globalAlpha=clamp(p.life/p.total,0,1);ctx.fillStyle=p.col;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,2*Math.PI);ctx.fill()}
