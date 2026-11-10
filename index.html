@@ -4,9 +4,9 @@
 #joystick{width:136px;height:136px;position:relative;border-radius:50%;border:2px solid #a0b5b080;background:radial-gradient(circle,#34484bdc,#152429ee);touch-action:none;box-shadow:inset 0 0 25px #0008;pointer-events:auto;flex-shrink:0}#joystick:before,#joystick:after{position:absolute;pointer-events:none;color:#d6ded6aa;font-weight:800;font-size:17px}#joystick:before{content:'↑';top:7px;left:calc(50% - 6px)}#joystick:after{content:'↓';bottom:7px;left:calc(50% - 6px)}#stick{position:absolute;left:50%;top:50%;width:59px;height:59px;border-radius:50%;transform:translate(-50%,-50%);background:linear-gradient(140deg,#9daea4,#435a58);border:2px solid #dde7d5;box-shadow:0 3px 11px #0008;pointer-events:none}#joystick .lr{position:absolute;left:7px;right:7px;top:calc(50% - 12px);display:flex;justify-content:space-between;pointer-events:none;color:#c4d2ceaa}.cluster.right{max-width:55vw}.ctl.strong{background:linear-gradient(145deg,#99584d,#542f30);border-color:#e5a99c;min-width:75px;height:82px}.ctl.grab{height:80px;min-width:77px}.ctl.attack{height:86px;min-width:82px}#help{bottom:150px;max-width:min(400px,52vw)}
 @media(max-height:500px){#joystick{width:108px;height:108px}#stick{width:48px;height:48px}#help{bottom:100px;font-size:10px}#clinchPanel{top:32%}}
 @media(max-width:620px) and (orientation:portrait){#joystick{width:118px;height:118px}#stick{width:52px;height:52px}#controls{gap:4px}.cluster.right{gap:5px}.ctl.strong{min-width:62px;height:72px}.ctl.grab{min-width:65px;height:72px}.ctl.attack{min-width:65px;height:78px}#help{bottom:145px;max-width:65vw;font-size:9px}}
-</style></head><body><div id="app"><canvas id="game"></canvas><div id="hud"><div class="header"><div class="person"><div class="name">ТЫ · БОЕЦ</div><div class="bar"><div class="fill" id="ph"></div></div><div class="balance"><div class="fill" id="pp"></div></div><div class="meter">ЗДОРОВЬЕ / ДИСБАЛАНС</div></div><div class="brand">BREAKLINE<small>ВЕРСИЯ 2.1</small></div><div class="person right enemy"><div class="name" id="aiName">ПРОТИВНИК · ИИ</div><div class="bar"><div class="fill" id="eh"></div></div><div class="balance"><div class="fill" id="ep"></div></div><div class="meter">ЗДОРОВЬЕ / ДИСБАЛАНС</div></div></div></div><div id="clinchPanel" style="display:none"><div id="clinchLabel">ЗАХВАТ</div><div id="counterCircle" class="counterCircle"><span id="counterIcon">✊</span></div><div id="clinchTip">Жди светящегося круга</div></div><div id="distance">ДИСТАНЦИЯ: —</div><div id="message"></div><div id="subtext"></div><button id="soundBtn">◖ ЗВУК: ВЫКЛ.</button><div id="help">ТРИ КОМБО: стойка Л–Л–С; присед Л–С; прыжок С–Л после приземления. Переходы не мгновенные.</div><div id="dirSelected">ПРИЁМ: ПРЯМОЙ</div><div id="controls"><div class="cluster"><div id="joystick" aria-label="Джойстик движения"><div class="lr"><span>‹</span><span>›</span></div><div id="stick"></div></div></div><div class="cluster right"><button class="ctl strong" id="heavy"><span>✹</span>СИЛЬНЫЙ</button><button class="ctl grab" id="grab"><span>✊</span>БРОСОК<small>только вплотную</small></button><button class="ctl attack" id="attack"><span>✦</span>ЛЁГКИЙ<small>серия × 2</small></button></div></div><div id="intro"><div class="introInner"><h1>BREAKLINE</h1><p>Контролируй дистанцию и меняй ритм: противник замечает однообразные лёгкие удары и начинает их парировать.</p><div class="tips"><div class="tip"><b>ДЖОЙСТИК</b> — влево/вправо ходьба, вниз присесть, вверх прыгнуть. Диагональ вверх — прыжок с перемещением.</div><div class="tip"><b>ТРИ ПОЗИЦИИ</b> — стойка сбивает прыжок, присед атакует стойку, прыжок пробивает присед. Переходы имеют небольшую задержку.</div><div class="tip"><b>КОМБО</b> — стоя: лёгкий → лёгкий → сильный; в приседе: лёгкий → сильный; в прыжке: сильный → лёгкий после попадания при посадке.</div><div class="tip"><b>ПРИСЕД</b> — вниз, вниз-вперёд и вниз-назад дают разные удары и броски. Для броска подойди вплотную.</div></div><button class="mainBtn" id="start">НАЧАТЬ ДУЭЛЬ</button><p class="mini">Работает прямо в браузере · Сенсор / клавиатура: J, K, L, I, ←, →</p></div></div><div id="restartOverlay"><div id="resultTitle"></div><div id="resultInfo"></div><button class="mainBtn" id="restart">ЕЩЁ ОДНА ДУЭЛЬ</button></div></div><script>
+</style></head><body><div id="app"><canvas id="game"></canvas><div id="hud"><div class="header"><div class="person"><div class="name">ТЫ · БОЕЦ</div><div class="bar"><div class="fill" id="ph"></div></div><div class="balance"><div class="fill" id="pp"></div></div><div class="meter">ЗДОРОВЬЕ / ДИСБАЛАНС</div></div><div class="brand">BREAKLINE<small>ВЕРСИЯ 2.1.1</small></div><div class="person right enemy"><div class="name" id="aiName">ПРОТИВНИК · ИИ</div><div class="bar"><div class="fill" id="eh"></div></div><div class="balance"><div class="fill" id="ep"></div></div><div class="meter">ЗДОРОВЬЕ / ДИСБАЛАНС</div></div></div></div><div id="clinchPanel" style="display:none"><div id="clinchLabel">ЗАХВАТ</div><div id="counterCircle" class="counterCircle"><span id="counterIcon">✊</span></div><div id="clinchTip">Жди светящегося круга</div></div><div id="distance">ДИСТАНЦИЯ: —</div><div id="message"></div><div id="subtext"></div><button id="soundBtn">◖ ЗВУК: ВЫКЛ.</button><div id="help">ТРИ КОМБО: стойка Л–Л–С; присед Л–С; прыжок С–Л после приземления. Переходы не мгновенные.</div><div id="dirSelected">ПРИЁМ: ПРЯМОЙ</div><div id="controls"><div class="cluster"><div id="joystick" aria-label="Джойстик движения"><div class="lr"><span>‹</span><span>›</span></div><div id="stick"></div></div></div><div class="cluster right"><button class="ctl strong" id="heavy"><span>✹</span>СИЛЬНЫЙ</button><button class="ctl grab" id="grab"><span>✊</span>БРОСОК<small>только вплотную</small></button><button class="ctl attack" id="attack"><span>✦</span>ЛЁГКИЙ<small>серия × 2</small></button></div></div><div id="intro"><div class="introInner"><h1>BREAKLINE</h1><p>Контролируй дистанцию и меняй ритм: противник замечает однообразные лёгкие удары и начинает их парировать.</p><div class="tips"><div class="tip"><b>ДЖОЙСТИК</b> — влево/вправо ходьба, вниз присесть, вверх прыгнуть. Диагональ вверх — прыжок с перемещением.</div><div class="tip"><b>ТРИ ПОЗИЦИИ</b> — стойка сбивает прыжок, присед атакует стойку, прыжок пробивает присед. Переходы имеют небольшую задержку.</div><div class="tip"><b>КОМБО</b> — стоя: лёгкий → лёгкий → сильный; в приседе: лёгкий → сильный; в прыжке: сильный → лёгкий после попадания при посадке.</div><div class="tip"><b>ПРИСЕД</b> — вниз, вниз-вперёд и вниз-назад дают разные удары и броски. Для броска подойди вплотную.</div></div><button class="mainBtn" id="start">НАЧАТЬ ДУЭЛЬ</button><p class="mini">Работает прямо в браузере · Сенсор / клавиатура: J, K, L, I, ←, →</p></div></div><div id="restartOverlay"><div id="resultTitle"></div><div id="resultInfo"></div><button class="mainBtn" id="restart">ЕЩЁ ОДНА ДУЭЛЬ</button></div></div><script>
 (()=>{'use strict';const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');let W=0,H=0,dpr=1,now=0,last=0,started=false,ended=false,round=0,shake=0,particles=[],impacts=[],logs=[],audio=null,sound=false;const $=id=>document.getElementById(id);let player,enemy,clinch=null,clinchSeq=0;let selectedDir='neutral',selectedAt=0;const heldDirs=[];let joyX=0,joyY=0,joyPointer=null;let stanceEvents=[];let jumpLatch=false;let jumpQueuedUntil=0;
-const GAME_VERSION='2.1';
+const GAME_VERSION='2.1.1';
 let updateCheckRunning=false;
 async function checkForUpdate(){
  if(updateCheckRunning||document.visibilityState==='hidden')return;
@@ -32,13 +32,13 @@ async function checkForUpdate(){
 addEventListener('pageshow',()=>checkForUpdate());
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')checkForUpdate()});
 const rng=(a,b)=>a+Math.random()*(b-a),clamp=(n,a,b)=>Math.max(a,Math.min(b,n));function resize(){dpr=Math.min(window.devicePixelRatio||1,2);W=innerWidth;H=innerHeight;canvas.width=Math.floor(W*dpr);canvas.height=Math.floor(H*dpr);ctx.setTransform(dpr,0,0,dpr,0,0)}window.addEventListener('resize',resize);resize();
-function makeFighter(ai,x){return {ai,x,hp:160,post:0,action:'idle',actionStart:0,actionEnd:0,hitAt:0,hitDone:false,guard:false,guardAt:-1e5,stunnedUntil:0,invulUntil:0,cooldown:0,facing:ai?-1:1,history:[],lastAction:'',feet:0,windup:'',nextThink:0,stepUntil:0,stepDir:0,combo:0,moveHeld:0,moveSpeed:0,lightStreak:0,lastLightAt:-1e5,readAttackId:0,readAt:0,readHandled:false,comboStep:0,comboDeadline:0,comboHits:0,recoveryUntil:0,downStart:0,downUntil:0,clinchSide:'',toppleReady:false,dir:'neutral',throwVariant:'forward',crouch:false,crouchUntil:0,attackLow:false,jumpStart:0,jumpUntil:0,jumpVector:0,jumpHeight:0,diveArmed:false,diveHitDone:false,stanceRequest:false,stanceUntil:0,stanceTransition:'',jumpPendingAt:0,landingRecoverUntil:0,lowChainUntil:0,lowSweep:false,airFollowUntil:0,airFollowReady:false,airFollowAttack:false,wasAirborne:false,stanceHeldSince:0,throwStyle:'neutral',throwLow:false,downStyle:'normal',downSide:1,hitReactUntil:0,hitReactStart:0,hitReactPower:0,hitReactLow:false,attackRange:0,whiffUntil:0,whiffCount:0,counterHits:0,aiStyle:'universal',aiWaitUntil:0,aiRetreats:0,aiAttacks:0,aiGuards:0};}const AI_STYLES=[
+function makeFighter(ai,x){return {ai,x,hp:160,post:0,action:'idle',actionStart:0,actionEnd:0,hitAt:0,hitDone:false,guard:false,guardAt:-1e5,stunnedUntil:0,invulUntil:0,cooldown:0,facing:ai?-1:1,history:[],lastAction:'',feet:0,windup:'',nextThink:0,stepUntil:0,stepDir:0,combo:0,moveHeld:0,moveSpeed:0,lightStreak:0,lastLightAt:-1e5,readAttackId:0,readAt:0,readHandled:false,comboStep:0,comboDeadline:0,comboHits:0,recoveryUntil:0,downStart:0,downUntil:0,clinchSide:'',toppleReady:false,dir:'neutral',throwVariant:'forward',crouch:false,crouchUntil:0,attackLow:false,jumpStart:0,jumpUntil:0,jumpVector:0,jumpHeight:0,diveArmed:false,diveHitDone:false,stanceRequest:false,stanceUntil:0,stanceTransition:'',jumpPendingAt:0,landingRecoverUntil:0,lowChainUntil:0,lowSweep:false,airFollowUntil:0,airFollowReady:false,airFollowAttack:false,wasAirborne:false,stanceHeldSince:0,throwStyle:'neutral',throwLow:false,downStyle:'normal',downSide:1,hitReactUntil:0,hitReactStart:0,hitReactPower:0,hitReactLow:false,attackRange:0,whiffUntil:0,whiffCount:0,counterHits:0,aiStyle:'universal',aiWaitUntil:0,aiRetreats:0,aiAttacks:0,aiGuards:0,throwProtectionUntil:0,lastThrowAt:-1e5,grabReadId:0,grabCounters:0};}const AI_STYLES=[
  {id:'aggressor',name:'АГРЕССОР',subtitle:'Наступает и давит сериями',pace:[310,570],approach:.18,guard:.08,retreat:.04},
  {id:'counter',name:'КОНТРАТАКУЮЩИЙ',subtitle:'Держит дистанцию и ловит промахи',pace:[500,800],approach:.265,guard:.42,retreat:.45},
  {id:'universal',name:'УНИВЕРСАЛ',subtitle:'Меняет стойки и изучает привычки',pace:[470,820],approach:.23,guard:.20,retreat:.16}
 ];
 function aiSettings(){return AI_STYLES.find(s=>s.id===enemy.aiStyle)||AI_STYLES[2]}
-function fresh(){round++;player=makeFighter(false,.35);enemy=makeFighter(true,.65);enemy.aiStyle=AI_STYLES[(round-1)%3].id;enemy.nextThink=performance.now()+rng(900,1250);$('aiName').textContent='ИИ · '+aiSettings().name;ended=false;clinch=null;clinchSeq=0;heldDirs.length=0;stanceEvents=[];jumpLatch=false;jumpQueuedUntil=0;joyX=joyY=0;chooseDir('neutral',0);particles=[];impacts=[];logs=[];shake=0;setMessage('РАУНД '+round+' · '+aiSettings().name,aiSettings().subtitle+' · контратаки работают как прежде',1800);updateHud();$('restartOverlay').classList.remove('show');}
+function fresh(){round++;player=makeFighter(false,.35);enemy=makeFighter(true,.65);enemy.aiStyle=AI_STYLES[(round-1)%3].id;enemy.nextThink=performance.now()+rng(900,1250);$('aiName').textContent='ИИ · '+aiSettings().name;ended=false;clinch=null;clinchSeq=0;heldDirs.length=0;stanceEvents=[];jumpLatch=false;jumpQueuedUntil=0;joyX=joyY=0;chooseDir('neutral',0);particles=[];impacts=[];logs=[];shake=0;setMessage('РАУНД '+round+' · '+aiSettings().name,aiSettings().subtitle+' · против серии захватов теперь есть защита',1800);updateHud();$('restartOverlay').classList.remove('show');}
 function setMessage(a,b='',duration=700){$('message').textContent=a;$('subtext').textContent=b;$('message').style.opacity='1';$('subtext').style.opacity='1';if(duration){const token=++messageToken;setTimeout(()=>{if(token===messageToken){$('message').style.opacity='0';$('subtext').style.opacity='0';}},duration)}}let messageToken=0;
 function sfx(freq=240,type='triangle',dur=.07){if(!sound)return;try{audio??=new (window.AudioContext||window.webkitAudioContext)();let o=audio.createOscillator(),g=audio.createGain();o.type=type;o.frequency.setValueAtTime(freq,audio.currentTime);o.frequency.exponentialRampToValueAtTime(Math.max(55,freq*.55),audio.currentTime+dur);g.gain.setValueAtTime(.09,audio.currentTime);g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+dur);o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+dur)}catch(e){}}
 const DIR_NAMES={neutral:'ПРЯМОЙ',up:'В ПРЫЖКЕ',down:'НИЗКИЙ',back:'КОРОТКИЙ',forward:'С ВЫПАДОМ',downForward:'НИЗКИЙ ВЫПАД',downBack:'НИЗКИЙ КОНТР'};
@@ -59,7 +59,7 @@ function beginJump(f,t){
 }
 // Range is selected when an attack begins; joystick direction selects a technique, not its facing.
 function strikeRange(f,kind,dir){
- if(kind==='grab')return .113;
+ if(kind==='grab')return .100;
  if(f.lowSweep)return .205;
  if(f.crouch)return kind==='heavy'?(dir==='downForward'?.267:dir==='downBack'?.178:.223):(dir==='downForward'?.252:dir==='downBack'?.160:.202);
  if(kind==='heavy')return dir==='forward'?.304:dir==='back'?.182:dir==='up'?.215:.254;
@@ -93,7 +93,7 @@ function startAction(f,kind,t){
   f.dir=f.ai?(f.crouch?'down':Math.random()<.36?'back':Math.random()<.5?'forward':'neutral'):(f.jumpUntil>t?'up':f.crouch?(joyX>.28?'downForward':joyX<-.28?'downBack':'down'):currentDir(t));
   f.throwStyle=f.dir;f.throwLow=!!f.crouch;
   f.attackRange=strikeRange(f,kind,f.dir);
-  f.action='grab';f.actionStart=t;f.actionEnd=t+620;f.hitAt=t+245;f.hitDone=false;f.cooldown=t+720;
+  f.action='grab';f.actionStart=t;f.actionEnd=t+630;f.hitAt=t+295;f.hitDone=false;f.cooldown=t+760;
   if(!f.ai)record('grab');return true;
  }
  if(kind==='light'||kind==='heavy'){
@@ -126,10 +126,20 @@ function step(f,direction,t){if(!started||ended||t<f.stunnedUntil||t<f.stanceUnt
 function knockDown(f,t,damage,label){
  if(clinch)clinch=null;f.stanceTransition='';f.stanceRequest=false;f.crouch=false;f.jumpPendingAt=0;f.airFollowReady=false;f.lowChainUntil=0;f.diveArmed=false;f.diveHitDone=true;f.jumpUntil=t;f.jumpHeight=0;f.hp=Math.max(0,f.hp-damage);f.post=35;f.toppleReady=false;f.guard=false;f.action='down';f.downStart=t;f.downUntil=t+1750;f.stunnedUntil=f.downUntil;f.actionEnd=f.downUntil;f.cooldown=f.downUntil+90;f.x=clamp(f.x+f.facing*.025,.12,.88);emit(f.x,'#f8d18a',22);impact(f,t,1.8,false);shake=9;sfx(88,'sawtooth',.25);setMessage(label,'Падение → подъём · короткое окно уязвимости',950);if(f.hp<=0)finish(!f.ai);
 }
+function escapeGrab(att,def,t,reason){
+ att.action='stunned';att.actionStart=t;att.actionEnd=t+430;att.stunnedUntil=t+430;
+ att.recoveryUntil=Math.max(att.recoveryUntil,t+650);att.cooldown=att.recoveryUntil;
+ att.post=Math.min(100,att.post+12);att.comboStep=0;
+ att.x=clamp(att.x-att.facing*.052,.10,.90);
+ def.guard=false;def.grabCounters++;
+ emit(att.x,'#a8e9f1',13);sfx(520,'triangle',.14);
+ setMessage(reason,'Захват отброшен · теперь можно атаковать',820);
+}
 function beginThrow(att,def,t,instant=false){
  if(clinch)return;
+ const repeated=t-att.lastThrowAt<3300;att.lastThrowAt=t;
  const variant=att.throwStyle||att.dir||'neutral';const duration=variant==='up'?800:variant==='down'?680:variant==='back'||variant==='downBack'?780:variant==='downForward'?720:660;
- clinch={a:att,d:def,phase:'throw',start:t,end:t+duration,instant,variant,low:!!att.throwLow,aiCounterAt:t+duration*(.43+Math.random()*.13),counterChance:def.ai?(def.post>=90?.06:def.post>=65?.12:def.post>=40?.19:.27):0,seq:++clinchSeq};
+ clinch={a:att,d:def,phase:'throw',start:t,end:t+duration,instant,variant,low:!!att.throwLow,aiCounterAt:t+duration*(.43+Math.random()*.13),counterChance:def.ai?(def.post>=90?.16:def.post>=65?.34:def.post>=40?.49:.69)+(repeated?.15:0):0,seq:++clinchSeq};
  att.action='throwing';att.actionStart=t;att.actionEnd=t+duration+160;att.cooldown=t+duration+280;
  def.throwStyle=variant;def.action='caught';def.actionStart=t;def.actionEnd=t+duration+160;def.guard=false;
  def.x=clamp(att.x+att.facing*.075,.12,.88);
@@ -142,12 +152,12 @@ function clinchInput(f,kind,t){
  if(f!==c.d||kind!=='grab')return true;
  if(c.instant)return true;
  const progress=(t-c.start)/(c.end-c.start);
- if(progress>=.28&&progress<=.75){c.a.post=Math.min(100,c.a.post+18);endThrow(t,'УХОД ОТ БРОСКА!');sfx(540,'triangle',.15);emit(f.x,'#a8e9f1',14)}
+ if(progress>=.20&&progress<=.85){c.a.post=Math.min(100,c.a.post+18);endThrow(t,'УХОД ОТ БРОСКА!');sfx(540,'triangle',.15);emit(f.x,'#a8e9f1',14)}
  else{setMessage('НЕ ТОТ МОМЕНТ','Нажми ЗАХВАТ во время жёлтой вспышки',450)}
  return true;
 }
 function updateClinch(t){const panel=$('clinchPanel');if(!clinch){panel.style.display='none';return}
- const c=clinch,p=clamp((t-c.start)/(c.end-c.start),0,1),active=p>=.28&&p<=.75;
+ const c=clinch,p=clamp((t-c.start)/(c.end-c.start),0,1),active=p>=.20&&p<=.85;
  panel.style.display='block';$('counterCircle').style.setProperty('--p',(p*100)+'%');$('counterCircle').classList.toggle('ready',active&&!c.instant);
  $('counterIcon').textContent=active?'✊':'◌';$('clinchLabel').textContent=active?'СЕЙЧАС!':'ЗАХВАТ';
  $('clinchTip').textContent=c.d===player?'Нажми БРОСОК, когда круг светится':'Противник пытается вырваться';
@@ -160,6 +170,7 @@ function updateClinch(t){const panel=$('clinchPanel');if(!clinch){panel.style.di
  d.downStyle=v;d.downSide=a.facing;
  d.post=v==='down'?Math.min(100,d.post+19):d.post;
  d.downUntil+=v==='back'||v==='downBack'?320:v==='up'?220:0;
+ d.throwProtectionUntil=d.downUntil+800;
  d.stunnedUntil=d.downUntil;d.actionEnd=d.downUntil;
  d.x=clamp(d.x+a.facing*(v==='forward'?.10:v==='back'||v==='downBack'?-.065:.045),.12,.88)
 }
@@ -218,8 +229,10 @@ if(action!=='grab'&&!att.attackLow&&att.jumpUntil<=t&&def.jumpUntil>t&&def.jumpH
 const recentParry=def.ai&&def.guard&&t-def.guardAt<=285&&t-def.guardAt>=50&&def.post<55;
 if(action!=='grab'&&recentParry){att.post+=35;att.stunnedUntil=t+850;att.action='stunned';att.actionEnd=t+720;att.cooldown=t+720;def.post=Math.max(0,def.post-12);if(def.ai){enemy.nextThink=t+180;enemy.guard=false}setMessage(def.ai?'ПРОТИВНИК ПАРИРОВАЛ':'ИДЕАЛЬНОЕ ПАРИРОВАНИЕ',def.ai?'Меняй ритм атак':'Контратакуй сейчас!',800);emit(def.x,'#a8e9f1',14);sfx(670,'triangle',.12);shake=6;return}
 if(action==='grab'){
+ if(t<def.throwProtectionUntil){escapeGrab(att,def,t,'ЗАЩИТА ПОСЛЕ ПОДЪЁМА');return}
  if(def.action==='down'){att.post+=10;setMessage('СОПЕРНИК НА ЗЕМЛЕ','Подожди, пока он встанет',650);return}
  if(def.toppleReady&&t<def.stunnedUntil){beginThrow(att,def,t);return}
+ if(def.ai&&t>=def.stunnedUntil&&def.action==='idle'&&Math.random()<(def.aiStyle==='counter'?.42:def.aiStyle==='aggressor'?.22:.32)){escapeGrab(att,def,t,'ИИ ОТБИЛ ЗАХВАТ');return}
  beginThrow(att,def,t);return}
 if(att.lowSweep&&action==='heavy'&&!def.crouch&&def.action!=='down'&&!def.guard){knockDown(def,t,12,'ПОДСЕЧКА!');return}
 if(action==='heavy'&&def.toppleReady&&t<def.stunnedUntil){knockDown(def,t,19,'НОКДАУН ОТ СИЛЬНОГО УДАРА');return}
@@ -240,7 +253,20 @@ function easeOut(n){return 1-Math.pow(1-clamp(n,0,1),3)}
 
 function updateHud(){$('ph').style.width=clamp(player.hp/160*100,0,100)+'%';$('pp').style.width=clamp(player.post,0,100)+'%';$('eh').style.width=clamp(enemy.hp/160*100,0,100)+'%';$('ep').style.width=clamp(enemy.post,0,100)+'%'}
 function aiDecide(t){
- if(clinch||ended||!started||t<enemy.nextThink||t<enemy.stunnedUntil||t<enemy.jumpPendingAt)return;
+ if(clinch||ended||!started||t<enemy.stunnedUntil||t<enemy.jumpPendingAt)return;
+ // A visible grab windup can provoke a step away or a quick interrupt.
+ if(player.action==='grab'&&!player.hitDone&&t>=player.actionStart+120&&t<player.hitAt&&enemy.grabReadId!==player.actionStart&&enemy.action==='idle'&&t>=enemy.stanceUntil&&t>=enemy.cooldown){
+   enemy.grabReadId=player.actionStart;
+   const distance=Math.abs(enemy.x-player.x),repeat=player.history.slice(-5).filter(x=>x==='grab').length;
+   const reactChance=enemy.aiStyle==='counter'?.85:enemy.aiStyle==='universal'?.75:.63;
+   if(distance<.165&&Math.random()<Math.min(.95,reactChance+repeat*.045)){
+      enemy.guard=false;
+      if(distance<.115){step(enemy,1,t);enemy.nextThink=t+220;}
+      else{startAction(enemy,'light',t);enemy.nextThink=t+320;}
+      return;
+   }
+ }
+ if(t<enemy.nextThink)return;
  const cfg=aiSettings(),style=cfg.id,dist=Math.abs(enemy.x-player.x);
  // Combo follow-ups are available to every style, but aggressors use them more often.
  if(enemy.airFollowReady&&t<enemy.airFollowUntil&&t>=enemy.actionEnd){
@@ -392,7 +418,7 @@ if(f===player){
  f.guard=f.action==='idle'&&t>=f.jumpUntil&&f.jumpPendingAt===0&&t>=f.stanceUntil&&joyX<=.18&&t>=f.stunnedUntil&&t>=f.landingRecoverUntil;
  if(f.guard&&t-f.guardAt>280)f.guardAt=t-500;
 }else if(f.crouch&&f.action==='idle'&&t>=f.stanceUntil&&t>=f.stunnedUntil){f.guard=true;f.guardAt=t-500;}
-if(f.diveArmed&&t>=f.jumpUntil){resolveDive(f,f===player?enemy:player,t)}if(f.stepUntil>t&&t>=f.stanceUntil&&t>=f.landingRecoverUntil){f.x+=f.stepDir*dt*.00013;f.x=clamp(f.x,.12,.88)}if(f===player&&f.moveHeld&&f.action==='idle'&&!f.crouch&&t>=f.stanceUntil&&t>=f.landingRecoverUntil&&t>=f.stunnedUntil){const speed=t<f.jumpUntil?.00019:.00026;f.x=clamp(f.x+f.moveHeld*dt*speed,.10,.90)}if((f.action==='light'||f.action==='heavy'||f.action==='grab')&&!f.hitDone&&t>=f.hitAt){let target=f===player?enemy:player;let d=Math.abs(f.x-target.x);let r=f.attackRange||strikeRange(f,f.action,f.dir);if(f.action!=='grab'&&f.dir==='forward'&&d>r&&d<r+.045)f.x=clamp(f.x+f.facing*Math.min(d-r+.004,.035),.10,.90)}if((f.action==='light'||f.action==='heavy'||f.action==='grab')&&!f.hitDone&&t>=f.hitAt)strike(f,f===player?enemy:player,t);if(f.action==='idle')f.post=Math.max(0,f.post-dt*(f.crouch?.0015:.0033))}const md=enemy.x-player.x;if(md<.072&&!clinch){const mid=(enemy.x+player.x)/2;enemy.x=mid+.036;player.x=mid-.036}if(!clinch)aiDecide(t);for(let i=particles.length-1;i>=0;i--){let p=particles[i];p.x+=p.vx*dt/16;p.y+=p.vy*dt/16;p.vy+=.16*dt/16;p.life-=dt;if(p.life<=0)particles.splice(i,1)}for(let i=impacts.length-1;i>=0;i--){impacts[i].life-=dt;if(impacts[i].life<=0)impacts.splice(i,1)}shake=Math.max(0,shake-dt*.05);let d=Math.abs(enemy.x-player.x);$('distance').textContent=clinch?'БРОСОК · ЖДИ ОКНО КОНТРПРИЁМА':enemy.whiffUntil>t?'ОКНО КОНТРАТАКИ!':player.whiffUntil>t?'ТЫ УЯЗВИМ ПОСЛЕ ПРОМАХА': 'ДИСТАНЦИЯ: '+(d<.113?'ВПЛОТНУЮ • БРОСОК':d<.18?'КОРОТКАЯ · БЫСТРЫЕ УДАРЫ':d<.275?'СРЕДНЯЯ · ПРЯМОЙ / ВЫПАД':'ДАЛЬНЯЯ • СБЛИЗЬСЯ');$('distance').style.color=d<.113?'#f4cb8b':d<.245?'#c5e7c1':'#d5dada';updateHud()}
+if(f.diveArmed&&t>=f.jumpUntil){resolveDive(f,f===player?enemy:player,t)}if(f.stepUntil>t&&t>=f.stanceUntil&&t>=f.landingRecoverUntil){f.x+=f.stepDir*dt*.00013;f.x=clamp(f.x,.12,.88)}if(f===player&&f.moveHeld&&f.action==='idle'&&!f.crouch&&t>=f.stanceUntil&&t>=f.landingRecoverUntil&&t>=f.stunnedUntil){const speed=t<f.jumpUntil?.00019:.00026;f.x=clamp(f.x+f.moveHeld*dt*speed,.10,.90)}if((f.action==='light'||f.action==='heavy'||f.action==='grab')&&!f.hitDone&&t>=f.hitAt){let target=f===player?enemy:player;let d=Math.abs(f.x-target.x);let r=f.attackRange||strikeRange(f,f.action,f.dir);if(f.action!=='grab'&&f.dir==='forward'&&d>r&&d<r+.045)f.x=clamp(f.x+f.facing*Math.min(d-r+.004,.035),.10,.90)}if((f.action==='light'||f.action==='heavy'||f.action==='grab')&&!f.hitDone&&t>=f.hitAt)strike(f,f===player?enemy:player,t);if(f.action==='idle')f.post=Math.max(0,f.post-dt*(f.crouch?.0015:.0033))}const md=enemy.x-player.x;if(md<.072&&!clinch){const mid=(enemy.x+player.x)/2;enemy.x=mid+.036;player.x=mid-.036}if(!clinch)aiDecide(t);for(let i=particles.length-1;i>=0;i--){let p=particles[i];p.x+=p.vx*dt/16;p.y+=p.vy*dt/16;p.vy+=.16*dt/16;p.life-=dt;if(p.life<=0)particles.splice(i,1)}for(let i=impacts.length-1;i>=0;i--){impacts[i].life-=dt;if(impacts[i].life<=0)impacts.splice(i,1)}shake=Math.max(0,shake-dt*.05);let d=Math.abs(enemy.x-player.x);$('distance').textContent=clinch?'БРОСОК · ЖДИ ОКНО КОНТРПРИЁМА':enemy.whiffUntil>t?'ОКНО КОНТРАТАКИ!':player.whiffUntil>t?'ТЫ УЯЗВИМ ПОСЛЕ ПРОМАХА': 'ДИСТАНЦИЯ: '+(d<.100?'ВПЛОТНУЮ • БРОСОК':d<.18?'КОРОТКАЯ · БЫСТРЫЕ УДАРЫ':d<.275?'СРЕДНЯЯ · ПРЯМОЙ / ВЫПАД':'ДАЛЬНЯЯ • СБЛИЗЬСЯ');$('distance').style.color=d<.113?'#f4cb8b':d<.245?'#c5e7c1':'#d5dada';updateHud()}
 function bg(){let horizon=H*.64;let g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#101d21');g.addColorStop(.65,'#344449');g.addColorStop(1,'#1b262a');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);ctx.save();ctx.globalAlpha=.35;for(let k=0;k<8;k++){let x=W*(k/7),height=H*(.1+(k%3)*.032);ctx.fillStyle=k%2?'#62736b':'#849184';ctx.fillRect(x-8,horizon-height,16,height);ctx.beginPath();ctx.arc(x,horizon-height,18,Math.PI,2*Math.PI);ctx.fill()}ctx.restore();ctx.fillStyle='#303d3b';ctx.fillRect(0,horizon,W,H-horizon);let grd=ctx.createRadialGradient(W*.5,horizon+H*.06,5,W*.5,horizon+H*.06,W*.55);grd.addColorStop(0,'#5c6760');grd.addColorStop(1,'#283332');ctx.fillStyle=grd;ctx.fillRect(0,horizon,W,H-horizon);ctx.strokeStyle='#81908426';ctx.lineWidth=1;for(let i=0;i<11;i++){ctx.beginPath();ctx.moveTo(W*.5,horizon);ctx.lineTo(W*(i/10),H);ctx.stroke()}for(let j=1;j<6;j++){let y=horizon+(H-horizon)*j*j/36;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}let vign=ctx.createRadialGradient(W/2,H/2,H*.15,W/2,H/2,W*.67);vign.addColorStop(0,'#0000');vign.addColorStop(1,'#0009');ctx.fillStyle=vign;ctx.fillRect(0,0,W,H)}
 function fighter(f,t){
  const x=W*f.x,ground=H*.75,scale=clamp(Math.min(W/790,H/500),.68,1.18);
