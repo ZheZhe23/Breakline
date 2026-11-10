@@ -296,7 +296,7 @@ function aiDecide(t){
      reposition(1);enemy.nextThink=t+170;return;
    }
    if(playerWindup&&Math.random()<.66){cover();return}
-   if(dist<.18&&player.action==='idle'&&Math.random()<cfg.retreat){
+   if(dist<.245&&player.action==='idle'&&Math.random()<cfg.retreat){
      reposition(1);enemy.nextThink=t+240;return;
    }
    if(player.jumpUntil>t&&player.jumpHeight>16&&dist<.255){beginAttack('light');return}
