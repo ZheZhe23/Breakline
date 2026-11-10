@@ -6,7 +6,7 @@
 @media(max-width:620px) and (orientation:portrait){#joystick{width:118px;height:118px}#stick{width:52px;height:52px}#controls{gap:4px}.cluster.right{gap:5px}.ctl.strong{min-width:62px;height:72px}.ctl.grab{min-width:65px;height:72px}.ctl.attack{min-width:65px;height:78px}#help{bottom:145px;max-width:65vw;font-size:9px}}
 #rhythmHud{position:absolute;z-index:4;top:calc(env(safe-area-inset-top) + 98px);left:50%;transform:translateX(-50%);width:min(360px,78vw);padding:6px 10px 9px;border:1px solid #7e998b66;border-radius:10px;background:#111d21dc;pointer-events:none}.rhythmTop{display:flex;justify-content:space-between;align-items:center;font-size:10px;font-weight:800;letter-spacing:.05em;color:#d0e7d4;gap:8px}#rhythmGrade{color:#f8d492}#flowLabel{color:#8fd5b7}#beatTrack{height:12px;position:relative;margin-top:6px;border-radius:7px;background:linear-gradient(90deg,#32424a,#455b51,#6d7552,#455b51,#32424a);box-shadow:inset 0 1px 4px #000c;overflow:hidden}#beatNeedle{position:absolute;top:0;bottom:0;width:5px;border-radius:2px;background:#ffe7b0;box-shadow:0 0 11px #ffe4a9;left:0;transition:none}.beatMark{position:absolute;top:0;bottom:0;width:1px;background:#e4f6cf77}.rhythmFill{height:8px;position:relative;border:1px solid #a3c7a566;background:#1c302d}.rhythmFill .fill{background:linear-gradient(90deg,#6aa897,#b5d897,#f4e095)!important;transition:width .12s linear}#app.flowActive #rhythmHud{border-color:#f6d288;box-shadow:0 0 20px #ffd18752}#app.flowActive .rhythmFill .fill{background:linear-gradient(90deg,#e5c884,#fff3bc)!important}#app.beatPulse #beatTrack{box-shadow:0 0 18px #c8ebaa88,inset 0 1px 4px #000c}@media(max-width:620px) and (orientation:portrait){#rhythmHud{top:calc(env(safe-area-inset-top) + 95px);width:min(320px,86vw);padding:5px 8px 7px}.rhythmTop{font-size:9px}#help{max-width:80vw}}@media(max-height:500px){#rhythmHud{top:65px;width:230px}.rhythmTop{font-size:8px}#beatTrack{height:7px}}
 #postMatchDifficulty{border:1px solid #77958a88;background:#15282bdd;padding:10px;border-radius:12px;margin:14px auto;max-width:370px}#postMatchDifficulty .difficultyTitle{text-align:center}#difficultyPicker{border:1px solid #6a8780;border-radius:12px;background:#17292dbb;padding:12px;margin:14px 0} .difficultyTitle{font-size:12px;font-weight:850;letter-spacing:.15em;color:#dfeacb;margin-bottom:10px}.difficultyChoices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.difficultyBtn{background:#223237;color:#d6dfd7;border:1px solid #52666a;border-radius:8px;padding:9px 3px;font-weight:800;font-size:11px;cursor:pointer}.difficultyBtn small{display:block;font-weight:500;font-size:9px;margin-top:4px;color:#b7c8c4}.difficultyBtn.selected{border-color:#e7d49d;background:#57634d;color:white}#difficultyDescription{font-size:11px;margin-top:9px;color:#c3cfca}#beatSlots{position:absolute;inset:0}.rhythmSlot{position:absolute;top:1px;bottom:1px;width:5px;transform:translateX(-50%);border-radius:4px;background:#d0f0c4;box-shadow:0 0 6px #c1f7b477}.rhythmSlot.weak{width:3px;background:#eccf86;box-shadow:0 0 5px #edce8a88}#beatNeedle{z-index:2}#rhythmPatternLabel{text-align:center;font-size:9px;color:#b5cbbc;letter-spacing:.08em;margin-top:4px}#rhythmHud.warning{border-color:#f6cd80;box-shadow:0 0 17px #d6a64f5e}#rhythmHud.warning #rhythmPatternLabel{color:#ffe3a6;font-weight:900}@media(max-width:620px){#difficultyPicker{padding:8px;margin:10px 0}.difficultyBtn{font-size:10px;padding:7px 2px}.difficultyBtn small{font-size:8px}}
-</style></head><body><div id="app"><canvas id="game"></canvas><div id="hud"><div class="header"><div class="person"><div class="name">ТЫ · БОЕЦ</div><div class="bar"><div class="fill" id="ph"></div></div><div class="balance rhythmFill"><div class="fill" id="pp"></div></div><div class="meter">ЗДОРОВЬЕ / РИТМ</div></div><div class="brand">BREAKLINE<small>ВЕРСИЯ 2.8</small></div><div class="person right enemy"><div class="name" id="aiName">ПРОТИВНИК · ИИ</div><div class="bar"><div class="fill" id="eh"></div></div><div class="balance rhythmFill"><div class="fill" id="ep"></div></div><div class="meter">ЗДОРОВЬЕ / РИТМ</div></div></div></div><div id="clinchPanel" style="display:none"><div id="clinchLabel">ЗАХВАТ</div><div id="counterCircle" class="counterCircle"><span id="counterIcon">✊</span></div><div id="clinchTip">Жди светящегося круга</div></div><div id="distance">ДИСТАНЦИЯ: —</div><div id="rhythmHud"><div class="rhythmTop"><span id="beatLabel">♪ 120 BPM</span><span id="rhythmGrade">ЛОВИ РИТМ</span><span id="flowLabel">ПОТОК · 0/5</span></div><div id="beatTrack"><div id="beatSlots"></div><div id="beatNeedle"></div></div><div id="rhythmPatternLabel">ЧЕТВЕРТИ · 1–2–3–4</div></div><div id="message"></div><div id="subtext"></div><button id="soundBtn">◖ ЗВУК: ВЫКЛ.</button><div id="help">РИТМ: точно в долю = энергия и урон. Мимо доли = замедление. Полная шкала = ПОТОК. Комбо стоя Л–Л–С, присед Л–С.</div><div id="dirSelected">ПРИЁМ: ПРЯМОЙ</div><div id="controls"><div class="cluster"><div id="joystick" aria-label="Джойстик движения"><div class="lr"><span>‹</span><span>›</span></div><div id="stick"></div></div></div><div class="cluster right"><button class="ctl strong" id="heavy"><span>✹</span>СИЛЬНЫЙ</button><button class="ctl grab" id="grab"><span>✊</span>БРОСОК<small>только вплотную</small></button><button class="ctl attack" id="attack"><span>✦</span>ЛЁГКИЙ<small>серия × 2</small></button></div></div><div id="intro"><div class="introInner"><h1>BREAKLINE</h1><p>Музыкальный файтинг: атака, присед, прыжок и захват в долю усиливают ритм. Полная шкала открывает режим ПОТОК.</p><div id="difficultyPicker"><div class="difficultyTitle">СЛОЖНОСТЬ РИТМА</div><div class="difficultyChoices"><button class="difficultyBtn selected" data-difficulty="easy">ЛЁГКАЯ<small>Четверти</small></button><button class="difficultyBtn" data-difficulty="medium">СРЕДНЯЯ<small>Вставки восьмых</small></button><button class="difficultyBtn" data-difficulty="hard">СЛОЖНАЯ<small>Рисунок мелодии</small></button></div><div id="difficultyDescription">Стабильные четыре точки действия в каждом такте.</div></div><div class="tips"><div class="tip"><b>ДЖОЙСТИК</b> — влево/вправо ходьба, вниз присесть, вверх прыгнуть. Диагональ вверх — прыжок с перемещением.</div><div class="tip"><b>ТРИ ПОЗИЦИИ</b> — стойка сбивает прыжок, присед атакует стойку, прыжок пробивает присед. Переходы имеют небольшую задержку.</div><div class="tip"><b>КОМБО</b> — стоя: лёгкий → лёгкий → сильный; в приседе: лёгкий → сильный; в прыжке: сильный → лёгкий после попадания при посадке.</div><div class="tip"><b>ПОТОК</b> — играй в бит, заполни шкалу ритма, чтобы временно усилить урон и ускорить действия.</div></div><button class="mainBtn" id="start">НАЧАТЬ ДУЭЛЬ</button><p class="mini">Работает прямо в браузере · Сенсор / клавиатура: J, K, L, I, ←, →</p></div></div><div id="restartOverlay"><div id="resultTitle"></div><div id="resultInfo"></div><div id="postMatchDifficulty"><div class="difficultyTitle">СЛОЖНОСТЬ СЛЕДУЮЩЕГО БОЯ</div><div class="difficultyChoices"><button class="difficultyBtn selected" data-difficulty="easy">ЛЁГКАЯ<small>Четверти</small></button><button class="difficultyBtn" data-difficulty="medium">СРЕДНЯЯ<small>Восьмые</small></button><button class="difficultyBtn" data-difficulty="hard">СЛОЖНАЯ<small>Рисунок мелодии</small></button></div></div><button class="mainBtn" id="restart">ЕЩЁ ОДНА ДУЭЛЬ</button></div></div><script>
+</style></head><body><div id="app"><canvas id="game"></canvas><div id="hud"><div class="header"><div class="person"><div class="name">ТЫ · БОЕЦ</div><div class="bar"><div class="fill" id="ph"></div></div><div class="balance rhythmFill"><div class="fill" id="pp"></div></div><div class="meter">ЗДОРОВЬЕ / РИТМ</div></div><div class="brand">BREAKLINE<small>ВЕРСИЯ 2.8</small></div><div class="person right enemy"><div class="name" id="aiName">ПРОТИВНИК · ИИ</div><div class="bar"><div class="fill" id="eh"></div></div><div class="balance rhythmFill"><div class="fill" id="ep"></div></div><div class="meter">ЗДОРОВЬЕ / РИТМ</div></div></div></div><div id="clinchPanel" style="display:none"><div id="clinchLabel">ЗАХВАТ</div><div id="counterCircle" class="counterCircle"><span id="counterIcon">✊</span></div><div id="clinchTip">Жди светящегося круга</div></div><div id="distance">ДИСТАНЦИЯ: —</div><div id="rhythmHud"><div class="rhythmTop"><span id="beatLabel">♪ 120 BPM</span><span id="rhythmGrade">ЛОВИ РИТМ</span><span id="flowLabel">ПОТОК · 0/5</span></div><div id="beatTrack"><div id="beatSlots"></div><div id="beatNeedle"></div></div><div id="rhythmPatternLabel">ЧЕТВЕРТИ · 1–2–3–4</div></div><div id="message"></div><div id="subtext"></div><button id="soundBtn">◖ ЗВУК: ВЫКЛ.</button><div id="help">РИТМ: точно в долю = энергия и урон. Мимо доли = замедление. Полная шкала = ПОТОК. Комбо стоя Л–Л–С, присед Л–С.</div><div id="dirSelected">ПРИЁМ: ПРЯМОЙ</div><div id="controls"><div class="cluster"><div id="joystick" aria-label="Джойстик движения"><div class="lr"><span>‹</span><span>›</span></div><div id="stick"></div></div></div><div class="cluster right"><button class="ctl strong" id="heavy"><span>✹</span>СИЛЬНЫЙ</button><button class="ctl grab" id="grab"><span>✊</span>БРОСОК<small>только вплотную</small></button><button class="ctl attack" id="attack"><span>✦</span>ЛЁГКИЙ<small>серия × 2</small></button></div></div><div id="intro"><div class="introInner"><h1>BREAKLINE</h1><p>Музыкальный файтинг: атака, присед, прыжок и захват в долю усиливают ритм. Полная шкала открывает режим ПОТОК.</p><div id="difficultyPicker"><div class="difficultyTitle">СЛОЖНОСТЬ РИТМА</div><div class="difficultyChoices"><button class="difficultyBtn selected" data-difficulty="easy">ЛЁГКАЯ<small>Четверти</small></button><button class="difficultyBtn" data-difficulty="medium">СРЕДНЯЯ<small>Вставки восьмых</small></button><button class="difficultyBtn" data-difficulty="hard">СЛОЖНАЯ<small>Рисунок мелодии</small></button></div><div id="difficultyDescription">Стабильные четыре точки действия в каждом такте.</div></div><div class="tips"><div class="tip"><b>ДЖОЙСТИК</b> — влево/вправо ходьба, вниз присесть, вверх прыгнуть. Диагональ вверх — прыжок с перемещением.</div><div class="tip"><b>ТРИ ПОЗИЦИИ</b> — стойка сбивает прыжок, присед атакует стойку, прыжок пробивает присед. Переходы имеют небольшую задержку.</div><div class="tip"><b>КОМБО</b> — стоя: лёгкий → лёгкий → сильный; в приседе: лёгкий → сильный; в прыжке: сильный → лёгкий после попадания при посадке.</div><div class="tip"><b>ПОТОК</b> — играй в бит, заполни шкалу ритма, чтобы временно усилить урон и ускорить действия.</div></div><button class="mainBtn" id="start">НАЧАТЬ ДУЭЛЬ</button><p class="mini">Работает прямо в браузере · Сенсор / клавиатура: J, K, L, I, ←, →</p><p class="mini">Вокальные эффекты: EZduzziteh / OpenGameArt, CC0. Для воспроизведения требуется интернет.</p></div></div><div id="restartOverlay"><div id="resultTitle"></div><div id="resultInfo"></div><div id="postMatchDifficulty"><div class="difficultyTitle">СЛОЖНОСТЬ СЛЕДУЮЩЕГО БОЯ</div><div class="difficultyChoices"><button class="difficultyBtn selected" data-difficulty="easy">ЛЁГКАЯ<small>Четверти</small></button><button class="difficultyBtn" data-difficulty="medium">СРЕДНЯЯ<small>Восьмые</small></button><button class="difficultyBtn" data-difficulty="hard">СЛОЖНАЯ<small>Рисунок мелодии</small></button></div></div><button class="mainBtn" id="restart">ЕЩЁ ОДНА ДУЭЛЬ</button></div></div><script>
 (()=>{'use strict';const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');let W=0,H=0,dpr=1,now=0,last=0,started=false,ended=false,round=0,shake=0,particles=[],impacts=[],logs=[],audio=null,sound=false;const $=id=>document.getElementById(id);let player,enemy,clinch=null,clinchSeq=0;let selectedDir='neutral',selectedAt=0;const heldDirs=[];let joyX=0,joyY=0,joyPointer=null;let stanceEvents=[];let jumpLatch=false;let jumpQueuedUntil=0;
 const GAME_VERSION='2.8';
 const RHYTHM_BPM=120,BEAT_MS=60000/RHYTHM_BPM;
@@ -127,51 +127,48 @@ function kickDrum(when){
  osc.connect(gain);gain.connect(audio.destination);
  osc.start(when);osc.stop(when+.21);
 }
-// Short, locally sampled vowel syllables; more speech-like than the old one-oscillator voice.
-// These are synthesized vocal effects, not human voice recordings.
-const vocalSamples={};
-function synthVowel(vowel,seed){
- const rate=22050,dur=vowel==='heavy'?.34:vowel==='hurt'?.24:vowel==='jump'?.20:vowel==='throw'?.26:.15;
- const length=Math.ceil(dur*rate),buffer=audio.createBuffer(1,length,rate),data=buffer.getChannelData(0);
- const cfg={hurt:[790,1300,2700],heavy:[690,1050,2400],jump:[680,1600,2650],throw:[570,1000,2500],crouch:[520,1100,2400]}[vowel]||[700,1350,2500];
- const base=vowel==='heavy'?126:vowel==='hurt'?178:vowel==='jump'?215:vowel==='throw'?145:133;
- let rnd=(seed*131+197)%65536;
- function noise(){rnd=(rnd*25173+13849)%65536;return rnd/32768-1}
- let currentPhase=0;
- for(let i=0;i<length;i++){
-  const progress=i/length,up=Math.min(1,progress/.16),down=Math.pow(Math.max(0,1-progress),.8),envelope=up*down;
-  const f0=base*(1+.045*Math.sin(progress*8+seed)-.24*progress)*(1+seed*.017);
-  currentPhase+=2*Math.PI*f0/rate;
-  const formants=cfg.map((f,j)=>f*(1+.10*Math.sin(progress*3.5+j)));
-  let v=0;
-  for(let h=1;h<=28;h++){
-    const hz=f0*h;
-    let strength=.18;
-    for(let k=0;k<formants.length;k++){
-      const bandwidth=[140,240,350][k],distance=(hz-formants[k])/bandwidth;
-      strength+=Math.exp(-distance*distance*.55)*(k===0?.82:k===1?.57:.24);
-    }
-    v+=Math.sin(currentPhase*h+.11*h)*strength/(h*.62);
-  }
-  const onset=Math.max(0,1-progress/.22);
-  const breath=noise()*(vowel==='hurt'?.14:.11)*onset+noise()*.013;
-  data[i]=Math.tanh((v*.14+breath)*envelope)*.9;
- }
- return buffer;
+// Recorded human vocalizations, licensed CC0 by EZduzziteh via OpenGameArt.
+// https://opengameart.org/content/hurt-sound-effects
+// The real MP3 clips play as HTML media (not routed through WebAudio; no cross-origin analysis).
+const VOICE_URLS=[
+ 'https://opengameart.org/sites/default/files/hurt_01_0.mp3',
+ 'https://opengameart.org/sites/default/files/hurt_02.mp3',
+ 'https://opengameart.org/sites/default/files/hurt_03.mp3',
+ 'https://opengameart.org/sites/default/files/hurt_04.mp3',
+ 'https://opengameart.org/sites/default/files/hurt_05.mp3',
+ 'https://opengameart.org/sites/default/files/hurt_06.mp3'
+];
+let voicePool=[],voicePlaybackCount=0;
+function preloadVoices(){
+ if(voicePool.length||!window.Audio)return;
+ voicePool=VOICE_URLS.map(url=>{
+  const node=new window.Audio(url);node.preload='auto';node.volume=.15;
+  try{node.load()}catch(e){}
+  return node;
+ });
 }
 function fightVoice(kind,actor){
- if(!sound||!audio)return;
+ if(!sound||!window.Audio)return;
+ if(!voicePool.length)preloadVoices();
+ if(!voicePool.length)return;
  try{
-  const variation=Math.floor(Math.random()*3),name=kind+'_'+variation;
-  let sample=vocalSamples[name];
-  if(!sample){sample=synthVowel(kind,variation);vocalSamples[name]=sample}
-  const src=audio.createBufferSource(),filter=audio.createBiquadFilter(),gain=audio.createGain();
-  src.buffer=sample;filter.type='lowpass';filter.frequency.value=kind==='heavy'?1900:2400;
-  src.playbackRate.value=(actor?.ai?.90:1.0)*(1+(Math.random()-.5)*.13);
-  gain.gain.value=kind==='hurt'?.15:kind==='heavy'?.18:.12;
-  src.connect(filter);filter.connect(gain);gain.connect(audio.destination);src.start();
+  const choices={hurt:[0,1,2,3,4,5],heavy:[2,4,5],jump:[0,3,5],crouch:[1,2],throw:[0,2,4]}[kind]||[0,1];
+  const pick=choices[Math.floor(Math.random()*choices.length)];
+  const template=voicePool[pick];
+  const clip=template.cloneNode(true);
+  clip.volume=kind==='hurt'?.18:kind==='heavy'?.22:kind==='jump'?.12:.13;
+  clip.playbackRate=(actor?.ai?.94:1.02)*(1+(Math.random()-.5)*.12);
+  const playing=clip.play();
+  if(playing&&playing.catch)playing.catch(()=>{});
+  // Short samples will stop themselves on ending; retained only while playing.
+  activeVoices.push(clip);
+  const done=()=>{const i=activeVoices.indexOf(clip);if(i>=0)activeVoices.splice(i,1)};
+  clip.addEventListener('ended',done,{once:true});
+  clip.addEventListener('error',done,{once:true});
+  if(activeVoices.length>10){const old=activeVoices.shift();old.pause()}
  }catch(e){}
 }
+const activeVoices=[];
 function mutedImpact(when,heavy){
  const src=audio.createBufferSource(),band=audio.createBiquadFilter(),gain=audio.createGain();
  src.buffer=noiseSample(audio);band.type='bandpass';band.frequency.value=heavy?480:690;band.Q.value=.85;
@@ -948,8 +945,8 @@ for(const button of document.querySelectorAll('[data-difficulty]')){
   $('difficultyDescription').textContent=rhythmDifficulty==='easy'?'Стабильные четыре точки действия в каждом такте.':rhythmDifficulty==='medium'?'Каждый четвёртый такт — восемь точек вместо четырёх.': 'Музыкальный рисунок с паузами, восьмыми и шестнадцатыми; следи за метками.';
  });
 }
-$('start').onclick=()=>{$('intro').style.display='none';started=true;fresh();sound=true;$('soundBtn').textContent='◖ ЗВУК: ВКЛ.';playRhythmBeat(0)};
+$('start').onclick=()=>{$('intro').style.display='none';started=true;fresh();sound=true;$('soundBtn').textContent='◖ ЗВУК: ВКЛ.';preloadVoices();playRhythmBeat(0)};
 $('restart').onclick=fresh;
-$('soundBtn').onclick=()=>{sound=!sound;$('soundBtn').textContent=sound?'◖ ЗВУК: ВКЛ.':'◖ ЗВУК: ВЫКЛ.';if(sound){sfx(440);playRhythmBeat(0)}};
+$('soundBtn').onclick=()=>{sound=!sound;$('soundBtn').textContent=sound?'◖ ЗВУК: ВКЛ.':'◖ ЗВУК: ВЫКЛ.';if(sound){preloadVoices();playRhythmBeat(0)}else{for(const clip of activeVoices)clip.pause();activeVoices.length=0}};
 window.addEventListener('blur',()=>{joyPointer=null;applyJoy(0,0,performance.now());if(player)player.guard=false});
 })();</script></body></html>
