@@ -246,13 +246,18 @@ function mutedImpact(when,heavy){
  // A dry body thud, intentionally above the kick's sub-bass register.
  tone(heavy?210:315,when,heavy?.095:.065,heavy?.017:.012,'triangle',650);
 }
-function fightFoley(kind,heavy=false){
+function fightFoley(kind,heavy=false,actor=null){
  if(!sound||!audio)return;
  try{
   const at=audio.currentTime+.005;
   if(kind==='whoosh'){noiseHit(at,heavy?.13:.068,heavy?.025:.014,heavy?1250:2300);return}
   if(kind==='jump'){noiseHit(at,.17,.016,2300);return}
-  if(kind==='impact'){mutedImpact(at,heavy);return}
+  if(kind==='impact'){
+ mutedImpact(at,heavy);
+ const level=actor?rhythmLevel(actor):1;
+ if(level>=3){const freq=level===5?980:level===4?810:650;
+ tone(freq,at+.008,.07,level===5?.017:level===4?.012:.007,'triangle',1900)}
+ return}
   if(kind==='block'){mutedImpact(at,false);return}
   if(kind==='slam'){mutedImpact(at,true)}
  }catch(e){}
@@ -575,7 +580,7 @@ function resolveDive(att,def,t){
  def.x=clamp(def.x+att.facing*.047,.12,.88);
  att.airFollowReady=true;att.airFollowUntil=t+670;att.actionEnd=t+145;att.cooldown=t+145;att.landingRecoverUntil=t+120;
  if(def.crouch)def.stunnedUntil=t+660;
- emit(def.x,'#ffe0a0',28);impact(def,t,1.7,false);shake=9;fightFoley('impact',true);fightVoice('hurt',def);
+ emit(def.x,'#ffe0a0',28);impact(def,t,1.7,false);shake=9;fightFoley('impact',true,att);fightVoice('hurt',def);
  setMessage('УДАР С ПРИЗЕМЛЕНИЕМ!','Успех! Нажми ЛЁГКИЙ для воздушного комбо',850);
  
  if(def.hp<=0)finish(!def.ai);
@@ -622,7 +627,7 @@ if(def===player){def.guard=(def.action==='idle'&&def.jumpUntil<=t&&joyX*def.faci
 const counterWindow=def.whiffUntil>t&&def.action!=='down'&&def.action!=='caught';
 const isLow=!!att.attackLow;const blockHigh=def.guard&&!def.crouch&&!isLow;const blockLow=def.guard&&def.crouch&&isLow;
 if(blockHigh||blockLow){const damage=(att.powerFinisher?7:att.finisher?4:action==='heavy'?3:2)*(isLow?.5:1);def.hp-=damage;def.guard=false;breakStreak(att);breakStreak(def);setMessage(def.ai?(blockLow?'НИЖНИЙ БЛОК ИИ':'ЗАЩИТА ИИ'):(blockLow?'НИЖНИЙ БЛОК':'ВЕРХНИЙ БЛОК'),'Блок снижает урон; ритм усиливает точные атаки',570);emit(def.x,'#aab8c1',7);impact(def,t,.7,isLow,true);fightFoley('block');shake=2}else{const lightPenalty=(!att.ai&&action==='light')?Math.max(0,att.lightStreak-2)*2:0;const dirDamage=dir==='up'?1.12:isLow?.89:dir==='back'?.92:dir==='forward'?1.06:1;const comboBoost=att.finisher?1.12:1;const damage=(att.powerFinisher?25:att.finisher?19:action==='heavy'?15:Math.max(6,13-lightPenalty))*dirDamage*(isLow?.58:1)*comboBoost*(counterWindow?1.25:1)*rhythmDamage(att,t);def.hp-=damage;registerHit(att,def,t,att.finisher?145:action==='heavy'?85:65,att.finisher);def.stunnedUntil=t+(att.powerFinisher?380:att.finisher?250:action==='heavy'?195:(!att.ai&&att.lightStreak>=3?85:160))+(counterWindow?190:0);
-if(counterWindow){att.counterHits++;def.whiffUntil=0;def.recoveryUntil=Math.max(def.recoveryUntil,t+400);}def.x=clamp(def.x+att.facing*(att.powerFinisher?.045:att.finisher?.034:action==='heavy'?.03:.025)+(isLow&&!def.crouch?att.facing*.014:0),.12,.88);if(att.comboStep>0)att.comboHits++;emit(def.x,att.finisher?'#ffd7a4':'#e1d4b9',att.finisher?18:10);impact(def,t,att.powerFinisher?1.4:att.finisher?1.05:.85,isLow);fightFoley('impact',att.powerFinisher);fightVoice('hurt',def);shake=att.powerFinisher?6:att.finisher?4:2;setMessage(counterWindow?'✦ КОНТРАТАКА! +25% УРОНА':att.airFollowAttack?'ВОЗДУШНОЕ КОМБО!':att.lowSweep?'НИЗКАЯ ПОДСЕЧКА!':att.finisher?'✹ '+att.finisherName+'!':(action==='heavy'?'НОГА: ':'')+DIR_NAMES[dir],isLow?'Низкая атака отталкивает стоящего':'',460)}if(def.hp<=0){def.hp=0;finish(!def.ai)} }
+if(counterWindow){att.counterHits++;def.whiffUntil=0;def.recoveryUntil=Math.max(def.recoveryUntil,t+400);}def.x=clamp(def.x+att.facing*(att.powerFinisher?.045:att.finisher?.034:action==='heavy'?.03:.025)+(isLow&&!def.crouch?att.facing*.014:0),.12,.88);if(att.comboStep>0)att.comboHits++;emit(def.x,att.finisher?'#ffd7a4':'#e1d4b9',att.finisher?18:10);impact(def,t,att.powerFinisher?1.4:att.finisher?1.05:.85,isLow);fightFoley('impact',att.powerFinisher,att);fightVoice('hurt',def);shake=att.powerFinisher?6:att.finisher?4:2;setMessage(counterWindow?'✦ КОНТРАТАКА! +25% УРОНА':att.airFollowAttack?'ВОЗДУШНОЕ КОМБО!':att.lowSweep?'НИЗКАЯ ПОДСЕЧКА!':att.finisher?'✹ '+att.finisherName+'!':(action==='heavy'?'НОГА: ':'')+DIR_NAMES[dir],isLow?'Низкая атака отталкивает стоящего':'',460)}if(def.hp<=0){def.hp=0;finish(!def.ai)} }
 function finish(lose,byPoints=false){if(ended)return;ended=true;
  if(byPoints){lose=player.score<enemy.score;const tie=player.score===enemy.score;$('resultTitle').textContent=tie?'НИЧЬЯ ПО ОЧКАМ':lose?'ПОРАЖЕНИЕ ПО ОЧКАМ':'ПОБЕДА ПО ОЧКАМ'}if(!byPoints)$('resultTitle').textContent=lose?'НОКАУТ · ПОРАЖЕНИЕ':'НОКАУТ · ПОБЕДА';$('resultTitle').style.color=lose?'#ed9f8b':'#f3dda9';$('resultInfo').textContent='ОЧКИ '+player.score.toLocaleString('ru-RU')+' : '+enemy.score.toLocaleString('ru-RU')+' · HP '+Math.ceil(player.hp)+' : '+Math.ceil(enemy.hp)+' · Комбо: '+player.comboSuccess+' · Лучшая серия: '+player.maxStreak+' · Ритм: '+(player.rhythmAttempts?Math.round(player.rhythmHits/player.rhythmAttempts*100):0)+'%';$('restartOverlay').classList.add('show');}
 function emit(x,col,num){let px=W*x,py=H*.61;for(let i=0;i<num;i++)particles.push({x:px,y:py,vx:rng(-3.8,3.8),vy:rng(-5,-1),life:rng(300,650),total:650,r:rng(1.5,4),col})}
@@ -871,6 +876,46 @@ function fighter(f,t){
  else if(f.stanceTransition==='takeoff'){const p=clamp(1-(f.stanceUntil-t)/85,0,1);stanceScale=1-.10*Math.sin(Math.PI*p)}
  ctx.save();ctx.translate(x,ground-(f.jumpHeight||0));ctx.scale(scale*f.facing,scale);
  ctx.scale(1,stanceScale);
+ // Layered power appearance. All effects are local to fighter transform so they survive
+ // stance changes, knockdowns, throws and independent combo poses.
+ const powered=tier>=2,peak=tier>=5,beatPulse=.5+.5*Math.sin(t*.009+(ai?1.9:0));
+ const glow=ai?'#ffa78b':'#aef5df',radiance=ai?'#ffcf98':'#ffe6a4';
+ if(powered){
+  ctx.save();
+  ctx.globalAlpha=(tier===2?.085:tier===3?.13:tier===4?.18:.26)*(0.72+beatPulse*.42);
+  const aura=ctx.createRadialGradient(0,-94,18,0,-94,tier===5?115:85);
+  aura.addColorStop(0,peak?'#fff3bc':glow);
+  aura.addColorStop(.48,glow);aura.addColorStop(1,'#00000000');
+  ctx.fillStyle=aura;ctx.beginPath();ctx.ellipse(0,-94,peak?92:65,peak?120:91,0,0,Math.PI*2);ctx.fill();
+  ctx.restore();
+ }
+ if(tier>=3){
+  ctx.save();ctx.strokeStyle=peak?radiance:glow;
+  ctx.lineWidth=peak?3.2:1.65;ctx.globalAlpha=(peak?.36:.17)+beatPulse*(peak?.24:.15);
+  for(let j=0;j<(peak?4:2);j++){
+   const step=t*.0015+j*1.75+(ai?2:0),radius=peak?51:42;
+   const sx=Math.sin(step)*radius,sy=-91+Math.cos(step*.87)*65;
+   ctx.beginPath();ctx.moveTo(sx,sy);
+   ctx.quadraticCurveTo(sx+Math.cos(step)*14,sy-13,sx+Math.cos(step)*17,sy-25);
+   ctx.stroke();
+  }
+  ctx.restore();
+ }
+ if(peak){
+  ctx.save();ctx.globalAlpha=.28+.14*beatPulse;ctx.strokeStyle=radiance;ctx.lineWidth=2.1;
+  for(let j=0;j<5;j++){
+   const y=-35-j*31,phase=t*.002+j*1.4;
+   ctx.beginPath();ctx.moveTo(-36-Math.sin(phase)*8,y);
+   ctx.quadraticCurveTo(0,-112+Math.sin(phase)*19,35+Math.cos(phase)*10,y-19);
+   ctx.stroke();
+  }
+  ctx.restore();
+ }
+ if(t>f.levelFlashStart&&t<f.levelFlashUntil){
+  const elapsedFlash=(t-f.levelFlashStart)/1100,ring=20+elapsedFlash*115;
+  ctx.save();ctx.globalAlpha=(1-elapsedFlash)*.56;ctx.strokeStyle=radiance;
+  ctx.lineWidth=4*(1-elapsedFlash)+.7;ctx.beginPath();ctx.ellipse(0,-90,ring*.75,ring,0,0,Math.PI*2);ctx.stroke();ctx.restore();
+ }
  // Reusable attack layers: torso torque and small acrobatic hop are independent of hitbox/timing.
  const activeAttack=light||heavy;
  if(activeAttack&&flourish){const pulse=Math.sin(Math.PI*Math.min(1,progress));const hop=(form===2||form===4?11:3)*flourish*pulse+(tech===5?18:pulse>0&&tech===3?8:0)*pulse;
@@ -926,6 +971,20 @@ function fighter(f,t){
  ctx.fillStyle=shade;ctx.fillRect(-21,-69,45,9);
  ctx.fillStyle=skin;ctx.beginPath();ctx.arc(0,-132,16,0,2*Math.PI);ctx.fill();
  ctx.fillStyle='#333738';ctx.fillRect(-13,-143,26,9);ctx.fillStyle='#10171a';ctx.fillRect(6,-134,4,2);
+ if(tier>=2){
+  ctx.save();ctx.globalAlpha=peak?.84:.19+(tier-2)*.13;
+  ctx.strokeStyle=peak?radiance:glow;ctx.lineWidth=peak?3.6:1.6;
+  ctx.shadowBlur=peak?18:6;ctx.shadowColor=glow;
+  ctx.beginPath();ctx.moveTo(-23,-119);ctx.lineTo(-25,-80);ctx.lineTo(-22,-54);
+  ctx.lineTo(22,-54);ctx.lineTo(26,-88);ctx.lineTo(20,-119);ctx.stroke();ctx.restore();
+ }
+ if(tier>=4){
+  ctx.save();ctx.shadowBlur=peak?19:7;ctx.shadowColor=peak?radiance:glow;
+  ctx.fillStyle=peak?radiance:glow;ctx.globalAlpha=peak?1:.52;
+  ctx.beginPath();ctx.arc(9,-134,peak?3.5:1.7,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.arc(-6,-134,peak?3.5:1.7,0,Math.PI*2);ctx.fill();
+  ctx.restore();
+ }
  // Exactly TWO articulated arms: back arm and front arm use distinct motions.
  const guarding=f.guard&&!light&&!heavy&&!grab;
  const rearElbow={x:-30,y:guarding?-108:-82};
@@ -997,6 +1056,27 @@ function fighter(f,t){
    ctx.stroke();ctx.globalAlpha=1}
  }
  if(flowOn(f,t)&&reach>.2){ctx.strokeStyle='#ffe5a0';ctx.globalAlpha=.22+reach*.35;ctx.lineWidth=6;ctx.beginPath();ctx.arc(0,-90,64+8*Math.sin(t*.016),-.8,1.1);ctx.stroke();ctx.globalAlpha=1}
+ if(tier>=4&&(light||heavy)&&reach>.08){
+   // Motion streaks are computed from the current local limb pose and don't alter hitboxes.
+   const progressTrail=Math.min(1,reach),tail=tier>=5?3:2;
+   ctx.save();ctx.strokeStyle=tier>=5?radiance:glow;ctx.lineCap='round';
+   for(let j=0;j<tail;j++){
+    ctx.globalAlpha=(.27-j*.065)*(tier===5?1.25:1)*progressTrail;
+    ctx.lineWidth=(tier>=5?5:3)-j*.7;
+    ctx.beginPath();
+    if(heavy&&(!f.finisher||finisherKick)){
+      const tx=rearKick?backFoot.x:frontFoot.x,ty=rearKick?backFoot.y:frontFoot.y;
+      ctx.moveTo(tx-15-j*11,ty+10+j*4);
+      ctx.quadraticCurveTo(tx-45-j*7,ty-14,tx-71-j*9,ty+8);
+    }else{
+      const tx=hand.x,ty=hand.y;
+      ctx.moveTo(tx-10-j*8,ty+7+j*4);
+      ctx.quadraticCurveTo(tx-33-j*6,ty-16,tx-61-j*9,ty+4);
+    }
+    ctx.stroke();
+   }
+   ctx.restore();
+ }
  if((light||heavy)&&reach>.25){
    ctx.strokeStyle=sweep||low?'#a4efd1':ai?'#ffac97':heavy?'#ffda90':'#d3efdb';
    ctx.lineWidth=heavy?5:2.5;ctx.globalAlpha=reach*(heavy?.72:.48);
