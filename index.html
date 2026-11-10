@@ -307,17 +307,42 @@ function fighter(f,t){
  else if(f.stanceTransition==='takeoff'){const p=clamp(1-(f.stanceUntil-t)/85,0,1);stanceScale=1-.10*Math.sin(Math.PI*p)}
  ctx.save();ctx.translate(x,ground-(f.jumpHeight||0));ctx.scale(scale*f.facing,scale);
  ctx.scale(1,stanceScale);
- if(f.action==='down'){const tilt=elapsed<430?elapsed/430:elapsed>1260?Math.max(0,(f.downUntil-t)/490):1;ctx.translate(0,-8*tilt);ctx.rotate(-1.32*tilt);ctx.translate(0,68*tilt)}
- else if(f.action==='caught')ctx.translate(f.ai?-7:7,-3);
+ if(f.action==='down'){
+ // Controlled knockdown: distinct tumble arcs, not continuous uncontrolled spinning.
+ const downAge=Math.max(0,t-f.downStart);
+ const fall=clamp(downAge/390,0,1),rise=clamp((f.downUntil-t)/450,0,1),pose=Math.min(fall,rise);
+ const style=f.downStyle||'normal';
+ const arc=style==='up'?Math.sin(Math.PI*fall)*46:style==='back'||style==='downBack'?Math.sin(Math.PI*fall)*24:style==='forward'?Math.sin(Math.PI*fall)*18:0;
+ const angle=style==='back'||style==='downBack'?1.04:style==='up'?-.95:style==='down'||style==='downForward'?.97:-1.22;
+ ctx.translate((style==='back'||style==='downBack'?-18:14)*pose,-arc);
+ ctx.rotate(angle*pose);ctx.translate(0,65*pose);
+}else if(clinch&&(f===clinch.a||f===clinch.d)){
+ const v=clinch.variant,p=clamp((t-clinch.start)/(clinch.end-clinch.start),0,1);
+ const active=clamp((p-.28)/.72,0,1),motion=active*active*(3-2*active);
+ const victim=f===clinch.d;
+ const backwards=v==='back'||v==='downBack',upwards=v==='up';
+ const lowThrow=clinch.low||v==='down'||v==='downBack'||v==='downForward';
+ if(victim){
+  const shift=backwards?-39:upwards?34:v==='forward'?46:22;
+  ctx.translate(shift*motion,-(upwards?58:lowThrow?13:29)*Math.sin(Math.PI*motion));
+  ctx.rotate((backwards?1.18:upwards?-1.32:lowThrow?.88:-.93)*motion);
+ }else{
+  ctx.translate((backwards?-8:10)*motion,0);
+  ctx.rotate((lowThrow?-.28:backwards?-.33:.22)*motion);
+ }
+}else if(f.action==='caught')ctx.translate(f.ai?-7:7,-3);
  if(f.diveArmed){ctx.rotate(.19);ctx.translate(0,8)}
- const lean=(light?reach*.08:heavy?reach*.22:0)+(comboTwo?-reach*.21:0)+(comboFinal?reach*.18:0)-reaction*.14+(f.action==='idle'?Math.sin(t*.0037+(ai?1.6:0))*.018:0);
+ const directionalLean=(f.dir==='back'?-.20:f.dir==='forward'?.16:f.dir==='up'?-.11:f.dir==='downBack'?-.11:f.dir==='downForward'?.12:0)*reach;
+ const lean=(light?reach*.08:heavy?reach*.22:0)+directionalLean+(comboTwo&&!low?-reach*.21:0)+(comboFinal&&!low?reach*.18:0)-reaction*.14+(f.action==='idle'?Math.sin(t*.0037+(ai?1.6:0))*.018:0);
  ctx.transform(1,0,lean,1,0,0);
  ctx.lineCap='round';ctx.lineJoin='round';
  const limb=(x1,y1,x2,y2,w,c)=>{ctx.strokeStyle=c;ctx.lineWidth=w;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke()};
  // Exactly TWO articulated legs: moving a leg repositions its existing knee and foot.
  const kicking=sweep?reach:comboFinal?reach*.72:0;
  const backKnee={x:-17-kicking*4,y:-32+kicking*4},backFoot={x:-26-kicking*5,y:-3};
- const frontKnee={x:17+kicking*22,y:-30+kicking*15},frontFoot={x:25+kicking*83,y:-3-kicking*14};
+ const lowDirection=f.dir==='downBack'?-1:f.dir==='downForward'?1:0;
+ const frontKnee={x:17+kicking*22+(low?reach*lowDirection*7:0),y:-30+kicking*15};
+ const frontFoot={x:25+kicking*83+(low?reach*lowDirection*24:0),y:-3-kicking*14};
  limb(-11,-58,backKnee.x,backKnee.y,15,shade);limb(backKnee.x,backKnee.y,backFoot.x,backFoot.y,13,shade);
  limb(12,-58,frontKnee.x,frontKnee.y,15,shade);limb(frontKnee.x,frontKnee.y,frontFoot.x,frontFoot.y,13,shade);
  limb(backFoot.x-4,backFoot.y,backFoot.x-14,backFoot.y,10,'#252a2b');
@@ -330,22 +355,54 @@ function fighter(f,t){
  const guarding=f.guard&&!light&&!heavy&&!grab;
  const rearElbow={x:-30,y:guarding?-108:-82};
  const rearHand={x:guarding?-8:heavy?-22:-6,y:guarding?(f.crouch?-96:-130):heavy?-125:-105};
- if(comboTwo&&light){rearElbow.x=-15+reach*18;rearElbow.y=-105;rearHand.x=15+reach*66;rearHand.y=-113-reach*13}
- if(grab){rearElbow.x=-5+grabPose*18;rearHand.x=13+grabPose*39;rearHand.y=-110+grabPose*15}
+ if(comboTwo&&light&&!low){rearElbow.x=-15+reach*18;rearElbow.y=-105;rearHand.x=15+reach*66;rearHand.y=-113-reach*13}
+ if(grab){
+ const v=clinch&&clinch.a===f?clinch.variant:f.throwStyle;
+ const back=v==='back'||v==='downBack',lowG=f.throwLow||v==='down'||v==='downForward'||v==='downBack';
+ rearElbow.x=back?-29+grabPose*13:-5+grabPose*18;
+ rearElbow.y=lowG?-79:-103;
+ rearHand.x=back?-13-grabPose*23:13+grabPose*39;
+ rearHand.y=lowG?-72+grabPose*16:v==='up'?-138-grabPose*25:-110+grabPose*15
+}
  limb(-18,-104,rearElbow.x,rearElbow.y,12,col);limb(rearElbow.x,rearElbow.y,rearHand.x,rearHand.y,11,skin);
  let elbow={x:27,y:-89},hand={x:26,y:-94};
  if(guarding){elbow={x:26,y:-109};hand={x:10,y:f.crouch?-88:-131}}
- else if(grab){elbow={x:25+grabPose*20,y:-97};hand={x:25+grabPose*63,y:-105+grabPose*8}}
+ else if(grab){
+   const v=clinch&&clinch.a===f?clinch.variant:f.throwStyle;
+   const back=v==='back'||v==='downBack',lowG=f.throwLow||v==='down'||v==='downForward'||v==='downBack';
+   elbow={x:back?2+grabPose*12:25+grabPose*20,y:lowG?-79:v==='up'?-129:-97};
+   hand={x:back?-12-grabPose*46:25+grabPose*63,y:lowG?-65+grabPose*17:v==='up'?-146-grabPose*45:-105+grabPose*8};
+ }
  else if(light){
-   if(comboTwo){elbow={x:22-reach*23,y:-109};hand={x:13-reach*35,y:-110-reach*8}}
-   else if(low){elbow={x:28+reach*24,y:-80};hand={x:32+reach*72,y:-67+reach*12}}
+   if(comboTwo&&!low){elbow={x:22-reach*23,y:-109};hand={x:13-reach*35,y:-110-reach*8}}
+   else if(low){
+     const dir=f.dir==='downBack'?-1:f.dir==='downForward'?1:0;
+     elbow={x:27+reach*(18+dir*13),y:-80+dir*6};
+     hand={x:30+reach*(67+dir*22),y:-68+reach*(12-dir*9)};
+   }
    else if(airFollow){elbow={x:30+reach*20,y:-100};hand={x:29+reach*79,y:-99+reach*13}}
-   else{elbow={x:24+reach*23,y:-102};hand={x:25+reach*78,y:f.dir==='up'?-125:-100}}
+   else{
+     const d=f.dir;
+     if(d==='up'){elbow={x:19+reach*30,y:-120-reach*18};hand={x:22+reach*56,y:-120-reach*68}}
+     else if(d==='back'){elbow={x:13-reach*28,y:-112};hand={x:16-reach*52,y:-109-reach*20}}
+     else if(d==='forward'){elbow={x:26+reach*40,y:-104};hand={x:28+reach*99,y:-101}}
+     else{elbow={x:24+reach*23,y:-102};hand={x:25+reach*78,y:-100}}
+   }
  }else if(heavy){
    if(sweep){elbow={x:25+reach*11,y:-84};hand={x:29+reach*49,y:-68+reach*11}}
-   else if(low){elbow={x:26+reach*20,y:-83};hand={x:26+reach*80,y:-74+reach*19}}
+   else if(low){
+     const d=f.dir==='downBack'?-1:f.dir==='downForward'?1:0;
+     elbow={x:24+reach*(17+d*16),y:-86+d*6};
+     hand={x:26+reach*(75+d*24),y:-74+reach*(19-d*12)}
+   }
    else if(comboFinal){elbow={x:18+reach*33,y:-129+reach*38};hand={x:10+reach*81,y:-150+reach*70}}
-   else{elbow={x:15+reach*40,y:-136+reach*29};hand={x:6+reach*84,y:-150+reach*56}}
+   else{
+     const d=f.dir;
+     if(d==='up'){elbow={x:15+reach*24,y:-141-reach*10};hand={x:8+reach*62,y:-155-reach*78}}
+     else if(d==='back'){elbow={x:5-reach*25,y:-133};hand={x:-4-reach*48,y:-155+reach*17}}
+     else if(d==='forward'){elbow={x:17+reach*52,y:-136+reach*33};hand={x:8+reach*103,y:-150+reach*54}}
+     else{elbow={x:15+reach*40,y:-136+reach*29};hand={x:6+reach*84,y:-150+reach*56}}
+   }
  }
  limb(17,-104,elbow.x,elbow.y,12,col);limb(elbow.x,elbow.y,hand.x,hand.y,11,skin);
  ctx.fillStyle=skin;ctx.beginPath();ctx.arc(hand.x,hand.y,8,0,2*Math.PI);ctx.fill();ctx.beginPath();ctx.arc(rearHand.x,rearHand.y,7,0,2*Math.PI);ctx.fill();
@@ -364,7 +421,8 @@ function fighter(f,t){
  ctx.textAlign='center';
  if(f.stanceTransition&&t<f.stanceUntil){ctx.fillStyle='#d5ded2';ctx.font='bold 10px system-ui';ctx.fillText(f.stanceTransition==='crouch'?'ПРИСЕДАЕТ':f.stanceTransition==='rise'?'ВСТАЁТ':'ОТТАЛКИВАЕТСЯ',x,ground-190*scale)}
  if(f.diveArmed){ctx.fillStyle='#ffe0a0';ctx.font='bold 12px system-ui';ctx.fillText('УДАР СВЕРХУ ↓',x,ground-(f.jumpHeight||0)-210*scale)}
- if((comboTwo||comboFinal)&&t<f.actionEnd){ctx.fillStyle=comboFinal?'#ffda8a':'#b8f0cd';ctx.font='900 15px system-ui';ctx.fillText(comboFinal?'✹ КОМБО ×3':'КОМБО ×2',x,ground-209*scale)}
+ if((comboTwo||comboFinal)&&!low&&t<f.actionEnd){ctx.fillStyle=comboFinal?'#ffda8a':'#b8f0cd';ctx.font='900 15px system-ui';ctx.fillText(comboFinal?'✹ КОМБО ×3':'КОМБО ×2',x,ground-209*scale)}
+ if(sweep&&t<f.actionEnd){ctx.fillStyle='#a6f1d3';ctx.font='900 13px system-ui';ctx.fillText('НИЗКАЯ ПОДСЕЧКА',x,ground-194*scale)}
  if((light||heavy)&&t<f.hitAt){ctx.fillStyle=heavy?'#ffd4a1':'#e4ebdc';ctx.font='bold 10px system-ui';ctx.fillText((heavy?'СИЛЬНЫЙ: ':'')+DIR_NAMES[f.dir||'neutral'],x,ground-184*scale)}
  if(f.action==='grab'&&t<f.hitAt){ctx.fillStyle='#ffbe88';ctx.font='bold 10px system-ui';ctx.fillText('БРОСОК: '+THROW_NAMES[f.dir||'neutral'],x,ground-180*scale)}
 }
