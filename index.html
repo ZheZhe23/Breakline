@@ -1378,7 +1378,46 @@ for(const button of document.querySelectorAll('[data-difficulty]')){
  });
 }
 $('start').onclick=()=>{$('intro').style.display='none';started=true;fresh();sound=true;$('soundBtn').textContent='◖ ЗВУК: ВКЛ.';preloadVoices();playRhythmBeat(0)};
+function openPause(){
+ if(!started||ended||paused)return;
+ paused=true;pauseStarted=performance.now();gameTimeNow=now;
+ $('pauseOverlay').classList.add('show');$('pauseViewMenu').style.display='grid';$('pauseViewMoves').style.display='none';
+ joyX=joyY=0;if(player){player.moveHeld=0;player.guard=false}
+ if(audio&&audio.state==='running')audio.suspend?.();
+ for(const clip of activeVoices)clip.pause();activeVoices.length=0;
+}
+function resumePause(){
+ if(!paused)return;
+ pausedTotal+=performance.now()-pauseStarted;paused=false;pauseStarted=0;
+ $('pauseOverlay').classList.remove('show');
+ if(audio&&audio.state==='suspended')audio.resume?.();
+}
+function moveBookMarkup(f,title){
+ const cfg=FIGHTERS[f.fighterId],rows=cfg.combos.map(([seq,name,type])=>
+  '<div class="moveRow"><span>'+comboText(seq)+'</span><span>'+name+'</span><em>'+(type==='power'?'СИЛОВОЙ':'БЫСТРЫЙ')+'</em></div>').join('');
+ return '<section class="movesFighter"><h4>'+title+' · '+cfg.name+'</h4><p>'+cfg.desc+'</p>'+rows+'</section>';
+}
+$('pauseBtn').onclick=openPause;
+$('pauseResume').onclick=resumePause;
+$('pauseMoves').onclick=()=>{
+ $('movesBook').innerHTML=moveBookMarkup(player,'ТЫ')+moveBookMarkup(enemy,'ПРОТИВНИК')+
+ '<p style="font-size:11px;color:#bdcec7;text-align:left">Р — рука, Н — нога. Последняя кнопка завершает комбо. Время попадания зависит от ритма; у силового финала есть подготовка.</p>';
+ $('pauseViewMenu').style.display='none';$('pauseViewMoves').style.display='grid';
+};
+$('pauseBack').onclick=()=>{$('pauseViewMenu').style.display='grid';$('pauseViewMoves').style.display='none'};
+$('pauseForfeit').onclick=()=>{
+ if(!paused||ended)return;
+ resumePause();
+ finish(true,false,true);
+};
+$('exitToMenu').onclick=()=>{
+ if(!ended||!finale?.shown)return;
+ stopMusic();stopAlarmAudio();
+ $('restartOverlay').classList.remove('show');$('pauseOverlay').classList.remove('show');
+ $('intro').style.display='flex';started=false;ended=false;finale=null;paused=false;
+ $('roundAlarm').classList.remove('active','critical','final');
+};
 $('restart').onclick=fresh;
 $('soundBtn').onclick=()=>{sound=!sound;$('soundBtn').textContent=sound?'◖ ЗВУК: ВКЛ.':'◖ ЗВУК: ВЫКЛ.';if(sound){preloadVoices();playRhythmBeat(0)}else{for(const clip of activeVoices)clip.pause();activeVoices.length=0}};
-window.addEventListener('blur',()=>{joyPointer=null;applyJoy(0,0,performance.now());if(player)player.guard=false});
+window.addEventListener('blur',()=>{joyPointer=null;applyJoy(0,0,gameClock());if(player)player.guard=false;if(started&&!ended&&!paused)openPause()});
 })();</script></body></html>
