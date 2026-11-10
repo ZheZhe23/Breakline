@@ -1405,7 +1405,7 @@ function moveBookMarkup(f,title){
 $('pauseBtn').onclick=openPause;
 $('pauseResume').onclick=resumePause;
 $('pauseMoves').onclick=()=>{
- $('movesBook').innerHTML=moveBookMarkup(player,'ТЫ')+moveBookMarkup(enemy,'ПРОТИВНИК')+
+ $('movesBook').innerHTML=Object.keys(FIGHTERS).map(id=>moveBookMarkup({fighterId:id},id===player.fighterId?'ТЫ':id===enemy.fighterId?'ПРОТИВНИК':'ДРУГОЙ БОЕЦ')).join('')+
  '<p style="font-size:11px;color:#bdcec7;text-align:left">Р — рука, Н — нога. Последняя кнопка завершает комбо. Время попадания зависит от ритма; у силового финала есть подготовка.</p>';
  $('pauseViewMenu').style.display='none';$('pauseViewMoves').style.display='grid';
 };
