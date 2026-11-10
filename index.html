@@ -41,21 +41,69 @@ function rhythmSlow(f,t){return !flowOn(f,t)&&f.rhythmSlowUntil>t}
 function rhythmSpeed(f,t){return rhythmSlow(f,t)?1.015:flowOn(f,t)?.90:1}
 function nextBeatAfter(t,minDelay=0){return rhythmStart+Math.ceil((t+minDelay-rhythmStart)/BEAT_MS)*BEAT_MS}
 function rhythmDamage(f,t){return 1+f.rhythm*.003+(flowOn(f,t)?.14:0)}
+// Original procedural synthwave loop. Every sound is synthesized locally; no copyrighted samples.
+let grooveNoise=null;
+function noiseSample(ctx){
+ if(grooveNoise&&grooveNoise.sampleRate===ctx.sampleRate)return grooveNoise;
+ const length=Math.floor(ctx.sampleRate*.4);
+ const buf=ctx.createBuffer(1,length,ctx.sampleRate),arr=buf.getChannelData(0);
+ for(let i=0;i<length;i++)arr[i]=(Math.random()*2-1);
+ grooveNoise=buf;return buf;
+}
+function tone(frequency,when,length,volume,wave='sawtooth',cutoff=950){
+ const osc=audio.createOscillator(),filter=audio.createBiquadFilter(),gain=audio.createGain();
+ osc.type=wave;osc.frequency.setValueAtTime(frequency,when);
+ filter.type='lowpass';filter.frequency.setValueAtTime(cutoff,when);
+ gain.gain.setValueAtTime(.0001,when);
+ gain.gain.exponentialRampToValueAtTime(Math.max(.0002,volume),when+.014);
+ gain.gain.exponentialRampToValueAtTime(.0001,when+length);
+ osc.connect(filter);filter.connect(gain);gain.connect(audio.destination);
+ osc.start(when);osc.stop(when+length+.02);
+}
+function noiseHit(when,length,volume,highpass){
+ const src=audio.createBufferSource(),filter=audio.createBiquadFilter(),gain=audio.createGain();
+ src.buffer=noiseSample(audio);filter.type='highpass';filter.frequency.value=highpass;
+ gain.gain.setValueAtTime(Math.max(.0001,volume),when);
+ gain.gain.exponentialRampToValueAtTime(.0001,when+length);
+ src.connect(filter);filter.connect(gain);gain.connect(audio.destination);
+ src.start(when);src.stop(when+length+.01);
+}
+function kickDrum(when){
+ const osc=audio.createOscillator(),gain=audio.createGain();
+ osc.type='sine';osc.frequency.setValueAtTime(145,when);
+ osc.frequency.exponentialRampToValueAtTime(49,when+.12);
+ gain.gain.setValueAtTime(.29,when);
+ gain.gain.exponentialRampToValueAtTime(.0001,when+.20);
+ osc.connect(gain);gain.connect(audio.destination);
+ osc.start(when);osc.stop(when+.21);
+}
 function playRhythmBeat(index){
  if(!sound)return;
  try{
   audio??=new (window.AudioContext||window.webkitAudioContext)();
   if(audio.state==='suspended')audio.resume();
-  const when=audio.currentTime+.008,accent=index%4===0;
-  const kick=audio.createOscillator(),gain=audio.createGain();
-  kick.type='sine';kick.frequency.setValueAtTime(accent?120:95,when);
-  kick.frequency.exponentialRampToValueAtTime(accent?48:58,when+.11);
-  gain.gain.setValueAtTime(accent?.15:.075,when);gain.gain.exponentialRampToValueAtTime(.001,when+.14);
-  kick.connect(gain);gain.connect(audio.destination);kick.start(when);kick.stop(when+.15);
-  const hat=audio.createOscillator(),hgain=audio.createGain();
-  hat.type='square';hat.frequency.value=accent?720:500;
-  hgain.gain.setValueAtTime(.014,when);hgain.gain.exponentialRampToValueAtTime(.001,when+.035);
-  hat.connect(hgain);hgain.connect(audio.destination);hat.start(when);hat.stop(when+.04);
+  const when=audio.currentTime+.012,quarter=BEAT_MS/1000,beat=index%4;
+  const bar=Math.floor(index/4),root=[55,43.65,48.999,41.2][bar%4]; // A, F, G, E
+  kickDrum(when);
+  // Snare on two and four, layered with short electronic body.
+  if(beat===1||beat===3){
+    noiseHit(when,.13,.095,1450);
+    tone(175,when,.10,.035,'triangle',800);
+  }
+  // Closed hats on eighth notes, slightly accented offbeat.
+  noiseHit(when,.035,.032,5000);
+  noiseHit(when+quarter*.5,.045,.045,4400);
+  // Bouncy octave bass. The offbeat eighth gives the groove its movement.
+  const bassPattern=[1,1,1.5,1,1,2,1.5,1];
+  tone(root*bassPattern[(index*2)%8],when,.19,.055,'sawtooth',430);
+  tone(root*bassPattern[(index*2+1)%8],when+quarter*.50,.17,.036,'sawtooth',360);
+  // Smooth arpeggio on the higher octave and a tiny chord pad on bar changes.
+  const arp=[2,2.5,3,4,3,2.5,2,1.5];
+  tone(root*arp[index%8],when+quarter*.25,.20,.014,'triangle',1350);
+  if(beat===0){
+    const intervals=bar%4===3?[1,1.2,1.5]:[1,1.25,1.5];
+    for(const ratio of intervals)tone(root*4*ratio,when,.92,.013,'sine',1100);
+  }
  }catch(e){}
 }
 function updateRhythm(t,dt){
