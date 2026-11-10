@@ -53,7 +53,7 @@ function beginJump(f,t){
 }
 function startAction(f,kind,t){
  if(clinch)return clinchInput(f,kind,t);
- if(!started||ended||f.action==='down'||t<f.stunnedUntil||t<f.recoveryUntil||t<f.jumpPendingAt||t<f.landingRecoverUntil)return false;
+ if(!started||ended||f.action==='down'||t<f.stunnedUntil||t<f.recoveryUntil||t<f.jumpPendingAt||t<f.landingRecoverUntil||((f.stanceTransition==='rise'||f.stanceTransition==='crouch')&&t<f.stanceUntil))return false;
  // Aerial heavy is armed mid-flight and resolves when both feet land.
  if(kind==='heavy'&&f.jumpUntil>t&&f.jumpHeight>7&&!f.diveArmed){f.diveArmed=true;f.diveHitDone=false;f.guard=false;f.comboStep=0;f.action='dive';f.actionStart=t;f.actionEnd=f.jumpUntil+260;f.cooldown=f.jumpUntil+430;setMessage(f.ai?'УДАР СВЕРХУ!':'АТАКА С ПРИЗЕМЛЕНИЕМ','Попадёт при посадке, если хватит дистанции',650);sfx(470,'triangle',.10);return true}
  if(f.diveArmed||f.action==='dive')return false;
@@ -95,7 +95,7 @@ function startAction(f,kind,t){
 }
 function step(f,direction,t){if(!started||ended||t<f.stunnedUntil||t<f.stanceUntil||t<f.landingRecoverUntil||f.action!=='idle'||f.guard||f.crouch)return;f.stepDir=direction;f.stepUntil=t+350;f.x=clamp(f.x+direction*.018,.12,.88);if(!f.ai)record('step')}
 function knockDown(f,t,damage,label){
- if(clinch)clinch=null;f.stanceTransition='';f.jumpPendingAt=0;f.airFollowReady=false;f.lowChainUntil=0;f.diveArmed=false;f.diveHitDone=true;f.jumpUntil=t;f.jumpHeight=0;f.hp=Math.max(0,f.hp-damage);f.post=35;f.toppleReady=false;f.guard=false;f.action='down';f.downStart=t;f.downUntil=t+1750;f.stunnedUntil=f.downUntil;f.actionEnd=f.downUntil;f.cooldown=f.downUntil+90;f.x=clamp(f.x+f.facing*.025,.12,.88);emit(f.x,'#f8d18a',22);shake=12;sfx(88,'sawtooth',.25);setMessage(label,'Падение → подъём · короткое окно уязвимости',950);if(f.hp<=0)finish(!f.ai);
+ if(clinch)clinch=null;f.stanceTransition='';f.stanceRequest=false;f.crouch=false;f.jumpPendingAt=0;f.airFollowReady=false;f.lowChainUntil=0;f.diveArmed=false;f.diveHitDone=true;f.jumpUntil=t;f.jumpHeight=0;f.hp=Math.max(0,f.hp-damage);f.post=35;f.toppleReady=false;f.guard=false;f.action='down';f.downStart=t;f.downUntil=t+1750;f.stunnedUntil=f.downUntil;f.actionEnd=f.downUntil;f.cooldown=f.downUntil+90;f.x=clamp(f.x+f.facing*.025,.12,.88);emit(f.x,'#f8d18a',22);shake=12;sfx(88,'sawtooth',.25);setMessage(label,'Падение → подъём · короткое окно уязвимости',950);if(f.hp<=0)finish(!f.ai);
 }
 function beginThrow(att,def,t,instant=false){
  if(clinch)return;
@@ -181,12 +181,51 @@ if(blockHigh||blockLow){const damage=(action==='heavy'?7:2)*(isLow?.5:1);def.hp-
 function finish(lose){ended=true;$('resultTitle').textContent=lose?'ПОРАЖЕНИЕ':'ПОБЕДА';$('resultTitle').style.color=lose?'#ed9f8b':'#f3dda9';let guards=player.history.filter(a=>a==='guard').length;$('resultInfo').textContent=lose?'Подходи удержанием ›, меняй направления ударов и уходи от бросков по таймингу.': 'Хорошая дуэль! Попробуй выиграть с несколькими вариантами ударов и бросков.';$('restartOverlay').classList.add('show');}
 function emit(x,col,num){let px=W*x,py=H*.61;for(let i=0;i<num;i++)particles.push({x:px,y:py,vx:rng(-3.8,3.8),vy:rng(-5,-1),life:rng(300,650),total:650,r:rng(1.5,4),col})}
 function updateHud(){$('ph').style.width=clamp(player.hp/160*100,0,100)+'%';$('pp').style.width=clamp(player.post,0,100)+'%';$('eh').style.width=clamp(enemy.hp/160*100,0,100)+'%';$('ep').style.width=clamp(enemy.post,0,100)+'%'}
-function aiDecide(t){if(clinch||t<enemy.nextThink||t<enemy.stunnedUntil||enemy.action!=='idle'&&t<enemy.actionEnd||ended)return;enemy.nextThink=t+rng(550,950);const dist=enemy.x-player.x;const recent=player.history.slice(-6);const count=kind=>recent.filter(x=>x===kind).length;const close=dist<.165;const playerWindup=(player.action==='heavy'||player.action==='light')&&t<player.hitAt;
-if(dist>.245){step(enemy,-1,t);enemy.nextThink=t+420;return}if(playerWindup&&Math.random()<.26){enemy.guard=true;enemy.guardAt=t-350;return}
-if(player.recoveryUntil>t&&t>=player.actionEnd&&dist<.27){enemy.guard=false;if(dist>.108){enemy.x=clamp(enemy.x-.032,.12,.88);enemy.nextThink=t+65;}else startAction(enemy,'grab',t);return}if(enemy.jumpUntil>t){if(enemy.jumpHeight>14&&!enemy.diveArmed)startAction(enemy,'heavy',t);return}
-if(player.crouch&&dist<.25){if(Math.random()<.32&&enemy.jumpUntil<=t){enemy.jumpStart=t;enemy.jumpUntil=t+760;enemy.jumpHeight=4;enemy.crouch=false;enemy.guard=false;enemy.nextThink=t+165;return}enemy.crouch=true;enemy.crouchUntil=t+900;if(Math.random()<.74){startAction(enemy,Math.random()<.68?'light':'heavy',t);return}}
-if(player.jumpUntil>t&&player.jumpHeight>16&&dist<.25){startAction(enemy,Math.random()<.65?'light':'heavy',t);return}
-if(count('light')>=3&&Math.random()<.7){enemy.guard=true;enemy.guardAt=t-350;enemy.nextThink=t+330;return}let r=Math.random();if(player.action==='stunned'&&close){startAction(enemy,'heavy',t);return}if(r<.23){enemy.guard=true;enemy.guardAt=t-350;enemy.nextThink=t+400}else if(r<.63)startAction(enemy,'light',t);else if(r<.87)startAction(enemy,'heavy',t);else if(close)startAction(enemy,'grab',t);else step(enemy,-1,t)}
+function aiDecide(t){
+ if(clinch||ended||!started||t<enemy.nextThink||t<enemy.stunnedUntil||t<enemy.jumpPendingAt)return;
+ if(enemy.airFollowReady&&t<enemy.airFollowUntil&&t>=enemy.actionEnd){startAction(enemy,'light',t);enemy.nextThink=t+350;return}
+ if(enemy.lowChainUntil>t&&enemy.crouch&&enemy.hitDone&&t>enemy.actionStart+225&&Math.random()<.68){
+  startAction(enemy,'heavy',t);enemy.nextThink=t+410;return
+ }
+ if(enemy.action!=='idle'&&t<enemy.actionEnd)return;
+ if(enemy.jumpUntil>t){if(enemy.jumpHeight>13&&!enemy.diveArmed)startAction(enemy,'heavy',t);enemy.nextThink=t+180;return}
+ if(t<enemy.stanceUntil||t<enemy.landingRecoverUntil)return;
+ const dist=Math.abs(enemy.x-player.x);
+ const recent=player.history.slice(-7),count=kind=>recent.filter(x=>x===kind).length;
+ const crouchHabit=recentStance('crouch',t)>=3||(player.crouch&&t-player.stanceHeldSince>1900);
+ const jumpHabit=recentStance('jump',t)>=3;
+ enemy.nextThink=t+rng(480,860);
+ if(player.recoveryUntil>t&&t>=player.actionEnd&&dist<.27){
+  if(dist>.108){enemy.x=clamp(enemy.x-.025,.12,.88);enemy.nextThink=t+105}
+  else startAction(enemy,'grab',t);
+  return;
+ }
+ if(dist>.27){enemy.crouchUntil=0;step(enemy,-1,t);enemy.nextThink=t+380;return}
+ // Recognition of a habit changes probabilities; it never reveals hidden player input.
+ if(player.jumpUntil>t&&player.jumpHeight>15){
+   enemy.crouchUntil=0;
+   if(Math.random()<(jumpHabit?.83:.57)){startAction(enemy,Math.random()<.7?'light':'heavy',t);return}
+ }
+ if(player.crouch){
+   if(dist<.245&&Math.random()<(crouchHabit?.62:.33)){
+     enemy.crouchUntil=0;
+     if(beginJump(enemy,t)){enemy.nextThink=t+320;return}
+   }
+   enemy.crouchUntil=t+1000;
+   if(enemy.crouch&&dist<.25&&Math.random()<.72){startAction(enemy,Math.random()<.64?'light':'heavy',t);return}
+   enemy.nextThink=t+220;return;
+ }
+ if((count('light')>=3||jumpHabit)&&Math.random()<.36){enemy.guard=true;enemy.guardAt=t-350;enemy.nextThink=t+280;return}
+ if(count('heavy')>=2&&Math.random()<.33){enemy.crouchUntil=t+800;enemy.nextThink=t+270;return}
+ if(enemy.crouch){enemy.crouchUntil=0;enemy.nextThink=t+190;return}
+ if(player.action==='stunned'&&dist<.22){startAction(enemy,'heavy',t);return}
+ const r=Math.random();
+ if(r<.16){enemy.guard=true;enemy.guardAt=t-350;enemy.nextThink=t+390}
+ else if(r<.56)startAction(enemy,'light',t);
+ else if(r<.84)startAction(enemy,'heavy',t);
+ else if(dist<.116)startAction(enemy,'grab',t);
+ else step(enemy,-1,t);
+}
 function readRepetitiveAttack(t){
 // React to a visible wind-up instead of reading an input instantly.
 if(player.action!=='light'||player.hitDone||player.lightStreak<3||t>=player.hitAt){enemy.readAttackId=0;return}
@@ -202,17 +241,20 @@ if(f.jumpPendingAt>0&&t>=f.jumpPendingAt&&f.action==='idle'&&t>=f.stunnedUntil){
 if(f.ai){
  const wantCrouch=t<f.crouchUntil&&f.jumpUntil<=t&&f.action!=='down'&&!clinch;
  if(wantCrouch&&!f.crouch&&f.stanceTransition!=='crouch'&&t>=f.stanceUntil){f.stanceTransition='crouch';f.stanceUntil=t+155;}
+ if(!wantCrouch&&f.stanceTransition==='crouch')f.stanceTransition='';
  if(!wantCrouch&&f.crouch){f.crouch=false;f.stanceTransition='rise';f.stanceUntil=t+150;}
  if(!f.crouch&&f.crouchUntil<t)f.crouchUntil=0;
  f.jumpHeight=t<f.jumpUntil?Math.sin(Math.PI*clamp((t-f.jumpStart)/(f.jumpUntil-f.jumpStart),0,1))*51:0;
 }else{
  const wantCrouch=f.stanceRequest&&t>=f.jumpUntil&&f.jumpPendingAt===0;
  if(wantCrouch&&!f.crouch&&f.stanceTransition!=='crouch'&&t>=f.stanceUntil){f.stanceTransition='crouch';f.stanceUntil=t+145;}
+ if(!wantCrouch&&f.stanceTransition==='crouch')f.stanceTransition='';
  if(!wantCrouch&&f.crouch){f.crouch=false;f.stanceTransition='rise';f.stanceUntil=t+155;}
  f.jumpHeight=t<f.jumpUntil?Math.sin(Math.PI*clamp((t-f.jumpStart)/(f.jumpUntil-f.jumpStart),0,1))*51:0;
 }
 if(f.stanceTransition==='crouch'&&t>=f.stanceUntil&&f.jumpPendingAt===0){
- f.crouch=true;f.stanceTransition='';if(!f.ai){rememberStance('crouch',t);f.stanceHeldSince=t}
+ const stillRequested=f.ai?t<f.crouchUntil:f.stanceRequest;
+ f.stanceTransition='';if(stillRequested){f.crouch=true;if(!f.ai){rememberStance('crouch',t);f.stanceHeldSince=t}}
 }
 if(f.stanceTransition==='rise'&&t>=f.stanceUntil)f.stanceTransition='';
 if(f.wasAirborne&&t>=f.jumpUntil){f.wasAirborne=false;f.landingRecoverUntil=Math.max(f.landingRecoverUntil,t+185);}
