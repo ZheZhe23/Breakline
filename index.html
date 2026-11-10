@@ -21,7 +21,7 @@
 <button class="fighterBtn" data-fighter="power"><b>ТЯЖЕЛОВЕС</b></button><button class="fighterBtn" data-fighter="acrobat"><b>АКРОБАТ</b></button></div></div><div id="postMatchDifficulty"><div class="difficultyTitle">СЛОЖНОСТЬ СЛЕДУЮЩЕГО БОЯ</div><div class="difficultyChoices"><button class="difficultyBtn selected" data-difficulty="easy">ЛЁГКАЯ<small>Четверти</small></button><button class="difficultyBtn" data-difficulty="medium">СРЕДНЯЯ<small>Восьмые</small></button><button class="difficultyBtn" data-difficulty="hard">СЛОЖНАЯ<small>Рисунок мелодии</small></button></div></div><button class="mainBtn" id="restart">ЕЩЁ ОДНА ДУЭЛЬ</button><button class="pauseAction" id="exitToMenu">ВЫЙТИ К ВЫБОРУ БОЙЦА</button></div></div><script>
 (()=>{'use strict';const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');let W=0,H=0,dpr=1,now=0,last=0,started=false,ended=false,round=0,shake=0,particles=[],impacts=[],logs=[],audio=null,sound=false;const $=id=>document.getElementById(id);let player,enemy,clinch=null,clinchSeq=0,selectedFighter='kickboxer';let paused=false,pauseStarted=0,pausedTotal=0,gameTimeNow=0;
 function gameClock(){return paused?gameTimeNow:performance.now()-pausedTotal}let selectedDir='neutral',selectedAt=0;const heldDirs=[];let joyX=0,joyY=0,joyPointer=null;let stanceEvents=[];let jumpLatch=false;let jumpQueuedUntil=0;
-const GAME_VERSION='3.8';
+const GAME_VERSION='3.8.1';
 const RHYTHM_BPM=120,BEAT_MS=60000/RHYTHM_BPM;
 let rhythmStart=0,rhythmNextIndex=0,roundStart=0,roundDuration=60000,roundBars=30,finale=null,lastAlarmBar=-1;
 let rhythmDifficulty='easy',shownRhythmBar=-1;
@@ -546,7 +546,8 @@ function startAction(f,kind,t){
   f.hitDone=false;
   f.cooldown=t+(f.powerFinisher?duration+BEAT_MS*.18:f.airFollowAttack?BEAT_MS*.6*rhythmActionScale(t):f.lowSweep?duration+BEAT_MS*.5:combo?BEAT_MS*.32*rhythmActionScale(t):duration+BEAT_MS*.09);
   if(f.crouch&&kind==='light')f.lowChainUntil=t+BEAT_MS*1.65*rhythmActionScale(t);
-  f.comboDeadline=t+(f.finisher?0:BEAT_MS*1.9*rhythmActionScale(t));
+  // Combo input has a fixed musical grace window: quarter-note presses (500 ms) must remain chainable even on dense rhythm charts.
+  f.comboDeadline=t+(f.finisher?0:BEAT_MS*1.6);
   if(f.powerFinisher){f.recoveryUntil=t+duration+BEAT_MS*.32;f.cooldown=f.recoveryUntil;}
   if(!f.ai){if(kind==='light'){f.lightStreak=(t-f.lastLightAt<2300)?Math.min(5,f.lightStreak+1):1;f.lastLightAt=t}else f.lightStreak=0;record(kind)}
   return true;
