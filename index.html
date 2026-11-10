@@ -38,7 +38,8 @@ function gradeAction(f,t,type){
  return grade;
 }
 function rhythmSlow(f,t){return !flowOn(f,t)&&f.rhythmSlowUntil>t}
-function rhythmSpeed(f,t){return rhythmSlow(f,t)?1.055:flowOn(f,t)?.90:1}
+function rhythmSpeed(f,t){return rhythmSlow(f,t)?1.015:flowOn(f,t)?.90:1}
+function nextBeatAfter(t,minDelay=0){return rhythmStart+Math.ceil((t+minDelay-rhythmStart)/BEAT_MS)*BEAT_MS}
 function rhythmDamage(f,t){return 1+f.rhythm*.003+(flowOn(f,t)?.14:0)}
 function playRhythmBeat(index){
  if(!sound)return;
@@ -156,7 +157,7 @@ function startAction(f,kind,t){
  if(f.diveArmed||f.action==='dive')return false;
  const lowFollow=kind==='heavy'&&f.crouch&&f.hitDone&&t<f.lowChainUntil;
  const airFollow=kind==='light'&&f.airFollowReady&&t<f.airFollowUntil&&f.jumpUntil<=t;
- const chain=(f.action==='light'||f.action==='idle')&&f.hitDone&&t>=f.actionStart+180&&t<f.comboDeadline&&f.comboStep>0;
+ const chain=(f.action==='light'||f.action==='idle')&&f.hitDone&&t>=f.actionStart+BEAT_MS*.25&&t<f.comboDeadline&&f.comboStep>0;
  if((t<f.cooldown&&!chain&&!lowFollow&&!airFollow) || (f.action!=='idle'&&t<f.actionEnd&&!chain&&!lowFollow&&!airFollow))return false;
  if(kind==='guard')return false;
  if(kind==='dodge')return false;
@@ -166,7 +167,7 @@ function startAction(f,kind,t){
   f.dir=f.ai?(f.crouch?'down':Math.random()<.36?'back':Math.random()<.5?'forward':'neutral'):(f.jumpUntil>t?'up':f.crouch?(joyX>.28?'downForward':joyX<-.28?'downBack':'down'):currentDir(t));
   f.throwStyle=f.dir;f.throwLow=!!f.crouch;
   f.attackRange=strikeRange(f,kind,f.dir);
-  f.action='grab';f.actionStart=t;const speed=rhythmSpeed(f,t);f.actionEnd=t+BEAT_MS*1.25*speed;f.hitAt=t+BEAT_MS*.55*speed;f.hitDone=false;f.cooldown=t+BEAT_MS*1.45*speed;
+  f.action='grab';f.actionStart=t;const speed=rhythmSpeed(f,t);f.hitAt=nextBeatAfter(t,BEAT_MS*.38)*speed+t*(1-speed);f.actionEnd=Math.max(t+BEAT_MS*1.25*speed,f.hitAt+BEAT_MS*.5);f.hitDone=false;f.cooldown=f.actionEnd+BEAT_MS*.20;
   if(!f.ai)record('grab');return true;
  }
  if(kind==='light'||kind==='heavy'){
@@ -189,7 +190,8 @@ function startAction(f,kind,t){
   const duration=BEAT_MS*(f.airFollowAttack?.76:f.lowSweep?1.75:kind==='light'?(combo?.78:.92):(combo?1.78:f.dir==='back'?1.6:1.95))*speed;
   f.actionEnd=t+duration;
   // Light attack reaches contact within one beat; heavy lands on the next beat.
-  f.hitAt=t+BEAT_MS*(f.airFollowAttack?.38:f.lowSweep?1.05:kind==='light'?(combo?.35:.40):combo?.96:1.08)*speed;
+  f.hitAt=kind==='heavy'?nextBeatAfter(t,BEAT_MS*.75)*speed+t*(1-speed):t+BEAT_MS*(f.airFollowAttack?.38:combo?.35:.40)*speed;
+  f.actionEnd=Math.max(f.actionEnd,f.hitAt+BEAT_MS*.45);
   f.hitDone=false;f.cooldown=t+(f.airFollowAttack?300:f.lowSweep?duration+310:combo?200:duration+45);
   if(f.crouch&&kind==='light')f.lowChainUntil=t+BEAT_MS*1.65;
   f.comboDeadline=t+(kind==='light'?BEAT_MS*1.8:0);
@@ -215,7 +217,8 @@ function escapeGrab(att,def,t,reason){
 function beginThrow(att,def,t,instant=false){
  if(clinch)return;
  const repeated=t-att.lastThrowAt<3300;att.lastThrowAt=t;
- const variant=att.throwStyle||att.dir||'neutral';const duration=BEAT_MS*(variant==='up'?1.85:variant==='down'?1.5:variant==='back'||variant==='downBack'?1.8:variant==='downForward'?1.65:1.55)*rhythmSpeed(att,t);
+ const variant=att.throwStyle||att.dir||'neutral';const minDuration=BEAT_MS*(variant==='up'?1.70:variant==='down'?1.26:variant==='back'||variant==='downBack'?1.6:variant==='downForward'?1.43:1.35);
+ const duration=Math.max(minDuration,nextBeatAfter(t,minDuration)-t)*rhythmSpeed(att,t);
  clinch={a:att,d:def,phase:'throw',start:t,end:t+duration,instant,variant,low:!!att.throwLow,aiCounterAt:t+duration*(.43+Math.random()*.13),counterChance:def.ai?(def.rhythm>=85?.24:def.rhythm>=50?.39:.64)+(repeated?.15:0):0,seq:++clinchSeq};
  att.action='throwing';att.actionStart=t;att.actionEnd=t+duration+160;att.cooldown=t+duration+280;
  def.throwStyle=variant;def.action='caught';def.actionStart=t;def.actionEnd=t+duration+160;def.guard=false;
@@ -471,7 +474,7 @@ if(enemy.action!=='idle'||enemy.stunnedUntil>t||Math.abs(enemy.x-player.x)>.255)
 if(enemy.readAttackId!==player.actionStart){enemy.readAttackId=player.actionStart;enemy.readAt=player.actionStart+85+rng(12,33);enemy.readHandled=false}
 if(!enemy.readHandled&&t>=enemy.readAt){enemy.readHandled=true;if(Math.random()<(enemy.aiStyle==='counter'?.84:enemy.aiStyle==='aggressor'?.43:.79)){enemy.guard=true;enemy.guardAt=t;enemy.nextThink=t+550;setMessage('ПРОТИВНИК ЧИТАЕТ СЕРИЮ','Прерви шаблон: тяжёлый удар, захват или уход',570)}}
 }
-function update(t,dt){if(!started||ended)return;updateRhythm(t,dt);updateClinch(t);readRepetitiveAttack(t);for(const f of [player,enemy]){f.facing=(f===player?enemy.x-player.x:player.x-enemy.x)>=0?1:-1;if(f.action==='down'&&t>=f.downUntil){f.downStyle='normal';f.action='idle';f.post=Math.min(f.post,35);f.cooldown=t+160}else if(!clinch&&f.action!=='idle'&&t>f.actionEnd)f.action='idle';if(f.guard&&t-f.guardAt>1000&&f.ai)f.guard=false;
+function update(t,dt){if(!started||ended)return;updateRhythm(t,dt);updateClinch(t);readRepetitiveAttack(t);for(const f of [player,enemy]){f.facing=(f===player?enemy.x-player.x:player.x-enemy.x)>=0?1:-1;if(f.action==='down'&&t>=f.downUntil){f.downStyle='normal';f.action='idle';f.cooldown=t+160}else if(!clinch&&f.action!=='idle'&&t>f.actionEnd)f.action='idle';if(f.guard&&t-f.guardAt>1000&&f.ai)f.guard=false;
 // Stance transitions have anticipation frames. During the transition no auto-guard applies.
 if(f.jumpPendingAt>0&&f.action!=='idle'&&t<f.stunnedUntil){f.jumpPendingAt=0;f.stanceTransition='';}
 if(f.jumpPendingAt>0&&t>=f.jumpPendingAt&&f.action==='idle'&&t>=f.stunnedUntil){
