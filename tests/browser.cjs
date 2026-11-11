@@ -82,10 +82,27 @@ const errors=[];let checks=0;
    setup();const jumpAt=rhythmStart+BEAT_MS*4;check(beginJump(player,jumpAt),'jump starts');update(player.jumpPendingAt+1,16);check(player.jumpUntil>jumpAt,'takeoff resolves');
    setup();player.stanceRequest=true;update(rhythmStart+1000,16);update(player.stanceUntil+1,16);check(player.crouch,'crouch resolves');
    setup();const grabAt=rhythmStart+BEAT_MS*4;enemy.x=player.x+.08;startAction(player,'grab',grabAt);strike(player,enemy,player.hitAt);check(!!clinch,'throw connects');if(clinch){clinch.aiCounterAt=Infinity;updateClinch(clinch.slamBeat+1);check(enemy.action==='down','throw knocks down')}
+   for(const bpm of [100,120,140]){
+    for(const outcome of ['hit','block','miss','crouch','invulnerable']){
+     setup('kickboxer',bpm);const at=rhythmStart+4*BEAT_MS;
+     Object.assign(player,{action:'heavy',actionStart:at,actionEnd:at+BEAT_MS*1.65,hitAt:at+BEAT_MS*.11,attackRange:.254,attackGrade:'perfect',finisher:true,powerFinisher:true,powerReadyAt:at+BEAT_MS*2,recoveryUntil:at+BEAT_MS*2,cooldown:at+BEAT_MS*2});
+     enemy.x=outcome==='miss'?.88:player.x+.13;enemy.guard=outcome==='block';enemy.guardAt=at-BEAT_MS*2;enemy.crouch=outcome==='crouch';enemy.invulUntil=outcome==='invulnerable'?at+BEAT_MS:0;
+     strike(player,enemy,player.hitAt);
+     check(Math.abs(player.recoveryUntil-player.powerReadyAt)<.01,'finisher '+outcome+' ready on third @'+bpm);
+     check(!!photoStop===(outcome==='hit'),'finisher flash only on hit '+outcome);
+    }
+    for(const grade of ['perfect','off']){
+     setup('acrobat',bpm);const at=rhythmStart+4*BEAT_MS;
+     Object.assign(player,{action:'dive',diveArmed:true,diveHitDone:false,attackGrade:grade});
+     const hp=enemy.hp;resolveDive(player,enemy,at);
+     check((enemy.hp<hp)===(grade==='perfect'),'landing damage respects rhythm '+grade+' @'+bpm);
+     check((player.score>0)===(grade==='perfect'),'landing scoring respects rhythm '+grade+' @'+bpm);
+    }
+   }
    // Every recipe uses a distinct final move within its fighter's repertoire.
    for(const [id,rig] of Object.entries(RIGS))check(new Set(rig.finals).size===FIGHTERS[id].combos.length,'distinct finishers '+id);
    // Anatomical invariants across all moves and states, including inverted poses.
-   for(const id of Object.keys(RIGS))for(const level of [1,2,3,4,5])for(const kind of ['idle','light','heavy','down','grab','celebrate','defeated']){
+   for(const id of Object.keys(RIGS))for(const level of [1,2,3,4,5])for(const kind of ['idle','light','heavy','down','grab','dive','celebrate','defeated']){
     const f=makeFighter(false,.4,id);f.rhythm=(level-1)*20;f.action=kind;f.actionStart=1000;f.hitAt=1055;f.actionEnd=1800;f.actionVariant=level*3-3;f.downStart=1000;f.downUntil=2400;
     for(const t of [1000,1020,1055,1120,1320,1799]){
      const {p}=rigPose(f,t);for(const v of Object.values(p))check(v.every(Number.isFinite),'finite pose '+id+' '+kind);
@@ -94,6 +111,10 @@ const errors=[];let checks=0;
      check(Math.abs(Math.hypot(limb.end[0]-limb.joint[0],limb.end[1]-limb.joint[1])-r.forearm)<.001,'forearm length');
      fighter(f,t);stats.poses++;
     }
+   }
+   for(const id of Object.keys(RIGS)){
+    const f=makeFighter(false,.4,id);Object.assign(f,{action:'dive',actionStart:1000,actionEnd:1480,diveArmed:false});
+    check(JSON.stringify(rigPose(f,1480).p)===JSON.stringify(rigPose({...f,action:'idle'},1480).p),'landing returns to idle without pose jump '+id);
    }
    practiceMode=true;fresh();return {failures,stats};
   })()`);

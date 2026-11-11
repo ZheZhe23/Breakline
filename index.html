@@ -47,7 +47,7 @@
 }
 @media(prefers-reduced-motion:reduce){#roundAlarm.active{animation:none;opacity:.15}.trackBtn{box-shadow:none}}
 
-</style></head><body><div id="app"><canvas id="game"></canvas><button id="pauseBtn" aria-label="Пауза">Ⅱ <span>ПАУЗА</span></button><div id="roundAlarm"></div><div id="hud"><div class="header"><div class="person"><div class="name"><span id="playerName">ТЫ · КИКБОКСЁР</span> <span class="scoreNumber" id="playerScore">0</span></div><div class="bar"><div class="fill" id="ph"></div></div><div class="balance rhythmFill"><div class="fill" id="pp"></div></div><div class="meter">ЗДОРОВЬЕ <span id="playerHP">500/500</span></div></div><div class="brand">BREAKLINE<small>ВЕРСИЯ 3.11.0 · <span id="roundClock">01:00</span></small></div><div class="person right enemy"><div class="name"><span id="aiName">ПРОТИВНИК · ИИ</span><span class="scoreNumber" id="enemyScore">0</span></div><div class="bar"><div class="fill" id="eh"></div></div><div class="balance rhythmFill"><div class="fill" id="ep"></div></div><div class="meter">ЗДОРОВЬЕ <span id="enemyHP">500/500</span></div></div></div></div><div id="clinchPanel" style="display:none"><div id="clinchLabel">ЗАХВАТ</div><div id="counterCircle" class="counterCircle"><span id="counterIcon">✊</span></div><div id="clinchTip">Жди светящегося круга</div></div><div id="distance">ДИСТАНЦИЯ: —</div><div id="rhythmLevelNotice" aria-live="polite"><span id="rhythmLevelNoticeTitle">УРОВЕНЬ 2</span><small id="rhythmLevelNoticeDetail">СВЕЧЕНИЕ ОТКРЫТО</small></div><div id="rhythmHud"><div class="rhythmTop"><span id="beatLabel">♪ 120 BPM</span><span id="rhythmGrade">ЛОВИ РИТМ</span><span id="flowLabel">ПОТОК · 0/5</span></div><div id="beatTrack"><div id="beatSlots"></div><div id="beatNeedle"></div></div><div id="rhythmPatternLabel">ЧЕТВЕРТИ · 1–2–3–4</div></div><div id="message"></div><div id="subtext"></div><div id="specialBanner" aria-live="polite"><strong>✦ СПЕЦПРИЁМ!</strong><span id="specialBannerName"></span></div><button id="soundBtn" title="Включить или выключить звук" aria-pressed="false">◖ ЗВУК: ВЫКЛ.</button><div id="help">РИТМ: точные попадания повышают энергию и очки. Комбинации у каждого бойца свои. Полная шкала = ПОТОК.</div><div id="comboHint">КОМБО: —</div><div id="streakScore">ЛУЧШАЯ СЕРИЯ ×0</div><div id="dirSelected">ПРИЁМ: ПРЯМОЙ</div><div id="controls"><div class="cluster"><div id="joystick" aria-label="Джойстик движения"><div class="lr"><span>‹</span><span>›</span></div><div id="stick"></div></div></div><div class="cluster right"><button class="ctl strong" id="heavy"><span>✹</span>НОГА<small>быстрый удар</small></button><button class="ctl grab" id="grab"><span>✊</span>БРОСОК<small>только вплотную</small></button><button class="ctl attack" id="attack"><span>✦</span>РУКА<small>комбо в ритм</small></button></div></div><div id="intro"><div class="introInner"><h1>BREAKLINE</h1><p>Музыкальный файтинг: атака, присед, прыжок и захват в долю усиливают ритм. Полная шкала открывает режим ПОТОК.</p><div id="fighterPicker"><div class="difficultyTitle">ВЫБОР БОЙЦА</div><div id="fighterChoices" class="fighterChoices">
+</style></head><body><div id="app"><canvas id="game"></canvas><button id="pauseBtn" aria-label="Пауза">Ⅱ <span>ПАУЗА</span></button><div id="roundAlarm"></div><div id="hud"><div class="header"><div class="person"><div class="name"><span id="playerName">ТЫ · КИКБОКСЁР</span> <span class="scoreNumber" id="playerScore">0</span></div><div class="bar"><div class="fill" id="ph"></div></div><div class="balance rhythmFill"><div class="fill" id="pp"></div></div><div class="meter">ЗДОРОВЬЕ <span id="playerHP">500/500</span></div></div><div class="brand">BREAKLINE<small>ВЕРСИЯ 3.11.1 · <span id="roundClock">01:00</span></small></div><div class="person right enemy"><div class="name"><span id="aiName">ПРОТИВНИК · ИИ</span><span class="scoreNumber" id="enemyScore">0</span></div><div class="bar"><div class="fill" id="eh"></div></div><div class="balance rhythmFill"><div class="fill" id="ep"></div></div><div class="meter">ЗДОРОВЬЕ <span id="enemyHP">500/500</span></div></div></div></div><div id="clinchPanel" style="display:none"><div id="clinchLabel">ЗАХВАТ</div><div id="counterCircle" class="counterCircle"><span id="counterIcon">✊</span></div><div id="clinchTip">Жди светящегося круга</div></div><div id="distance">ДИСТАНЦИЯ: —</div><div id="rhythmLevelNotice" aria-live="polite"><span id="rhythmLevelNoticeTitle">УРОВЕНЬ 2</span><small id="rhythmLevelNoticeDetail">СВЕЧЕНИЕ ОТКРЫТО</small></div><div id="rhythmHud"><div class="rhythmTop"><span id="beatLabel">♪ 120 BPM</span><span id="rhythmGrade">ЛОВИ РИТМ</span><span id="flowLabel">ПОТОК · 0/5</span></div><div id="beatTrack"><div id="beatSlots"></div><div id="beatNeedle"></div></div><div id="rhythmPatternLabel">ЧЕТВЕРТИ · 1–2–3–4</div></div><div id="message"></div><div id="subtext"></div><div id="specialBanner" aria-live="polite"><strong>✦ СПЕЦПРИЁМ!</strong><span id="specialBannerName"></span></div><button id="soundBtn" title="Включить или выключить звук" aria-pressed="false">◖ ЗВУК: ВЫКЛ.</button><div id="help">РИТМ: точные попадания повышают энергию и очки. Комбинации у каждого бойца свои. Полная шкала = ПОТОК.</div><div id="comboHint">КОМБО: —</div><div id="streakScore">ЛУЧШАЯ СЕРИЯ ×0</div><div id="dirSelected">ПРИЁМ: ПРЯМОЙ</div><div id="controls"><div class="cluster"><div id="joystick" aria-label="Джойстик движения"><div class="lr"><span>‹</span><span>›</span></div><div id="stick"></div></div></div><div class="cluster right"><button class="ctl strong" id="heavy"><span>✹</span>НОГА<small>быстрый удар</small></button><button class="ctl grab" id="grab"><span>✊</span>БРОСОК<small>только вплотную</small></button><button class="ctl attack" id="attack"><span>✦</span>РУКА<small>комбо в ритм</small></button></div></div><div id="intro"><div class="introInner"><h1>BREAKLINE</h1><p>Музыкальный файтинг: атака, присед, прыжок и захват в долю усиливают ритм. Полная шкала открывает режим ПОТОК.</p><div id="fighterPicker"><div class="difficultyTitle">ВЫБОР БОЙЦА</div><div id="fighterChoices" class="fighterChoices">
 <button class="fighterBtn" data-fighter="boxer"><b>БОКСЁР</b><small>Быстрые серии · 7 комбо</small></button>
 <button class="fighterBtn selected" data-fighter="kickboxer"><b>КИКБОКСЁР</b><small>Баланс рук и ног · 6 комбо</small></button>
 <button class="fighterBtn" data-fighter="power"><b>ТЯЖЕЛОВЕС</b><small>Мощные финалы · 4 комбо</small></button>
@@ -66,7 +66,7 @@ function initTransport(){
  }catch(e){transport=null}
 }
 let selectedDir='neutral',selectedAt=0;const heldDirs=[];let joyX=0,joyY=0,joyPointer=null;let stanceEvents=[];let jumpLatch=false;let jumpQueuedUntil=0;
-const GAME_VERSION='3.11.0';
+const GAME_VERSION='3.11.1';
 const TRACKS={
  neon:{title:'NEON PULSE',genre:'Synthwave',bpm:120,arena:'Неоновый док',root:55,wave:'sawtooth',sky:['#090e26','#293354'],floor:'#111a32',accent:'#55e4dd',warm:'#ff79b9',
  phrases:[{name:'A',slots:[0,4,6,8,10,14],notes:[4,5,4,2,0,2]},{name:'B',slots:[0,2,4,8,11,12,14],notes:[2,4,5,7,5,4,2]},{name:'C',slots:[0,3,4,7,8,12,14],notes:[7,5,4,5,2,0,2]},{name:'D',slots:[0,2,5,8,10,12,14],notes:[4,2,0,2,4,5,7]}]},
@@ -637,8 +637,9 @@ function missedAttack(att,t,reason){
  if(att.powerFinisher&&att.powerFreezeUntil<=t){freezePowerPose(att,t,'attacker');powerCrash(t,false,true)}
  breakStreak(att);fightFoley('whoosh',att.action==='heavy');
  if(!att.powerFinisher)return;
- // Full recovery is measured beyond the original animation, not just after contact.
- att.recoveryUntil=Math.max(att.recoveryUntil,att.actionEnd+(att.lowSweep?270:att.dir==='back'?260:520));
+ // A whiff remains punishable for the recovery beat, but never silently
+ // inserts a fourth-beat delay after the promised third-beat readiness.
+ att.recoveryUntil=Math.max(att.recoveryUntil,att.powerReadyAt||t+BEAT_MS*1.8);
  att.cooldown=Math.max(att.cooldown,att.recoveryUntil);
  att.whiffUntil=att.recoveryUntil;
  att.whiffCount++;
@@ -843,7 +844,12 @@ function updateClinch(t){
 function resolveDive(att,def,t){
  if(!att.diveArmed||att.diveHitDone)return;
  att.diveArmed=false;att.diveHitDone=true;att.action='dive';
- att.actionStart=t-160;att.actionEnd=t+320;att.cooldown=t+430;
+ att.actionStart=t-BEAT_MS*.32;att.actionEnd=t+BEAT_MS*.64;att.cooldown=t+BEAT_MS*.86;
+ if(att.attackGrade==='off'){
+  att.airFollowReady=false;breakStreak(att);fightFoley('whoosh',true);
+  if(!att.ai)setMessage('ПРИЗЕМЛЕНИЕ МИМО РИТМА','Нет урона и очков · войди в прыжковую атаку в долю',650);
+  return;
+ }
  const diff=Math.abs(att.x-def.x);
  if(def.action==='down'||diff>.205){att.airFollowReady=false;
   setMessage('ПРОМАХ УДАРА СВЕРХУ','Не удалось приземлиться рядом с соперником',640);
@@ -854,10 +860,10 @@ function resolveDive(att,def,t){
  def.hp=Math.max(0,def.hp-damage);registerHit(att,def,t,125,false);def.guard=false;
  def.stunnedUntil=t+520;def.action='stunned';def.actionStart=t;def.actionEnd=t+520;def.cooldown=t+580;
  def.x=clamp(def.x+att.facing*.047,.12,.88);
- att.airFollowReady=true;att.airFollowUntil=t+670;att.actionEnd=t+145;att.cooldown=t+145;att.landingRecoverUntil=t+120;
+ att.airFollowReady=true;att.airFollowUntil=t+BEAT_MS*1.34;att.actionEnd=t+BEAT_MS*.29;att.cooldown=t+BEAT_MS*.29;att.landingRecoverUntil=t+BEAT_MS*.24;
  if(def.crouch)def.stunnedUntil=t+660;
  emit(def.x,'#ffe0a0',28);impact(def,t,1.7,false);shake=9;fightFoley('impact',true,att);fightVoice('hurt',def);
- setMessage('УДАР С ПРИЗЕМЛЕНИЕМ!','Успех! Нажми ЛЁГКИЙ для воздушного комбо',850);
+ setMessage('УДАР С ПРИЗЕМЛЕНИЕМ!','Успех! Нажми РУКА для воздушного комбо',850);
  
  if(def.hp<=0)finish(!def.ai);
 }
@@ -866,7 +872,7 @@ function strike(att,def,t){
  att.hitDone=true;
  if(att.powerFinisher)freezePowerPose(att,t,'attacker');
  if(diff>range){
-  if(att.powerFinisher)att.recoveryUntil=Math.max(att.recoveryUntil,t+BEAT_MS*1.8);
+  if(att.powerFinisher)att.recoveryUntil=Math.max(att.recoveryUntil,att.powerReadyAt||t+BEAT_MS*1.8);
   missedAttack(att,t,'Недостаточная дистанция');
   if(!att.powerFinisher&&!att.ai)setMessage('ПРОМАХ','Выбери более дальнюю атаку или сблизься',520);
   if(!att.powerFinisher){fightFoley('whoosh',false);breakStreak(att)}else powerCrash(t,false,true);return;
@@ -1518,6 +1524,14 @@ function rigPose(f,t){
  if(f.stanceTransition==='takeoff')crouch=Math.sin(Math.PI*clamp(1-(f.stanceUntil-t)/85,0,1))*.35;
  if(crouch){for(const key of ['hip','chest','lh','rh'])p[key]=[p[key][0]+(key==='hip'?-6:3)*crouch,p[key][1]+30*crouch];lift*=1-crouch;}
  if(t<f.jumpUntil){p.lf=[p.lf[0]+9,p.lf[1]-14];p.rf=[p.rf[0]-8,p.rf[1]-22];}
+ if(f.action==='dive'){
+  const landedAt=f.actionStart+BEAT_MS*.32;
+  const landing=f.diveArmed?0:1-rigEase((t-landedAt)/Math.max(1,f.actionEnd-landedAt)),strength=f.diveArmed?1:landing;
+  p.chest=[p.chest[0]+14*strength,p.chest[1]+5*strength+landing*12];p.hip=[p.hip[0],p.hip[1]+landing*18];
+  p.lh=[p.lh[0]+(10-p.lh[0])*strength,p.lh[1]+(-120-p.lh[1])*strength];
+  p.rh=[p.rh[0]+(33-p.rh[0])*strength,p.rh[1]+(-121-p.rh[1])*strength];
+  if(f.diveArmed){p.lf=[-18,-22];p.rf=[43,-17];}
+ }
  if(f.action==='grab'||f.action==='throwing'){p.lh=[52,-112];p.rh=[63,-105];p.chest[0]+=9;}
  if(f.action==='caught'){p.lh=[19,-108];p.rh=[29,-104];}
  if(f.guard&&!attack){p.lh=[p.chest[0]+7,p.chest[1]-18];p.rh=[p.chest[0]+29,p.chest[1]-10];}
