@@ -1,0 +1,9 @@
+{
+  "name": "breakline",
+  "private": true,
+  "scripts": {
+    "check": "node -e \"new(require('node:vm').Script)(require('node:fs').readFileSync('index.html','utf8').match(/<script>([\\s\\S]*)<\\/script>/)[1]);console.log('Syntax OK')\"",
+    "test": "node tests/browser.cjs"
+  },
+  "devDependencies": {"playwright": "^1.56.1"}
+}
