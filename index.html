@@ -11,7 +11,7 @@
 #roundAlarm{position:absolute;inset:0;pointer-events:none;z-index:2;opacity:0;background:radial-gradient(ellipse at 50% 45%,transparent 30%,#cf282849 100%);mix-blend-mode:screen}#roundAlarm.active{animation:alarmBreath 1s ease-in-out infinite alternate}@keyframes alarmBreath{0%{opacity:.10}100%{opacity:.65}}#roundAlarm.critical{animation-duration:.48s}#roundAlarm.final{animation:none;opacity:.36}#app .brand small{font-variant-numeric:tabular-nums}#resultTitle{max-width:90vw}
 #fighterPicker,#postMatchFighter{border:1px solid #76948b66;background:#14252a99;padding:9px;border-radius:12px;margin:9px 0} .fighterChoices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:8px 0}.fighterBtn{min-width:0;border:1px solid #7b958b66;border-radius:9px;color:#d9e4dc;background:#1b3235;padding:10px 5px;font-size:11px;font-weight:800;cursor:pointer}.fighterBtn b{display:block;letter-spacing:.04em}.fighterBtn small{display:block;font-size:9px;font-weight:500;color:#abc0b5;margin-top:4px}.fighterBtn.selected{border-color:#f4d58c;background:#594d36;color:#ffebbb;box-shadow:0 0 10px #e2bc6333}#fighterDescription{color:#b7cfc0;font-size:11px;line-height:1.45}#postMatchFighter{width:min(390px,90vw)}
 #pauseBtn{position:absolute;z-index:7;right:12px;top:clamp(80px,12vh,126px);padding:7px 10px;border-radius:9px;border:1px solid #a0b6a17a;background:#152125e0;color:#f0ddae;font-size:17px;font-weight:900;cursor:pointer;letter-spacing:.06em}#pauseBtn span{font-size:10px;vertical-align:middle}#pauseBtn:active{background:#33413e}.pauseOverlay{position:absolute;inset:0;z-index:12;background:#0c151adb;display:none;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}.pauseOverlay.show{display:flex}.pauseBox{width:min(560px,96vw);max-height:min(92vh,750px);overflow:auto;background:#17292d;border:1px solid #8daba080;border-radius:16px;padding:20px;text-align:center;box-shadow:0 16px 80px #0009}.pauseBox h2{color:#f5dea4;font-size:26px;margin:0 0 15px}.pauseBox h3{color:#f4dea7;margin:0 0 8px}.pauseView{display:grid;gap:10px}.pauseAction{padding:13px;background:#293c40;border:1px solid #81968e;border-radius:10px;font-size:14px;font-weight:750;color:#e3eee6;cursor:pointer}.pauseAction.danger{color:#ffb1a3;border-color:#b96a61}.movesFighter{text-align:left;border:1px solid #6a88836a;border-radius:10px;margin-bottom:10px;padding:12px;background:#152126}.movesFighter h4{margin:0 0 5px;color:#f0d899}.movesFighter p{font-size:12px;color:#b5c7bb;margin:0 0 8px}.movesFighter .moveRow{display:flex;justify-content:space-between;gap:8px;padding:5px 0;border-top:1px solid #ffffff16;font-size:12px;color:#eef1e9}.movesFighter .moveRow span:first-child{font-weight:850;color:#fff0b9;min-width:75px}.movesFighter .moveRow em{color:#afc7bf;font-style:normal}#exitToMenu{margin-top:5px;font-size:12px;padding:10px 18px}
-</style></head><body><div id="app"><canvas id="game"></canvas><button id="pauseBtn" aria-label="Пауза">Ⅱ <span>ПАУЗА</span></button><div id="roundAlarm"></div><div id="hud"><div class="header"><div class="person"><div class="name"><span id="playerName">ТЫ · КИКБОКСЁР</span> <span class="scoreNumber" id="playerScore">0</span></div><div class="bar"><div class="fill" id="ph"></div></div><div class="balance rhythmFill"><div class="fill" id="pp"></div></div><div class="meter">ЗДОРОВЬЕ <span id="playerHP">500/500</span> / РИТМ</div></div><div class="brand">BREAKLINE<small>ВЕРСИЯ 3.10.11 · <span id="roundClock">01:00</span></small></div><div class="person right enemy"><div class="name" id="aiName">ПРОТИВНИК · ИИ</div><div class="scoreNumber" id="enemyScore">0</div><div class="bar"><div class="fill" id="eh"></div></div><div class="balance rhythmFill"><div class="fill" id="ep"></div></div><div class="meter">ЗДОРОВЬЕ <span id="enemyHP">500/500</span> / РИТМ</div></div></div></div><div id="clinchPanel" style="display:none"><div id="clinchLabel">ЗАХВАТ</div><div id="counterCircle" class="counterCircle"><span id="counterIcon">✊</span></div><div id="clinchTip">Жди светящегося круга</div></div><div id="distance">ДИСТАНЦИЯ: —</div><div id="rhythmLevelNotice" aria-live="polite"><span id="rhythmLevelNoticeTitle">УРОВЕНЬ 2</span><small id="rhythmLevelNoticeDetail">СВЕЧЕНИЕ ОТКРЫТО</small></div><div id="rhythmHud"><div class="rhythmTop"><span id="beatLabel">♪ 120 BPM</span><span id="rhythmGrade">ЛОВИ РИТМ</span><span id="flowLabel">ПОТОК · 0/5</span></div><div id="beatTrack"><div id="beatSlots"></div><div id="beatNeedle"></div></div><div id="rhythmPatternLabel">ЧЕТВЕРТИ · 1–2–3–4</div></div><div id="message"></div><div id="subtext"></div><div id="specialBanner" aria-live="polite"><strong>✦ СПЕЦПРИЁМ!</strong><span id="specialBannerName"></span></div><button id="soundBtn">◖ ЗВУК: ВЫКЛ.</button><div id="help">РИТМ: точные попадания повышают энергию и очки. Комбинации у каждого бойца свои. Полная шкала = ПОТОК.</div><div id="comboHint">КОМБО: —</div><div id="streakScore">ЛУЧШАЯ СЕРИЯ ×0</div><div id="dirSelected">ПРИЁМ: ПРЯМОЙ</div><div id="controls"><div class="cluster"><div id="joystick" aria-label="Джойстик движения"><div class="lr"><span>‹</span><span>›</span></div><div id="stick"></div></div></div><div class="cluster right"><button class="ctl strong" id="heavy"><span>✹</span>НОГА<small>быстрый удар</small></button><button class="ctl grab" id="grab"><span>✊</span>БРОСОК<small>только вплотную</small></button><button class="ctl attack" id="attack"><span>✦</span>ЛЁГКИЙ<small>серия × 2</small></button></div></div><div id="intro"><div class="introInner"><h1>BREAKLINE</h1><p>Музыкальный файтинг: атака, присед, прыжок и захват в долю усиливают ритм. Полная шкала открывает режим ПОТОК.</p><div id="fighterPicker"><div class="difficultyTitle">ВЫБОР БОЙЦА</div><div id="fighterChoices" class="fighterChoices">
+</style></head><body><div id="app"><canvas id="game"></canvas><button id="pauseBtn" aria-label="Пауза">Ⅱ <span>ПАУЗА</span></button><div id="roundAlarm"></div><div id="hud"><div class="header"><div class="person"><div class="name"><span id="playerName">ТЫ · КИКБОКСЁР</span> <span class="scoreNumber" id="playerScore">0</span></div><div class="bar"><div class="fill" id="ph"></div></div><div class="balance rhythmFill"><div class="fill" id="pp"></div></div><div class="meter">ЗДОРОВЬЕ <span id="playerHP">500/500</span> / РИТМ</div></div><div class="brand">BREAKLINE<small>ВЕРСИЯ 3.10.12 · <span id="roundClock">01:00</span></small></div><div class="person right enemy"><div class="name" id="aiName">ПРОТИВНИК · ИИ</div><div class="scoreNumber" id="enemyScore">0</div><div class="bar"><div class="fill" id="eh"></div></div><div class="balance rhythmFill"><div class="fill" id="ep"></div></div><div class="meter">ЗДОРОВЬЕ <span id="enemyHP">500/500</span> / РИТМ</div></div></div></div><div id="clinchPanel" style="display:none"><div id="clinchLabel">ЗАХВАТ</div><div id="counterCircle" class="counterCircle"><span id="counterIcon">✊</span></div><div id="clinchTip">Жди светящегося круга</div></div><div id="distance">ДИСТАНЦИЯ: —</div><div id="rhythmLevelNotice" aria-live="polite"><span id="rhythmLevelNoticeTitle">УРОВЕНЬ 2</span><small id="rhythmLevelNoticeDetail">СВЕЧЕНИЕ ОТКРЫТО</small></div><div id="rhythmHud"><div class="rhythmTop"><span id="beatLabel">♪ 120 BPM</span><span id="rhythmGrade">ЛОВИ РИТМ</span><span id="flowLabel">ПОТОК · 0/5</span></div><div id="beatTrack"><div id="beatSlots"></div><div id="beatNeedle"></div></div><div id="rhythmPatternLabel">ЧЕТВЕРТИ · 1–2–3–4</div></div><div id="message"></div><div id="subtext"></div><div id="specialBanner" aria-live="polite"><strong>✦ СПЕЦПРИЁМ!</strong><span id="specialBannerName"></span></div><button id="soundBtn">◖ ЗВУК: ВЫКЛ.</button><div id="help">РИТМ: точные попадания повышают энергию и очки. Комбинации у каждого бойца свои. Полная шкала = ПОТОК.</div><div id="comboHint">КОМБО: —</div><div id="streakScore">ЛУЧШАЯ СЕРИЯ ×0</div><div id="dirSelected">ПРИЁМ: ПРЯМОЙ</div><div id="controls"><div class="cluster"><div id="joystick" aria-label="Джойстик движения"><div class="lr"><span>‹</span><span>›</span></div><div id="stick"></div></div></div><div class="cluster right"><button class="ctl strong" id="heavy"><span>✹</span>НОГА<small>быстрый удар</small></button><button class="ctl grab" id="grab"><span>✊</span>БРОСОК<small>только вплотную</small></button><button class="ctl attack" id="attack"><span>✦</span>ЛЁГКИЙ<small>серия × 2</small></button></div></div><div id="intro"><div class="introInner"><h1>BREAKLINE</h1><p>Музыкальный файтинг: атака, присед, прыжок и захват в долю усиливают ритм. Полная шкала открывает режим ПОТОК.</p><div id="fighterPicker"><div class="difficultyTitle">ВЫБОР БОЙЦА</div><div id="fighterChoices" class="fighterChoices">
 <button class="fighterBtn" data-fighter="boxer"><b>БОКСЁР</b><small>Быстрые серии · 7 комбо</small></button>
 <button class="fighterBtn selected" data-fighter="kickboxer"><b>КИКБОКСЁР</b><small>Баланс рук и ног · 6 комбо</small></button>
 <button class="fighterBtn" data-fighter="power"><b>ТЯЖЕЛОВЕС</b><small>Мощные финалы · 4 комбо</small></button>
@@ -21,7 +21,7 @@
 <button class="fighterBtn" data-fighter="power"><b>ТЯЖЕЛОВЕС</b></button><button class="fighterBtn" data-fighter="acrobat"><b>АКРОБАТ</b></button></div></div><div id="postMatchDifficulty"><div class="difficultyTitle">СЛОЖНОСТЬ СЛЕДУЮЩЕГО БОЯ</div><div class="difficultyChoices"><button class="difficultyBtn selected" data-difficulty="easy">ЛЁГКАЯ<small>Четверти</small></button><button class="difficultyBtn" data-difficulty="medium">СРЕДНЯЯ<small>Восьмые</small></button><button class="difficultyBtn" data-difficulty="hard">СЛОЖНАЯ<small>Рисунок мелодии</small></button></div></div><button class="mainBtn" id="restart">ЕЩЁ ОДНА ДУЭЛЬ</button><button class="pauseAction" id="exitToMenu">ВЫЙТИ К ВЫБОРУ БОЙЦА</button></div></div><script>
 (()=>{'use strict';const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');let W=0,H=0,dpr=1,now=0,last=0,started=false,ended=false,round=0,shake=0,particles=[],impacts=[],logs=[],audio=null,sound=false;const $=id=>document.getElementById(id);let player,enemy,clinch=null,clinchSeq=0,selectedFighter='kickboxer';let paused=false,pauseStarted=0,pausedTotal=0,gameTimeNow=0;
 function gameClock(){return paused?gameTimeNow:performance.now()-pausedTotal}let selectedDir='neutral',selectedAt=0;const heldDirs=[];let joyX=0,joyY=0,joyPointer=null;let stanceEvents=[];let jumpLatch=false;let jumpQueuedUntil=0;
-const GAME_VERSION='3.10.11';
+const GAME_VERSION='3.10.12';
 const RHYTHM_BPM=120,BEAT_MS=60000/RHYTHM_BPM;
 // Combo inputs are timed in quarter-notes so the window scales with any song BPM.
 const COMBO_WINDOW_BEATS=1.25;
@@ -583,13 +583,13 @@ function missedAttack(att,t,reason){
 // L = punch/hand, H = kick/leg. Each character has a distinct recipe tree.
 const FIGHTERS={
  boxer:{name:'БОКСЁР',desc:'Боковая качка в ритм, короткие скоростные серии.',colors:['#c4d0d7','#5d7381','#e1b493'],body:.99,reach:1,stance:'sway',bias:'hands',combos:[
- ['LLL','ТРЁХУДАРНАЯ СЕРИЯ','quick'],['LLH','ЛОУ-КИК ПОСЛЕ ДЖЕБОВ','quick'],['LHL','ВСТРЕЧНЫЙ КРОСС','quick'],['HLL','АППЕРКОТ','quick'],['HHHH','ПУЛЕМЁТ','quick'],['LHHH','БОКОВОЙ УДАР','quick'],['HHLHL','НОКАУТИРУЮЩИЙ ХУК','power']]},
+ ['LLL','ТРЁХУДАРНАЯ СЕРИЯ','power'],['LLH','ЛОУ-КИК ПОСЛЕ ДЖЕБОВ','power'],['LHL','ВСТРЕЧНЫЙ КРОСС','power'],['HLL','АППЕРКОТ','power'],['HHHH','ПУЛЕМЁТ','power'],['LHHH','БОКОВОЙ УДАР','power'],['HHLHL','НОКАУТИРУЮЩИЙ ХУК','power']]},
  kickboxer:{name:'КИКБОКСЁР',desc:'Лёгкие прыжки на носках вперёд-назад, баланс ударов.',colors:['#d3d8ca','#718681','#e5be9d'],body:1,reach:1,stance:'bounce',bias:'balanced',combos:[
- ['LLH','ГРОМОВОЙ ПИНОК','power'],['LHL','ОБРАТНЫЙ УДАР','quick'],['HLL','РАЗВОРОТНЫЙ ХУК','quick'],['HLH','ВЕРТУШКА','power'],['LHHL','ШКВАЛ','quick'],['HHLL','ДВОЙНОЙ РАЗВОРОТ','power']]},
+ ['LLH','ГРОМОВОЙ ПИНОК','power'],['LHL','ОБРАТНЫЙ УДАР','power'],['HLL','РАЗВОРОТНЫЙ ХУК','power'],['HLH','ВЕРТУШКА','power'],['LHHL','ШКВАЛ','power'],['HHLL','ДВОЙНОЙ РАЗВОРОТ','power']]},
  power:{name:'ТЯЖЕЛОВЕС',desc:'Тяжёлая устойчивая стойка, размеренный перенос веса, силовые финалы.',colors:['#b99e8a','#6b5449','#deb399'],body:1.13,reach:1.02,stance:'grounded',bias:'power',combos:[
  ['LLH','ТАРАН','power'],['HHL','СОКРУШАЮЩИЙ ХУК','power'],['LHH','УДАР КОЛЕНОМ','power'],['HLLH','УРАГАН','power']]},
  acrobat:{name:'АКРОБАТ',desc:'Пружинящие круговые перемещения, многоударные технические комбо.',colors:['#b8b2d7','#594d81','#d8ad95'],body:.88,reach:1.05,stance:'capoeira',bias:'legs',combos:[
- ['HLHL','ВРАЩЕНИЕ','quick'],['LHLH','ТАНЦУЮЩИЙ УДАР','quick'],['HLLHH','ВОЗДУШНЫЙ КАСКАД','power'],['LHHLL','СПИРАЛЬ','quick'],['HLHHLH','САЛЬТО-ФИНАЛ','power']]}
+ ['HLHL','ВРАЩЕНИЕ','power'],['LHLH','ТАНЦУЮЩИЙ УДАР','power'],['HLLHH','ВОЗДУШНЫЙ КАСКАД','power'],['LHHLL','СПИРАЛЬ','power'],['HLHHLH','САЛЬТО-ФИНАЛ','power']]}
 };
 function comboRecipes(f){return FIGHTERS[f?.fighterId||selectedFighter]?.combos||FIGHTERS.kickboxer.combos}
 function comboNext(seq,key,recipes){const attempt=seq+key;
@@ -646,9 +646,9 @@ function startAction(f,kind,t,inputAt=t,fromQueue=false){
   f.comboSeq=(f.crouch||lowFollow||airFollow||f.attackGrade==='off')?'':comboNext(last,kind==='light'?'L':'H',recipes);
   f.lastComboInputAt=f.comboSeq?inputAt:-1e6;
   const recipe=recipes.find(v=>v[0]===f.comboSeq);
-  f.finisher=!!recipe;f.powerFinisher=recipe?.[2]==='power';f.powerReadyAt=0;f.finisherStyle=recipe?recipes.indexOf(recipe)%6:-1;f.finisherName=recipe?recipe[1]:'';
+  f.finisher=!!recipe;f.powerFinisher=!!recipe;f.powerReadyAt=0;f.finisherStyle=recipe?recipes.indexOf(recipe):-1;f.finisherName=recipe?recipe[1]:'';
   f.comboStep=f.finisher?3:f.comboSeq.length;
-  if(f.finisher){if(f.powerFinisher){fightVoice('heavy',f);fightFoley('whoosh',true)}setMessage('✹ '+f.finisherName+' ✹',f.powerFinisher?'СИЛОВОЙ ФИНАЛ — удар на эту долю, затем стоп-кадр':'БЫСТРЫЙ ФИНАЛ — сразу в бит!',850);emit(f.x,'#ffe0a1',f.powerFinisher?17:10)}
+  if(f.finisher){if(f.powerFinisher){fightVoice('heavy',f);fightFoley('whoosh',true)}setMessage('✹ '+f.finisherName+' ✹','СИЛОВОЙ ФИНАЛ — удар на эту долю, восстановление на следующей',850);emit(f.x,'#ffe0a1',f.powerFinisher?17:10)}
   else if(!f.ai&&f.comboSeq.length>=2)setMessage('КОМБО: '+comboText(f.comboSeq),'Продолжай серию руки и ноги',460);
   if(!f.ai)$('comboHint').textContent=f.finisher?'✹ '+f.finisherName:'КОМБО: '+(f.comboSeq?comboText(f.comboSeq):'—');
   f.guard=false;
@@ -920,31 +920,6 @@ function updateFinale(t){
 function emit(x,col,num){let px=W*x,py=H*.61;for(let i=0;i<num;i++)particles.push({x:px,y:py,vx:rng(-3.8,3.8),vy:rng(-5,-1),life:rng(300,650),total:650,r:rng(1.5,4),col})}
 
 
-// Human audience reaction from PDSounds / starlite, public domain on Wikimedia Commons.
-// Assets manifest in PROJECT.md for a future offline Android bundle.
-const CROWD_SAMPLE_URL='https://upload.wikimedia.org/wikipedia/commons/0/0f/Ohhh_ahhh.ogg';
-let crowdTemplate=null,crowdActive=null;
-function preloadCrowd(){
- if(crowdTemplate||!window.Audio)return;
- crowdTemplate=new Audio(CROWD_SAMPLE_URL);
- crowdTemplate.preload='auto';crowdTemplate.volume=.82;
- try{crowdTemplate.load()}catch(e){}
-}
-function crowdReaction(){
- if(!sound||!window.Audio)return;
- if(!crowdTemplate)preloadCrowd();
- if(!crowdTemplate||crowdTemplate.readyState<2)return;
- try{
-  if(crowdActive){crowdActive.pause();crowdActive=null}
-  const clip=crowdTemplate.cloneNode(true);
-  clip.volume=.85;clip.playbackRate=1.08;clip.currentTime=0;
-  crowdActive=clip;
-  const playback=clip.play();
-  if(playback?.catch)playback.catch(()=>{if(crowdActive===clip)crowdActive=null});
-  // Let an actual crowd exclamation come through, but finish before the following combo.
-  setTimeout(()=>{if(crowdActive===clip){clip.pause();crowdActive=null}},2150);
- }catch(e){}
-}
 function photoPainVoice(actor,power){
  if(!sound||!actor)return;
  // No synthetic breath/whisper. Use a recorded human CC0 hit vocal if loaded.
@@ -1011,7 +986,6 @@ function photoHit(att,def,t,power){
  photoAccent={start:t,until:Math.max(t+BEAT_MS*.72,att.powerReadyAt||t+BEAT_MS*1.65)};
  photoImpactAudio(power);
  photoPainVoice(def,power);
- crowdReaction();
 }
 function drawPhotoFlash(t){
  if(!photoStop&&!photoAccent)return;
@@ -1383,8 +1357,14 @@ function kbDrawRig(f,t){
  const hitDelay=Math.max(1,f.hitAt-f.actionStart),endDelay=Math.max(hitDelay+1,f.actionEnd-f.actionStart);
  const act=(f.action==='light'||f.action==='heavy')?f.action:null;
  let move='jab',load=KB_POSES.jabLoad,hit=KB_POSES.jabHit;
- if(act==='light'){move=special==='upper'?'upper':special==='counter'?'cross':f.comboSeq.length>=2||f.actionVariant%3===1?'cross':f.actionVariant%3===2?'hook':'jab'}
- if(act==='heavy'){move=special==='knee'?'knee':special==='spin'?'spin':f.attackLow?'low':'kick'}
+ if(f.finisher&&!special){
+  // Each of the kickboxer's six named recipes has a unique impact silhouette.
+  const finisherMoves=['kick','hook','upper','spin','cross','knee'];
+  move=finisherMoves[f.finisherStyle]||'kick';
+ }else{
+  if(act==='light'){move=special==='upper'?'upper':special==='counter'?'cross':f.comboSeq.length>=2||f.actionVariant%3===1?'cross':f.actionVariant%3===2?'hook':'jab'}
+  if(act==='heavy'){move=special==='knee'?'knee':special==='spin'?'spin':f.attackLow?'low':'kick'}
+ }
  if(move==='cross'){load=KB_POSES.crossLoad;hit=KB_POSES.crossHit}
  else if(move==='hook'){load=KB_POSES.hookLoad;hit=KB_POSES.hookHit}
  else if(move==='upper'){load=KB_POSES.upperLoad;hit=KB_POSES.upperHit}
@@ -1638,11 +1618,11 @@ function fighter(f,t){
  ctx.lineCap='round';ctx.lineJoin='round';
  const limb=(x1,y1,x2,y2,w,c)=>{ctx.strokeStyle=c;ctx.lineWidth=w;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke()};
  // Exactly TWO articulated legs: moving a leg repositions its existing knee and foot.
- const finisherKick=comboFinal&&[0,3,5].includes(tech);
+ const finisherKick=comboFinal&&((f.action==='heavy'&&[0,3,5,6].includes(tech))||(f.action==='light'&&[0,3,5,6].includes(tech)));
  const kicking=(heavy&&!f.finisher||finisherKick||sweep)?reach:0;
  // Alternate front / rear leg and strike height while keeping every contact frame independent.
  const rearKick=(tech===3||tech===5||(form===1||form===3)&&tech===-1||profile.bias==='legs'&&form%2===0)&&kicking>0;
- const kickHeight=(f.attackLow?24:tech===0?82:tech===3?115:tech===5?104:profile.bias==='legs'?84:profile.bias==='hands'?30:50)+(form%3)*13*flourish;
+ const kickHeight=(f.attackLow?24:tech===0?82:tech===3?115:tech===5?104:tech===6?130:profile.bias==='legs'?84:profile.bias==='hands'?30:50)+(form%3)*13*flourish;
  const backKnee={x:-17+(rearKick?kicking*21:-kicking*4),y:-32+(rearKick?-kicking*17:kicking*4)},backFoot={x:-26+(rearKick?kicking*103:-kicking*5),y:-3-(rearKick?kicking*kickHeight:0)};
  if(standing&&profile.stance==='bounce'){backKnee.x-=idleLift*.7;backFoot.x-=idleLift*1.2}
  if(standing&&profile.stance==='capoeira'){backKnee.x-=idleSway*.45;backFoot.x-=idleSway*.7}
@@ -1711,7 +1691,18 @@ function fighter(f,t){
    hand={x:back?16+grabPose*55:25+grabPose*63,y:lowG?-65+grabPose*17:v==='up'?-146-grabPose*45:-105+grabPose*8};
  }
  else if(light){
-   if(comboTwo&&!low){elbow={x:22-reach*23,y:-109};hand={x:13-reach*35,y:-110-reach*8}}
+   if(comboFinal&&!low){
+    // Individual silhouette per recipe: jab-cross, hook, uppercut, backfist,
+    // sweeping heel, rising knee and leaping overhand.
+    if(tech===0){elbow={x:12+reach*35,y:-121};hand={x:15+reach*102,y:-128}}
+    else if(tech===1){elbow={x:35+reach*12,y:-112-reach*9};hand={x:43+reach*66,y:-112+reach*25}}
+    else if(tech===2){elbow={x:12+reach*32,y:-136-reach*8};hand={x:16+reach*69,y:-147-reach*57}}
+    else if(tech===3){elbow={x:-1+reach*37,y:-115};hand={x:0+reach*106,y:-113+reach*16}}
+    else if(tech===4){elbow={x:26+reach*12,y:-97};hand={x:13+reach*103,y:-90-reach*39}}
+    else if(tech===5){elbow={x:22+reach*40,y:-132};hand={x:15+reach*91,y:-128-reach*47}}
+    else {elbow={x:18+reach*51,y:-147};hand={x:9+reach*111,y:-157-reach*42}}
+   }
+   else if(comboTwo&&!low){elbow={x:22-reach*23,y:-109};hand={x:13-reach*35,y:-110-reach*8}}
    else if(low){
      const dir=f.dir==='downBack'?-1:f.dir==='downForward'?1:0;
      elbow={x:27+reach*(18+dir*13),y:-80+dir*6};
@@ -1737,6 +1728,7 @@ function fighter(f,t){
     if(tech===1){elbow={x:35+reach*9,y:-107};hand={x:45+reach*54,y:-109+reach*21}}
     else if(tech===2){elbow={x:14+reach*38,y:-137};hand={x:16+reach*110,y:-152+reach*23}}
     else if(tech===4){elbow={x:28+reach*21,y:-92};hand={x:26+reach*112,y:-92+reach*16}}
+    else if(tech===6){elbow={x:20+reach*58,y:-145};hand={x:10+reach*122,y:-164-reach*49}}
     else {elbow={x:16+reach*(32+form*7),y:-122+reach*(14+accent*5)};hand={x:5+reach*(82+form*13),y:-133+reach*(24+flip*accent*10)}}
    }
    else{
@@ -1866,7 +1858,7 @@ for(const button of document.querySelectorAll('[data-difficulty]')){
 function setPracticeMode(v){practiceMode=v;$('modeDuel').classList.toggle('selected',!v);$('modePractice').classList.toggle('selected',v);$('start').textContent=v?'НАЧАТЬ ТРЕНИРОВКУ':'НАЧАТЬ ДУЭЛЬ'}
 $('modeDuel').onclick=()=>setPracticeMode(false);
 $('modePractice').onclick=()=>setPracticeMode(true);
-$('start').onclick=()=>{$('intro').style.display='none';started=true;fresh();sound=true;$('soundBtn').textContent='◖ ЗВУК: ВКЛ.';preloadVoices();preloadCrowd();playRhythmBeat(0)};
+$('start').onclick=()=>{$('intro').style.display='none';started=true;fresh();sound=true;$('soundBtn').textContent='◖ ЗВУК: ВКЛ.';preloadVoices();playRhythmBeat(0)};
 function openPause(){
  motionHistory=[];
  if(!started||ended||paused)return;
@@ -1875,7 +1867,6 @@ function openPause(){
  joyX=joyY=0;if(player){player.moveHeld=0;player.guard=false}
  if(audio&&audio.state==='running')audio.suspend?.();
  for(const clip of activeVoices)clip.pause();activeVoices.length=0;
- if(crowdActive){crowdActive.pause();crowdActive=null}
 }
 function resumePause(){
  if(!paused)return;
@@ -1908,7 +1899,6 @@ function exitPracticeToMenu(){
  stopMusic();stopAlarmAudio();
  if(audio&&audio.state==='suspended')audio.resume?.();
  for(const clip of activeVoices)clip.pause();activeVoices.length=0;
- if(crowdActive){crowdActive.pause();crowdActive=null}
  $('pauseOverlay').classList.remove('show');$('roundAlarm').classList.remove('active','critical','final');
  $('intro').style.display='flex';started=false;ended=false;paused=false;finale=null;
  practiceMode=false;setPracticeMode(false);
@@ -1921,6 +1911,6 @@ $('exitToMenu').onclick=()=>{
  $('roundAlarm').classList.remove('active','critical','final');
 };
 $('restart').onclick=fresh;
-$('soundBtn').onclick=()=>{sound=!sound;$('soundBtn').textContent=sound?'◖ ЗВУК: ВКЛ.':'◖ ЗВУК: ВЫКЛ.';if(sound){preloadVoices();preloadCrowd();playRhythmBeat(0)}else{for(const clip of activeVoices)clip.pause();activeVoices.length=0}};
+$('soundBtn').onclick=()=>{sound=!sound;$('soundBtn').textContent=sound?'◖ ЗВУК: ВКЛ.':'◖ ЗВУК: ВЫКЛ.';if(sound){preloadVoices();playRhythmBeat(0)}else{for(const clip of activeVoices)clip.pause();activeVoices.length=0}};
 window.addEventListener('blur',()=>{joyPointer=null;applyJoy(0,0,gameClock());if(player)player.guard=false;if(started&&!ended&&!paused)openPause()});
 })();</script></body></html>
