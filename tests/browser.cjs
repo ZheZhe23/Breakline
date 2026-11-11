@@ -136,9 +136,10 @@ const errors=[];let checks=0;
    await page.locator('#pauseBtn').click();await page.locator('#pauseMoves').click();assert.ok((await page.locator('#movesBook').innerText()).includes('СПЕЦПРИЁМЫ'));await page.locator('#pauseBack').click();await page.locator('#pauseResume').click();checks++;
   }
   // Real pointer events (including cancellation) on the mobile joystick.
-  const touch=await browser.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true});
+  const touch=await browser.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true,deviceScaleFactor:3});
   const tp=await touch.newPage();tp.on('pageerror',e=>errors.push(e.message));await tp.route('https://opengameart.org/**',r=>r.abort());
   await tp.goto(`http://127.0.0.1:${server.address().port}/`);await tp.locator('#modePractice').tap();await tp.locator('#start').tap();await tp.waitForTimeout(250);
+  assert.equal(await tp.evaluate(()=>document.querySelector('canvas').width),780,'DPR capped at two');checks++;
   const joy=await tp.locator('#joystick').boundingBox();const session=await touch.newCDPSession(tp);
   await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:joy.x+joy.width*.8,y:joy.y+joy.height*.5}]});
   await tp.waitForTimeout(300);assert.equal(await tp.evaluate(()=>__test('player.moveHeld')),1);
