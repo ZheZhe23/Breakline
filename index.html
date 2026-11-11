@@ -11,7 +11,7 @@
 #roundAlarm{position:absolute;inset:0;pointer-events:none;z-index:2;opacity:0;background:radial-gradient(ellipse at 50% 45%,transparent 30%,#cf282849 100%);mix-blend-mode:screen}#roundAlarm.active{animation:alarmBreath 1s ease-in-out infinite alternate}@keyframes alarmBreath{0%{opacity:.10}100%{opacity:.65}}#roundAlarm.critical{animation-duration:.48s}#roundAlarm.final{animation:none;opacity:.36}#app .brand small{font-variant-numeric:tabular-nums}#resultTitle{max-width:90vw}
 #fighterPicker,#postMatchFighter{border:1px solid #76948b66;background:#14252a99;padding:9px;border-radius:12px;margin:9px 0} .fighterChoices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:8px 0}.fighterBtn{min-width:0;border:1px solid #7b958b66;border-radius:9px;color:#d9e4dc;background:#1b3235;padding:10px 5px;font-size:11px;font-weight:800;cursor:pointer}.fighterBtn b{display:block;letter-spacing:.04em}.fighterBtn small{display:block;font-size:9px;font-weight:500;color:#abc0b5;margin-top:4px}.fighterBtn.selected{border-color:#f4d58c;background:#594d36;color:#ffebbb;box-shadow:0 0 10px #e2bc6333}#fighterDescription{color:#b7cfc0;font-size:11px;line-height:1.45}#postMatchFighter{width:min(390px,90vw)}
 #pauseBtn{position:absolute;z-index:7;right:12px;top:clamp(80px,12vh,126px);padding:7px 10px;border-radius:9px;border:1px solid #a0b6a17a;background:#152125e0;color:#f0ddae;font-size:17px;font-weight:900;cursor:pointer;letter-spacing:.06em}#pauseBtn span{font-size:10px;vertical-align:middle}#pauseBtn:active{background:#33413e}.pauseOverlay{position:absolute;inset:0;z-index:12;background:#0c151adb;display:none;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}.pauseOverlay.show{display:flex}.pauseBox{width:min(560px,96vw);max-height:min(92vh,750px);overflow:auto;background:#17292d;border:1px solid #8daba080;border-radius:16px;padding:20px;text-align:center;box-shadow:0 16px 80px #0009}.pauseBox h2{color:#f5dea4;font-size:26px;margin:0 0 15px}.pauseBox h3{color:#f4dea7;margin:0 0 8px}.pauseView{display:grid;gap:10px}.pauseAction{padding:13px;background:#293c40;border:1px solid #81968e;border-radius:10px;font-size:14px;font-weight:750;color:#e3eee6;cursor:pointer}.pauseAction.danger{color:#ffb1a3;border-color:#b96a61}.movesFighter{text-align:left;border:1px solid #6a88836a;border-radius:10px;margin-bottom:10px;padding:12px;background:#152126}.movesFighter h4{margin:0 0 5px;color:#f0d899}.movesFighter p{font-size:12px;color:#b5c7bb;margin:0 0 8px}.movesFighter .moveRow{display:flex;justify-content:space-between;gap:8px;padding:5px 0;border-top:1px solid #ffffff16;font-size:12px;color:#eef1e9}.movesFighter .moveRow span:first-child{font-weight:850;color:#fff0b9;min-width:75px}.movesFighter .moveRow em{color:#afc7bf;font-style:normal}#exitToMenu{margin-top:5px;font-size:12px;padding:10px 18px}
-</style></head><body><div id="app"><canvas id="game"></canvas><button id="pauseBtn" aria-label="Пауза">Ⅱ <span>ПАУЗА</span></button><div id="roundAlarm"></div><div id="hud"><div class="header"><div class="person"><div class="name"><span id="playerName">ТЫ · КИКБОКСЁР</span> <span class="scoreNumber" id="playerScore">0</span></div><div class="bar"><div class="fill" id="ph"></div></div><div class="balance rhythmFill"><div class="fill" id="pp"></div></div><div class="meter">ЗДОРОВЬЕ <span id="playerHP">500/500</span> / РИТМ</div></div><div class="brand">BREAKLINE<small>ВЕРСИЯ 3.10.7 · <span id="roundClock">01:00</span></small></div><div class="person right enemy"><div class="name" id="aiName">ПРОТИВНИК · ИИ</div><div class="scoreNumber" id="enemyScore">0</div><div class="bar"><div class="fill" id="eh"></div></div><div class="balance rhythmFill"><div class="fill" id="ep"></div></div><div class="meter">ЗДОРОВЬЕ <span id="enemyHP">500/500</span> / РИТМ</div></div></div></div><div id="clinchPanel" style="display:none"><div id="clinchLabel">ЗАХВАТ</div><div id="counterCircle" class="counterCircle"><span id="counterIcon">✊</span></div><div id="clinchTip">Жди светящегося круга</div></div><div id="distance">ДИСТАНЦИЯ: —</div><div id="rhythmLevelNotice" aria-live="polite"><span id="rhythmLevelNoticeTitle">УРОВЕНЬ 2</span><small id="rhythmLevelNoticeDetail">СВЕЧЕНИЕ ОТКРЫТО</small></div><div id="rhythmHud"><div class="rhythmTop"><span id="beatLabel">♪ 120 BPM</span><span id="rhythmGrade">ЛОВИ РИТМ</span><span id="flowLabel">ПОТОК · 0/5</span></div><div id="beatTrack"><div id="beatSlots"></div><div id="beatNeedle"></div></div><div id="rhythmPatternLabel">ЧЕТВЕРТИ · 1–2–3–4</div></div><div id="message"></div><div id="subtext"></div><div id="specialBanner" aria-live="polite"><strong>✦ СПЕЦПРИЁМ!</strong><span id="specialBannerName"></span></div><button id="soundBtn">◖ ЗВУК: ВЫКЛ.</button><div id="help">РИТМ: точные попадания повышают энергию и очки. Комбинации у каждого бойца свои. Полная шкала = ПОТОК.</div><div id="comboHint">КОМБО: —</div><div id="streakScore">ЛУЧШАЯ СЕРИЯ ×0</div><div id="dirSelected">ПРИЁМ: ПРЯМОЙ</div><div id="controls"><div class="cluster"><div id="joystick" aria-label="Джойстик движения"><div class="lr"><span>‹</span><span>›</span></div><div id="stick"></div></div></div><div class="cluster right"><button class="ctl strong" id="heavy"><span>✹</span>НОГА<small>быстрый удар</small></button><button class="ctl grab" id="grab"><span>✊</span>БРОСОК<small>только вплотную</small></button><button class="ctl attack" id="attack"><span>✦</span>ЛЁГКИЙ<small>серия × 2</small></button></div></div><div id="intro"><div class="introInner"><h1>BREAKLINE</h1><p>Музыкальный файтинг: атака, присед, прыжок и захват в долю усиливают ритм. Полная шкала открывает режим ПОТОК.</p><div id="fighterPicker"><div class="difficultyTitle">ВЫБОР БОЙЦА</div><div id="fighterChoices" class="fighterChoices">
+</style></head><body><div id="app"><canvas id="game"></canvas><button id="pauseBtn" aria-label="Пауза">Ⅱ <span>ПАУЗА</span></button><div id="roundAlarm"></div><div id="hud"><div class="header"><div class="person"><div class="name"><span id="playerName">ТЫ · КИКБОКСЁР</span> <span class="scoreNumber" id="playerScore">0</span></div><div class="bar"><div class="fill" id="ph"></div></div><div class="balance rhythmFill"><div class="fill" id="pp"></div></div><div class="meter">ЗДОРОВЬЕ <span id="playerHP">500/500</span> / РИТМ</div></div><div class="brand">BREAKLINE<small>ВЕРСИЯ 3.10.8 · <span id="roundClock">01:00</span></small></div><div class="person right enemy"><div class="name" id="aiName">ПРОТИВНИК · ИИ</div><div class="scoreNumber" id="enemyScore">0</div><div class="bar"><div class="fill" id="eh"></div></div><div class="balance rhythmFill"><div class="fill" id="ep"></div></div><div class="meter">ЗДОРОВЬЕ <span id="enemyHP">500/500</span> / РИТМ</div></div></div></div><div id="clinchPanel" style="display:none"><div id="clinchLabel">ЗАХВАТ</div><div id="counterCircle" class="counterCircle"><span id="counterIcon">✊</span></div><div id="clinchTip">Жди светящегося круга</div></div><div id="distance">ДИСТАНЦИЯ: —</div><div id="rhythmLevelNotice" aria-live="polite"><span id="rhythmLevelNoticeTitle">УРОВЕНЬ 2</span><small id="rhythmLevelNoticeDetail">СВЕЧЕНИЕ ОТКРЫТО</small></div><div id="rhythmHud"><div class="rhythmTop"><span id="beatLabel">♪ 120 BPM</span><span id="rhythmGrade">ЛОВИ РИТМ</span><span id="flowLabel">ПОТОК · 0/5</span></div><div id="beatTrack"><div id="beatSlots"></div><div id="beatNeedle"></div></div><div id="rhythmPatternLabel">ЧЕТВЕРТИ · 1–2–3–4</div></div><div id="message"></div><div id="subtext"></div><div id="specialBanner" aria-live="polite"><strong>✦ СПЕЦПРИЁМ!</strong><span id="specialBannerName"></span></div><button id="soundBtn">◖ ЗВУК: ВЫКЛ.</button><div id="help">РИТМ: точные попадания повышают энергию и очки. Комбинации у каждого бойца свои. Полная шкала = ПОТОК.</div><div id="comboHint">КОМБО: —</div><div id="streakScore">ЛУЧШАЯ СЕРИЯ ×0</div><div id="dirSelected">ПРИЁМ: ПРЯМОЙ</div><div id="controls"><div class="cluster"><div id="joystick" aria-label="Джойстик движения"><div class="lr"><span>‹</span><span>›</span></div><div id="stick"></div></div></div><div class="cluster right"><button class="ctl strong" id="heavy"><span>✹</span>НОГА<small>быстрый удар</small></button><button class="ctl grab" id="grab"><span>✊</span>БРОСОК<small>только вплотную</small></button><button class="ctl attack" id="attack"><span>✦</span>ЛЁГКИЙ<small>серия × 2</small></button></div></div><div id="intro"><div class="introInner"><h1>BREAKLINE</h1><p>Музыкальный файтинг: атака, присед, прыжок и захват в долю усиливают ритм. Полная шкала открывает режим ПОТОК.</p><div id="fighterPicker"><div class="difficultyTitle">ВЫБОР БОЙЦА</div><div id="fighterChoices" class="fighterChoices">
 <button class="fighterBtn" data-fighter="boxer"><b>БОКСЁР</b><small>Быстрые серии · 7 комбо</small></button>
 <button class="fighterBtn selected" data-fighter="kickboxer"><b>КИКБОКСЁР</b><small>Баланс рук и ног · 6 комбо</small></button>
 <button class="fighterBtn" data-fighter="power"><b>ТЯЖЕЛОВЕС</b><small>Мощные финалы · 4 комбо</small></button>
@@ -21,7 +21,7 @@
 <button class="fighterBtn" data-fighter="power"><b>ТЯЖЕЛОВЕС</b></button><button class="fighterBtn" data-fighter="acrobat"><b>АКРОБАТ</b></button></div></div><div id="postMatchDifficulty"><div class="difficultyTitle">СЛОЖНОСТЬ СЛЕДУЮЩЕГО БОЯ</div><div class="difficultyChoices"><button class="difficultyBtn selected" data-difficulty="easy">ЛЁГКАЯ<small>Четверти</small></button><button class="difficultyBtn" data-difficulty="medium">СРЕДНЯЯ<small>Восьмые</small></button><button class="difficultyBtn" data-difficulty="hard">СЛОЖНАЯ<small>Рисунок мелодии</small></button></div></div><button class="mainBtn" id="restart">ЕЩЁ ОДНА ДУЭЛЬ</button><button class="pauseAction" id="exitToMenu">ВЫЙТИ К ВЫБОРУ БОЙЦА</button></div></div><script>
 (()=>{'use strict';const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');let W=0,H=0,dpr=1,now=0,last=0,started=false,ended=false,round=0,shake=0,particles=[],impacts=[],logs=[],audio=null,sound=false;const $=id=>document.getElementById(id);let player,enemy,clinch=null,clinchSeq=0,selectedFighter='kickboxer';let paused=false,pauseStarted=0,pausedTotal=0,gameTimeNow=0;
 function gameClock(){return paused?gameTimeNow:performance.now()-pausedTotal}let selectedDir='neutral',selectedAt=0;const heldDirs=[];let joyX=0,joyY=0,joyPointer=null;let stanceEvents=[];let jumpLatch=false;let jumpQueuedUntil=0;
-const GAME_VERSION='3.10.7';
+const GAME_VERSION='3.10.8';
 const RHYTHM_BPM=120,BEAT_MS=60000/RHYTHM_BPM;
 // Combo inputs are timed in quarter-notes so the window scales with any song BPM.
 const COMBO_WINDOW_BEATS=1.25;
@@ -29,7 +29,7 @@ function comboWindowMs(){return COMBO_WINDOW_BEATS*BEAT_MS}
 let rhythmStart=0,rhythmNextIndex=0,roundStart=0,roundDuration=60000,roundBars=30,finale=null,lastAlarmBar=-1;
 let rhythmDifficulty='easy',shownRhythmBar=-1;
 let practiceMode=false; // Chosen in the intro menu; normal duel mechanics are unchanged.
-let photoStop=null,photoNegative=null;
+let photoStop=null,photoAccent=null;
 const SPECIAL_COMMAND_BEATS=2.5;
 const SPECIAL_FINISH_BEATS=1.1;
 const SPECIALS={
@@ -495,7 +495,7 @@ function makeFighter(ai,x,fighterId='kickboxer'){return {ai,x,fighterId,hp:MAX_H
  {id:'universal',name:'УНИВЕРСАЛ',subtitle:'Меняет стойки и изучает привычки',pace:[470,820],approach:.23,guard:.20,retreat:.16}
 ];
 function aiSettings(){return AI_STYLES.find(s=>s.id===enemy.aiStyle)||AI_STYLES[2]}
-function fresh(){photoStop=null;photoNegative=null;motionHistory=[];specialActivation=null;$('specialBanner').classList.remove('show');paused=false;pausedTotal=0;pauseStarted=0;gameTimeNow=0;$('pauseOverlay').classList.remove('show');$('pauseViewMenu').style.display='grid';$('pauseViewMoves').style.display='none';round++;stopAlarmAudio();finale=null;lastAlarmBar=-1;$('roundAlarm').classList.remove('active','critical','final');if(audio)enableMusic();$('rhythmLevelNotice').classList.remove('show','max');$('rhythmHud').classList.remove('levelUp');roundStart=gameClock();rhythmStart=roundStart;rhythmNextIndex=0;shownRhythmBar=-1;drawRhythmBar(0);player=makeFighter(false,.35,selectedFighter);$('playerName').textContent='ТЫ · '+FIGHTERS[player.fighterId].name;const fighterOrder=Object.keys(FIGHTERS);enemy=makeFighter(true,.65,fighterOrder[(fighterOrder.indexOf(selectedFighter)+1+((round-1)%3))%fighterOrder.length]);enemy.aiStyle=AI_STYLES[(round-1)%3].id;enemy.nextThink=practiceMode?Infinity:gameClock()+rng(900,1250);$('aiName').textContent=FIGHTERS[enemy.fighterId].name+' · '+aiSettings().name;if(practiceMode){player.rhythm=100;player.visualLevel=5;enemy.rhythm=0;enemy.guard=false;enemy.stepUntil=0;}
+function fresh(){photoStop=null;photoAccent=null;motionHistory=[];specialActivation=null;$('specialBanner').classList.remove('show');paused=false;pausedTotal=0;pauseStarted=0;gameTimeNow=0;$('pauseOverlay').classList.remove('show');$('pauseViewMenu').style.display='grid';$('pauseViewMoves').style.display='none';round++;stopAlarmAudio();finale=null;lastAlarmBar=-1;$('roundAlarm').classList.remove('active','critical','final');if(audio)enableMusic();$('rhythmLevelNotice').classList.remove('show','max');$('rhythmHud').classList.remove('levelUp');roundStart=gameClock();rhythmStart=roundStart;rhythmNextIndex=0;shownRhythmBar=-1;drawRhythmBar(0);player=makeFighter(false,.35,selectedFighter);$('playerName').textContent='ТЫ · '+FIGHTERS[player.fighterId].name;const fighterOrder=Object.keys(FIGHTERS);enemy=makeFighter(true,.65,fighterOrder[(fighterOrder.indexOf(selectedFighter)+1+((round-1)%3))%fighterOrder.length]);enemy.aiStyle=AI_STYLES[(round-1)%3].id;enemy.nextThink=practiceMode?Infinity:gameClock()+rng(900,1250);$('aiName').textContent=FIGHTERS[enemy.fighterId].name+' · '+aiSettings().name;if(practiceMode){player.rhythm=100;player.visualLevel=5;enemy.rhythm=0;enemy.guard=false;enemy.stepUntil=0;}
  ended=false;clinch=null;clinchSeq=0;heldDirs.length=0;stanceEvents=[];jumpLatch=false;jumpQueuedUntil=0;joyX=joyY=0;chooseDir('neutral',0);$('comboHint').textContent='КОМБО: —';particles=[];impacts=[];logs=[];shake=0;setMessage(FIGHTERS[player.fighterId].name+' VS '+FIGHTERS[enemy.fighterId].name,practiceMode?'ТРЕНИРОВКА · ∞ ВРЕМЯ · ЭНЕРГИЯ 100%':'60 секунд · '+MAX_HEALTH+' HP · нокаут или очки',1800);$('roundClock').textContent=practiceMode?'∞':'01:00';
  $('pauseForfeit').textContent=practiceMode?'ВЫЙТИ ИЗ ТРЕНИРОВКИ':'СДАТЬСЯ И ВЫЙТИ';
  $('practicePauseDifficulty').style.display=practiceMode?'block':'none';
@@ -604,7 +604,7 @@ function chooseFighter(id){if(!FIGHTERS[id])return;selectedFighter=id;
 }
 for(const btn of document.querySelectorAll('[data-fighter]'))btn.addEventListener('click',()=>chooseFighter(btn.dataset.fighter));
 function startAction(f,kind,t,inputAt=t,fromQueue=false){
- if(paused||photoStop)return false;
+ if(paused)return false;
  if(f&&f===player&&!fromQueue&&(kind==='light'||kind==='heavy')&&trySpecial(kind,t))return true;
  if(t<f.powerFreezeUntil)return false;
  if(clinch)return clinchInput(f,kind,t);
@@ -919,98 +919,98 @@ function updateFinale(t){
 }
 function emit(x,col,num){let px=W*x,py=H*.61;for(let i=0;i<num;i++)particles.push({x:px,y:py,vx:rng(-3.8,3.8),vy:rng(-5,-1),life:rng(300,650),total:650,r:rng(1.5,4),col})}
 
+
 function photoPainVoice(actor,power){
- if(!sound||!window.Audio||!actor)return;
- if(!voicePool.length)preloadVoices();
- if(!voicePool.length)return;
+ if(!sound||!actor)return;
+ // Local immediate vocal fallback; external human CC0 recording is optional.
  try{
-  // A different real recorded CC0 yell instead of the previous breathy hurt_06.
-  // Speed and loudness favor a sharp painful cry, not a slow sigh.
-  const clip=voicePool[3].cloneNode(true);
-  clip.volume=.29;
-  clip.playbackRate=(actor.ai?1.15:1.2)*(1+(Math.random()-.5)*.07);
+  if(audio){
+   if(audio.state==='suspended')audio.resume().catch(()=>{});
+   const at=audio.currentTime+.012,duration=.33;
+   const out=audio.createGain();out.gain.setValueAtTime(.0001,at);
+   out.gain.exponentialRampToValueAtTime(.12,at+.018);
+   out.gain.exponentialRampToValueAtTime(.075,at+.13);
+   out.gain.exponentialRampToValueAtTime(.0001,at+duration);
+   out.connect(audio.destination);
+   const formant=audio.createBiquadFilter();formant.type='bandpass';formant.frequency.value=910;formant.Q.value=.45;formant.connect(out);
+   for(const [wave,mult,level] of [['sawtooth',1,1],['triangle',1.98,.6]]){
+    const osc=audio.createOscillator(),g=audio.createGain();osc.type=wave;
+    osc.frequency.setValueAtTime((actor.ai?250:205)*mult,at);
+    osc.frequency.exponentialRampToValueAtTime((actor.ai?410:340)*mult,at+.055);
+    osc.frequency.exponentialRampToValueAtTime(125*mult,at+duration);
+    g.gain.value=level*.5;osc.connect(g);g.connect(formant);
+    osc.start(at);osc.stop(at+duration+.01);
+   }
+  }
+ }catch(e){}
+ if(!window.Audio)return;
+ if(!voicePool.length)preloadVoices();
+ const template=voicePool[3];if(!template)return;
+ try{
+  if(template.readyState<2)return;
+  const clip=template.cloneNode(true);clip.volume=.45;
+  clip.playbackRate=(actor.ai?1.2:1.16)*(1+(Math.random()-.5)*.05);
   const done=()=>{const i=activeVoices.indexOf(clip);if(i>=0)activeVoices.splice(i,1)};
   clip.addEventListener('ended',done,{once:true});clip.addEventListener('error',done,{once:true});
-  activeVoices.push(clip);const playback=clip.play();if(playback?.catch)playback.catch(done);
+  activeVoices.push(clip);const promise=clip.play();if(promise?.catch)promise.catch(done);
   if(activeVoices.length>4){const old=activeVoices.shift();old.pause()}
-  lastVoiceAt=now;
  }catch(e){}
 }
 function photoImpactAudio(power){
- if(!sound||!audio)return;
+ if(!sound)return;
  try{
-  const at=audio.currentTime+.005;
-  noiseHit(at,.085,.065*power,1800);
-  tone(95,at,.145,.075*power,'sawtooth',850);
-  tone(185,at+.012,.105,.048*power,'triangle',1600);
-  noiseHit(at+.082,.065,.025*power,1100);
-  tone(105,at+.095,.105,.025*power,'triangle',900);
-  noiseHit(at+.168,.05,.012*power,900);
-  // Dry mechanical camera shutter: metallic double-click and sharp flash burst.
-  noiseHit(at+.002,.018,.115,5800);
-  tone(2100,at+.006,.022,.035,'square',6500);
-  noiseHit(at+.043,.028,.066,4400);
-  // Very short stadium response: filtered layers of many indistinct voices.
-  // Envelope rises just after contact and is gone before the next musical beat.
-  const crowdAt=at+.055;
-  const source=audio.createBufferSource(),band=audio.createBiquadFilter(),crowdGain=audio.createGain();
-  source.buffer=noiseSample(audio);source.loop=true;
-  band.type='bandpass';band.frequency.value=740;band.Q.value=.7;
-  crowdGain.gain.setValueAtTime(.0001,crowdAt);
-  crowdGain.gain.linearRampToValueAtTime(.050,crowdAt+.065);
-  crowdGain.gain.exponentialRampToValueAtTime(.0001,crowdAt+.34);
-  source.connect(band);band.connect(crowdGain);crowdGain.connect(audio.destination);
-  source.start(crowdAt);source.stop(crowdAt+.36);
-  // A second, quieter band suggests crowd voices above the stadium rumble.
-  const voices=audio.createBufferSource(),upper=audio.createBiquadFilter(),voicesGain=audio.createGain();
-  voices.buffer=noiseSample(audio);voices.loop=true;upper.type='bandpass';upper.frequency.value=1700;upper.Q.value=1.1;
-  voicesGain.gain.setValueAtTime(.0001,crowdAt);
-  voicesGain.gain.linearRampToValueAtTime(.019,crowdAt+.09);
-  voicesGain.gain.exponentialRampToValueAtTime(.0001,crowdAt+.30);
-  voices.connect(upper);upper.connect(voicesGain);voicesGain.connect(audio.destination);
-  voices.start(crowdAt);voices.stop(crowdAt+.33);
+  audio??=new (window.AudioContext||window.webkitAudioContext)();
+  if(audio.state==='suspended')audio.resume().catch(()=>{});
+  const at=audio.currentTime+.006,direct=audio.destination;
+  const thump=audio.createOscillator(),thumpGain=audio.createGain();
+  thump.type='sine';thump.frequency.setValueAtTime(138,at);
+  thump.frequency.exponentialRampToValueAtTime(47,at+.17);
+  thumpGain.gain.setValueAtTime(.0001,at);
+  thumpGain.gain.exponentialRampToValueAtTime(.25,at+.009);
+  thumpGain.gain.exponentialRampToValueAtTime(.0001,at+.19);
+  thump.connect(thumpGain);thumpGain.connect(direct);thump.start(at);thump.stop(at+.2);
+  const sample=noiseSample(audio);
+  function burst(delay,len,gainAmount,frequency){
+   const start=at+delay,src=audio.createBufferSource(),filter=audio.createBiquadFilter(),env=audio.createGain();
+   src.buffer=sample;filter.type='bandpass';filter.frequency.value=frequency;filter.Q.value=.85;
+   env.gain.setValueAtTime(.0001,start);
+   env.gain.linearRampToValueAtTime(gainAmount,start+.004);
+   env.gain.exponentialRampToValueAtTime(.0001,start+len);
+   src.connect(filter);filter.connect(env);env.connect(direct);
+   src.start(start);src.stop(start+len+.01);
+  }
+  burst(0,.095,.18,2000);
+  burst(.019,.021,.21,5700);
+  burst(.058,.028,.13,4000);
+  burst(.115,.08,.057,1150);
+  const src=audio.createBufferSource(),filter=audio.createBiquadFilter(),env=audio.createGain();
+  src.buffer=sample;src.loop=true;filter.type='bandpass';filter.frequency.value=620;filter.Q.value=.55;
+  env.gain.setValueAtTime(.0001,at+.07);
+  env.gain.linearRampToValueAtTime(.09,at+.14);
+  env.gain.exponentialRampToValueAtTime(.0001,at+.39);
+  src.connect(filter);filter.connect(env);env.connect(direct);src.start(at+.07);src.stop(at+.40);
  }catch(e){}
 }
 function photoHit(att,def,t,power){
- if(photoStop||!att||!def)return;
- const length=Math.round(Math.min(165,48+57*power));
- photoStop={start:t,until:t+length,pose:t,x:(att.x+def.x)/2,y:.57,power};
- // Negative exposure persists through the next cooldown beat, but never delays it.
- photoNegative={start:t,until:Math.max(t+BEAT_MS*.85,att.powerReadyAt||t+BEAT_MS*1.65)};
+ if(!att||!def||!att.powerFinisher)return;
+ photoStop={start:t,until:t+84,pose:t,x:(att.x+def.x)*.5,y:.57,power};
+ photoAccent={start:t,until:Math.max(t+BEAT_MS*.72,att.powerReadyAt||t+BEAT_MS*1.65)};
  photoImpactAudio(power);
- if(power>=.95)photoPainVoice(def,power);
-}
-function shiftAfterPhoto(f,dt){
- if(!f)return;
- for(const field of ['actionStart','actionEnd','hitAt','cooldown','stunnedUntil','invulUntil',
-  'recoveryUntil','stepUntil','downStart','downUntil','jumpStart','jumpUntil',
-  'landingRecoverUntil','lowChainUntil','airFollowUntil','whiffUntil',
-  'powerFreezeAt','powerFreezeUntil','hitReactStart','hitReactUntil','flowUntil',
-  'rhythmSlowUntil','levelFlashStart','levelFlashUntil','crouchUntil','stanceUntil',
-  'jumpPendingAt','throwProtectionUntil','guardAt','nextThink','lastComboInputAt',
-  'comboDeadline','lastLightAt','lastHealAt','aiWaitUntil']){
-  const value=f[field];if(value>0&&Number.isFinite(value))f[field]=value+dt;
- }
- for(const item of f.pendingAttacks||[])if(item.at>0)item.at+=dt;
+ photoPainVoice(def,power);
 }
 function drawPhotoFlash(t){
- if(!photoStop)return;
- const p=clamp((t-photoStop.start)/(photoStop.until-photoStop.start),0,1);
- const fade=1-p,x=W*photoStop.x,y=H*photoStop.y;
- ctx.save();
- const g=ctx.createRadialGradient(x,y,0,x,y,Math.min(W,H)*.55);
- g.addColorStop(0,'rgba(255,255,255,'+(.44*fade)+')');
- g.addColorStop(.32,'rgba(255,237,185,'+(.27*fade)+')');
- g.addColorStop(1,'rgba(255,255,255,0)');
- ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
- ctx.fillStyle='rgba(255,249,217,'+(.13*fade)+')';ctx.fillRect(0,0,W,H);
- ctx.strokeStyle='rgba(255,255,222,'+(.8*fade)+')';ctx.lineWidth=3;
- const radius=30+22*p;
- for(const [dx,dy] of [[-1,-1],[1,-1],[-1,1],[1,1]]){
-  ctx.beginPath();
-  ctx.moveTo(x+dx*radius,y+dy*(radius-12));ctx.lineTo(x+dx*(radius-14),y+dy*(radius-12));
-  ctx.moveTo(x+dx*radius,y+dy*(radius-12));ctx.lineTo(x+dx*radius,y+dy*(radius-25));
-  ctx.stroke();
+ if(!photoStop&&!photoAccent)return;
+ const freeze=photoStop&&t<photoStop.until;
+ const progress=freeze?clamp((t-photoStop.start)/(photoStop.until-photoStop.start),0,1):1;
+ const fade=freeze?1-progress:photoAccent?clamp((photoAccent.until-t)/BEAT_MS,0,1)*.12:0;
+ if(fade<=0)return;
+ const x=W*(photoStop?.x??(player.x+enemy.x)*.5),y=H*(photoStop?.y??.57);
+ ctx.save();ctx.fillStyle='rgba(255,236,186,'+(.18*fade)+')';ctx.fillRect(0,0,W,H);
+ ctx.strokeStyle='rgba(255,242,190,'+(.88*fade)+')';ctx.lineWidth=2.5;
+ const r=36+progress*22;
+ for(const dx of [-1,1])for(const dy of [-1,1]){
+  ctx.beginPath();ctx.moveTo(x+dx*r,y+dy*(r-9));ctx.lineTo(x+dx*(r-14),y+dy*(r-9));
+  ctx.moveTo(x+dx*r,y+dy*(r-9));ctx.lineTo(x+dx*r,y+dy*(r-24));ctx.stroke();
  }
  ctx.restore();
 }
@@ -1192,23 +1192,8 @@ if(enemy.readAttackId!==player.actionStart){enemy.readAttackId=player.actionStar
 if(!enemy.readHandled&&t>=enemy.readAt){enemy.readHandled=true;if(Math.random()<(enemy.aiStyle==='counter'?.84:enemy.aiStyle==='aggressor'?.43:.79)){enemy.guard=true;enemy.guardAt=t;enemy.nextThink=t+550;setMessage('ПРОТИВНИК ЧИТАЕТ СЕРИЮ','Чередуй руку и ногу, захват или уход',570)}}
 }
 function update(t,dt){if(paused||!started)return;
- if(photoStop){
-  if(t<photoStop.until)return;
-  const elapsed=photoStop.until-photoStop.start;photoStop=null;
-  shiftAfterPhoto(player,elapsed);shiftAfterPhoto(enemy,elapsed);
-  // A photographic pause must never delay the next musical attack opportunity.
-  for(const fighter of [player,enemy]){
-   if(fighter?.powerFinisher&&fighter.powerReadyAt>0){
-    fighter.cooldown=fighter.powerReadyAt;
-    fighter.recoveryUntil=fighter.powerReadyAt;
-    fighter.actionEnd=Math.min(fighter.actionEnd,fighter.powerReadyAt-40);
-    fighter.powerFreezeUntil=Math.min(fighter.powerFreezeUntil,fighter.powerReadyAt-35);
-   }
-  }
-  if(clinch){clinch.start+=elapsed;clinch.end+=elapsed;}
-  for(const m of motionHistory)m.t+=elapsed;
-  if(!practiceMode)roundStart+=elapsed;
- }
+ if(photoStop&&t>=photoStop.until)photoStop=null;
+ if(photoAccent&&t>=photoAccent.until)photoAccent=null;
  // Show a valid command before the attack button is pressed, even during stance recovery.
  if(player&&player.fighterId==='kickboxer'&&!ended){
   const ready=readySpecial('light',t)||readySpecial('heavy',t);
@@ -1781,20 +1766,18 @@ function fighter(f,t){
  if((light||heavy)&&t<f.hitAt){ctx.fillStyle=heavy?'#ffd4a1':'#e4ebdc';ctx.font='bold 10px system-ui';ctx.fillText((f.finisher?'✹ ФИНАЛ: ':heavy?'НОГА: ':'')+DIR_NAMES[f.dir||'neutral'],x,ground-184*scale)}
  if(f.action==='grab'&&t<f.hitAt){ctx.fillStyle='#ffbe88';ctx.font='bold 10px system-ui';ctx.fillText('БРОСОК: '+THROW_NAMES[f.dir||'neutral'],x,ground-180*scale)}
 }
-function render(t){ctx.save();if(shake&&!photoStop)ctx.translate(rng(-shake,shake),rng(-shake,shake));bg();const poseT=photoStop?photoStop.pose:t;
- if(photoNegative&&t>=photoNegative.until)photoNegative=null;
+function render(t){ctx.save();if(shake&&!photoStop)ctx.translate(rng(-shake,shake),rng(-shake,shake));bg();
+ const poseT=photoStop&&t<photoStop.until?photoStop.pose:t;
  if(player&&enemy){
-  if(photoNegative){
-   ctx.save();
-   // Invert JUST the fighters. The camera/background and rhythm HUD remain normal.
-   ctx.filter='invert(1) contrast(1.75) brightness(1.2)';
-   fighter(player,poseT);fighter(enemy,poseT);
+  fighter(player,poseT);fighter(enemy,poseT);
+  if(photoAccent&&t<photoAccent.until){
+   const p=clamp((photoAccent.until-t)/BEAT_MS,0,1);
+   ctx.save();ctx.globalAlpha=.1+.16*p;ctx.strokeStyle='#ffe4a2';ctx.lineWidth=2.5;
+   for(const f of [player,enemy]){
+    ctx.beginPath();ctx.ellipse(W*f.x,H*.54,26+6*p,78+4*p,0,0,Math.PI*2);ctx.stroke();
+   }
    ctx.restore();
-   const fade=photoStop?1:Math.min(.5,Math.max(0,(photoNegative.until-t)/BEAT_MS));
-   ctx.save();ctx.globalCompositeOperation='screen';ctx.globalAlpha=.12+.16*fade;ctx.fillStyle='#b3f7ff';
-   for(const f of [player,enemy]){ctx.beginPath();ctx.ellipse(W*f.x,H*.54,32,80,0,0,Math.PI*2);ctx.fill()}
-   ctx.restore();
-  }else{fighter(player,poseT);fighter(enemy,poseT)}
+  }
  }
  renderSpecialFeedback(t);for(let p of particles){ctx.globalAlpha=clamp(p.life/p.total,0,1);ctx.fillStyle=p.col;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,2*Math.PI);ctx.fill()}
 for(let p of impacts){const a=clamp(p.life/p.total,0,1),progress=1-a;
