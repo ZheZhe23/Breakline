@@ -1032,8 +1032,8 @@ function update(t,dt){if(paused||!started)return;
  // Show a valid command before the attack button is pressed, even during stance recovery.
  if(player&&player.fighterId==='kickboxer'&&!ended){
   const ready=readySpecial('light',t)||readySpecial('heavy',t);
-  if(ready){$('dirSelected').textContent='СПЕЦ ГОТОВ: '+ready[1].name+' · '+(ready[1].kind==='light'?'РУКА':'НОГА');}
-  else $('dirSelected').textContent='ПРИЁМ: '+(DIR_NAMES[selectedDir]||selectedDir);
+  if(ready){$('dirSelected').textContent='СПЕЦ ГОТОВ: '+ready[1].name+' · '+(ready[1].kind==='light'?'РУКА':'НОГА');$('dirSelected').style.display='block';}
+  else {$('dirSelected').textContent='ПРИЁМ: '+(DIR_NAMES[selectedDir]||selectedDir);$('dirSelected').style.display='none';}
  }
  if(ended){updateFinale(t);return}
  if(practiceMode){
@@ -1116,7 +1116,9 @@ if(f.diveArmed&&t>=f.jumpUntil){resolveDive(f,f===player?enemy:player,t)}if(t<f.
  }
  if(!clinch)flushPendingAttacks(player,t);
  if(!clinch)aiDecide(t);
- if(practiceMode){enemy.hp=MAX_HEALTH;enemy.guard=false;player.rhythm=100;}
+ if(practiceMode){enemy.hp=MAX_HEALTH;enemy.guard=false;player.rhythm=100;
+  if(!clinch&&enemy.action==='idle'&&t>=enemy.downUntil)enemy.x=.65;
+ }
  for(let i=particles.length-1;i>=0;i--){let p=particles[i];p.x+=p.vx*dt/16;p.y+=p.vy*dt/16;p.vy+=.16*dt/16;p.life-=dt;if(p.life<=0)particles.splice(i,1)}for(let i=impacts.length-1;i>=0;i--){impacts[i].life-=dt;if(impacts[i].life<=0)impacts.splice(i,1)}shake=Math.max(0,shake-dt*.05);let d=Math.abs(enemy.x-player.x);$('distance').textContent=clinch?'БРОСОК · ЖДИ ОКНО КОНТРПРИЁМА':enemy.whiffUntil>t?'ОКНО КОНТРАТАКИ!':player.whiffUntil>t?'ТЫ УЯЗВИМ ПОСЛЕ ПРОМАХА': 'ДИСТАНЦИЯ: '+(d<.100?'ВПЛОТНУЮ • БРОСОК':d<.18?'КОРОТКАЯ · БЫСТРЫЕ УДАРЫ':d<.275?'СРЕДНЯЯ · ПРЯМОЙ / ВЫПАД':'ДАЛЬНЯЯ • СБЛИЗЬСЯ');$('distance').style.color=d<.113?'#f4cb8b':d<.245?'#c5e7c1':'#d5dada';updateHud()}
 function bg(){let horizon=H*.64;let g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#101d21');g.addColorStop(.65,'#344449');g.addColorStop(1,'#1b262a');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);ctx.save();ctx.globalAlpha=.35;for(let k=0;k<8;k++){let x=W*(k/7),height=H*(.1+(k%3)*.032);ctx.fillStyle=k%2?'#62736b':'#849184';ctx.fillRect(x-8,horizon-height,16,height);ctx.beginPath();ctx.arc(x,horizon-height,18,Math.PI,2*Math.PI);ctx.fill()}ctx.restore();ctx.fillStyle='#303d3b';ctx.fillRect(0,horizon,W,H-horizon);let grd=ctx.createRadialGradient(W*.5,horizon+H*.06,5,W*.5,horizon+H*.06,W*.55);grd.addColorStop(0,'#5c6760');grd.addColorStop(1,'#283332');ctx.fillStyle=grd;ctx.fillRect(0,horizon,W,H-horizon);ctx.strokeStyle='#81908426';ctx.lineWidth=1;for(let i=0;i<11;i++){ctx.beginPath();ctx.moveTo(W*.5,horizon);ctx.lineTo(W*(i/10),H);ctx.stroke()}for(let j=1;j<6;j++){let y=horizon+(H-horizon)*j*j/36;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}let vign=ctx.createRadialGradient(W/2,H/2,H*.15,W/2,H/2,W*.67);vign.addColorStop(0,'#0000');vign.addColorStop(1,'#0009');ctx.fillStyle=vign;ctx.fillRect(0,0,W,H);
  if(rhythmStart&&started){const phase=((now-rhythmStart)%BEAT_MS+BEAT_MS)%BEAT_MS,beat=1-Math.min(phase,BEAT_MS-phase)/BEAT_MS*2;ctx.save();ctx.globalAlpha=(flowOn(player,now)?.15:.07)*Math.pow(beat,4);ctx.fillStyle=flowOn(player,now)?'#f4d38c':'#99caa6';ctx.fillRect(0,0,W,H);ctx.restore()} // Large, subtle, musically exact 30-bar countdown behind the fighters.
@@ -1483,7 +1485,7 @@ document.addEventListener('keyup',e=>{keys[e.code]=false;if(paused)return;const 
 let swipeX=0;canvas.addEventListener('pointerdown',e=>{swipeX=e.clientX});canvas.addEventListener('pointerup',e=>{if(!started||ended)return;let dx=e.clientX-swipeX;if(Math.abs(dx)>52&&player&&player.action==='idle'&&player.recoveryUntil<gameClock())player.x=clamp(player.x+(dx>0?.025:-.025),.10,.90)});
 for(const button of document.querySelectorAll('[data-difficulty]')){
  button.addEventListener('click',()=>{
-  rhythmDifficulty=button.dataset.difficulty;
+  rhythmDifficulty=button.dataset.difficulty;shownRhythmBar=-1;
   for(const btn of document.querySelectorAll('[data-difficulty]'))btn.classList.toggle('selected',btn.dataset.difficulty===rhythmDifficulty);
   $('difficultyDescription').textContent=rhythmDifficulty==='easy'?'Стабильные четыре точки действия в каждом такте.':rhythmDifficulty==='medium'?'Каждый четвёртый такт — восемь точек вместо четырёх.': 'Музыкальный рисунок с паузами, восьмыми и шестнадцатыми; следи за метками.';
  });
