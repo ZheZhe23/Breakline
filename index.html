@@ -673,7 +673,7 @@ function comboRecipes(f){return FIGHTERS[f?.fighterId||selectedFighter]?.combos|
 // Only the NEXT accepted attack may start a new root after a broken series.
 function comboNext(seq,key,tree){const node=tree.nodes[seq];return node&&!node.recipe?node.children[key]?.prefix||'':''}
 function comboNode(f,prefix=f.comboSeq){return COMBO_TREES[f.fighterId||'kickboxer'].nodes[prefix]}
-function comboPoseHeld(f,t){return !!f.comboMotionPrefix&&t<=f.comboPoseUntil&&!f.specialId&&!f.archivePreview&&!f.crouch&&!f.moveHeld&&!f.stanceTransition&&t>=f.stunnedUntil&&t>=f.jumpUntil}
+function comboPoseHeld(f,t){return (f.action==='idle'||f.action==='light'||f.action==='heavy')&&t>=f.stepUntil&&!!f.comboMotionPrefix&&t<=f.comboPoseUntil&&!f.specialId&&!f.archivePreview&&!f.crouch&&!f.moveHeld&&!f.stanceTransition&&t>=f.stunnedUntil&&t>=f.jumpUntil}
 function comboText(seq){return seq.replaceAll('L','Р').replaceAll('H','Н')}
 function chooseFighter(id){if(!FIGHTERS[id])return;selectedFighter=id;
  for(const button of document.querySelectorAll('[data-fighter]'))button.classList.toggle('selected',button.dataset.fighter===id);
@@ -693,7 +693,7 @@ function startAction(f,kind,t,inputAt=t,fromQueue=false){
  const lowFollow=kind==='heavy'&&f.crouch&&f.hitDone&&t<f.lowChainUntil;
  const airFollow=kind==='light'&&f.airFollowReady&&t<f.airFollowUntil&&f.jumpUntil<=t;
  const comboInputEligible=(f.action==='light'||f.action==='heavy'||f.action==='idle')&&f.hitDone&&t>=f.actionStart+BEAT_MS*.10*rhythmActionScale(t)&&inputAt<=f.lastComboInputAt+comboWindowMs()&&inputAt>=f.lastComboInputAt&&f.comboSeq.length>0&&!f.finisher;
- const chain=comboInputEligible&&(kind==='light'||kind==='heavy')&&!!comboNext(f.comboSeq,kind==='light'?'L':'H',COMBO_TREES[f.fighterId])&&rhythmJudge(inputAt)!=='off';
+ const chain=comboInputEligible&&((kind==='light'||kind==='heavy')?!!comboNext(f.comboSeq,kind==='light'?'L':'H',COMBO_TREES[f.fighterId])&&rhythmJudge(inputAt)!=='off':true);
  if((t<f.cooldown&&!chain&&!lowFollow&&!airFollow) || (f.action!=='idle'&&t<f.actionEnd&&!chain&&!lowFollow&&!airFollow)){
   // A touch can arrive just before the previous hit resolves. Preserve its original rhythm timestamp.
   if(!fromQueue&&!f.ai&&(kind==='light'||kind==='heavy')&&(f.action==='light'||f.action==='heavy')&&f.pendingAttacks.length<3)f.pendingAttacks.push({kind,at:inputAt});

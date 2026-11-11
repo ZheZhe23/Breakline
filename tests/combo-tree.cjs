@@ -80,6 +80,18 @@ module.exports=async({page,run,artifactDir})=>{
    check(player.comboSeq==='LHH'&&player.actionStart===last,'invalid edge cannot cancel current action @'+bpm);
    update(end+1,16);check(!player.comboSeq&&!player.finisher&&player.actionStart===end+1,'queued invalid input executes standalone after recovery @'+bpm);check(player.attackGrade==='perfect','buffer retains original rhythm timestamp @'+bpm);
   }
+  // Preserve the pre-existing post-contact cancel into grab; restricting bad
+  // L/H edges must not accidentally remove this separate control path.
+  for(const bpm of [100,120,140]){
+   const at=setup('kickboxer',bpm);startAction(player,'light',at);update(player.hitAt+1,4);enemy.x=player.x+.08;
+   check(startAction(player,'grab',at+BEAT_MS*.16),'existing grab cancel preserved @'+bpm);check(player.action==='grab'&&!player.comboSeq,'grab retires combo recognition @'+bpm);
+  }
+  // A linking guard must never replace actual locomotion or another action.
+  for(const id of Object.keys(FIGHTERS)){
+   const f=makeFighter(false,.4,id);Object.assign(f,{action:'idle',comboSeq:'L',comboMotionPrefix:'L',comboPoseUntil:2000});
+   check(comboPoseHeld(f,1400),id+' idle holds linking pose');f.stepUntil=1500;check(!comboPoseHeld(f,1400)&&!rigPose(f,1400).attack,id+' walking step releases held pose');f.stepUntil=0;f.moveHeld=1;check(!comboPoseHeld(f,1400),id+' continuous movement releases held pose');f.moveHeld=0;
+   for(const action of ['caught','throwing','down','stunned','celebrate','defeated']){f.action=action;check(!comboPoseHeld(f,1400)&&choreographyClip(f,1400).id==='stance',id+' held pose cannot replace '+action);}
+  }
   // The explicit example from the specification: branch only on the third key.
   const tree=COMBO_TREES.kickboxer;check(tree.nodes.LH.children.L.recipe[0]==='LHL'&&!tree.nodes.LH.children.H.recipe&&tree.nodes.LHH.children.L.recipe[0]==='LHHL','LH branches to terminal L or preparing H');
   practiceMode=true;selectedFighter='kickboxer';RHYTHM_BPM=120;BEAT_MS=500;fresh();return {failures,stats};
