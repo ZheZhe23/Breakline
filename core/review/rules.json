@@ -1,0 +1,14 @@
+{
+  "checks": 93050,
+  "frames": 6160,
+  "segments": 67760,
+  "maxRelativeBoneError": 7.771561172376096e-16,
+  "maxJointTravelPer2ms": 4.182116316386722,
+  "maxJointAngleChangePer2ms": 0.14317224975801524,
+  "recipes": [
+    "LLL",
+    "LLH",
+    "LHLH"
+  ],
+  "fullGameUnchanged": true
+}

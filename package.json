@@ -6,7 +6,11 @@
     "test": "node tests/syntax.cjs && node tests/browser.cjs",
     "render:reel": "node tests/render-reel.cjs",
     "render:combos": "node tests/render-combos.cjs",
-    "render:half": "node tests/render-half-beat.cjs"
+    "render:half": "node tests/render-half-beat.cjs",
+    "build:core": "node tools/build-core.cjs",
+    "check:core": "node tests/core-syntax.cjs",
+    "test:core": "node tests/core-syntax.cjs && node tests/core-rules.cjs && node tests/core-browser.cjs",
+    "render:core": "node tests/render-core.cjs"
   },
   "devDependencies": {
     "playwright": "1.62.1"

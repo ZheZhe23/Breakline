@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#081416"><meta name="description" content="BREAKLINE CORE — ритм-файтинг: одна доля, два удара, три комбо. Независимый прототип.">
+<title>BREAKLINE CORE</title>
+<style>
+:root{color-scheme:dark;--ink:#e9f4ec;--dim:#8da7a3;--mint:#a7f3cf;--hot:#ff775c;--line:#31504e;--bg:#081416}*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}body{margin:0;background:var(--bg);color:var(--ink);font:14px system-ui,-apple-system,sans-serif;overflow:hidden;overscroll-behavior:none}button{font:inherit;color:inherit;cursor:pointer}button:focus-visible{outline:3px solid var(--hot);outline-offset:3px}#app{position:relative;margin:auto;width:100%;max-width:1100px;height:100dvh;min-height:320px;overflow:hidden;isolation:isolate;background:#0a1b1e}canvas{position:absolute;inset:0;width:100%;height:100%;z-index:-1}.hud{position:absolute;top:0;left:0;right:0;padding:calc(env(safe-area-inset-top) + 12px) 16px 0;pointer-events:none}.mast{display:flex;align-items:center;justify-content:space-between;gap:8px}.wordmark{font-size:16px;letter-spacing:-.7px;font-weight:900}.wordmark em{font-style:normal;color:var(--mint);font-weight:500;font-size:11px;letter-spacing:2px;margin-left:7px}.tools{display:flex;gap:7px;pointer-events:auto}.small{border:1px solid var(--line);background:#122427e6;border-radius:7px;min-width:44px;min-height:36px;font-size:12px}.healths{display:grid;grid-template-columns:1fr 48px 1fr;align-items:center;gap:10px;margin-top:10px}.fighter-label{font-size:10px;letter-spacing:1px;display:flex;justify-content:space-between;color:#acc3bb}.hp-track{height:6px;background:#1e393a;margin-top:5px;border-radius:2px;overflow:hidden}.hp-track i{display:block;height:100%;width:100%;background:var(--mint);transition:width .15s}.enemy .hp-track i{background:var(--hot)}.enemy .fighter-label{flex-direction:row-reverse}.clock{text-align:center;font:700 22px ui-monospace,monospace;color:#c7d7d0}.rhythm{position:relative;max-width:500px;margin:14px auto 0;height:33px;border-top:1px solid #345957;background:linear-gradient(90deg,transparent,#19333080,transparent);overflow:hidden}.rhythm-center{position:absolute;left:50%;top:0;height:17px;border-left:2px solid var(--mint)}#beat-dots{position:absolute;inset:0}.beat-dot{position:absolute;top:4px;width:7px;height:7px;transform:translateX(-50%) rotate(45deg);border:1px solid #648a80;background:#17372f}.beat-dot.major{background:var(--mint);border:0;box-shadow:0 0 10px #a7f3cf55}#beat-text{position:absolute;bottom:0;text-align:center;width:100%;font-size:9px;letter-spacing:2px;color:var(--dim)}.energy{display:flex;gap:4px;align-items:center;margin-top:6px}.energy-label{font-size:9px;letter-spacing:1px;min-width:66px;color:var(--dim)}.energy i{height:4px;flex:1;background:#22413e;border-radius:2px;transition:background .25s}.energy i.on{background:var(--mint);box-shadow:0 0 9px #a7f3cf33}#music-level{font-size:9px;width:32px;text-align:right;color:var(--mint)}#feedback{position:absolute;top:32%;left:0;right:0;text-align:center;font-weight:900;font-size:26px;letter-spacing:3px;pointer-events:none;text-shadow:0 2px 12px #081416}#feedback small{display:block;margin-top:5px;font-size:10px;letter-spacing:1px;font-weight:500;color:#bdd2c9}#danger{position:absolute;top:49%;right:10%;color:var(--hot);font-size:10px;letter-spacing:1px;font-weight:800;opacity:0;background:#1c1716cc;border:1px solid #a34c38;padding:6px 9px;border-radius:4px;pointer-events:none}.bottom{position:absolute;bottom:0;left:0;right:0;padding:0 12px calc(env(safe-area-inset-bottom) + 12px);background:linear-gradient(transparent,#081416 38%)}.recipes{display:flex;justify-content:center;gap:5px;margin-bottom:10px}.recipe{flex:1;max-width:200px;border:1px solid #284743;border-radius:6px;padding:6px 3px;background:#102321e8;text-align:center;transition:border-color .1s}.recipe strong{display:block;color:#97b7aa;font-size:10px;letter-spacing:1px}.recipe small{display:block;color:#698a7f;font-size:8px;margin-top:3px}.recipe.active{border-color:#a7f3cf}.recipe.active strong{color:var(--mint)}.recipe.done{background:#255542}.controls{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;touch-action:none;user-select:none}.control{border:1px solid #365550;border-radius:10px;min-height:49px;background:#142b29;color:#a6c3b8;font-weight:750;font-size:11px;letter-spacing:1px;box-shadow:inset 0 1px #9ccab011;touch-action:none}.control:active,.control.pressed{background:#24493f;transform:translateY(1px);border-color:var(--mint)}.control span{display:block;font-size:9px;letter-spacing:0;font-weight:400;opacity:.6;margin-top:4px}.special{grid-column:span 2;color:var(--hot);border-color:#6a4738;background:#2c2520}.special:disabled{opacity:.45;cursor:default}.attack{grid-column:span 2;min-height:73px;font-size:18px;letter-spacing:3px;background:var(--mint);color:#102822;border-color:var(--mint)}.attack.foot{background:#b9c9d0;border-color:#b9c9d0;color:#132932}.attack:active{color:#eafff3;background:#467a67}.overlay{position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;background:#081416cf;backdrop-filter:blur(10px);padding:20px;overflow:auto}.overlay[hidden]{display:none}.card{width:min(100%,430px);position:relative;border-top:2px solid var(--mint);padding:26px 4px 6px}.eyebrow{color:var(--mint);font-size:10px;letter-spacing:3px;margin:0 0 15px}.title{font-size:clamp(42px,12vw,64px);font-weight:950;line-height:.9;letter-spacing:-3px;margin:0}.title span{display:block;color:var(--mint);font-weight:300;letter-spacing:9px;font-size:.78em;margin:9px 0 25px}.intro{color:#b0c7bd;line-height:1.65;font-size:13px;max-width:350px}.instructions{display:flex;gap:12px;margin:22px 0;color:#86a89a;font-size:11px}.instructions b{font-size:21px;color:#dcece1;display:block;margin-bottom:6px}.primary{width:100%;min-height:56px;border:0;background:var(--mint);color:#0c2c23;border-radius:8px;font-weight:850;letter-spacing:2px;font-size:13px}.secondary{width:100%;border:1px solid var(--line);background:transparent;border-radius:8px;min-height:44px;margin-top:10px;color:#b0c7bd;font-size:12px}.meta{font:9px ui-monospace,monospace;letter-spacing:1px;color:#6d8b80;margin-top:18px;line-height:1.6}.result-title{font-size:35px;letter-spacing:-1px;margin:10px 0 20px}.statline{display:flex;justify-content:space-between;border-bottom:1px solid #28483d;padding:12px 0;color:#97b7aa;font-size:12px}.statline b{color:#e0f0e5}#result-stats{margin-bottom:22px}#error{color:#ffad94;font-size:12px;line-height:1.5}.footer-note{margin:12px 0 0;font-size:10px;color:#739487;text-align:center}
+@media(max-width:350px){.hud{padding-left:11px;padding-right:11px}.bottom{padding-left:9px;padding-right:9px}.mast .wordmark{font-size:14px}.recipe small{font-size:7px}.control{font-size:10px}#feedback{font-size:22px}.instructions{gap:10px}}
+@media(max-height:510px) and (min-width:550px){.hud{padding-top:8px}.healths{margin-top:5px}.rhythm{margin-top:5px;height:25px;max-width:340px}.energy{max-width:340px;margin:3px auto}.controls{grid-template-columns:.8fr .8fr 1.2fr 1.5fr 1.5fr;gap:6px}.control,.attack{grid-column:auto;min-height:55px;font-size:12px}.control span{font-size:8px}.bottom{padding-bottom:8px}.recipes{margin-bottom:6px;gap:8px}.recipe{padding:4px;max-width:160px}.recipe small{display:none}#feedback{top:35%;font-size:20px}.card{width:480px;padding:12px 0}.title{font-size:44px;line-height:1}.title span{display:inline;margin-left:10px;font-size:.8em}.intro{max-width:none;margin:10px 0}.eyebrow{margin-bottom:6px}.instructions{margin:10px 0}.instructions b{display:inline;font-size:15px;margin-right:5px}.primary{min-height:45px}.meta{margin-top:10px}.result-title{font-size:28px;margin:8px 0}#result-stats{margin-bottom:12px;display:flex;gap:18px}.statline{flex-direction:column;gap:5px;flex:1;padding:6px 0}.overlay{padding:12px 20px}}
+@media(prefers-reduced-motion:reduce){.overlay{backdrop-filter:none}.control{transition:none}}
+</style>
+</head>
+<body>
+<main id="app" aria-label="BREAKLINE CORE — ритм-файтинг">
+<canvas id="arena" aria-label="Боевая арена с двумя кикбоксёрами"></canvas>
+<div class="hud">
+ <div class="mast"><div class="wordmark">BREAKLINE<em>CORE</em></div><div class="tools"><button id="mute" class="small" aria-label="Выключить звук" aria-pressed="false">ЗВУК</button><button id="pause" class="small" aria-label="Пауза">Ⅱ</button></div></div>
+ <div class="healths"><div><div class="fighter-label">ВЫ <span id="hp-player-label">180</span></div><div class="hp-track"><i id="hp-player"></i></div></div><div id="clock" class="clock">60</div><div class="enemy"><div class="fighter-label">RIVAL <span id="hp-enemy-label">340</span></div><div class="hp-track"><i id="hp-enemy"></i></div></div></div>
+ <div class="rhythm"><div id="beat-dots"></div><div class="rhythm-center"></div><div id="beat-text">НАЖИМАЙ НА ДОЛЮ · 120 BPM</div></div>
+ <div class="energy"><span class="energy-label" id="energy-label">ЭНЕРГИЯ 1</span><i class="on"></i><i></i><i></i><i></i><i></i><span id="music-level">♫ 1</span></div>
+</div>
+<div id="feedback" aria-live="polite"></div><div id="danger">АТАКА СОПЕРНИКА</div>
+<div class="bottom">
+ <div class="recipes" aria-label="Три комбинации"><div class="recipe" data-recipe="LLL"><strong>Р · Р · Р</strong><small>СИЛОВОЙ АППЕРКОТ</small></div><div class="recipe" data-recipe="LLH"><strong>Р · Р · Н</strong><small>ПРОБИВНОЙ УДАР НОГОЙ</small></div><div class="recipe" data-recipe="LHLH"><strong>Р · Н · Р · Н</strong><small>УДАР С РАЗВОРОТА</small></div></div>
+ <div class="controls"><button id="block" class="control">БЛОК<span>удерживать</span></button><button id="dodge" class="control">УКЛОН<span>короткий уход</span></button><button id="special" class="control special" disabled>ПУЛЬС-КОЛЕНО<span>30 энергии</span></button><button id="hand" class="control attack">РУКА<span>J · точно на долю</span></button><button id="foot" class="control attack foot">НОГА<span>K · точно на долю</span></button></div>
+</div>
+<section id="start-overlay" class="overlay"><div class="card"><p class="eyebrow">RHYTHM / IMPACT / REPEAT</p><h1 class="title">BREAKLINE<span>CORE</span></h1><p class="intro">Слушай долю. Чередуй руку и ногу. Заверши комбо — усиливай бой и музыку.</p><div class="instructions"><div><b>120</b>BPM · нажимай в долю</div><div><b>2</b>удара · 3 комбо</div><div><b>5</b>уровней энергии</div></div><button id="start" class="primary">НАЧАТЬ БОЙ →</button><p class="footer-note">Сначала 4 доли отсчёта. На финале — доля восстановления.<br>Соперник предупреждает об атаке: блокируй или уклоняйся.</p><p id="error" hidden></p><p class="meta">CORE 1.0.0 · ОРИГИНАЛЬНАЯ МУЗЫКА<br>Самостоятельный прототип. Полная BREAKLINE сохранена.</p></div></section>
+<section id="pause-overlay" class="overlay" hidden><div class="card"><p class="eyebrow">ПАУЗА</p><h2 class="result-title">Поймай ритм снова.</h2><p class="intro">Рука J · Нога K · Блок: пробел<br>Уклон L · Спецприём I · Пауза Esc<br>Музыка и бой продолжаются с того же места.</p><button id="resume" class="primary">ПРОДОЛЖИТЬ →</button><button id="restart" class="secondary">Новый бой</button></div></section>
+<section id="result-overlay" class="overlay" hidden><div class="card"><p class="eyebrow">BREAKLINE CORE</p><h2 id="result-title" class="result-title">Бой завершён</h2><div id="result-stats"></div><button id="rematch" class="primary">ЕЩЁ ОДИН БОЙ →</button><p class="footer-note">Музыка продолжится. Следующий бой — через 2 доли.</p></div></section>
+</main>
+<script>
+/* BREAKLINE CORE: constrained IK/FK math from BREAKLINE 3.14.0 (5dc1ff2).
+ * Intentionally independent of the 3.15 half-beat experiment. No bone scaling. */
+const CoreRig = (() => {
+'use strict';
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const rigRadians=d=>d*Math.PI/180;
+const RIG=Object.freeze({shoulder:13,hips:13,arm:29,forearm:29,thigh:36,shin:36,pelvisSpine:14,lumbarSpine:16,thoracicSpine:15});
+function rigWrap(angle){return Math.atan2(Math.sin(angle),Math.cos(angle))}
+function rigRootAngle(angle,reference,min,max){
+ const relative=rigWrap(angle-reference);
+ if(relative>=min&&relative<=max)return relative;
+ // Clamp on a circle, so an angle just beyond -PI cannot jump to the opposite
+ // shoulder/hip limit merely because atan2 represented it as +PI.
+ return Math.abs(rigWrap(relative-min))<Math.abs(rigWrap(relative-max))?min:max;
+}
+function solveLimb(start,target,a,b,options={}){
+ const {bend=1,minFlex=rigRadians(4),maxFlex=rigRadians(148),reference=Math.PI/2,minRoot=-Math.PI,maxRoot=Math.PI}=options;
+ let dx=target[0]-start[0],dy=target[1]-start[1];
+ if(Math.hypot(dx,dy)<1e-9){dx=Math.cos(reference);dy=Math.sin(reference)}
+ const raw=Math.hypot(dx,dy);
+ const reach=flex=>Math.sqrt(Math.max(0,a*a+b*b+2*a*b*Math.cos(flex)));
+ const distance=clamp(raw,reach(maxFlex),reach(minFlex));
+ const flex=Math.acos(clamp((distance*distance-a*a-b*b)/(2*a*b),-1,1));
+ const offset=Math.acos(clamp((a*a+distance*distance-b*b)/(2*a*distance),-1,1));
+ const root=rigRootAngle(Math.atan2(dy,dx)+bend*offset,reference,minRoot,maxRoot);
+ return forwardLimb(start,a,b,root,flex,{reference,bend,minRoot,maxRoot,minFlex,maxFlex});
+}
+function forwardLimb(start,a,b,root,flex,options){
+ const {reference,bend}=options,upper=reference+root,lower=upper-bend*flex;
+ const joint=[start[0]+a*Math.cos(upper),start[1]+a*Math.sin(upper)];
+ const end=[joint[0]+b*Math.cos(lower),joint[1]+b*Math.sin(lower)];
+ return {start,joint,end,a,b,root,flex,upper,lower,bend,reference,limits:options};
+}
+
+const smooth=x=>{x=clamp(x,0,1);return x*x*(3-2*x)};
+const lerp=(a,b,t)=>a+(b-a)*t;
+const base={hip:[0,-71],spine:[.02,.09,.02],lh:[27,-119],rh:[12,-125],lf:[29,-2],rf:[-28,-2],turn:0};
+const pose=(changes={})=>({...base,...changes});
+function mix(a,b,t){
+ const p={};for(const key of ['hip','spine','lh','rh','lf','rf'])p[key]=a[key].map((v,i)=>lerp(v,b[key][i],t));
+ p.turn=lerp(a.turn,b.turn,t);
+ // Interpolate constrained FK angles, not a hand target through its shoulder.
+ // IK supplies authored key poses; FK preserves elbow/knee continuity in between.
+ const sa=skeleton(a),sb=skeleton(b);p.angles={};
+ for(const name of Object.keys(sa.limbs))p.angles[name]={root:lerp(sa.limbs[name].root,sb.limbs[name].root,t),flex:lerp(sa.limbs[name].flex,sb.limbs[name].flex,t)};
+ return p;
+}
+const moves={
+ jab:{impact:85,duration:490,recovery:390,limb:'leftArm',contact:pose({hip:[8,-72],spine:[.10,.15,.08],lh:[76,-117],rh:[18,-123],turn:.22}),chamber:pose({hip:[-2,-73],lh:[22,-121],spine:[-.04,-.02,.02]}),follow:pose({hip:[10,-71],spine:[.12,.18,.08],lh:[69,-112],rh:[25,-124],turn:.26}),exit:pose({hip:[4,-72],lh:[30,-116],rh:[24,-123],spine:[.05,.10,.03]})},
+ cross:{impact:95,duration:530,recovery:390,limb:'rightArm',contact:pose({hip:[12,-70],spine:[.16,.22,.12],lh:[26,-123],rh:[80,-115],lf:[33,-2],rf:[-20,-2],turn:-.4}),chamber:pose({hip:[3,-72],spine:[-.07,.02,.04],rh:[16,-124],turn:.2}),follow:pose({hip:[14,-69],spine:[.18,.26,.14],lh:[30,-122],rh:[76,-108],turn:-.48}),exit:pose({hip:[6,-72],spine:[.06,.13,.04],lh:[28,-119],rh:[27,-118],rf:[-24,-2],turn:-.12})},
+ hook:{impact:100,duration:540,recovery:390,limb:'leftArm',contact:pose({hip:[11,-68],spine:[.11,.18,.08],lh:[76,-113],rh:[19,-121],turn:.48}),chamber:pose({hip:[2,-75],spine:[-.14,-.08,.02],lh:[17,-110],turn:-.28}),follow:pose({hip:[15,-68],spine:[.18,.23,.12],lh:[59,-102],rh:[27,-122],turn:.65}),exit:pose({hip:[4,-72],spine:[.03,.1,.02],lh:[28,-116],rh:[24,-124],turn:.18})},
+ bodyKick:{impact:125,duration:570,recovery:390,limb:'leftLeg',contact:pose({hip:[7,-71],spine:[-.14,-.15,-.08],lh:[19,-123],rh:[-3,-112],lf:[75,-71],rf:[-20,-2],turn:.28}),chamber:pose({hip:[-4,-74],spine:[-.12,-.08,-.02],lf:[28,-49],rf:[-20,-2],lh:[24,-124],rh:[10,-125]}),follow:pose({hip:[10,-70],spine:[-.17,-.18,-.08],lf:[70,-66],rf:[-19,-2],lh:[17,-124],rh:[-4,-109],turn:.36}),exit:pose({hip:[3,-72],spine:[-.02,.03,0],lf:[25,-20],rf:[-24,-2],lh:[25,-121],turn:.08})},
+ uppercut:{impact:115,duration:675,recovery:675,limb:'rightArm',contact:pose({hip:[15,-73],spine:[.12,.24,.10],rh:[68,-129],lh:[29,-124],lf:[35,-2],rf:[-17,-2],turn:-.5}),chamber:pose({hip:[3,-63],spine:[.13,-.08,-.1],rh:[25,-94],lh:[25,-116],turn:.26}),follow:pose({hip:[17,-74],spine:[.14,.28,.1],rh:[60,-147],lh:[30,-123],lf:[35,-2],rf:[-15,-2],turn:-.6}),exit:pose({hip:[6,-72],rh:[25,-127],spine:[.02,.11,.02],rf:[-24,-2],turn:-.1})},
+ frontKick:{impact:130,duration:660,recovery:675,limb:'leftLeg',contact:pose({hip:[-3,-72],spine:[-.18,-.16,-.06],lf:[75,-79],rf:[-19,-2],lh:[18,-126],rh:[-1,-114],turn:.18}),chamber:pose({hip:[-3,-74],spine:[-.12,-.06,0],lf:[28,-51],rf:[-21,-2],lh:[26,-127]}),follow:pose({hip:[12,-71],spine:[-.20,-.18,-.08],lf:[76,-73],rf:[-18,-2],lh:[17,-124],rh:[-3,-110],turn:.24}),exit:pose({hip:[4,-72],lf:[27,-20],rf:[-25,-2],spine:[-.03,.02,0],lh:[26,-123]})},
+ spinKick:{impact:150,duration:720,recovery:675,limb:'rightLeg',contact:pose({hip:[12,-72],spine:[-.15,-.20,-.10],rh:[-18,-100],lh:[20,-124],rf:[79,-104],lf:[-13,-2],turn:1}),chamber:pose({hip:[-1,-72],spine:[-.12,-.17,-.05],rh:[-8,-106],lh:[24,-128],rf:[7,-45],lf:[-16,-2],turn:-.85}),follow:pose({hip:[16,-71],spine:[-.14,-.20,-.09],rf:[69,-96],lf:[-12,-2],lh:[17,-123],rh:[-20,-103],turn:.75}),exit:pose({hip:[3,-72],spine:[-.04,.03,0],rf:[-10,-23],lf:[27,-2],rh:[17,-121],lh:[29,-122],turn:.2})},
+ knee:{impact:135,duration:720,recovery:675,limb:'leftLeg',contact:pose({hip:[30,-82],spine:[.20,.15,.06],lf:[37,-62],rf:[-9,-6],lh:[55,-136],rh:[31,-136],turn:.35}),chamber:pose({hip:[4,-66],spine:[.12,.08,.03],lf:[25,-30],rf:[-20,-2],lh:[33,-127]}),follow:pose({hip:[32,-79],spine:[.22,.18,.08],lf:[37,-58],rf:[-6,-3],lh:[47,-130],rh:[26,-127],turn:.42}),exit:pose({hip:[6,-72],spine:[.03,.1,.02],lf:[26,-16],rf:[-24,-2],lh:[28,-122]})}
+};
+function idle(t){const b=Math.sin(t*.006)*1.2;return pose({hip:[Math.sin(t*.003)*.7,-71+b],spine:[.02,.09+Math.sin(t*.003)*.015,.02],lh:[27,-119+b],rh:[12,-125+b]})}
+function sample(action,t){
+ if(!action)return idle(t);
+ const m=moves[action.move],elapsed=Math.max(0,t-action.start),i=m.impact;
+ // Authored weight transfer -> chamber -> contact -> inertial follow-through.
+ // The old pose is the first key, so a legal follow-up never snaps to guard.
+ const linked=action.series&&!action.finish&&action.series.clean;
+ const endPose=linked?m.exit:idle(t);
+ const keys=[[0,action.from],[i*.48,m.chamber],[i,m.contact],[i+85,m.follow],[m.duration*.76,m.exit],[m.duration,endPose]];
+ for(let k=1;k<keys.length;k++)if(elapsed<=keys[k][0])return mix(keys[k-1][1],keys[k][1],smooth((elapsed-keys[k-1][0])/(keys[k][0]-keys[k-1][0])));
+ return linked?mix(m.exit,idle(t),smooth((elapsed-1250)/220)):idle(t);
+}
+function skeleton(p){
+ const hip=p.hip.slice(),sp=[hip];let at=hip;
+ for(let i=0;i<3;i++){const a=-Math.PI/2+p.spine[i];at=[at[0]+Math.cos(a)*[14,16,15][i],at[1]+Math.sin(a)*[14,16,15][i]];sp.push(at)}
+ const shoulder=sp[3],width=6.5*(1-.23*Math.abs(p.turn)),ls=[shoulder[0]+width,shoulder[1]+1],rs=[shoulder[0]-width,shoulder[1]-1];
+ const arm={reference:Math.PI/2,bend:1,minRoot:rigRadians(-172),maxRoot:rigRadians(88),minFlex:rigRadians(4),maxFlex:rigRadians(148)};
+ const leg={reference:Math.PI/2,bend:-1,minRoot:rigRadians(-148),maxRoot:rigRadians(85),minFlex:rigRadians(5),maxFlex:rigRadians(150)};
+ const limbs={leftArm:solveLimb(ls,p.lh,29,29,arm),rightArm:solveLimb(rs,p.rh,29,29,arm),leftLeg:solveLimb([hip[0]+6.5,hip[1]],p.lf,36,36,leg),rightLeg:solveLimb([hip[0]-6.5,hip[1]],p.rf,36,36,leg)};
+ if(p.angles)for(const [name,l]of Object.entries(limbs)){const v=p.angles[name];limbs[name]=forwardLimb(l.start,l.a,l.b,v.root,v.flex,l.limits)}
+ const bones=[];for(const [name,l]of Object.entries(limbs)){bones.push({name:name+'.'+(name.includes('Arm')?'upperArm':'thigh'),start:l.start,end:l.joint,length:l.a});bones.push({name:name+'.'+(name.includes('Arm')?'forearm':'shin'),start:l.joint,end:l.end,length:l.b})}
+ for(let i=0;i<3;i++)bones.push({name:'spine.'+['pelvis','lumbar','thorax'][i],start:sp[i],end:sp[i+1],length:[14,16,15][i]});
+ return {hip,sp,shoulder,limbs,bones,pose:p};
+}
+function measure(s){
+ const violations=[];let maxRelativeError=0;
+ for(const b of s.bones){const e=Math.abs(Math.hypot(b.end[0]-b.start[0],b.end[1]-b.start[1])/b.length-1);maxRelativeError=Math.max(maxRelativeError,e);if(!Number.isFinite(e)||e>1e-6)violations.push(b.name)}
+ for(const [name,l]of Object.entries(s.limbs)){const o=l.limits;if(l.root<o.minRoot-1e-7||l.root>o.maxRoot+1e-7||l.flex<o.minFlex-1e-7||l.flex>o.maxFlex+1e-7)violations.push(name+'.limits')}
+ for(let i=1;i<3;i++)if(Math.abs(poseAngle(s,i)-poseAngle(s,i-1))>.55)violations.push('spine.limit');
+ return {valid:!violations.length,violations,maxRelativeError,segments:s.bones.length};
+}
+function poseAngle(s,i){return s.pose.spine[i]}
+return {RIG,moves,base,pose,mix,idle,sample,skeleton,measure,smooth,solveLimb,forwardLimb};
+})();
+
+/* Original procedural composition, CORE CIRCUIT / 120 BPM. No samples or voices. */
+const CoreAudio = (() => {
+'use strict';
+const BPM=120,BEAT=.5,STEP=BEAT/4,LOOK=.12;
+function create(context){
+ const ctx=context,origin=ctx.currentTime+.15,master=ctx.createGain(),compressor=ctx.createDynamicsCompressor(),music=ctx.createGain(),effects=ctx.createGain(),fillBus=ctx.createGain();
+ master.gain.value=.72;music.gain.value=.64;effects.gain.value=.62;fillBus.gain.value=.46;
+ compressor.threshold.value=-16;compressor.knee.value=12;compressor.ratio.value=3;compressor.attack.value=.008;compressor.release.value=.15;
+ music.connect(compressor);effects.connect(compressor);fillBus.connect(compressor);compressor.connect(master);master.connect(ctx.destination);
+ const buses=Array.from({length:5},(_,i)=>{const g=ctx.createGain();g.gain.value=i?0:1;g.connect(music);return g});
+ const noise=ctx.createBuffer(1,ctx.sampleRate,ctx.sampleRate),data=noise.getChannelData(0);let seed=23051;
+ for(let i=0;i<data.length;i++){seed=(seed*1664525+1013904223)>>>0;data[i]=seed/2147483648-1}
+ const plans=[{at:origin,level:1}],fills=[],events=[];let next=0,requested=1,muted=false,timer=null;
+ const hz=n=>440*2**((n-69)/12),rootAt=step=>[45,41,48,43][Math.floor(step/32)%4],thirdAt=step=>Math.floor(step/32)%4===0?3:4;
+ function tone(bus,at,freq,duration,volume,type='sine',filter=0){
+  const o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.setValueAtTime(freq,at);
+  g.gain.setValueAtTime(.0001,at);g.gain.exponentialRampToValueAtTime(Math.max(.0002,volume),at+.012);g.gain.exponentialRampToValueAtTime(.0001,at+duration);
+  if(filter){const f=ctx.createBiquadFilter();f.type='lowpass';f.frequency.setValueAtTime(filter,at);o.connect(f);f.connect(g)}else o.connect(g);
+  g.connect(bus);o.start(at);o.stop(at+duration+.02);o.onended=()=>{o.disconnect();g.disconnect()};
+ }
+ function percussion(bus,at,duration,volume,cutoff=6500,type='highpass'){
+  const s=ctx.createBufferSource(),f=ctx.createBiquadFilter(),g=ctx.createGain();s.buffer=noise;f.type=type;f.frequency.value=cutoff;
+  g.gain.setValueAtTime(volume,at);g.gain.exponentialRampToValueAtTime(.0001,at+duration);s.connect(f);f.connect(g);g.connect(bus);s.start(at);s.stop(at+duration+.02);s.onended=()=>{s.disconnect();f.disconnect();g.disconnect()};
+ }
+ function kick(bus,at,volume=.27){
+  const o=ctx.createOscillator(),g=ctx.createGain();o.frequency.setValueAtTime(145,at);o.frequency.exponentialRampToValueAtTime(43,at+.12);g.gain.setValueAtTime(volume,at);g.gain.exponentialRampToValueAtTime(.0001,at+.25);o.connect(g);g.connect(bus);o.start(at);o.stop(at+.27);o.onended=()=>{o.disconnect();g.disconnect()};
+ }
+ function levelAt(at){let level=1;for(const p of plans){if(p.at<=at+1e-7)level=p.level;else break}return level}
+ function setLevel(level,now=ctx.currentTime){
+  level=Math.max(1,Math.min(5,level));if(level===requested)return;
+  requested=level;const at=origin+Math.max(0,Math.ceil((now+LOOK+.006-origin)/BEAT))*BEAT,previous=levelAt(at-1e-6);
+  while(plans.length>1&&plans.at(-1).at>=at)plans.pop();plans.push({at,level});
+  buses.forEach((bus,i)=>{const g=bus.gain;g.cancelScheduledValues(at);g.setValueAtTime(i<previous?1:.0001,at);g.linearRampToValueAtTime(i<level?1:.0001,at+.24)});
+  return {at,level};
+ }
+ function schedule(now=ctx.currentTime){
+  while(origin+next*STEP<now+LOOK){
+   const at=origin+next*STEP,step=next++;if(at<now-.02)continue;
+   const bar=step%16,root=rootAt(step),third=thirdAt(step),level=levelAt(at);
+   if(bar%4===0)kick(buses[0],at,bar===0?.25:.19);
+   if(bar===4||bar===12){percussion(buses[0],at,.14,.12,1400,'highpass');tone(buses[0],at,175,.11,.065,'triangle')}
+   if(bar%2===0){tone(buses[0],at,hz(root-12),.21,.105,'triangle',700);if(bar===6||bar===14)tone(buses[0],at,hz(root-5),.12,.05,'sine')}
+   if(bar%4===2)tone(buses[0],at,hz(root+12+[0,7,third,12][Math.floor(bar/4)]),.25,.042,'triangle',2200);
+   if(level>=2){percussion(buses[1],at,.035,bar%2?.038:.021,7500);if(bar===7||bar===15)percussion(buses[1],at,.065,.035,2200,'bandpass')}
+   if(level>=3&&bar===0){for(const interval of [0,third,7])tone(buses[2],at,hz(root+12+interval),1.85,.024,'triangle',1200)}
+   if(level>=4&&[1,6,9,14].includes(bar)){const notes=[19,12+third,24,19];tone(buses[3],at,hz(root+notes[Math.floor(bar/4)]),.19,.024,'sine');if(bar===9)tone(buses[3],at,hz(root+7),.15,.015,'triangle')}
+   if(level>=5){if(bar%2===0)percussion(buses[4],at,.08,.022,5200);if(bar===0||bar===8){tone(buses[4],at,hz(root+24),.42,.018,'triangle');tone(buses[4],at,hz(root+31),.5,.012,'sine')}if(bar===11||bar===15)kick(buses[4],at,.075)}
+   events.push({step,at,level});if(events.length>256)events.shift();
+  }
+ }
+ function requestFill(id,quality,now=ctx.currentTime){
+  if(!quality||fills.some(f=>f.id===id)||fills.length&&now-fills.at(-1).at<BEAT*2)return false;
+  const at=origin+Math.ceil((now+.045-origin)/(BEAT/2))*(BEAT/2),step=Math.round((at-origin)/STEP),root=rootAt(step),third=thirdAt(step);
+  for(let i=0;i<4;i++){percussion(fillBus,at+i*STEP,.08,.065-i*.007,1800,'highpass');tone(fillBus,at+i*STEP,hz(root+[19,12+third,12,24][i]),.16,.045,'triangle',2600)}
+  fills.push({id,at});if(fills.length>32)fills.shift();return true;
+ }
+ function sfx(kind,strong=false){
+  const at=ctx.currentTime+.003;
+  if(kind==='swing'){percussion(effects,at,.07,.035,3000,'bandpass');return}
+  if(kind==='block'){percussion(effects,at,.07,.075,1700,'bandpass');tone(effects,at,320,.07,.055,'triangle');return}
+  if(kind==='dodge'){percussion(effects,at,.12,.04,4300,'highpass');return}
+  if(kind==='off'){tone(effects,at,110,.09,.025,'sine');return}
+  kick(effects,at,strong?.36:.18);percussion(effects,at,strong?.18:.085,strong?.13:.075,850,'lowpass');
+  if(strong){tone(effects,at,82,.35,.09,'triangle',500);percussion(effects,at+.09,.13,.033,1200,'bandpass')}
+ }
+ function mute(value){muted=value;master.gain.cancelScheduledValues(ctx.currentTime);master.gain.setTargetAtTime(value?.0001:.72,ctx.currentTime,.025)}
+ function start(){if(!timer)timer=setInterval(()=>schedule(),25);schedule()}
+ function stop(){if(timer)clearInterval(timer);timer=null}
+ return {ctx,origin,BPM,BEAT,STEP,plans,events,fills,buses,master,music,effects,fillBus,noise,levelAt,setLevel,schedule,requestFill,sfx,mute,start,stop,now:()=> (ctx.currentTime-origin)*1000,get muted(){return muted}};
+}
+return {create,BPM,BEAT,STEP};
+})();
+
+/* CORE owns its rules. Full BREAKLINE and the half-beat experiment are untouched. */
+const CoreRules=(()=>{
+'use strict';
+const BEAT=500,PERFECT=65,GOOD=125,MAX_HP=180,ENEMY_HP=340;
+const RECIPES=Object.freeze({LLL:{move:'uppercut',name:'СИЛОВОЙ АППЕРКОТ'},LLH:{move:'frontKick',name:'ПРОБИВНОЙ УДАР'},LHLH:{move:'spinKick',name:'УДАР С РАЗВОРОТА'}});
+const trie={};for(const [recipe,finish]of Object.entries(RECIPES)){let node=trie;for(const key of recipe)node=node[key]??(node[key]={});node.finish=finish}
+const prefixMoves={L:'jab',LL:'cross',LH:'bodyKick',LHL:'hook'};
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+function grade(at){const error=Math.abs(at-Math.round(at/BEAT)*BEAT);return error<=PERFECT?'PERFECT':error<=GOOD?'GOOD':'OFF'}
+function create(hooks={}){
+ let serial=0;
+ const actor=(x,facing,hp)=>({x,facing,hp,maxHP:hp,action:null,ready:0,stun:0,hit:null,dodge:null});
+ const s={mode:'idle',start:0,end:0,now:0,player:actor(138,1,MAX_HP),enemy:actor(222,-1,ENEMY_HP),energy:0,level:1,series:null,buffer:null,block:false,dodgeReady:0,nextEnemy:0,telegraph:false,enemyIndex:0,feedback:null,freeze:null,flash:0,particles:[],trails:[],stats:{perfect:0,good:0,off:0,combos:0,score:0,maxLevel:1},lastEarned:0,lastStep:0,history:[],fills:0};
+ const emit=(name,...args)=>hooks[name]?.(...args);
+ function energy(delta,t){s.energy=clamp(s.energy+delta,0,100);const level=Math.min(5,1+Math.floor(s.energy/20));if(level!==s.level){s.level=level;s.stats.maxLevel=Math.max(s.stats.maxLevel,level);emit('level',level,t)}if(delta>0)s.lastEarned=t}
+ function message(label,detail,t,color='#a7f3cf'){s.feedback={label,detail,at:t,color}}
+ function reset(now){
+  Object.assign(s,{mode:'fight',start:(Math.floor(now/BEAT)+1)*BEAT+(s.mode==='idle'?3:1)*BEAT,now,end:0,player:actor(138,1,MAX_HP),enemy:actor(222,-1,ENEMY_HP),energy:0,level:1,series:null,buffer:null,block:false,dodgeReady:0,telegraph:false,enemyIndex:0,feedback:null,freeze:null,flash:0,particles:[],trails:[],stats:{perfect:0,good:0,off:0,combos:0,score:0,maxLevel:1},lastEarned:now,lastStep:now,history:[],fills:0});
+  s.end=s.start+60000;s.nextEnemy=s.start+BEAT*3.5;emit('level',1,now);return s;
+ }
+ function guarding(t){return s.block&&t>=s.player.ready&&t>=s.player.stun&&!(s.player.dodge&&t<s.player.dodge.end)}
+ function getPose(a,t){
+  let p=CoreRig.sample(a.action,t);
+  if(a===s.player&&guarding(t))p=CoreRig.mix(p,CoreRig.pose({hip:[-3,-69],spine:[-.05,-.08,-.02],lh:[26,-135],rh:[10,-137]}),.85);
+  if(a.dodge&&t<a.dodge.end){const d=a.dodge,w=Math.sin(Math.PI*clamp((t-d.start)/(d.end-d.start),0,1));p=CoreRig.mix(d.from,CoreRig.pose({hip:[-15,-58],spine:[-.24,-.30,-.08],lh:[14,-109],rh:[-1,-116]}),w)}
+  if(a.hit&&t<a.hit.end){const h=a.hit,age=t-h.start,duration=h.end-h.start,w=age<45?CoreRig.smooth(age/45):1-CoreRig.smooth((age-45)/(duration-45));p=CoreRig.mix(age<45?h.from:p,h.target,w)}
+  return p;
+ }
+ function action(a,move,t,meta={}){const from=getPose(a,t);a.hit=null;a.dodge=null;a.action={id:++serial,move,start:t,from,resolved:false,...meta};a.ready=t+CoreRig.moves[move].recovery;return a.action}
+ function breakSeries(){s.series=null}
+ function input(key,at,executionAt=at){
+  if(s.mode!=='fight'||at<s.start)return {accepted:false,reason:'countdown'};
+  const p=s.player;if(at<p.stun||p.dodge&&at<p.dodge.end)return {accepted:false,reason:'defence'};
+  if(executionAt<p.ready){if(p.ready-at<=80&&at>=p.ready-80&&!s.buffer){s.buffer={key,at};return {accepted:false,buffered:true}}return {accepted:false,reason:'recovery'}}
+  s.buffer=null;const quality=grade(at);let move,series=null,finish=null,standalone=false;
+  if(key==='S'){
+   if(s.energy<30)return {accepted:false,reason:'energy'};energy(-30,executionAt);breakSeries();move='knee';
+  }else{
+   if(!['L','H'].includes(key))return {accepted:false,reason:'input'};
+   let previous=s.series;if(previous&&at-previous.lastInput>1250){breakSeries();previous=null}
+   if(quality==='OFF'){breakSeries();standalone=true;move=key==='L'?'jab':'bodyKick'}
+   else if(previous){
+    const node=previous.node[key];
+    if(!node){breakSeries();standalone=true;move=key==='L'?'jab':'bodyKick'}
+    else {previous.prefix+=key;previous.node=node;previous.lastInput=at;previous.steps++;previous.allPerfect&&=quality==='PERFECT';series=previous;finish=node.finish;move=finish?.move??prefixMoves[previous.prefix]}
+   }else if(key==='L'){
+    series={id:++serial,prefix:'L',node:trie.L,lastInput:at,steps:1,confirmed:0,clean:true,allPerfect:quality==='PERFECT'};s.series=series;move='jab';
+   }else {standalone=true;move='bodyKick'}
+  }
+  const strong=!!finish||key==='S',a=action(p,move,executionAt,{key,inputAt:at,quality,strong,finish,series,seriesStep:series?.steps??0,standalone});
+  s.stats[quality.toLowerCase()]++;message(quality,strong?(finish?.name??'ПУЛЬС-КОЛЕНО'):'',executionAt,quality==='OFF'?'#ff9b7d':quality==='GOOD'?'#b9c9d0':'#a7f3cf');
+  if(quality==='OFF'){energy(-4,executionAt);emit('sfx','off')}else emit('sfx','swing');
+  s.history.push({id:a.id,key,move,prefix:series?.prefix??'',quality,strong,inputAt:at,start:executionAt});if(s.history.length>80)s.history.shift();
+  if(finish)breakSeries();return {accepted:true,action:a};
+ }
+ function dodge(t){const p=s.player;if(s.mode!=='fight'||t<s.start||t<p.ready||t<p.stun||t<s.dodgeReady)return false;const from=getPose(p,t);p.action=null;p.dodge={start:t,end:t+300,from};p.ready=t+300;s.dodgeReady=t+1000;s.buffer=null;breakSeries();emit('sfx','dodge');return true}
+ function react(a,t,strong){const from=getPose(a,t);if(a!==s.enemy||strong)a.action=null;a.hit={start:t,end:t+(strong?330:220),from,target:CoreRig.pose({hip:[-9,-67],spine:[-.15,-.24,-.12],lh:[4,-112],rh:[-7,-120],lf:[23,-2],rf:[-32,-2],turn:-.23})};a.stun=Math.max(a.stun,t+(strong?190:105))}
+ function burst(x,y,t,strong){for(let i=0;i<(strong?14:7);i++){const a=i*2.399;s.particles.push({x,y,vx:Math.cos(a)*(strong?110:65),vy:Math.sin(a)*70-35,at:t,strong})}if(s.particles.length>40)s.particles.splice(0,s.particles.length-40)}
+ function playerImpact(a,t){
+  const e=s.enemy,p=s.player;
+  if(a.quality==='OFF'){if(a.series)a.series.clean=false;if(s.series?.id===a.series?.id)breakSeries();return}
+  if(e.hp<=0)return;
+  // A single fixed reach envelope; the constrained contact limb supplies the FX position.
+  // No magnetism, snapping, bone stretch, or different visual/gameplay targeting clocks.
+  const sk=CoreRig.skeleton(getPose(p,t)),limb=sk.limbs[CoreRig.moves[a.move].limb],point=a.move==='knee'?limb.joint:limb.end;
+  const worldX=p.x+point[0];const near=Math.abs(e.x-worldX)<(a.move==='knee'?30:32)&&point[1]<-47&&point[1]>-150;
+  if(!near){if(a.series)a.series.clean=false;if(s.series?.id===a.series?.id)breakSeries();energy(-3,t);return}
+  const clean=a.series&&a.series.clean&&a.series.confirmed===a.seriesStep-1;
+  const damage=(a.key==='S'?30:a.finish?26:a.key==='H'?10:8)*(a.quality==='PERFECT'?1:.8);
+  e.hp=Math.max(0,e.hp-damage);s.stats.score+=Math.round(damage*10);energy(a.quality==='PERFECT'?5:2,t);
+  if(a.series){a.series.confirmed++;a.series.clean=!!clean}
+  react(e,t,a.strong);
+  if(a.strong){e.interruptedUntil=t+190;e.ready=Math.max(e.ready,t+190);if(s.telegraph){s.telegraph=false;s.nextEnemy+=2000}const attacker=CoreRig.skeleton(getPose(p,t)),defender=CoreRig.skeleton(getPose(e,t));e.hit.start+=85;e.hit.end+=85;s.freeze={until:t+85,at:t,player:attacker,enemy:defender};s.flash=t+110}
+  burst(worldX,point[1],t,a.strong);emit('sfx','hit',a.strong);
+  if(a.finish&&clean&&a.series.confirmed===a.series.steps){
+   s.stats.combos++;energy(12,t);message(a.finish.name,a.series.allPerfect?'ТОЧНОЕ КОМБО · МУЗЫКАЛЬНЫЙ ОТВЕТ':'КОМБО',t);
+   if(a.series.allPerfect){s.fills++;emit('fill',a.series.id,true,t)}
+  }
+ }
+ function enemyImpact(a,t){
+  s.enemy.hit=null;const p=s.player;if(p.hp<=0)return;
+  if(p.dodge&&t>=p.dodge.start+20&&t<p.dodge.end-55){energy(3,t);message('УКЛОН','ЧИСТЫЙ УХОД',t);return}
+  if(guarding(t)){p.hp=Math.max(0,p.hp-3);emit('sfx','block');message('БЛОК','УРОН СНИЖЕН',t,'#b9c9d0');return}
+  p.hp=Math.max(0,p.hp-(a.move==='bodyKick'?20:16));energy(-9,t);breakSeries();s.buffer=null;react(p,t,false);p.ready=Math.max(p.ready,t+160);emit('sfx','hit',false);message('ПОПАДАНИЕ','БЛОК ИЛИ УКЛОН — ДО КОНТАКТА',t,'#ff9b7d');burst(p.x+5,-105,t,false);
+ }
+ function finish(t){if(s.mode!=='fight')return;s.mode='ending';s.resultAt=t+600;s.block=false;s.buffer=null;s.series=null;const win=s.enemy.hp<=0||s.player.hp>0&&s.player.hp/s.player.maxHP>s.enemy.hp/s.enemy.maxHP;s.winner=s.player.hp<=0?'enemy':win?'player':'enemy';}
+ function step(t){
+  const dt=clamp(t-s.lastStep,0,50);s.lastStep=t;s.now=t;if(s.mode==='ending'&&t>=s.resultAt){s.mode='result';emit('finish',s.winner,s.stats)}if(s.mode!=='fight')return;
+  if(t<s.start)return;
+  if(t>=s.end){finish(t);return}
+  if(t-s.lastEarned>2200)energy(-dt*.0022,t);
+  if(s.series&&t-s.series.lastInput>1250)breakSeries();
+  if(s.buffer&&t>=s.player.ready){const b=s.buffer;s.buffer=null;if(t-b.at<=110)input(b.key,b.at,t)}
+  if(s.player.action&&!s.player.action.resolved&&t>=s.player.action.start+CoreRig.moves[s.player.action.move].impact){const a=s.player.action;a.resolved=true;playerImpact(a,a.start+CoreRig.moves[a.move].impact)}
+  if(s.enemy.hp<=0||s.player.hp<=0){finish(t);return}
+  if(!s.telegraph&&t>=s.nextEnemy-320){s.telegraph=true}
+  if(s.telegraph&&!(s.enemy.action?.enemyPending&&!s.enemy.action.resolved)&&t>=s.nextEnemy-125){
+   if(t<(s.enemy.interruptedUntil??0)){s.telegraph=false;s.nextEnemy+=2000}else {const move=['jab','bodyKick','hook','bodyKick'][s.enemyIndex++%4];action(s.enemy,move,s.nextEnemy-CoreRig.moves[move].impact,{enemyPending:true,strong:false})}
+  }
+  const a=s.enemy.action;
+  if(a?.enemyPending&&!a.resolved&&t>=s.nextEnemy){a.resolved=true;enemyImpact(a,s.nextEnemy);s.telegraph=false;s.nextEnemy+=2000}
+  if(s.freeze&&t>s.freeze.until)s.freeze=null;
+  s.particles=s.particles.filter(p=>t-p.at<420);s.trails=s.trails.filter(p=>t-p.at<140);
+ }
+ return {s,reset,step,input,dodge,energy,grade,guarding,getPose,action,react,playerImpact,enemyImpact};
+}
+return {create,grade,RECIPES,trie,prefixMoves,BEAT,PERFECT,GOOD,MAX_HP,ENEMY_HP};
+})();
+
+(()=>{
+'use strict';
+const $=id=>document.getElementById(id),canvas=$('arena'),ctx=canvas.getContext('2d'),app=$('app'),reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let audio=null,paused=false,started=false,lastFrame=0,w=360,h=740,dpr=1,scale=1,ground=420,worldLeft=0,drawCount=0,auditErrors=0;
+const nodes=Array.from({length:11},()=>{const n=document.createElement('i');n.className='beat-dot';$('beat-dots').append(n);return n});
+const game=CoreRules.create({
+ level:(level,t)=>{audio?.setLevel(level,audio.origin+t/1000)},
+ sfx:(...a)=>audio?.sfx(...a),
+ fill:(id,quality,t)=>audio?.requestFill(id,quality,audio.origin+t/1000),
+ finish:(winner,stats)=>{$('result-title').textContent=winner==='player'?'Ритм на твоей стороне.':'Ещё один раунд?';$('result-stats').replaceChildren(...[['Точность',Math.round(100*(stats.perfect+stats.good)/Math.max(1,stats.perfect+stats.good+stats.off))+'%'],['Комбо',stats.combos],['Макс. энергия',stats.maxLevel+'/5'],['Очки',stats.score]].map(([name,value])=>{const d=document.createElement('div');d.className='statline';const b=document.createElement('b');b.textContent=value;d.append(document.createTextNode(name),b);return d}));$('result-overlay').hidden=false}
+});
+const s=game.s;
+function resize(){w=app.clientWidth;h=app.clientHeight;dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);const top=$('energy-label').getBoundingClientRect().bottom-app.getBoundingClientRect().top+20,bottom=document.querySelector('.recipes').getBoundingClientRect().top-app.getBoundingClientRect().top-15;ground=bottom;scale=Math.min(w/290,(bottom-top)/160,1.9);scale=Math.max(.55,scale);worldLeft=w/2-180*scale;}
+new ResizeObserver(resize).observe(app);resize();
+function now(){return audio?.now()??0}
+async function start(){
+ if(started)return;started=true;$('start').disabled=true;
+ try {const AC=window.AudioContext||window.webkitAudioContext;if(!AC)throw Error('AudioContext недоступен');const ac=new AC({latencyHint:'interactive'});await ac.resume();audio=CoreAudio.create(ac);audio.start();game.reset(audio.now());$('start-overlay').hidden=true;resize()}
+ catch(e){started=false;$('start').disabled=false;$('error').hidden=false;$('error').textContent='Не удалось запустить звук. Нажмите «Начать бой» ещё раз. '+e.message}
+}
+async function pause(){if(!audio||paused||s.mode!=='fight')return;paused=true;s.block=false;s.buffer=null;$('block').classList.remove('pressed');await audio.ctx.suspend();$('pause-overlay').hidden=false}
+async function resume(){if(!audio||!paused)return;await audio.ctx.resume();paused=false;$('pause-overlay').hidden=true}
+async function rematch(){if(!audio)return;await audio.ctx.resume();paused=false;$('pause-overlay').hidden=true;$('result-overlay').hidden=true;game.reset(now())}
+$('start').onclick=start;$('pause').onclick=()=>pause();$('resume').onclick=resume;$('restart').onclick=rematch;$('rematch').onclick=rematch;
+$('mute').onclick=()=>{if(!audio)return;audio.mute(!audio.muted);$('mute').textContent=audio.muted?'БЕЗ ЗВУКА':'ЗВУК';$('mute').setAttribute('aria-pressed',String(audio.muted));$('mute').setAttribute('aria-label',audio.muted?'Включить звук':'Выключить звук')};
+function press(key){if(!paused&&audio)game.input(key,now())}
+for(const [id,key]of [['hand','L'],['foot','H'],['special','S']]){$(id).addEventListener('pointerdown',e=>{e.preventDefault();press(key)});$(id).addEventListener('click',e=>{if(e.detail===0)press(key)})}
+$('dodge').addEventListener('pointerdown',e=>{e.preventDefault();if(!paused)game.dodge(now())});$('dodge').onclick=e=>{if(e.detail===0&&!paused)game.dodge(now())};
+$('block').addEventListener('pointerdown',e=>{e.preventDefault();if(paused||s.mode!=='fight')return;$('block').setPointerCapture(e.pointerId);s.block=true;$('block').classList.add('pressed')});
+function release(){s.block=false;$('block').classList.remove('pressed')}
+for(const name of ['pointerup','pointercancel','lostpointercapture'])$('block').addEventListener(name,release);
+const heldKeys=new Set();window.addEventListener('keydown',e=>{if(['KeyJ','KeyK','KeyI','KeyL','Space','Escape'].includes(e.code))e.preventDefault();if(heldKeys.has(e.code))return;heldKeys.add(e.code);if(e.code==='Escape'){if(paused)resume();else pause()}if(paused)return;if(e.code==='KeyJ')press('L');if(e.code==='KeyK')press('H');if(e.code==='KeyI')press('S');if(e.code==='KeyL')game.dodge(now());if(e.code==='Space'){s.block=true;$('block').classList.add('pressed')}});
+window.addEventListener('keyup',e=>{heldKeys.delete(e.code);if(e.code==='Space')release()});window.addEventListener('blur',()=>{heldKeys.clear();release();pause()});document.addEventListener('visibilitychange',()=>{if(document.hidden){release();pause()}});
+function line(a,b,width,color){ctx.strokeStyle=color;ctx.lineWidth=width;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(...a);ctx.lineTo(...b);ctx.stroke()}
+function circle(p,r,color){ctx.fillStyle=color;ctx.beginPath();ctx.arc(...p,r,0,Math.PI*2);ctx.fill()}
+function fighter(a,sk,t,enemy=false){
+ const level=enemy?1:s.level,skin=enemy?'#b98f78':'#d6a785',cloth=enemy?'#5f3031':'#234b47',accent=enemy?'#ed8d77':'#a7f3cf',limbs=sk.limbs;
+ ctx.save();ctx.translate(worldLeft+a.x*scale,ground);ctx.scale(scale*a.facing,scale);
+ ctx.fillStyle='#06111470';ctx.beginPath();ctx.ellipse(0,2,43,7,0,0,Math.PI*2);ctx.fill();
+ if(level>=2){const aura=ctx.createRadialGradient(sk.hip[0],-78,10,sk.hip[0],-78,level>=4?90:70);aura.addColorStop(0,`rgba(129,240,188,${.025*level})`);aura.addColorStop(1,'rgba(129,240,188,0)');ctx.fillStyle=aura;ctx.fillRect(-95,-185,195,195)}
+ function leg(l,back){line(l.start,l.joint,13,back?'#172f30':cloth);line(l.joint,l.end,9,skin);line(l.end,[l.end[0]+10,l.end[1]-1],8,back?'#263e3b':'#507166');line(l.start,[l.start[0]+(l.joint[0]-l.start[0])*.50,l.start[1]+(l.joint[1]-l.start[1])*.50],14,cloth)}
+ function arm(l,back){line(l.start,l.joint,10,back?'#a37e65':skin);line(l.joint,l.end,8,back?'#ac856a':skin);line([l.joint[0]+(l.end[0]-l.joint[0])*.72,l.joint[1]+(l.end[1]-l.joint[1])*.72],l.end,10,'#a3bcb0');circle(l.end,7,accent)}
+ leg(limbs.rightLeg,true);arm(limbs.rightArm,true);
+ // Clothing follows all three fixed spine links, including the flexible waist.
+ for(let i=0;i<3;i++)line(sk.sp[i],sk.sp[i+1],i===2?22:19,cloth);
+ line(sk.hip,[sk.hip[0]+3,sk.hip[1]-5],20,accent);leg(limbs.leftLeg,false);
+ line([sk.sp[1][0]+7,sk.sp[1][1]],[sk.sp[3][0]+7,sk.sp[3][1]+6],2,accent);
+ const neck=[sk.shoulder[0]+1,sk.shoulder[1]-7],head=[neck[0]+2,neck[1]-12];line(sk.shoulder,neck,10,skin);circle(head,11,skin);
+ ctx.fillStyle=enemy?'#332522':'#1f302e';ctx.beginPath();ctx.arc(head[0]-2,head[1]-3,11,Math.PI,Math.PI*2.12);ctx.fill();
+ line([head[0]+7,head[1]-1],[head[0]+11,head[1]-1],level>=4?2.6:1.5,level>=4?'#d8ffbd':'#243633');line([head[0]+10,head[1]+5],[head[0]+6,head[1]+6],1,'#90654f');
+ arm(limbs.leftArm,false);
+ if(level>=4&&!reduced){for(let i=0;i<level-2;i++){const x=Math.sin(t*.002+i*3)*40,y=-30-((t*.03+i*31)%120);circle([x,y],1.1,accent)}}
+ ctx.restore();
+}
+function background(t){
+ ctx.fillStyle='#0a1a1d';ctx.fillRect(0,0,w,h);const sky=ctx.createLinearGradient(0,h*.2,0,ground);sky.addColorStop(0,'#0a1a1d');sky.addColorStop(1,'#234039');ctx.fillStyle=sky;ctx.fillRect(0,0,w,ground);
+ ctx.strokeStyle='#93c4ae14';ctx.lineWidth=1;for(let i=-3;i<7;i++){const x=w*.5+i*90*scale;ctx.beginPath();ctx.moveTo(x,ground);ctx.lineTo(w*.5+(x-w*.5)*.45,ground*.42);ctx.stroke()}
+ ctx.fillStyle='#07191e';for(let i=0;i<10;i++){const bh=30+((i*47)%79);ctx.fillRect(i*w/9-8,ground-bh*scale,w/11,bh*scale);ctx.fillStyle='#56715b35';ctx.fillRect(i*w/9+4,ground-bh*scale+8,2,bh*scale*.55);ctx.fillStyle='#07191e'}
+ line([0,ground],[w,ground],2,'#5f9b7a');const floor=ctx.createLinearGradient(0,ground,0,h);floor.addColorStop(0,'#112a26');floor.addColorStop(1,'#081416');ctx.fillStyle=floor;ctx.fillRect(0,ground+2,w,h-ground);
+ for(let i=1;i<5;i++){const y=ground+i*i*6;line([0,y],[w,y],1,'#a7f3cf09')}
+ ctx.font='600 10px ui-monospace,monospace';ctx.fillStyle='#668b7850';ctx.textAlign='center';ctx.fillText('CORE CIRCUIT / 120',w*.5,ground+22);
+}
+function render(t){
+ ctx.setTransform(dpr,0,0,dpr,0,0);background(t);
+ const freeze=s.freeze&&t<=s.freeze.until?s.freeze:null,player=freeze?.player??CoreRig.skeleton(game.getPose(s.player,t)),enemy=freeze?.enemy??CoreRig.skeleton(game.getPose(s.enemy,t));
+ if(++drawCount%30===0){if(!CoreRig.measure(player).valid||!CoreRig.measure(enemy).valid)auditErrors++}
+ if(s.level>=3&&!reduced&&s.player.action&&t-s.player.action.start<300){const limb=player.limbs[CoreRig.moves[s.player.action.move].limb];s.trails.push({x:s.player.x+limb.end[0],y:limb.end[1],at:t});if(s.trails.length>14)s.trails.shift()}
+ for(const p of s.trails){const a=Math.max(0,1-(t-p.at)/140);circle([worldLeft+p.x*scale,ground+p.y*scale],3*scale,`rgba(167,243,207,${a*.25})`)}
+ ctx.save();if(freeze&&!reduced)ctx.translate(Math.sin(t*.15)*1.6,Math.cos(t*.13)*.8);fighter(s.enemy,enemy,t,true);fighter(s.player,player,t,false);ctx.restore();
+ for(const p of s.particles){const age=(t-p.at)/1000,alpha=1-age/.42;if(alpha<=0)continue;const x=worldLeft+(p.x+p.vx*age)*scale,y=ground+(p.y+p.vy*age+90*age*age)*scale;line([x,y],[x-p.vx*.035*scale,y-p.vy*.035*scale],p.strong?2:1,`rgba(240,246,205,${alpha})`)}
+ if(t<s.flash&&!reduced){ctx.fillStyle=`rgba(200,241,214,${Math.min(1,Math.max(0,(s.flash-t)/110))*.07})`;ctx.fillRect(0,0,w,h)}
+}
+function hud(t){
+ $('hp-player').style.width=100*s.player.hp/s.player.maxHP+'%';$('hp-enemy').style.width=100*s.enemy.hp/s.enemy.maxHP+'%';$('hp-player-label').textContent=Math.ceil(s.player.hp);$('hp-enemy-label').textContent=Math.ceil(s.enemy.hp);$('clock').textContent=s.mode==='idle'?'60':Math.max(0,Math.ceil((s.end-t)/1000))||'00';
+ const phase=t/500,whole=Math.floor(phase),fraction=phase-whole;
+ nodes.forEach((n,i)=>{const beat=whole+i-5;n.style.left=50+(i-5-fraction)*22+'%';n.classList.toggle('major',beat%4===0)});
+ const count=t<s.start?Math.ceil((s.start-t)/500):0;
+ if(count>0&&s.mode==='fight'){$('feedback').textContent=count;$('feedback').style.color='#a7f3cf';$('feedback').style.opacity=1}
+ else if(s.feedback&&t-s.feedback.at<780){$('feedback').replaceChildren(document.createTextNode(s.feedback.label));if(s.feedback.detail){const small=document.createElement('small');small.textContent=s.feedback.detail;$('feedback').append(small)}$('feedback').style.color=s.feedback.color;$('feedback').style.opacity=Math.min(1,(780-t+s.feedback.at)/200)}else $('feedback').style.opacity=0;
+ $('energy-label').textContent='ЭНЕРГИЯ '+s.level;document.querySelectorAll('.energy i').forEach((n,i)=>n.classList.toggle('on',i<s.level));$('music-level').textContent='♫ '+(audio?audio.levelAt(audio.ctx.currentTime):1);
+ $('special').disabled=s.energy<30||s.mode!=='fight'||paused;$('danger').style.opacity=s.telegraph?1:0;
+ for(const n of document.querySelectorAll('.recipe'))n.classList.toggle('active',!!s.series&&n.dataset.recipe.startsWith(s.series.prefix));
+ $('beat-text').textContent=count?'СЛУШАЙ ДОЛЮ · ГОТОВЬСЯ':s.mode==='result'?'CORE CIRCUIT · 120 BPM':s.player.action?.strong&&t<s.player.ready?'ВОССТАНОВЛЕНИЕ · ПРОПУСТИ ОДНУ ДОЛЮ':'НАЖИМАЙ НА ДОЛЮ · 120 BPM';
+}
+function frame(){const t=now();if(!paused)game.step(t);render(t);hud(t);lastFrame=t;requestAnimationFrame(frame)}
+// CORE_TEST_HOOK — tests inject access into an in-memory copy, never this release.
+requestAnimationFrame(frame);
+})();
+
+</script>
+</body></html>
