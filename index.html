@@ -11,7 +11,7 @@
 #roundAlarm{position:absolute;inset:0;pointer-events:none;z-index:2;opacity:0;background:radial-gradient(ellipse at 50% 45%,transparent 30%,#cf282849 100%);mix-blend-mode:screen}#roundAlarm.active{animation:alarmBreath 1s ease-in-out infinite alternate}@keyframes alarmBreath{0%{opacity:.10}100%{opacity:.65}}#roundAlarm.critical{animation-duration:.48s}#roundAlarm.final{animation:none;opacity:.36}#app .brand small{font-variant-numeric:tabular-nums}#resultTitle{max-width:90vw}
 #fighterPicker,#postMatchFighter{border:1px solid #76948b66;background:#14252a99;padding:9px;border-radius:12px;margin:9px 0} .fighterChoices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:8px 0}.fighterBtn{min-width:0;border:1px solid #7b958b66;border-radius:9px;color:#d9e4dc;background:#1b3235;padding:10px 5px;font-size:11px;font-weight:800;cursor:pointer}.fighterBtn b{display:block;letter-spacing:.04em}.fighterBtn small{display:block;font-size:9px;font-weight:500;color:#abc0b5;margin-top:4px}.fighterBtn.selected{border-color:#f4d58c;background:#594d36;color:#ffebbb;box-shadow:0 0 10px #e2bc6333}#fighterDescription{color:#b7cfc0;font-size:11px;line-height:1.45}#postMatchFighter{width:min(390px,90vw)}
 #pauseBtn{position:absolute;z-index:7;right:12px;top:clamp(80px,12vh,126px);padding:7px 10px;border-radius:9px;border:1px solid #a0b6a17a;background:#152125e0;color:#f0ddae;font-size:17px;font-weight:900;cursor:pointer;letter-spacing:.06em}#pauseBtn span{font-size:10px;vertical-align:middle}#pauseBtn:active{background:#33413e}.pauseOverlay{position:absolute;inset:0;z-index:12;background:#0c151adb;display:none;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}.pauseOverlay.show{display:flex}.pauseBox{width:min(560px,96vw);max-height:min(92vh,750px);overflow:auto;background:#17292d;border:1px solid #8daba080;border-radius:16px;padding:20px;text-align:center;box-shadow:0 16px 80px #0009}.pauseBox h2{color:#f5dea4;font-size:26px;margin:0 0 15px}.pauseBox h3{color:#f4dea7;margin:0 0 8px}.pauseView{display:grid;gap:10px}.pauseAction{padding:13px;background:#293c40;border:1px solid #81968e;border-radius:10px;font-size:14px;font-weight:750;color:#e3eee6;cursor:pointer}.pauseAction.danger{color:#ffb1a3;border-color:#b96a61}.movesFighter{text-align:left;border:1px solid #6a88836a;border-radius:10px;margin-bottom:10px;padding:12px;background:#152126}.movesFighter h4{margin:0 0 5px;color:#f0d899}.movesFighter p{font-size:12px;color:#b5c7bb;margin:0 0 8px}.movesFighter .moveRow{display:flex;justify-content:space-between;gap:8px;padding:5px 0;border-top:1px solid #ffffff16;font-size:12px;color:#eef1e9}.movesFighter .moveRow span:first-child{font-weight:850;color:#fff0b9;min-width:75px}.movesFighter .moveRow em{color:#afc7bf;font-style:normal}#exitToMenu{margin-top:5px;font-size:12px;padding:10px 18px}
-</style></head><body><div id="app"><canvas id="game"></canvas><button id="pauseBtn" aria-label="Пауза">Ⅱ <span>ПАУЗА</span></button><div id="roundAlarm"></div><div id="hud"><div class="header"><div class="person"><div class="name"><span id="playerName">ТЫ · КИКБОКСЁР</span> <span class="scoreNumber" id="playerScore">0</span></div><div class="bar"><div class="fill" id="ph"></div></div><div class="balance rhythmFill"><div class="fill" id="pp"></div></div><div class="meter">ЗДОРОВЬЕ <span id="playerHP">500/500</span> / РИТМ</div></div><div class="brand">BREAKLINE<small>ВЕРСИЯ 3.10.9 · <span id="roundClock">01:00</span></small></div><div class="person right enemy"><div class="name" id="aiName">ПРОТИВНИК · ИИ</div><div class="scoreNumber" id="enemyScore">0</div><div class="bar"><div class="fill" id="eh"></div></div><div class="balance rhythmFill"><div class="fill" id="ep"></div></div><div class="meter">ЗДОРОВЬЕ <span id="enemyHP">500/500</span> / РИТМ</div></div></div></div><div id="clinchPanel" style="display:none"><div id="clinchLabel">ЗАХВАТ</div><div id="counterCircle" class="counterCircle"><span id="counterIcon">✊</span></div><div id="clinchTip">Жди светящегося круга</div></div><div id="distance">ДИСТАНЦИЯ: —</div><div id="rhythmLevelNotice" aria-live="polite"><span id="rhythmLevelNoticeTitle">УРОВЕНЬ 2</span><small id="rhythmLevelNoticeDetail">СВЕЧЕНИЕ ОТКРЫТО</small></div><div id="rhythmHud"><div class="rhythmTop"><span id="beatLabel">♪ 120 BPM</span><span id="rhythmGrade">ЛОВИ РИТМ</span><span id="flowLabel">ПОТОК · 0/5</span></div><div id="beatTrack"><div id="beatSlots"></div><div id="beatNeedle"></div></div><div id="rhythmPatternLabel">ЧЕТВЕРТИ · 1–2–3–4</div></div><div id="message"></div><div id="subtext"></div><div id="specialBanner" aria-live="polite"><strong>✦ СПЕЦПРИЁМ!</strong><span id="specialBannerName"></span></div><button id="soundBtn">◖ ЗВУК: ВЫКЛ.</button><div id="help">РИТМ: точные попадания повышают энергию и очки. Комбинации у каждого бойца свои. Полная шкала = ПОТОК.</div><div id="comboHint">КОМБО: —</div><div id="streakScore">ЛУЧШАЯ СЕРИЯ ×0</div><div id="dirSelected">ПРИЁМ: ПРЯМОЙ</div><div id="controls"><div class="cluster"><div id="joystick" aria-label="Джойстик движения"><div class="lr"><span>‹</span><span>›</span></div><div id="stick"></div></div></div><div class="cluster right"><button class="ctl strong" id="heavy"><span>✹</span>НОГА<small>быстрый удар</small></button><button class="ctl grab" id="grab"><span>✊</span>БРОСОК<small>только вплотную</small></button><button class="ctl attack" id="attack"><span>✦</span>ЛЁГКИЙ<small>серия × 2</small></button></div></div><div id="intro"><div class="introInner"><h1>BREAKLINE</h1><p>Музыкальный файтинг: атака, присед, прыжок и захват в долю усиливают ритм. Полная шкала открывает режим ПОТОК.</p><div id="fighterPicker"><div class="difficultyTitle">ВЫБОР БОЙЦА</div><div id="fighterChoices" class="fighterChoices">
+</style></head><body><div id="app"><canvas id="game"></canvas><button id="pauseBtn" aria-label="Пауза">Ⅱ <span>ПАУЗА</span></button><div id="roundAlarm"></div><div id="hud"><div class="header"><div class="person"><div class="name"><span id="playerName">ТЫ · КИКБОКСЁР</span> <span class="scoreNumber" id="playerScore">0</span></div><div class="bar"><div class="fill" id="ph"></div></div><div class="balance rhythmFill"><div class="fill" id="pp"></div></div><div class="meter">ЗДОРОВЬЕ <span id="playerHP">500/500</span> / РИТМ</div></div><div class="brand">BREAKLINE<small>ВЕРСИЯ 3.10.10 · <span id="roundClock">01:00</span></small></div><div class="person right enemy"><div class="name" id="aiName">ПРОТИВНИК · ИИ</div><div class="scoreNumber" id="enemyScore">0</div><div class="bar"><div class="fill" id="eh"></div></div><div class="balance rhythmFill"><div class="fill" id="ep"></div></div><div class="meter">ЗДОРОВЬЕ <span id="enemyHP">500/500</span> / РИТМ</div></div></div></div><div id="clinchPanel" style="display:none"><div id="clinchLabel">ЗАХВАТ</div><div id="counterCircle" class="counterCircle"><span id="counterIcon">✊</span></div><div id="clinchTip">Жди светящегося круга</div></div><div id="distance">ДИСТАНЦИЯ: —</div><div id="rhythmLevelNotice" aria-live="polite"><span id="rhythmLevelNoticeTitle">УРОВЕНЬ 2</span><small id="rhythmLevelNoticeDetail">СВЕЧЕНИЕ ОТКРЫТО</small></div><div id="rhythmHud"><div class="rhythmTop"><span id="beatLabel">♪ 120 BPM</span><span id="rhythmGrade">ЛОВИ РИТМ</span><span id="flowLabel">ПОТОК · 0/5</span></div><div id="beatTrack"><div id="beatSlots"></div><div id="beatNeedle"></div></div><div id="rhythmPatternLabel">ЧЕТВЕРТИ · 1–2–3–4</div></div><div id="message"></div><div id="subtext"></div><div id="specialBanner" aria-live="polite"><strong>✦ СПЕЦПРИЁМ!</strong><span id="specialBannerName"></span></div><button id="soundBtn">◖ ЗВУК: ВЫКЛ.</button><div id="help">РИТМ: точные попадания повышают энергию и очки. Комбинации у каждого бойца свои. Полная шкала = ПОТОК.</div><div id="comboHint">КОМБО: —</div><div id="streakScore">ЛУЧШАЯ СЕРИЯ ×0</div><div id="dirSelected">ПРИЁМ: ПРЯМОЙ</div><div id="controls"><div class="cluster"><div id="joystick" aria-label="Джойстик движения"><div class="lr"><span>‹</span><span>›</span></div><div id="stick"></div></div></div><div class="cluster right"><button class="ctl strong" id="heavy"><span>✹</span>НОГА<small>быстрый удар</small></button><button class="ctl grab" id="grab"><span>✊</span>БРОСОК<small>только вплотную</small></button><button class="ctl attack" id="attack"><span>✦</span>ЛЁГКИЙ<small>серия × 2</small></button></div></div><div id="intro"><div class="introInner"><h1>BREAKLINE</h1><p>Музыкальный файтинг: атака, присед, прыжок и захват в долю усиливают ритм. Полная шкала открывает режим ПОТОК.</p><div id="fighterPicker"><div class="difficultyTitle">ВЫБОР БОЙЦА</div><div id="fighterChoices" class="fighterChoices">
 <button class="fighterBtn" data-fighter="boxer"><b>БОКСЁР</b><small>Быстрые серии · 7 комбо</small></button>
 <button class="fighterBtn selected" data-fighter="kickboxer"><b>КИКБОКСЁР</b><small>Баланс рук и ног · 6 комбо</small></button>
 <button class="fighterBtn" data-fighter="power"><b>ТЯЖЕЛОВЕС</b><small>Мощные финалы · 4 комбо</small></button>
@@ -21,7 +21,7 @@
 <button class="fighterBtn" data-fighter="power"><b>ТЯЖЕЛОВЕС</b></button><button class="fighterBtn" data-fighter="acrobat"><b>АКРОБАТ</b></button></div></div><div id="postMatchDifficulty"><div class="difficultyTitle">СЛОЖНОСТЬ СЛЕДУЮЩЕГО БОЯ</div><div class="difficultyChoices"><button class="difficultyBtn selected" data-difficulty="easy">ЛЁГКАЯ<small>Четверти</small></button><button class="difficultyBtn" data-difficulty="medium">СРЕДНЯЯ<small>Восьмые</small></button><button class="difficultyBtn" data-difficulty="hard">СЛОЖНАЯ<small>Рисунок мелодии</small></button></div></div><button class="mainBtn" id="restart">ЕЩЁ ОДНА ДУЭЛЬ</button><button class="pauseAction" id="exitToMenu">ВЫЙТИ К ВЫБОРУ БОЙЦА</button></div></div><script>
 (()=>{'use strict';const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');let W=0,H=0,dpr=1,now=0,last=0,started=false,ended=false,round=0,shake=0,particles=[],impacts=[],logs=[],audio=null,sound=false;const $=id=>document.getElementById(id);let player,enemy,clinch=null,clinchSeq=0,selectedFighter='kickboxer';let paused=false,pauseStarted=0,pausedTotal=0,gameTimeNow=0;
 function gameClock(){return paused?gameTimeNow:performance.now()-pausedTotal}let selectedDir='neutral',selectedAt=0;const heldDirs=[];let joyX=0,joyY=0,joyPointer=null;let stanceEvents=[];let jumpLatch=false;let jumpQueuedUntil=0;
-const GAME_VERSION='3.10.9';
+const GAME_VERSION='3.10.10';
 const RHYTHM_BPM=120,BEAT_MS=60000/RHYTHM_BPM;
 // Combo inputs are timed in quarter-notes so the window scales with any song BPM.
 const COMBO_WINDOW_BEATS=1.25;
@@ -951,9 +951,9 @@ function photoImpactAudio(power){
   thump.type='sine';thump.frequency.setValueAtTime(138,at);
   thump.frequency.exponentialRampToValueAtTime(47,at+.17);
   thumpGain.gain.setValueAtTime(.0001,at);
-  thumpGain.gain.exponentialRampToValueAtTime(.25,at+.009);
-  thumpGain.gain.exponentialRampToValueAtTime(.0001,at+.19);
-  thump.connect(thumpGain);thumpGain.connect(direct);thump.start(at);thump.stop(at+.2);
+  thumpGain.gain.exponentialRampToValueAtTime(.40,at+.009);
+  thumpGain.gain.exponentialRampToValueAtTime(.0001,at+.23);
+  thump.connect(thumpGain);thumpGain.connect(direct);thump.start(at);thump.stop(at+.24);
   const sample=noiseSample(audio);
   function burst(delay,len,gainAmount,frequency){
    const start=at+delay,src=audio.createBufferSource(),filter=audio.createBiquadFilter(),env=audio.createGain();
@@ -964,16 +964,44 @@ function photoImpactAudio(power){
    src.connect(filter);filter.connect(env);env.connect(direct);
    src.start(start);src.stop(start+len+.01);
   }
-  burst(0,.095,.18,2000);
-  burst(.019,.021,.21,5700);
-  burst(.058,.028,.13,4000);
-  burst(.115,.08,.057,1150);
-  const src=audio.createBufferSource(),filter=audio.createBiquadFilter(),env=audio.createGain();
-  src.buffer=sample;src.loop=true;filter.type='bandpass';filter.frequency.value=620;filter.Q.value=.55;
-  env.gain.setValueAtTime(.0001,at+.07);
-  env.gain.linearRampToValueAtTime(.09,at+.14);
-  env.gain.exponentialRampToValueAtTime(.0001,at+.39);
-  src.connect(filter);filter.connect(env);env.connect(direct);src.start(at+.07);src.stop(at+.40);
+  burst(0,.105,.29,1900);  // primary body crack
+  burst(.019,.03,.37,5700); // recognizable camera shutter
+  burst(.060,.04,.26,4000); // shutter release
+  burst(.122,.105,.12,1300); // first echo
+  burst(.237,.09,.065,1050); // second echo
+  // Sub-bass tail: reinforces impact without extending the animation or cooldown.
+  const tail=audio.createOscillator(),tailGain=audio.createGain();
+  tail.type='sine';tail.frequency.setValueAtTime(96,at+.095);
+  tail.frequency.exponentialRampToValueAtTime(55,at+.33);
+  tailGain.gain.setValueAtTime(.0001,at+.095);
+  tailGain.gain.exponentialRampToValueAtTime(.14,at+.107);
+  tailGain.gain.exponentialRampToValueAtTime(.0001,at+.34);
+  tail.connect(tailGain);tailGain.connect(direct);tail.start(at+.095);tail.stop(at+.35);
+  // A six-voice voiced arena "HEY!" swell instead of barely audible broadband hiss.
+  // It begins after the impact and peaks after the camera shutter.
+  const cheerAt=at+.115,crowd=audio.createGain();
+  crowd.gain.setValueAtTime(.0001,cheerAt);
+  crowd.gain.linearRampToValueAtTime(.23,cheerAt+.085);
+  crowd.gain.setValueAtTime(.20,cheerAt+.20);
+  crowd.gain.exponentialRampToValueAtTime(.0001,cheerAt+.49);
+  crowd.connect(direct);
+  for(const [i,pitch] of [152,177,203,238,271,306].entries()){
+   const voice=audio.createOscillator(),vowel=audio.createBiquadFilter(),level=audio.createGain();
+   const start=cheerAt+(i%3)*.017;
+   voice.type=i%2?'sawtooth':'triangle';
+   voice.frequency.setValueAtTime(pitch,start);
+   voice.frequency.linearRampToValueAtTime(pitch*1.18,start+.105);
+   voice.frequency.exponentialRampToValueAtTime(pitch*.83,start+.39);
+   vowel.type='bandpass';vowel.frequency.value=660+(i%3)*160;vowel.Q.value=.55;
+   level.gain.value=.24;voice.connect(vowel);vowel.connect(level);level.connect(crowd);
+   voice.start(start);voice.stop(start+.42);
+  }
+  const noise=audio.createBufferSource(),filter=audio.createBiquadFilter(),env=audio.createGain();
+  noise.buffer=sample;noise.loop=true;filter.type='bandpass';filter.frequency.value=940;filter.Q.value=.45;
+  env.gain.setValueAtTime(.0001,cheerAt);
+  env.gain.linearRampToValueAtTime(.13,cheerAt+.09);
+  env.gain.exponentialRampToValueAtTime(.0001,cheerAt+.48);
+  noise.connect(filter);filter.connect(env);env.connect(direct);noise.start(cheerAt);noise.stop(cheerAt+.49);
  }catch(e){}
 }
 function photoHit(att,def,t,power){
@@ -994,15 +1022,16 @@ function drawPhotoFlash(t){
   // Strong black-and-white photographic negative, via simple compositing.
   // No expensive Canvas2D pixel filters and no stop to update()/the beat clock.
   ctx.globalCompositeOperation='saturation';
-  ctx.fillStyle='#808080';ctx.fillRect(0,0,W,H);
+  ctx.globalAlpha=.75;ctx.fillStyle='#808080';ctx.fillRect(0,0,W,H);
   ctx.globalCompositeOperation='difference';
-  ctx.fillStyle='#ffffff';ctx.fillRect(0,0,W,H);
+  ctx.globalAlpha=.70;ctx.fillStyle='#ffffff';ctx.fillRect(0,0,W,H);
+  ctx.globalAlpha=1;
   ctx.globalCompositeOperation='source-over';
-  const edge=fraction<.35?1:.72;
+  const edge=fraction<.35?.82:.56;
   ctx.strokeStyle='rgba(255,255,255,'+edge+')';ctx.lineWidth=Math.max(5,Math.min(W,H)*.012);
   ctx.strokeRect(3,3,W-6,H-6);
   // Shutter blades / impact lightning: radial straight segments, no ovals.
-  ctx.strokeStyle='rgba(255,255,255,'+(.85*(1-fraction*.5))+')';
+  ctx.strokeStyle='rgba(255,255,255,'+(.62*(1-fraction*.5))+')';
   ctx.lineWidth=3;
   for(let i=0;i<12;i++){
    const a=(i+.16)*Math.PI/6,inside=55+12*fraction,outside=155+35*fraction;
@@ -1011,7 +1040,7 @@ function drawPhotoFlash(t){
    ctx.lineTo(x+Math.cos(a)*outside,y+Math.sin(a)*outside);ctx.stroke();
   }
   // A true flash, hard onset then immediately decaying: readable on mobile.
-  if(fraction<.24){ctx.fillStyle='rgba(255,255,255,'+(.86*(1-fraction/.24))+')';ctx.fillRect(0,0,W,H)}
+  if(fraction<.20){ctx.fillStyle='rgba(255,255,255,'+(.52*(1-fraction/.20))+')';ctx.fillRect(0,0,W,H)}
  }else if(photoAccent){
   // Two very thin frame edges remain during recovery, not shapes over the fighters.
   const p=clamp((photoAccent.until-t)/BEAT_MS,0,1);
