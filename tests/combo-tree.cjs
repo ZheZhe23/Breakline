@@ -121,7 +121,7 @@ module.exports=async({page,run,artifactDir})=>{
   const count=await run(`selectedFighter='${id}';practiceMode=true;rhythmDifficulty='easy';practiceLabMode='combo';fresh();FIGHTERS['${id}'].combos.length`);
   for(let recipe=0;recipe<count;recipe++){
    await page.locator('#pauseBtn').click();await page.locator('#practiceLabMode').selectOption('combo');await page.locator('#practiceCombo').selectOption(String(recipe));await page.locator('#comboPreview').click();
-   await page.waitForFunction(()=>!__test('practicePreview')&&__test('player.finisher'),null,{timeout:7000});
+   await page.waitForFunction(()=>!__test('practicePreview')&&__test('player.finisher'),null,{timeout:7000}).catch(async e=>{throw Error(e.message+' '+JSON.stringify(await run('({id:player.fighterId,seq:player.comboSeq,preview:practicePreview,status:$("practicePreviewStatus").textContent,model:kickTimingMode})')))});
    assert.equal(await run('player.finisherStyle'),recipe);assert.equal(await run('player.attackGrade'),'perfect');
   }
  }

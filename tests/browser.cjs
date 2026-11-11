@@ -40,6 +40,7 @@ const errors=[];let checks=0;
   await require('./biomechanics.cjs')({page,run});
   await require('./combo-tree.cjs')({page,run,artifactDir:process.env.ARTIFACT_DIR});
   await require('./choreography.cjs')({page,run,artifactDir:process.env.ARTIFACT_DIR});
+  await require('./half-beat.cjs')({page,run,artifactDir:process.env.ARTIFACT_DIR});
 
   // Exercise the real combo/action/update functions at exact transport beats.
   // Simulation stays inside one JS task, so RAF cannot race the state fixture.
@@ -176,6 +177,8 @@ const errors=[];let checks=0;
   await tp.waitForTimeout(300);assert.equal(await tp.evaluate(()=>__test('player.moveHeld')),1);
   await session.send('Input.dispatchTouchEvent',{type:'touchCancel',touchPoints:[]});assert.equal(await tp.evaluate(()=>__test('player.moveHeld')),0);checks+=2;
   await tp.locator('#pauseBtn').tap();await tp.locator('#practiceCombo').selectOption('1');await tp.locator('#comboPreview').tap();await tp.waitForFunction(()=>!__test('practicePreview')&&__test('player.finisher'),null,{timeout:6000});assert.equal(await tp.evaluate(()=>__test('player.comboSeq')),'LHL');checks++;
+  await tp.locator('#pauseBtn').tap();await tp.locator('#kickTiming').selectOption('half');await tp.locator('#pauseResume').tap();await tp.waitForFunction(()=>__test('kickTimingMode')==='half',null,{timeout:4000});
+  await tp.locator('#pauseBtn').tap();await tp.locator('#practiceCombo').selectOption('4');await tp.locator('#comboPreview').tap();await tp.waitForFunction(()=>!__test('practicePreview')&&__test('player.finisher'),null,{timeout:6000});assert.equal(await tp.evaluate(()=>__test('player.comboSeq')),'LHHL');assert.equal(await tp.locator('.inputSlot').count(),4);checks++;
   await touch.close();
   // Desktop Chromium renderer timing only; this is not an Android benchmark.
   const renderTiming=await run(`(()=>{const samples=[];for(let i=0;i<120;i++){const begin=performance.now();render(gameClock()+i*16);samples.push(performance.now()-begin)}samples.sort((a,b)=>a-b);return {meanMs:samples.reduce((a,b)=>a+b,0)/samples.length,p95Ms:samples[114],dpr}})()`);

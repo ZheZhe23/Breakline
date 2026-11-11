@@ -5,7 +5,8 @@
     "check": "node tests/syntax.cjs",
     "test": "node tests/syntax.cjs && node tests/browser.cjs",
     "render:reel": "node tests/render-reel.cjs",
-    "render:combos": "node tests/render-combos.cjs"
+    "render:combos": "node tests/render-combos.cjs",
+    "render:half": "node tests/render-half-beat.cjs"
   },
   "devDependencies": {
     "playwright": "1.62.1"
