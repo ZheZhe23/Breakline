@@ -47,7 +47,7 @@
 }
 @media(prefers-reduced-motion:reduce){#roundAlarm.active{animation:none;opacity:.15}.trackBtn{box-shadow:none}}
 
-</style></head><body><div id="app"><canvas id="game"></canvas><button id="pauseBtn" aria-label="Пауза">Ⅱ <span>ПАУЗА</span></button><div id="roundAlarm"></div><div id="hud"><div class="header"><div class="person"><div class="name"><span id="playerName">ТЫ · КИКБОКСЁР</span> <span class="scoreNumber" id="playerScore">0</span></div><div class="bar"><div class="fill" id="ph"></div></div><div class="balance rhythmFill"><div class="fill" id="pp"></div></div><div class="meter">ЗДОРОВЬЕ <span id="playerHP">500/500</span></div></div><div class="brand">BREAKLINE<small>ВЕРСИЯ 3.11.1 · <span id="roundClock">01:00</span></small></div><div class="person right enemy"><div class="name"><span id="aiName">ПРОТИВНИК · ИИ</span><span class="scoreNumber" id="enemyScore">0</span></div><div class="bar"><div class="fill" id="eh"></div></div><div class="balance rhythmFill"><div class="fill" id="ep"></div></div><div class="meter">ЗДОРОВЬЕ <span id="enemyHP">500/500</span></div></div></div></div><div id="clinchPanel" style="display:none"><div id="clinchLabel">ЗАХВАТ</div><div id="counterCircle" class="counterCircle"><span id="counterIcon">✊</span></div><div id="clinchTip">Жди светящегося круга</div></div><div id="distance">ДИСТАНЦИЯ: —</div><div id="rhythmLevelNotice" aria-live="polite"><span id="rhythmLevelNoticeTitle">УРОВЕНЬ 2</span><small id="rhythmLevelNoticeDetail">СВЕЧЕНИЕ ОТКРЫТО</small></div><div id="rhythmHud"><div class="rhythmTop"><span id="beatLabel">♪ 120 BPM</span><span id="rhythmGrade">ЛОВИ РИТМ</span><span id="flowLabel">ПОТОК · 0/5</span></div><div id="beatTrack"><div id="beatSlots"></div><div id="beatNeedle"></div></div><div id="rhythmPatternLabel">ЧЕТВЕРТИ · 1–2–3–4</div></div><div id="message"></div><div id="subtext"></div><div id="specialBanner" aria-live="polite"><strong>✦ СПЕЦПРИЁМ!</strong><span id="specialBannerName"></span></div><button id="soundBtn" title="Включить или выключить звук" aria-pressed="false">◖ ЗВУК: ВЫКЛ.</button><div id="help">РИТМ: точные попадания повышают энергию и очки. Комбинации у каждого бойца свои. Полная шкала = ПОТОК.</div><div id="comboHint">КОМБО: —</div><div id="streakScore">ЛУЧШАЯ СЕРИЯ ×0</div><div id="dirSelected">ПРИЁМ: ПРЯМОЙ</div><div id="controls"><div class="cluster"><div id="joystick" aria-label="Джойстик движения"><div class="lr"><span>‹</span><span>›</span></div><div id="stick"></div></div></div><div class="cluster right"><button class="ctl strong" id="heavy"><span>✹</span>НОГА<small>быстрый удар</small></button><button class="ctl grab" id="grab"><span>✊</span>БРОСОК<small>только вплотную</small></button><button class="ctl attack" id="attack"><span>✦</span>РУКА<small>комбо в ритм</small></button></div></div><div id="intro"><div class="introInner"><h1>BREAKLINE</h1><p>Музыкальный файтинг: атака, присед, прыжок и захват в долю усиливают ритм. Полная шкала открывает режим ПОТОК.</p><div id="fighterPicker"><div class="difficultyTitle">ВЫБОР БОЙЦА</div><div id="fighterChoices" class="fighterChoices">
+</style></head><body><div id="app"><canvas id="game"></canvas><button id="pauseBtn" aria-label="Пауза">Ⅱ <span>ПАУЗА</span></button><div id="roundAlarm"></div><div id="hud"><div class="header"><div class="person"><div class="name"><span id="playerName">ТЫ · КИКБОКСЁР</span> <span class="scoreNumber" id="playerScore">0</span></div><div class="bar"><div class="fill" id="ph"></div></div><div class="balance rhythmFill"><div class="fill" id="pp"></div></div><div class="meter">ЗДОРОВЬЕ <span id="playerHP">500/500</span></div></div><div class="brand">BREAKLINE<small>ВЕРСИЯ 3.12.0 · <span id="roundClock">01:00</span></small></div><div class="person right enemy"><div class="name"><span id="aiName">ПРОТИВНИК · ИИ</span><span class="scoreNumber" id="enemyScore">0</span></div><div class="bar"><div class="fill" id="eh"></div></div><div class="balance rhythmFill"><div class="fill" id="ep"></div></div><div class="meter">ЗДОРОВЬЕ <span id="enemyHP">500/500</span></div></div></div></div><div id="clinchPanel" style="display:none"><div id="clinchLabel">ЗАХВАТ</div><div id="counterCircle" class="counterCircle"><span id="counterIcon">✊</span></div><div id="clinchTip">Жди светящегося круга</div></div><div id="distance">ДИСТАНЦИЯ: —</div><div id="rhythmLevelNotice" aria-live="polite"><span id="rhythmLevelNoticeTitle">УРОВЕНЬ 2</span><small id="rhythmLevelNoticeDetail">СВЕЧЕНИЕ ОТКРЫТО</small></div><div id="rhythmHud"><div class="rhythmTop"><span id="beatLabel">♪ 120 BPM</span><span id="rhythmGrade">ЛОВИ РИТМ</span><span id="flowLabel">ПОТОК · 0/5</span></div><div id="beatTrack"><div id="beatSlots"></div><div id="beatNeedle"></div></div><div id="rhythmPatternLabel">ЧЕТВЕРТИ · 1–2–3–4</div></div><div id="message"></div><div id="subtext"></div><div id="specialBanner" aria-live="polite"><strong>✦ СПЕЦПРИЁМ!</strong><span id="specialBannerName"></span></div><button id="soundBtn" title="Включить или выключить звук" aria-pressed="false">◖ ЗВУК: ВЫКЛ.</button><div id="help">РИТМ: точные попадания повышают энергию и очки. Комбинации у каждого бойца свои. Полная шкала = ПОТОК.</div><div id="comboHint">КОМБО: —</div><div id="streakScore">ЛУЧШАЯ СЕРИЯ ×0</div><div id="dirSelected">ПРИЁМ: ПРЯМОЙ</div><div id="controls"><div class="cluster"><div id="joystick" aria-label="Джойстик движения"><div class="lr"><span>‹</span><span>›</span></div><div id="stick"></div></div></div><div class="cluster right"><button class="ctl strong" id="heavy"><span>✹</span>НОГА<small>быстрый удар</small></button><button class="ctl grab" id="grab"><span>✊</span>БРОСОК<small>только вплотную</small></button><button class="ctl attack" id="attack"><span>✦</span>РУКА<small>комбо в ритм</small></button></div></div><div id="intro"><div class="introInner"><h1>BREAKLINE</h1><p>Музыкальный файтинг: атака, присед, прыжок и захват в долю усиливают ритм. Полная шкала открывает режим ПОТОК.</p><div id="fighterPicker"><div class="difficultyTitle">ВЫБОР БОЙЦА</div><div id="fighterChoices" class="fighterChoices">
 <button class="fighterBtn" data-fighter="boxer"><b>БОКСЁР</b><small>Быстрые серии · 7 комбо</small></button>
 <button class="fighterBtn selected" data-fighter="kickboxer"><b>КИКБОКСЁР</b><small>Баланс рук и ног · 6 комбо</small></button>
 <button class="fighterBtn" data-fighter="power"><b>ТЯЖЕЛОВЕС</b><small>Мощные финалы · 4 комбо</small></button>
@@ -66,7 +66,7 @@ function initTransport(){
  }catch(e){transport=null}
 }
 let selectedDir='neutral',selectedAt=0;const heldDirs=[];let joyX=0,joyY=0,joyPointer=null;let stanceEvents=[];let jumpLatch=false;let jumpQueuedUntil=0;
-const GAME_VERSION='3.11.1';
+const GAME_VERSION='3.12.0';
 const TRACKS={
  neon:{title:'NEON PULSE',genre:'Synthwave',bpm:120,arena:'Неоновый док',root:55,wave:'sawtooth',sky:['#090e26','#293354'],floor:'#111a32',accent:'#55e4dd',warm:'#ff79b9',
  phrases:[{name:'A',slots:[0,4,6,8,10,14],notes:[4,5,4,2,0,2]},{name:'B',slots:[0,2,4,8,11,12,14],notes:[2,4,5,7,5,4,2]},{name:'C',slots:[0,3,4,7,8,12,14],notes:[7,5,4,5,2,0,2]},{name:'D',slots:[0,2,5,8,10,12,14],notes:[4,2,0,2,4,5,7]}]},
@@ -1424,8 +1424,8 @@ function bg(){
  }
 }
 
-/* Articulated fighters v2. Targets drive two-bone inverse kinematics: the
-   upper/lower limb lengths remain fixed throughout attacks and transitions.
+/* Articulated fighters v3. Constrained IK requests followed by fixed-length FK.
+   All skin/clothing draw from the solved skeleton, then rigid transforms only.
    These poses never modify hitboxes, damage, input timestamps or recovery. */
 const RIGS={
  kickboxer:{shoulder:13,waist:11,hips:13,arm:29,forearm:29,thigh:36,shin:36,head:13.5,skin:'#c88d6d',cloth:'#193e4a',trim:'#72e8de',glove:'#bf663f',hair:'#202429',stance:{hip:[0,-72],chest:[5,-116],lh:[12,-129],rh:[29,-127],lf:[-27,-3],rf:[32,-3]},
@@ -1466,7 +1466,24 @@ const MOVES={
 };
 function poseMix(a,b,k){const out={};for(const key of ['hip','chest','lh','rh','lf','rf'])out[key]=[a[key][0]+(b[key][0]-a[key][0])*k,a[key][1]+(b[key][1]-a[key][1])*k];return out}
 function rigEase(x){x=clamp(x,0,1);return x*x*(3-2*x)}
-function rigKeys(frames,t){for(let i=1;i<frames.length;i++)if(t<=frames[i][0]){const a=frames[i-1],b=frames[i];return poseMix(a[1],b[1],rigEase((t-a[0])/Math.max(.001,b[0]-a[0])))}return frames.at(-1)[1]}
+function rigKeys(frames,t,profile){
+ for(let i=1;i<frames.length;i++)if(t<=frames[i][0]){
+  const a=frames[i-1],b=frames[i],progress=clamp((t-a[0])/Math.max(.001,b[0]-a[0]),0,1),pose={};
+  for(const key of ['hip','chest','lh','rh','lf','rf']){
+   const exponent=key==='hip'?profile.hipLead:key==='chest'?profile.chestLead:1.08;
+   const k=rigEase(Math.pow(progress,exponent));pose[key]=[a[1][key][0]+(b[1][key][0]-a[1][key][0])*k,a[1][key][1]+(b[1][key][1]-a[1][key][1])*k];
+  }
+  // Interpolate the torso ROTATION, not two Cartesian spine endpoints.
+  // An upright-to-inverted blend must travel on an arc, never collapse the
+  // spine through zero and suddenly invert the shoulder/hip reference frame.
+  const axisA=Math.atan2(a[1].chest[1]-a[1].hip[1],a[1].chest[0]-a[1].hip[0]);
+  const axisB=Math.atan2(b[1].chest[1]-b[1].hip[1],b[1].chest[0]-b[1].hip[0]);
+  const axis=axisA+rigWrap(axisB-axisA)*rigEase(Math.pow(progress,profile.chestLead));
+  pose.chest=[pose.hip[0]+45*Math.cos(axis),pose.hip[1]+45*Math.sin(axis)];
+  return {pose,from:a[1],to:b[1],progress};
+ }
+ const pose=frames.at(-1)[1];return {pose:poseMix(pose,pose,0),from:pose,to:pose,progress:1};
+}
 function rigMotion(f){
  const r=RIGS[f.fighterId]||RIGS.kickboxer;
  if(f.specialId)return {upper:'upper',counter:'cross',knee:'knee',spin:'spinKick'}[f.specialId];
@@ -1476,12 +1493,12 @@ function rigMotion(f){
  return (f.action==='heavy'?r.heavy:r.light)[(f.actionVariant||0)%5];
 }
 function rigPose(f,t){
- const r=RIGS[f.fighterId]||RIGS.kickboxer;
+ const r=RIGS[f.fighterId]||RIGS.kickboxer,profile=RIG_KINEMATICS[f.fighterId]||RIG_KINEMATICS.kickboxer;
  const base=poseMix(r.stance,r.stance,0),phase=(t-rhythmStart)/BEAT_MS*Math.PI;
  const attack=f.action==='light'||f.action==='heavy',move=rigMotion(f),m=MOVES[move];
  const elapsed=Math.max(0,t-f.actionStart),hit=Math.max(1,f.hitAt-f.actionStart);
  const end=Math.max(hit+BEAT_MS*.24,f.actionEnd-f.actionStart);
- let p=poseMix(base,base,0),contact=0,yaw=0,lift=0,roll=0;
+ let p=poseMix(base,base,0),contact=0,yaw=0,lift=0,roll=0,limbBlend=null;
  if(attack){
   const flavor=Math.floor((f.actionVariant||0)/5),load=poseMix(base,base,0),target={...base,...m};
   load.hip=[base.hip[0]-5-flavor*2,base.hip[1]+4];load.chest=[base.chest[0]-9,base.chest[1]+4];
@@ -1489,7 +1506,7 @@ function rigPose(f,t){
   // Contact is anchored to the existing hitAt. Every key time is monotonic,
   // even at 140 BPM: no negative-duration windup or delayed visual contact.
   const hold=hit+Math.min(BEAT_MS*.12,(end-hit)*.22),retract=hit+(end-hit)*.62;
-  p=rigKeys([[0,base],[hit*.25,load],[hit,target],[hold,target],[retract,load],[end,base]],elapsed);
+  limbBlend=rigKeys([[0,base],[hit*.25,load],[hit,target],[hold,target],[retract,load],[end,base]],elapsed,profile);p=limbBlend.pose;
   contact=elapsed<=hit?rigEase(elapsed/hit):1-rigEase((elapsed-hold)/Math.max(1,retract-hold));
   contact=clamp(contact,0,1);
   yaw=(m.yaw||0)*(elapsed<=hit?rigEase(elapsed/hit):1+Math.min(.2,(elapsed-hit)/BEAT_MS));
@@ -1517,13 +1534,25 @@ function rigPose(f,t){
    p.lh[0]-=stride*3;p.rh[0]+=stride*3;
   }
  }
+ const frame={r,phase,attack,yaw,lift};
+ const posture=rigPosture(f,t,p,frame);
+ // Impact recoil moves the parent torso and its attached chains. It does not
+ // retarget animation keys across a shoulder while the recoil envelope changes.
+ const blend=limbBlend?{
+  from:rigPosture(f,t,poseMix(limbBlend.from,limbBlend.from,0),frame,false).p,
+  to:rigPosture(f,t,poseMix(limbBlend.to,limbBlend.to,0),frame,false).p,
+  progress:rigEase(Math.pow(limbBlend.progress,1.08))
+ }:null;
+ return {...posture,move,m,contact,yaw,roll,attack,limbBlend:blend};
+}
+function rigPosture(f,t,p,{r,phase,attack,yaw,lift},withReaction=true){
  // Bend at knees/hips for crouch instead of flattening the whole anatomy.
  let crouch=f.crouch?1:0;
  if(f.stanceTransition==='crouch')crouch=rigEase(1-(f.stanceUntil-t)/(BEAT_MS*.20));
  if(f.stanceTransition==='rise')crouch=1-rigEase(1-(f.stanceUntil-t)/100);
  if(f.stanceTransition==='takeoff')crouch=Math.sin(Math.PI*clamp(1-(f.stanceUntil-t)/85,0,1))*.35;
  if(crouch){for(const key of ['hip','chest','lh','rh'])p[key]=[p[key][0]+(key==='hip'?-6:3)*crouch,p[key][1]+30*crouch];lift*=1-crouch;}
- if(t<f.jumpUntil){p.lf=[p.lf[0]+9,p.lf[1]-14];p.rf=[p.rf[0]-8,p.rf[1]-22];}
+ if(t<f.jumpUntil){const tuck=Math.sin(Math.PI*clamp((t-f.jumpStart)/Math.max(1,f.jumpUntil-f.jumpStart),0,1));p.lf=[p.lf[0]+9*tuck,p.lf[1]-14*tuck];p.rf=[p.rf[0]-8*tuck,p.rf[1]-22*tuck];}
  if(f.action==='dive'){
   const landedAt=f.actionStart+BEAT_MS*.32;
   const landing=f.diveArmed?0:1-rigEase((t-landedAt)/Math.max(1,f.actionEnd-landedAt)),strength=f.diveArmed?1:landing;
@@ -1535,9 +1564,9 @@ function rigPose(f,t){
  if(f.action==='grab'||f.action==='throwing'){p.lh=[52,-112];p.rh=[63,-105];p.chest[0]+=9;}
  if(f.action==='caught'){p.lh=[19,-108];p.rh=[29,-104];}
  if(f.guard&&!attack){p.lh=[p.chest[0]+7,p.chest[1]-18];p.rh=[p.chest[0]+29,p.chest[1]-10];}
- if(f.action==='celebrate'){const beat=Math.sin(phase);p.lh=[-30,-178];p.rh=[35,-181];lift=Math.abs(beat)*(f.fighterId==='power'?2:7);}
+ if(f.action==='celebrate'){const beat=Math.sin(phase);p.lh=[p.chest[0]+4,p.chest[1]-60];p.rh=[p.chest[0]+32,p.chest[1]-58];lift=Math.abs(beat)*(f.fighterId==='power'?2:7);}
  if(f.action==='defeated'){p.chest=[-17,-101];p.lh=[-14,-80];p.rh=[21,-81];}
- const reaction=t<f.hitReactUntil?Math.sin(Math.PI*clamp((t-f.hitReactStart)/Math.max(1,f.hitReactUntil-f.hitReactStart),0,1))*f.hitReactPower:0;
+ const reaction=withReaction&&t<f.hitReactUntil?Math.sin(Math.PI*clamp((t-f.hitReactStart)/Math.max(1,f.hitReactUntil-f.hitReactStart),0,1))*f.hitReactPower:0;
  p.chest=[p.chest[0]-reaction*(f.hitReactLow?7:17),p.chest[1]+reaction*(f.hitReactLow?12:2)];
  if(f.action==='stunned'){p.chest[0]-=9;p.lh=[-20,-99];p.rh=[22,-100];}
  // Spine and neck stay anatomical even when acrobatic poses are upside down.
@@ -1545,40 +1574,144 @@ function rigPose(f,t){
  const spine=f.fighterId==='power'?46:45;
  p.chest=[p.hip[0]+dx/length*spine,p.hip[1]+dy/length*spine];
  const ux=(p.chest[0]-p.hip[0])/spine,uy=(p.chest[1]-p.hip[1])/spine;
- p.head=[p.chest[0]+ux*27+3-reaction*6,p.chest[1]+uy*27];
- const width=r.shoulder*(.72+.28*Math.cos(yaw));
+ p.head=[p.chest[0]+ux*27,p.chest[1]+uy*27];
+ const width=r.shoulder;
  p.ls=[p.chest[0]+uy*width,p.chest[1]-ux*width];p.rs=[p.chest[0]-uy*width,p.chest[1]+ux*width];
- return {p,move,m,contact,yaw,lift,roll,reaction,attack,ux,uy};
+ return {p,lift,reaction,ux,uy};
 }
-function solveLimb(start,target,a,b,hint){
- let dx=target[0]-start[0],dy=target[1]-start[1];if(Math.hypot(dx,dy)<.001)dy=.001;const raw=Math.hypot(dx,dy);
- const distance=clamp(raw,Math.abs(a-b)+.01,a+b-.01),ux=dx/raw,uy=dy/raw;
- const foot=[start[0]+ux*distance,start[1]+uy*distance];
- const along=(a*a-b*b+distance*distance)/(2*distance),height=Math.sqrt(Math.max(0,a*a-along*along));
- const c=[start[0]+ux*along,start[1]+uy*along];
- const first=[c[0]-uy*height,c[1]+ux*height],second=[c[0]+uy*height,c[1]-ux*height];
- const cost=p=>Math.hypot(p[0]-hint[0],p[1]-hint[1]);
- return {joint:cost(first)<cost(second)?first:second,end:foot};
+// All animation targets are requests. Only this constrained skeleton can supply
+// draw coordinates. Reach is limited by the immutable bind-pose bone lengths.
+const RIG_KINEMATICS={
+ boxer:{hipLead:.70,chestLead:.88,drive:4,armRoot:[-172,88],legRoot:[-130,75],maxArmFlex:148,maxLegFlex:148},
+ kickboxer:{hipLead:.73,chestLead:.91,drive:7,armRoot:[-172,88],legRoot:[-148,85],maxArmFlex:148,maxLegFlex:150},
+ power:{hipLead:.65,chestLead:.86,drive:8,armRoot:[-165,82],legRoot:[-130,78],maxArmFlex:142,maxLegFlex:145},
+ acrobat:{hipLead:.78,chestLead:.94,drive:5,armRoot:[-178,95],legRoot:[-175,160],maxArmFlex:152,maxLegFlex:155}
+};
+const RIG_LENGTH_TOLERANCE=1e-6;
+const RIG_SEGMENTS=Object.freeze({
+ 'leftArm.upperArm':'arm','leftArm.forearm':'forearm','rightArm.upperArm':'arm','rightArm.forearm':'forearm',
+ 'leftLeg.thigh':'thigh','leftLeg.shin':'shin','rightLeg.thigh':'thigh','rightLeg.shin':'shin'
+});
+const RIG_DEBUG=new URLSearchParams(location.search).get('rig')==='1';
+const RIG_INTEGRITY={frames:0,segments:0,maxRelativeError:0,violations:0,lastViolation:null};
+for(const rig of Object.values(RIGS))Object.freeze(rig);
+function rigRadians(degrees){return degrees*Math.PI/180}
+function rigWrap(angle){return Math.atan2(Math.sin(angle),Math.cos(angle))}
+function rigRootAngle(angle,reference,min,max){
+ const relative=rigWrap(angle-reference);
+ if(relative>=min&&relative<=max)return relative;
+ // Clamp on a circle, so an angle just beyond -PI cannot jump to the opposite
+ // shoulder/hip limit merely because atan2 represented it as +PI.
+ return Math.abs(rigWrap(relative-min))<Math.abs(rigWrap(relative-max))?min:max;
 }
+function solveLimb(start,target,a,b,options={}){
+ const {bend=1,minFlex=rigRadians(4),maxFlex=rigRadians(148),reference=Math.PI/2,minRoot=-Math.PI,maxRoot=Math.PI}=options;
+ let dx=target[0]-start[0],dy=target[1]-start[1];
+ if(Math.hypot(dx,dy)<1e-9){dx=Math.cos(reference);dy=Math.sin(reference)}
+ const raw=Math.hypot(dx,dy);
+ const reach=flex=>Math.sqrt(Math.max(0,a*a+b*b+2*a*b*Math.cos(flex)));
+ const distance=clamp(raw,reach(maxFlex),reach(minFlex));
+ const flex=Math.acos(clamp((distance*distance-a*a-b*b)/(2*a*b),-1,1));
+ const offset=Math.acos(clamp((a*a+distance*distance-b*b)/(2*a*distance),-1,1));
+ const root=rigRootAngle(Math.atan2(dy,dx)+bend*offset,reference,minRoot,maxRoot);
+ return forwardLimb(start,a,b,root,flex,{reference,bend,minRoot,maxRoot,minFlex,maxFlex});
+}
+function forwardLimb(start,a,b,root,flex,options){
+ const {reference,bend}=options,upper=reference+root,lower=upper-bend*flex;
+ const joint=[start[0]+a*Math.cos(upper),start[1]+a*Math.sin(upper)];
+ const end=[joint[0]+b*Math.cos(lower),joint[1]+b*Math.sin(lower)];
+ return {start,joint,end,a,b,root,flex,upper,lower,bend,reference,limits:options};
+}
+function solveRigTargets(p,rig,profile){
+ const spine=Math.hypot(p.chest[0]-p.hip[0],p.chest[1]-p.hip[1]);
+ const reference=Math.atan2(-(p.chest[1]-p.hip[1])/spine,-(p.chest[0]-p.hip[0])/spine);
+ const arm={reference,bend:1,minRoot:rigRadians(profile.armRoot[0]),maxRoot:rigRadians(profile.armRoot[1]),minFlex:rigRadians(4),maxFlex:rigRadians(profile.maxArmFlex)};
+ const leg={reference,bend:-1,minRoot:rigRadians(profile.legRoot[0]),maxRoot:rigRadians(profile.legRoot[1]),minFlex:rigRadians(5),maxFlex:rigRadians(profile.maxLegFlex)};
+ const leftHip=[p.hip[0]-rig.hips*.55,p.hip[1]],rightHip=[p.hip[0]+rig.hips*.55,p.hip[1]];
+ const limbs={
+  leftArm:solveLimb(p.ls,p.lh,rig.arm,rig.forearm,arm),
+  rightArm:solveLimb(p.rs,p.rh,rig.arm,rig.forearm,arm),
+  leftLeg:solveLimb(leftHip,p.lf,rig.thigh,rig.shin,leg),
+  rightLeg:solveLimb(rightHip,p.rf,rig.thigh,rig.shin,leg)
+ };
+ return limbs;
+}
+function buildFighterSkeleton(f,t){
+ const pose=rigPose(f,t),{p}=pose,rig=RIGS[f.fighterId]||RIGS.kickboxer;
+ const profile=RIG_KINEMATICS[f.fighterId]||RIG_KINEMATICS.kickboxer;
+ const limbs=solveRigTargets(p,rig,profile);
+ if(pose.limbBlend){
+  const from=solveRigTargets(pose.limbBlend.from,rig,profile),to=solveRigTargets(pose.limbBlend.to,rig,profile),k=pose.limbBlend.progress;
+  for(const name of Object.keys(limbs)){
+   const current=limbs[name],a=from[name],b=to[name];
+   // Joint angles lie in a fixed convex anatomical interval. Interpolate them,
+   // not hand/foot targets that could pass through a shoulder or hip and flip IK.
+   limbs[name]=forwardLimb(current.start,current.a,current.b,a.root+(b.root-a.root)*k,a.flex+(b.flex-a.flex)*k,{...current.limits,reference:current.reference,bend:current.bend});
+  }
+ }
+ const bones=[];
+ for(const [name,limb] of Object.entries(limbs)){
+  bones.push({name:name+(name.endsWith('Arm')?'.upperArm':'.thigh'),start:limb.start,end:limb.joint,length:limb.a});
+  bones.push({name:name+(name.endsWith('Arm')?'.forearm':'.shin'),start:limb.joint,end:limb.end,length:limb.b});
+ }
+ return {pose,rig,limbs,bones};
+}
+function measureFighterSkeleton(skeleton,matrix={a:1,b:0,c:0,d:1,e:0,f:0},displayScale=1){
+ const samples=[],violations=[],seen=new Set();
+ let maxRelativeError=0;
+ for(const bone of skeleton.bones){
+  const dx=bone.end[0]-bone.start[0],dy=bone.end[1]-bone.start[1];
+  const actual=Math.hypot(matrix.a*dx+matrix.c*dy,matrix.b*dx+matrix.d*dy);
+  const nominal=skeleton.rig[RIG_SEGMENTS[bone.name]],expected=nominal*displayScale,relativeError=Math.abs(actual/expected-1);
+  if(seen.has(bone.name)||bone.length!==nominal)violations.push(bone.name+'.bindLength');seen.add(bone.name);
+  maxRelativeError=Math.max(maxRelativeError,relativeError);
+  if(!Number.isFinite(relativeError)||relativeError>RIG_LENGTH_TOLERANCE)violations.push(bone.name);
+  samples.push({name:bone.name,actual,expected,relativeError});
+ }
+ for(const name of Object.keys(RIG_SEGMENTS))if(!seen.has(name))violations.push(name+'.missing');
+ for(const [name,limb] of Object.entries(skeleton.limbs)){
+  const l=limb.limits,ux=limb.joint[0]-limb.start[0],uy=limb.joint[1]-limb.start[1],vx=limb.end[0]-limb.joint[0],vy=limb.end[1]-limb.joint[1];
+  const root=rigWrap(Math.atan2(uy,ux)-limb.reference),signedFlex=Math.atan2(ux*vy-uy*vx,ux*vx+uy*vy),flex=Math.abs(signedFlex);
+  if(!Number.isFinite(root)||!Number.isFinite(flex)||root<l.minRoot-1e-7||root>l.maxRoot+1e-7||flex<l.minFlex-1e-7||flex>l.maxFlex+1e-7)violations.push(name+'.jointLimits');
+  if(Math.abs(rigWrap(signedFlex+limb.bend*flex))>1e-7)violations.push(name+'.bendDirection');
+ }
+ return {valid:violations.length===0,maxRelativeError,samples,violations};
+}
+function auditRigFrame(skeleton,matrix,displayScale,f){
+ const report=measureFighterSkeleton(skeleton,matrix,displayScale);
+ RIG_INTEGRITY.frames++;RIG_INTEGRITY.segments+=report.samples.length;
+ RIG_INTEGRITY.maxRelativeError=Math.max(RIG_INTEGRITY.maxRelativeError,report.maxRelativeError);
+ if(!report.valid){
+  RIG_INTEGRITY.violations++;RIG_INTEGRITY.lastViolation={fighter:f.fighterId,action:f.action,violations:report.violations};
+  if(RIG_INTEGRITY.violations===1)console.error('BREAKLINE skeleton integrity violation',RIG_INTEGRITY.lastViolation);
+ }
+ return report;
+}
+function drawRigSkeleton(skeleton){
+ for(const bone of skeleton.bones){rigLine(bone.start,bone.end,3,'#d9f9eb');rigDot(bone.start,3,'#ffd278');rigDot(bone.end,3,'#ffd278')}
+ rigLine(skeleton.pose.p.hip,skeleton.pose.p.chest,3,'#8abfff');
+}
+
 function rigLine(a,b,width,color){ctx.beginPath();ctx.moveTo(...a);ctx.lineTo(...b);ctx.strokeStyle=color;ctx.lineWidth=width;ctx.stroke()}
 function rigDot(p,r,color){ctx.beginPath();ctx.arc(p[0],p[1],r,0,Math.PI*2);ctx.fillStyle=color;ctx.fill()}
 function rigShape(points,color){ctx.beginPath();ctx.moveTo(...points[0]);for(const p of points.slice(1))ctx.lineTo(...p);ctx.closePath();ctx.fillStyle=color;ctx.fill()}
 function fighter(f,t){
- const r=RIGS[f.fighterId]||RIGS.kickboxer,{p,move,m,contact,yaw,lift,roll,reaction,attack,ux,uy}=rigPose(f,t);
+ const skeleton=buildFighterSkeleton(f,t),r=skeleton.rig;
+ const {p,move,m,contact,yaw,lift,roll,reaction,attack,ux,uy}=skeleton.pose;
+ const {leftLeg,rightLeg,leftArm,rightArm}=skeleton.limbs;
  const scale=clamp(Math.min(W/650,H/470),.82,1.3),ground=H*.75;
  const tier=rhythmLevel(f),accent=f.ai?'#ff9b91':r.trim;
  const shadow=ctx.createRadialGradient(W*f.x,ground+3,1,W*f.x,ground+3,48*scale);
  shadow.addColorStop(0,'#00000088');shadow.addColorStop(1,'#00000000');ctx.fillStyle=shadow;ctx.beginPath();ctx.ellipse(W*f.x,ground+3,(43-Math.min(17,(f.jumpHeight||0)/4))*scale,9*scale,0,0,Math.PI*2);ctx.fill();
  ctx.save();ctx.translate(W*f.x,ground-(f.jumpHeight||0)-lift*scale);
- // Continuous, brief edge-on turn when the fighters cross. Gameplay facing is immediate.
- const turn=rigEase(clamp((t-(f.turnAt||-1e5))/110,0,1));
- const facing=(f.turnFrom??f.facing)*(1-turn)+f.facing*turn;
- ctx.scale(scale*(Math.abs(facing)<.08?.08:facing),scale);
+ // Reflection and uniform scale are rigid transforms. A continuous X squash
+ // changed visible bone lengths by up to 90%; it must never be used for turning.
+ ctx.scale(scale*(f.facing<0?-1:1),scale);
  ctx.lineCap='round';ctx.lineJoin='round';
- const opponent=f===player?enemy:player;
- const gap=opponent?Math.abs(opponent.x-f.x)*W:0;
- const lunge=attack?clamp(gap/scale-(m.leg?90:76),0,22)*contact:0;
- ctx.translate(lunge,0);
+ const profile=RIG_KINEMATICS[f.fighterId]||RIG_KINEMATICS.kickboxer;
+ // Authored weight transfer is independent of opponent distance. No limb or
+ // body is stretched to reach a visual hit point.
+ ctx.translate(attack?profile.drive*contact:0,0);
  if(f.action==='down'){
   const falling=rigEase((t-f.downStart)/(BEAT_MS*.78)),rising=finale?.knockout&&finale.loser===f?1:rigEase((f.downUntil-t)/(BEAT_MS*.9));
   const fall=Math.min(falling,rising);ctx.translate(0,-16*fall);ctx.rotate(-1.48*fall);ctx.translate(-p.hip[0]*fall,72*fall);
@@ -1588,13 +1721,13 @@ function fighter(f,t){
   else{ctx.translate(8*progress,5*progress);ctx.rotate(-.22*progress)}
  }
  if(roll){ctx.translate(...p.hip);ctx.rotate(roll);ctx.translate(-p.hip[0],-p.hip[1]);}
+ const audit=auditRigFrame(skeleton,ctx.getTransform(),scale*dpr,f);
+ if(RIG_DEBUG){
+  if(!audit.valid)throw new Error('RIG LENGTH/JOINT VIOLATION: '+audit.violations.join(', '));
+  drawRigSkeleton(skeleton);ctx.restore();return skeleton;
+ }
  if(tier>=2){ctx.save();ctx.globalAlpha=.09+(tier-2)*.035;ctx.strokeStyle=accent;ctx.lineWidth=2+tier;ctx.beginPath();ctx.ellipse(p.chest[0],p.chest[1]+20,38+tier*3,78,0,0,Math.PI*2);ctx.stroke();ctx.restore()}
- if(tier>=4&&attack&&contact>.12){ctx.save();ctx.globalAlpha=.17;ctx.strokeStyle=accent;ctx.lineWidth=tier===5?7:4;const tip=m.leg?p.rf:move==='cross'||move==='backfist'?p.lh:p.rh;ctx.beginPath();ctx.ellipse(tip[0]-12,tip[1]+8,24,10,-.4,-2.8,.7);ctx.stroke();ctx.restore()}
- const lhStart=[p.hip[0]-r.hips*.55,p.hip[1]],rhStart=[p.hip[0]+r.hips*.55,p.hip[1]];
- const leftLeg=solveLimb(lhStart,p.lf,r.thigh,r.shin,[p.hip[0]-9,p.hip[1]+34]);
- const rightLeg=solveLimb(rhStart,p.rf,r.thigh,r.shin,m.knee&&attack?[p.hip[0]+70,p.hip[1]-30]:[p.hip[0]+28,p.hip[1]+32]);
- const leftArm=solveLimb(p.ls,p.lh,r.arm,r.forearm,[p.ls[0]-21,p.ls[1]+25]);
- const rightArm=solveLimb(p.rs,p.rh,r.arm,r.forearm,m.elbow&&attack?[p.rs[0]+45,p.rs[1]-6]:[p.rs[0]+21,p.rs[1]+24]);
+ if(tier>=4&&attack&&contact>.12){ctx.save();ctx.globalAlpha=.17;ctx.strokeStyle=accent;ctx.lineWidth=tier===5?7:4;const tip=m.leg?rightLeg.end:move==='cross'||move==='backfist'?leftArm.end:rightArm.end;ctx.beginPath();ctx.ellipse(tip[0]-12,tip[1]+8,24,10,-.4,-2.8,.7);ctx.stroke();ctx.restore()}
  // Two legs and two arms, always. Feet rotate with the shin at contact.
  function leg(start,limb,front){
   const width=f.fighterId==='power'?20:f.fighterId==='acrobat'?13:15;
@@ -1606,7 +1739,7 @@ function fighter(f,t){
   const end=[limb.end[0]+Math.cos(angle)*10,limb.end[1]+Math.sin(angle)*10];rigLine([limb.end[0]-4,limb.end[1]],end,f.fighterId==='boxer'?10:7,'#182531');
   rigLine(limb.end,[limb.end[0]+5,limb.end[1]],3,r.trim);
  }
- leg(lhStart,leftLeg,false);leg(rhStart,rightLeg,true);
+ leg(leftLeg.start,leftLeg,false);leg(rightLeg.start,rightLeg,true);
  function arm(start,limb,front){
   const width=f.fighterId==='power'?16:f.fighterId==='acrobat'?9:12;
   rigLine(start,limb.joint,width,front?r.skin:'#916451');rigLine(limb.joint,limb.end,width*.83,front?r.skin:'#916451');
@@ -1614,7 +1747,7 @@ function fighter(f,t){
   const wrist=[limb.joint[0]+(limb.end[0]-limb.joint[0])*.78,limb.joint[1]+(limb.end[1]-limb.joint[1])*.78];rigLine(wrist,limb.end,width*.95,r.trim);
   rigDot(limb.end,f.fighterId==='boxer'?9:f.fighterId==='acrobat'?5:7,r.glove);rigDot([limb.end[0]+1,limb.end[1]-2],f.fighterId==='boxer'?4:2.5,'#ffffff33');
  }
- arm(p.ls,leftArm,false);
+ arm(leftArm.start,leftArm,false);
  const waist=[p.hip[0]+ux*13,p.hip[1]+uy*13];
  const side=(c,w,sign)=>[c[0]-uy*w*sign,c[1]+ux*w*sign];
  rigShape([side(p.chest,r.shoulder+2,-1),side(p.chest,r.shoulder+2,1),side(waist,r.waist,1),side(p.hip,r.hips,1),side(p.hip,r.hips,-1),side(waist,r.waist,-1)],r.skin);
@@ -1628,13 +1761,14 @@ function fighter(f,t){
   rigLine(side(p.chest,10,-1),side(waist,7,-1),3,r.trim);
  }else{
   // Chest and abdominal planes of the adult male athletes.
-  rigLine([p.chest[0]-8,p.chest[1]+7],[p.chest[0]+8,p.chest[1]+8],1.7,'#6a453955');
-  rigLine([p.chest[0]+ux*9,p.chest[1]+12],[waist[0],waist[1]-2],1.4,'#6a453955');
+  const plane=[p.chest[0]-ux*8,p.chest[1]-uy*8];
+  rigLine(side(plane,8,-1),side(plane,8,1),1.7,'#6a453955');
+  rigLine([p.chest[0]-ux*12,p.chest[1]-uy*12],waist,1.4,'#6a453955');
  }
  rigLine(side(p.hip,r.hips,-1),side(p.hip,r.hips,1),7,r.cloth);
  rigLine(side(p.hip,r.hips,-1),side(p.hip,r.hips,1),2.5,r.trim);
  if(f.fighterId==='kickboxer'){ctx.fillStyle=r.trim;ctx.font='900 8px system-ui';ctx.textAlign='center';ctx.fillText('BL',p.hip[0],p.hip[1]+2)}
- arm(p.rs,rightArm,true);
+ arm(rightArm.start,rightArm,true);
  const neck=[p.chest[0]+ux*12,p.chest[1]+uy*12];rigLine(neck,p.head,9,r.skin);
  if(f.fighterId==='acrobat'){
   // Ponytail follows a lagged beat, attack torque and hit recoil.
@@ -1649,12 +1783,13 @@ function fighter(f,t){
  ctx.restore();
  if(tier===5){ctx.save();ctx.globalAlpha=.45;ctx.strokeStyle=accent;ctx.lineWidth=1.5;for(let j=0;j<3;j++){const a=t/700+j*2.1;ctx.beginPath();ctx.arc(p.chest[0],p.chest[1]+15,48+j*6,a,a+.5);ctx.stroke()}ctx.restore()}
  if(f.finisher&&attack){ctx.fillStyle='#ffdda2';ctx.font='800 9px system-ui';ctx.textAlign='center';ctx.fillText(f.finisherName,0,-187)}
- ctx.restore();
+ ctx.restore();return skeleton;
 }
 
 function render(t){ctx.save();if(shake&&!photoStop)ctx.translate(rng(-shake,shake),rng(-shake,shake));bg();
  const poseT=photoStop&&t<photoStop.until?photoStop.pose:t;
  if(player&&enemy){fighter(player,poseT);fighter(enemy,poseT)}
+ if(RIG_DEBUG){ctx.restore();return;}
  renderSpecialFeedback(t);for(let p of particles){ctx.globalAlpha=clamp(p.life/p.total,0,1);ctx.fillStyle=p.col;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,2*Math.PI);ctx.fill()}
 for(let p of impacts){const a=clamp(p.life/p.total,0,1),progress=1-a;
 ctx.save();ctx.globalAlpha=a*.85;ctx.translate(p.x,p.y);ctx.strokeStyle=p.blocked?'#a6c2cf':p.low?'#a5ebca':'#ffe0aa';ctx.lineWidth=p.blocked?2:3+p.power;

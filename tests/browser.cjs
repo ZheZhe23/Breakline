@@ -36,6 +36,8 @@ const errors=[];let checks=0;
    assert.ok((await run('nextMusicIndex'))>before);assert.equal(await run('audio.state'),'running');checks+=2;
   }
 
+  await require('./kinematics.cjs')({page,run,artifactDir:process.env.ARTIFACT_DIR});
+
   // Exercise the real combo/action/update functions at exact transport beats.
   // Simulation stays inside one JS task, so RAF cannot race the state fixture.
   const combat=await run(`(()=>{
@@ -106,9 +108,8 @@ const errors=[];let checks=0;
     const f=makeFighter(false,.4,id);f.rhythm=(level-1)*20;f.action=kind;f.actionStart=1000;f.hitAt=1055;f.actionEnd=1800;f.actionVariant=level*3-3;f.downStart=1000;f.downUntil=2400;
     for(const t of [1000,1020,1055,1120,1320,1799]){
      const {p}=rigPose(f,t);for(const v of Object.values(p))check(v.every(Number.isFinite),'finite pose '+id+' '+kind);
-     const r=RIGS[id],limb=solveLimb(p.rs,p.rh,r.arm,r.forearm,[40,-90]);
-     check(Math.abs(Math.hypot(limb.joint[0]-p.rs[0],limb.joint[1]-p.rs[1])-r.arm)<.001,'upper arm length');
-     check(Math.abs(Math.hypot(limb.end[0]-limb.joint[0],limb.end[1]-limb.joint[1])-r.forearm)<.001,'forearm length');
+     const skeleton=buildFighterSkeleton(f,t),audit=measureFighterSkeleton(skeleton);
+     check(audit.valid,'all bones/joint limits '+id+' '+kind+': '+audit.violations.join(','));
      fighter(f,t);stats.poses++;
     }
    }
@@ -174,6 +175,7 @@ const errors=[];let checks=0;
   const renderTiming=await run(`(()=>{const samples=[];for(let i=0;i<120;i++){const begin=performance.now();render(gameClock()+i*16);samples.push(performance.now()-begin)}samples.sort((a,b)=>a-b);return {meanMs:samples.reduce((a,b)=>a+b,0)/samples.length,p95Ms:samples[114],dpr}})()`);
   console.log('Desktop Chromium render CPU timing:',renderTiming);
 
+  const integrity=await run('({...RIG_INTEGRITY})');assert.equal(integrity.violations,0);assert.ok(integrity.frames>0);console.log('Per-render runtime bone guard:',integrity);
   assert.deepEqual(errors,[]);console.log(`PASS: syntax and ${checks} transport/music/layout/touch checks; no browser exceptions.`);
  }finally{await browser.close();await new Promise(r=>server.close(r))}
 })().catch(e=>{console.error(e);process.exitCode=1});
