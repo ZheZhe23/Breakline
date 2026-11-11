@@ -1379,7 +1379,7 @@ function kbDrawRig(f,t){
   if(move==='spin'){
    // Full-turn silhouette: shoulders face away, supporting foot pivots, tucked knee
    // travels behind the fighter and finally whips through into the striking line.
-   const turnAt=Math.max(42,hitDelay*.27),chamberAt=Math.max(turnAt+35,hitDelay*.69);
+   const turnAt=isPower?Math.max(10,hitDelay*.27):Math.max(42,hitDelay*.27),chamberAt=isPower?Math.max(turnAt+9,hitDelay*.69):Math.max(turnAt+35,hitDelay*.69);
    frames=[[0,KB_BASE],[turnAt,KB_POSES.spinTurn],[chamberAt,KB_POSES.spinChamber],[hitDelay,KB_POSES.spinHit],
     [Math.max(hitDelay+45,endDelay*.78),KB_POSES.spinHit],[endDelay,KB_POSES.recoil],[endDelay+120,KB_BASE]];
   }else if(isPower){
