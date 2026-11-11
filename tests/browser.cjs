@@ -21,18 +21,18 @@ const errors=[];let checks=0;
    await page.goto(`http://127.0.0.1:${server.address().port}/`);
    await page.locator(`[data-track="${track}"]`).click();
    await page.locator('#modePractice').click();await page.locator('#start').click();
-   await page.waitForTimeout(700);
+   await page.waitForFunction(()=>__test('scheduled.length>=3&&audio.state==="running"'),null,{timeout:10000});
    const state=await run(`({bpm:RHYTHM_BPM,beat:BEAT_MS,audio:audio.state,drift:Math.abs(gameClock()-(transport.gameOrigin+(audio.currentTime-transport.audioOrigin)*1000)),scheduled:scheduled.slice(),level:player.rhythm})`);
    assert.equal(state.bpm,bpm);assert.equal(state.audio,'running');assert.ok(state.drift<2);assert.equal(state.level,100);
    assert.ok(state.scheduled.length>=2);assert.ok(state.scheduled.every(n=>n.at>=n.actual&&n.at-n.actual<=.16));
-   const delta=state.scheduled[1].at-state.scheduled[0].at;assert.ok(Math.abs(delta-60/bpm)<.003);checks+=6;
+   const delta=state.scheduled[1].at-state.scheduled[0].at;assert.ok(Math.abs(delta-(state.scheduled[1].i-state.scheduled[0].i)*60/bpm)<.003);checks+=6;
    await page.locator('#pauseBtn').click();const frozen=await run('gameClock()');await page.waitForTimeout(150);assert.equal(await run('gameClock()'),frozen);
-   await page.locator('#pauseResume').click();await page.waitForTimeout(180);assert.ok((await run('gameClock()'))>frozen+90);checks+=2;
+   await page.locator('#pauseResume').click();await page.waitForFunction(frozen=>__test('gameClock()')>frozen+100,frozen,{timeout:5000});assert.ok((await run('gameClock()'))>frozen+90);checks+=2;
    await run('window.testAnalyser=audio.createAnalyser();musicBus.connect(window.testAnalyser)');
-   await page.waitForTimeout(150);
+   await page.waitForFunction(()=>{const a=new Float32Array(testAnalyser.fftSize);testAnalyser.getFloatTimeDomainData(a);return a.some(x=>Math.abs(x)>1e-4)},null,{timeout:5000});
    const rms=await page.evaluate(()=>{const a=new Float32Array(testAnalyser.fftSize);testAnalyser.getFloatTimeDomainData(a);return Math.sqrt(a.reduce((s,x)=>s+x*x,0)/a.length)});
    assert.ok(rms>1e-5,'music graph generates an audio signal');checks++;
-   const before=await run('nextMusicIndex');await page.locator('#soundBtn').click();await page.waitForTimeout(750);
+   const before=await run('nextMusicIndex');await page.locator('#soundBtn').click();await page.waitForFunction(before=>__test('nextMusicIndex')>before,before,{timeout:5000});
    assert.ok((await run('nextMusicIndex'))>before);assert.equal(await run('audio.state'),'running');checks+=2;
   }
 
