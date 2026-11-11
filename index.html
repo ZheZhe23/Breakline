@@ -11,7 +11,7 @@
 #roundAlarm{position:absolute;inset:0;pointer-events:none;z-index:2;opacity:0;background:radial-gradient(ellipse at 50% 45%,transparent 30%,#cf282849 100%);mix-blend-mode:screen}#roundAlarm.active{animation:alarmBreath 1s ease-in-out infinite alternate}@keyframes alarmBreath{0%{opacity:.10}100%{opacity:.65}}#roundAlarm.critical{animation-duration:.48s}#roundAlarm.final{animation:none;opacity:.36}#app .brand small{font-variant-numeric:tabular-nums}#resultTitle{max-width:90vw}
 #fighterPicker,#postMatchFighter{border:1px solid #76948b66;background:#14252a99;padding:9px;border-radius:12px;margin:9px 0} .fighterChoices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:8px 0}.fighterBtn{min-width:0;border:1px solid #7b958b66;border-radius:9px;color:#d9e4dc;background:#1b3235;padding:10px 5px;font-size:11px;font-weight:800;cursor:pointer}.fighterBtn b{display:block;letter-spacing:.04em}.fighterBtn small{display:block;font-size:9px;font-weight:500;color:#abc0b5;margin-top:4px}.fighterBtn.selected{border-color:#f4d58c;background:#594d36;color:#ffebbb;box-shadow:0 0 10px #e2bc6333}#fighterDescription{color:#b7cfc0;font-size:11px;line-height:1.45}#postMatchFighter{width:min(390px,90vw)}
 #pauseBtn{position:absolute;z-index:7;right:12px;top:clamp(80px,12vh,126px);padding:7px 10px;border-radius:9px;border:1px solid #a0b6a17a;background:#152125e0;color:#f0ddae;font-size:17px;font-weight:900;cursor:pointer;letter-spacing:.06em}#pauseBtn span{font-size:10px;vertical-align:middle}#pauseBtn:active{background:#33413e}.pauseOverlay{position:absolute;inset:0;z-index:12;background:#0c151adb;display:none;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}.pauseOverlay.show{display:flex}.pauseBox{width:min(560px,96vw);max-height:min(92vh,750px);overflow:auto;background:#17292d;border:1px solid #8daba080;border-radius:16px;padding:20px;text-align:center;box-shadow:0 16px 80px #0009}.pauseBox h2{color:#f5dea4;font-size:26px;margin:0 0 15px}.pauseBox h3{color:#f4dea7;margin:0 0 8px}.pauseView{display:grid;gap:10px}.pauseAction{padding:13px;background:#293c40;border:1px solid #81968e;border-radius:10px;font-size:14px;font-weight:750;color:#e3eee6;cursor:pointer}.pauseAction.danger{color:#ffb1a3;border-color:#b96a61}.movesFighter{text-align:left;border:1px solid #6a88836a;border-radius:10px;margin-bottom:10px;padding:12px;background:#152126}.movesFighter h4{margin:0 0 5px;color:#f0d899}.movesFighter p{font-size:12px;color:#b5c7bb;margin:0 0 8px}.movesFighter .moveRow{display:flex;justify-content:space-between;gap:8px;padding:5px 0;border-top:1px solid #ffffff16;font-size:12px;color:#eef1e9}.movesFighter .moveRow span:first-child{font-weight:850;color:#fff0b9;min-width:75px}.movesFighter .moveRow em{color:#afc7bf;font-style:normal}#exitToMenu{margin-top:5px;font-size:12px;padding:10px 18px}
-</style></head><body><div id="app"><canvas id="game"></canvas><button id="pauseBtn" aria-label="Пауза">Ⅱ <span>ПАУЗА</span></button><div id="roundAlarm"></div><div id="hud"><div class="header"><div class="person"><div class="name"><span id="playerName">ТЫ · КИКБОКСЁР</span> <span class="scoreNumber" id="playerScore">0</span></div><div class="bar"><div class="fill" id="ph"></div></div><div class="balance rhythmFill"><div class="fill" id="pp"></div></div><div class="meter">ЗДОРОВЬЕ <span id="playerHP">500/500</span> / РИТМ</div></div><div class="brand">BREAKLINE<small>ВЕРСИЯ 3.9.0 · <span id="roundClock">01:00</span></small></div><div class="person right enemy"><div class="name" id="aiName">ПРОТИВНИК · ИИ</div><div class="scoreNumber" id="enemyScore">0</div><div class="bar"><div class="fill" id="eh"></div></div><div class="balance rhythmFill"><div class="fill" id="ep"></div></div><div class="meter">ЗДОРОВЬЕ <span id="enemyHP">500/500</span> / РИТМ</div></div></div></div><div id="clinchPanel" style="display:none"><div id="clinchLabel">ЗАХВАТ</div><div id="counterCircle" class="counterCircle"><span id="counterIcon">✊</span></div><div id="clinchTip">Жди светящегося круга</div></div><div id="distance">ДИСТАНЦИЯ: —</div><div id="rhythmLevelNotice" aria-live="polite"><span id="rhythmLevelNoticeTitle">УРОВЕНЬ 2</span><small id="rhythmLevelNoticeDetail">СВЕЧЕНИЕ ОТКРЫТО</small></div><div id="rhythmHud"><div class="rhythmTop"><span id="beatLabel">♪ 120 BPM</span><span id="rhythmGrade">ЛОВИ РИТМ</span><span id="flowLabel">ПОТОК · 0/5</span></div><div id="beatTrack"><div id="beatSlots"></div><div id="beatNeedle"></div></div><div id="rhythmPatternLabel">ЧЕТВЕРТИ · 1–2–3–4</div></div><div id="message"></div><div id="subtext"></div><button id="soundBtn">◖ ЗВУК: ВЫКЛ.</button><div id="help">РИТМ: точные попадания повышают энергию и очки. Комбинации у каждого бойца свои. Полная шкала = ПОТОК.</div><div id="comboHint">КОМБО: —</div><div id="streakScore">ЛУЧШАЯ СЕРИЯ ×0</div><div id="dirSelected">ПРИЁМ: ПРЯМОЙ</div><div id="controls"><div class="cluster"><div id="joystick" aria-label="Джойстик движения"><div class="lr"><span>‹</span><span>›</span></div><div id="stick"></div></div></div><div class="cluster right"><button class="ctl strong" id="heavy"><span>✹</span>НОГА<small>быстрый удар</small></button><button class="ctl grab" id="grab"><span>✊</span>БРОСОК<small>только вплотную</small></button><button class="ctl attack" id="attack"><span>✦</span>ЛЁГКИЙ<small>серия × 2</small></button></div></div><div id="intro"><div class="introInner"><h1>BREAKLINE</h1><p>Музыкальный файтинг: атака, присед, прыжок и захват в долю усиливают ритм. Полная шкала открывает режим ПОТОК.</p><div id="fighterPicker"><div class="difficultyTitle">ВЫБОР БОЙЦА</div><div id="fighterChoices" class="fighterChoices">
+</style></head><body><div id="app"><canvas id="game"></canvas><button id="pauseBtn" aria-label="Пауза">Ⅱ <span>ПАУЗА</span></button><div id="roundAlarm"></div><div id="hud"><div class="header"><div class="person"><div class="name"><span id="playerName">ТЫ · КИКБОКСЁР</span> <span class="scoreNumber" id="playerScore">0</span></div><div class="bar"><div class="fill" id="ph"></div></div><div class="balance rhythmFill"><div class="fill" id="pp"></div></div><div class="meter">ЗДОРОВЬЕ <span id="playerHP">500/500</span> / РИТМ</div></div><div class="brand">BREAKLINE<small>ВЕРСИЯ 3.9.1 · <span id="roundClock">01:00</span></small></div><div class="person right enemy"><div class="name" id="aiName">ПРОТИВНИК · ИИ</div><div class="scoreNumber" id="enemyScore">0</div><div class="bar"><div class="fill" id="eh"></div></div><div class="balance rhythmFill"><div class="fill" id="ep"></div></div><div class="meter">ЗДОРОВЬЕ <span id="enemyHP">500/500</span> / РИТМ</div></div></div></div><div id="clinchPanel" style="display:none"><div id="clinchLabel">ЗАХВАТ</div><div id="counterCircle" class="counterCircle"><span id="counterIcon">✊</span></div><div id="clinchTip">Жди светящегося круга</div></div><div id="distance">ДИСТАНЦИЯ: —</div><div id="rhythmLevelNotice" aria-live="polite"><span id="rhythmLevelNoticeTitle">УРОВЕНЬ 2</span><small id="rhythmLevelNoticeDetail">СВЕЧЕНИЕ ОТКРЫТО</small></div><div id="rhythmHud"><div class="rhythmTop"><span id="beatLabel">♪ 120 BPM</span><span id="rhythmGrade">ЛОВИ РИТМ</span><span id="flowLabel">ПОТОК · 0/5</span></div><div id="beatTrack"><div id="beatSlots"></div><div id="beatNeedle"></div></div><div id="rhythmPatternLabel">ЧЕТВЕРТИ · 1–2–3–4</div></div><div id="message"></div><div id="subtext"></div><button id="soundBtn">◖ ЗВУК: ВЫКЛ.</button><div id="help">РИТМ: точные попадания повышают энергию и очки. Комбинации у каждого бойца свои. Полная шкала = ПОТОК.</div><div id="comboHint">КОМБО: —</div><div id="streakScore">ЛУЧШАЯ СЕРИЯ ×0</div><div id="dirSelected">ПРИЁМ: ПРЯМОЙ</div><div id="controls"><div class="cluster"><div id="joystick" aria-label="Джойстик движения"><div class="lr"><span>‹</span><span>›</span></div><div id="stick"></div></div></div><div class="cluster right"><button class="ctl strong" id="heavy"><span>✹</span>НОГА<small>быстрый удар</small></button><button class="ctl grab" id="grab"><span>✊</span>БРОСОК<small>только вплотную</small></button><button class="ctl attack" id="attack"><span>✦</span>ЛЁГКИЙ<small>серия × 2</small></button></div></div><div id="intro"><div class="introInner"><h1>BREAKLINE</h1><p>Музыкальный файтинг: атака, присед, прыжок и захват в долю усиливают ритм. Полная шкала открывает режим ПОТОК.</p><div id="fighterPicker"><div class="difficultyTitle">ВЫБОР БОЙЦА</div><div id="fighterChoices" class="fighterChoices">
 <button class="fighterBtn" data-fighter="boxer"><b>БОКСЁР</b><small>Быстрые серии · 7 комбо</small></button>
 <button class="fighterBtn selected" data-fighter="kickboxer"><b>КИКБОКСЁР</b><small>Баланс рук и ног · 6 комбо</small></button>
 <button class="fighterBtn" data-fighter="power"><b>ТЯЖЕЛОВЕС</b><small>Мощные финалы · 4 комбо</small></button>
@@ -21,18 +21,19 @@
 <button class="fighterBtn" data-fighter="power"><b>ТЯЖЕЛОВЕС</b></button><button class="fighterBtn" data-fighter="acrobat"><b>АКРОБАТ</b></button></div></div><div id="postMatchDifficulty"><div class="difficultyTitle">СЛОЖНОСТЬ СЛЕДУЮЩЕГО БОЯ</div><div class="difficultyChoices"><button class="difficultyBtn selected" data-difficulty="easy">ЛЁГКАЯ<small>Четверти</small></button><button class="difficultyBtn" data-difficulty="medium">СРЕДНЯЯ<small>Восьмые</small></button><button class="difficultyBtn" data-difficulty="hard">СЛОЖНАЯ<small>Рисунок мелодии</small></button></div></div><button class="mainBtn" id="restart">ЕЩЁ ОДНА ДУЭЛЬ</button><button class="pauseAction" id="exitToMenu">ВЫЙТИ К ВЫБОРУ БОЙЦА</button></div></div><script>
 (()=>{'use strict';const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');let W=0,H=0,dpr=1,now=0,last=0,started=false,ended=false,round=0,shake=0,particles=[],impacts=[],logs=[],audio=null,sound=false;const $=id=>document.getElementById(id);let player,enemy,clinch=null,clinchSeq=0,selectedFighter='kickboxer';let paused=false,pauseStarted=0,pausedTotal=0,gameTimeNow=0;
 function gameClock(){return paused?gameTimeNow:performance.now()-pausedTotal}let selectedDir='neutral',selectedAt=0;const heldDirs=[];let joyX=0,joyY=0,joyPointer=null;let stanceEvents=[];let jumpLatch=false;let jumpQueuedUntil=0;
-const GAME_VERSION='3.9.0';
+const GAME_VERSION='3.9.1';
 const RHYTHM_BPM=120,BEAT_MS=60000/RHYTHM_BPM;
 // Combo inputs are timed in quarter-notes so the window scales with any song BPM.
 const COMBO_WINDOW_BEATS=1.25;
 function comboWindowMs(){return COMBO_WINDOW_BEATS*BEAT_MS}
 let rhythmStart=0,rhythmNextIndex=0,roundStart=0,roundDuration=60000,roundBars=30,finale=null,lastAlarmBar=-1;
 let rhythmDifficulty='easy',shownRhythmBar=-1;
-const SPECIAL_COMMAND_BEATS=1.6;
+const SPECIAL_COMMAND_BEATS=2.5;
+const SPECIAL_FINISH_BEATS=1.1;
 const SPECIALS={
- upper:{name:'ВЗРЫВНОЙ АППЕРКОТ',kind:'light',motion:['down','downForward','forward'],cost:15,range:.225,damage:21,recovery:.63},
+ upper:{name:'ВЗРЫВНОЙ АППЕРКОТ',kind:'light',motion:['down','forward'],cost:15,range:.225,damage:21,recovery:.63},
  knee:{name:'ЛЕТЯЩЕЕ КОЛЕНО',kind:'heavy',motion:['forward','neutral','forward'],cost:25,range:.34,damage:25,recovery:.96},
- spin:{name:'ОБРАТНАЯ ВЕРТУШКА',kind:'heavy',motion:['down','downBack','back'],cost:25,range:.33,damage:26,recovery:1.10},
+ spin:{name:'ОБРАТНАЯ ВЕРТУШКА',kind:'heavy',motion:['down','back'],cost:25,range:.33,damage:26,recovery:1.10},
  counter:{name:'ВСТРЕЧНЫЙ УДАР',kind:'light',motion:['back','forward'],cost:15,range:.255,damage:20,recovery:.65}
 };
 let motionHistory=[];
@@ -44,18 +45,32 @@ function motionStep(dir,t){
 }
 function matchMotion(pattern,t){
  const history=motionHistory.filter(e=>t-e.t<=SPECIAL_COMMAND_BEATS*BEAT_MS);
- // The final direction must still be actively held: old gestures cannot trigger on a later attack.
- if(!history.length||history.at(-1).dir!==pattern.at(-1)||t-history.at(-1).t>BEAT_MS*.75)return false;
- let i=pattern.length-1;
- for(let j=history.length-1;j>=0&&i>=0;j--){if(history[j].dir===pattern[i])i--;}
- return i<0;
+ if(!history.length)return false;
+ // Releasing the joystick is allowed. The ending direction must have been reached recently.
+ const end=history.findLastIndex(e=>e.dir===pattern.at(-1)&&t-e.t<=SPECIAL_FINISH_BEATS*BEAT_MS);
+ if(end<0)return false;
+ let i=pattern.length-2;
+ let earliest=history[end].t;
+ for(let j=end-1;j>=0&&i>=0;j--){
+  if(history[j].dir===pattern[i]){earliest=history[j].t;i--;}
+ }
+ if(i>=0||history[end].t-earliest>SPECIAL_COMMAND_BEATS*BEAT_MS)return false;
+ // Double-forward requires a genuine release between the taps.
+ if(pattern.length===3&&pattern[0]==='forward'){
+  const sequence=history.slice(0,end+1);
+  return sequence.some((e,j)=>e.dir==='forward'&&sequence.slice(j+1,-1).some(mid=>mid.dir==='neutral'));
+ }
+ return true;
+}
+function readySpecial(kind,t){
+ return Object.entries(SPECIALS).find(([,spec])=>spec.kind===kind&&matchMotion(spec.motion,t));
 }
 function trySpecial(kind,t){
  if(!started||ended||paused||!player||player.fighterId!=='kickboxer'||flowOn(player,t)||clinch)return false;
  const f=player;
  if(f.action!=='idle'||t<f.stunnedUntil||t<f.recoveryUntil||t<f.cooldown||t<f.jumpUntil||t<f.landingRecoverUntil||t<f.jumpPendingAt)return false;
  // A recognized motion consumes the next attack, but does not modify existing combos.
- const entry=Object.entries(SPECIALS).find(([,v])=>v.kind===kind&&matchMotion(v.motion,t));
+ const entry=readySpecial(kind,t);
  if(!entry)return false;
  const [id,spec]=entry;
  if(f.rhythm<spec.cost){setMessage('НЕДОСТАТОЧНО ЭНЕРГИИ',spec.name+' · нужно '+spec.cost,650);motionHistory=[];return true}
@@ -1003,6 +1018,12 @@ if(enemy.readAttackId!==player.actionStart){enemy.readAttackId=player.actionStar
 if(!enemy.readHandled&&t>=enemy.readAt){enemy.readHandled=true;if(Math.random()<(enemy.aiStyle==='counter'?.84:enemy.aiStyle==='aggressor'?.43:.79)){enemy.guard=true;enemy.guardAt=t;enemy.nextThink=t+550;setMessage('ПРОТИВНИК ЧИТАЕТ СЕРИЮ','Чередуй руку и ногу, захват или уход',570)}}
 }
 function update(t,dt){if(paused||!started)return;
+ // Show a valid command before the attack button is pressed, even during stance recovery.
+ if(player&&player.fighterId==='kickboxer'&&!ended){
+  const ready=readySpecial('light',t)||readySpecial('heavy',t);
+  if(ready){$('dirSelected').textContent='СПЕЦ ГОТОВ: '+ready[1].name+' · '+(ready[1].kind==='light'?'РУКА':'НОГА');}
+  else $('dirSelected').textContent='ПРИЁМ: '+(DIR_NAMES[selectedDir]||selectedDir);
+ }
  if(ended){updateFinale(t);return}
  const remain=Math.max(0,roundDuration-(t-roundStart));
  $('roundClock').textContent=String(Math.floor(remain/60000)).padStart(2,'0')+':'+String(Math.floor(remain%60000/1000)).padStart(2,'0');
