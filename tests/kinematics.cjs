@@ -52,7 +52,7 @@ module.exports=async function checkKinematics({page,run,artifactDir}){
       for(const sample of audit.samples){const key=c.id+'.'+sample.name;result.maxByBone[key]=Math.max(result.maxByBone[key]||0,sample.relativeError);}
       result.poses++;result.segments+=audit.samples.length;result.maxRelativeLengthError=Math.max(result.maxRelativeLengthError,audit.maxRelativeError);
       if(previous){
-       for(let j=0;j<8;j++)result.maxFrameLengthChange=Math.max(result.maxFrameLengthChange,Math.abs(audit.samples[j].actual/previous.audit.samples[j].actual-1));
+       for(let j=0;j<audit.samples.length;j++)result.maxFrameLengthChange=Math.max(result.maxFrameLengthChange,Math.abs(audit.samples[j].actual/previous.audit.samples[j].actual-1));
        if(t-previous.t<=4.01&&f.action===previous.action){
         for(const key of Object.keys(skeleton.limbs)){
          const a=skeleton.limbs[key],b=previous.skeleton.limbs[key];
@@ -96,7 +96,7 @@ module.exports=async function checkKinematics({page,run,artifactDir}){
   await page.setViewportSize({width,height});
   const result=await run(`(()=>{
    const saved={paused,dpr,BEAT_MS,rhythmStart};paused=true;dpr=${density};canvas.width=W*dpr;canvas.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);
-   const oldBuild=buildFighterSkeleton,oldLine=rigLine;let current=null,seen=new Map(),measuring=false;
+   const oldBuild=buildFighterSkeleton,oldLine=rigLine,oldShape=rigShape;let current=null,seen=new Map(),measuring=false;
    let renderedSegments=0,maxScreenError=0;const failures=[];
    buildFighterSkeleton=(f,t)=>{current=oldBuild(f,t);return current};
    rigLine=(a,b,...rest)=>{
@@ -108,6 +108,17 @@ module.exports=async function checkKinematics({page,run,artifactDir}){
       if(!Number.isFinite(error)||error>1e-6)failures.push(bone.name+' rendered relative error '+error);
      }
     }oldLine(a,b,...rest);
+   };
+   rigShape=(points,color)=>{
+    if(measuring&&current&&points.length===8&&color===current.rig.skin){
+     const center=(i,j)=>[(points[i][0]+points[j][0])/2,(points[i][1]+points[j][1])/2];
+     const nodes=[center(4,5),center(3,6),center(2,7),center(0,1)],names=['spine.pelvis','spine.lumbar','spine.thorax'];
+     for(let i=0;i<3;i++)if(!seen.has(names[i])){
+      const a=nodes[i],b=nodes[i+1],m=ctx.getTransform(),dx=b[0]-a[0],dy=b[1]-a[1];
+      const actual=Math.hypot(m.a*dx+m.c*dy,m.b*dx+m.d*dy),expected=current.rig[RIG_SEGMENTS[names[i]]]*clamp(Math.min(W/650,H/470),.82,1.3)*dpr,error=Math.abs(actual/expected-1);
+      maxScreenError=Math.max(maxScreenError,error);renderedSegments++;seen.set(names[i],true);if(error>1e-6)failures.push(names[i]+' torso mesh error '+error);
+     }
+    }oldShape(points,color);
    };
    try{
     BEAT_MS=500;rhythmStart=500;
@@ -123,11 +134,11 @@ module.exports=async function checkKinematics({page,run,artifactDir}){
       // Includes extension, contact, return, body turn midpoint and late rotation.
       for(const t of [1000,1013,1027,1041,1055,1069,1083,1110,1240,1517,1799]){
        ctx.clearRect(0,0,W,H);seen=new Map();measuring=true;fighter(f,t);measuring=false;
-       if(seen.size!==8)failures.push(id+'/'+f.action+': renderer did not draw all eight bones');
+       if(seen.size!==Object.keys(RIG_SEGMENTS).length)failures.push(id+'/'+f.action+': renderer did not draw all anatomy bones');
       }
      }
     }
-   }finally{buildFighterSkeleton=oldBuild;rigLine=oldLine;paused=saved.paused;dpr=saved.dpr;BEAT_MS=saved.BEAT_MS;rhythmStart=saved.rhythmStart;resize()}
+   }finally{buildFighterSkeleton=oldBuild;rigLine=oldLine;rigShape=oldShape;paused=saved.paused;dpr=saved.dpr;BEAT_MS=saved.BEAT_MS;rhythmStart=saved.rhythmStart;resize()}
    return {viewport:[W,H],density:${density},renderedSegments,maxScreenError,failures:failures.slice(0,12)};
   })()`);
   assert.deepEqual(result.failures,[]);assert.deepEqual(result.viewport,[width,height]);screen.push(result);

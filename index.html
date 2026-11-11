@@ -47,12 +47,13 @@
 }
 @media(prefers-reduced-motion:reduce){#roundAlarm.active{animation:none;opacity:.15}.trackBtn{box-shadow:none}}
 
-</style></head><body><div id="app"><canvas id="game"></canvas><button id="pauseBtn" aria-label="Пауза">Ⅱ <span>ПАУЗА</span></button><div id="roundAlarm"></div><div id="hud"><div class="header"><div class="person"><div class="name"><span id="playerName">ТЫ · КИКБОКСЁР</span> <span class="scoreNumber" id="playerScore">0</span></div><div class="bar"><div class="fill" id="ph"></div></div><div class="balance rhythmFill"><div class="fill" id="pp"></div></div><div class="meter">ЗДОРОВЬЕ <span id="playerHP">500/500</span></div></div><div class="brand">BREAKLINE<small>ВЕРСИЯ 3.12.0 · <span id="roundClock">01:00</span></small></div><div class="person right enemy"><div class="name"><span id="aiName">ПРОТИВНИК · ИИ</span><span class="scoreNumber" id="enemyScore">0</span></div><div class="bar"><div class="fill" id="eh"></div></div><div class="balance rhythmFill"><div class="fill" id="ep"></div></div><div class="meter">ЗДОРОВЬЕ <span id="enemyHP">500/500</span></div></div></div></div><div id="clinchPanel" style="display:none"><div id="clinchLabel">ЗАХВАТ</div><div id="counterCircle" class="counterCircle"><span id="counterIcon">✊</span></div><div id="clinchTip">Жди светящегося круга</div></div><div id="distance">ДИСТАНЦИЯ: —</div><div id="rhythmLevelNotice" aria-live="polite"><span id="rhythmLevelNoticeTitle">УРОВЕНЬ 2</span><small id="rhythmLevelNoticeDetail">СВЕЧЕНИЕ ОТКРЫТО</small></div><div id="rhythmHud"><div class="rhythmTop"><span id="beatLabel">♪ 120 BPM</span><span id="rhythmGrade">ЛОВИ РИТМ</span><span id="flowLabel">ПОТОК · 0/5</span></div><div id="beatTrack"><div id="beatSlots"></div><div id="beatNeedle"></div></div><div id="rhythmPatternLabel">ЧЕТВЕРТИ · 1–2–3–4</div></div><div id="message"></div><div id="subtext"></div><div id="specialBanner" aria-live="polite"><strong>✦ СПЕЦПРИЁМ!</strong><span id="specialBannerName"></span></div><button id="soundBtn" title="Включить или выключить звук" aria-pressed="false">◖ ЗВУК: ВЫКЛ.</button><div id="help">РИТМ: точные попадания повышают энергию и очки. Комбинации у каждого бойца свои. Полная шкала = ПОТОК.</div><div id="comboHint">КОМБО: —</div><div id="streakScore">ЛУЧШАЯ СЕРИЯ ×0</div><div id="dirSelected">ПРИЁМ: ПРЯМОЙ</div><div id="controls"><div class="cluster"><div id="joystick" aria-label="Джойстик движения"><div class="lr"><span>‹</span><span>›</span></div><div id="stick"></div></div></div><div class="cluster right"><button class="ctl strong" id="heavy"><span>✹</span>НОГА<small>быстрый удар</small></button><button class="ctl grab" id="grab"><span>✊</span>БРОСОК<small>только вплотную</small></button><button class="ctl attack" id="attack"><span>✦</span>РУКА<small>комбо в ритм</small></button></div></div><div id="intro"><div class="introInner"><h1>BREAKLINE</h1><p>Музыкальный файтинг: атака, присед, прыжок и захват в долю усиливают ритм. Полная шкала открывает режим ПОТОК.</p><div id="fighterPicker"><div class="difficultyTitle">ВЫБОР БОЙЦА</div><div id="fighterChoices" class="fighterChoices">
+#animationLab{border:1px solid #72968d;padding:12px;border-radius:10px;text-align:left}#animationLab label{display:grid;gap:6px;margin:8px 0;color:#c4d9ce;font-size:10px}#animationLab select{min-height:44px;background:#213a3d;color:#f2e2b9;border:1px solid #799789;border-radius:7px;padding:8px;font:inherit;font-size:12px}.animationLabActions{display:flex;gap:5px;flex-wrap:wrap}.animationLabActions button{min-height:44px;flex:1;font-size:10px;padding:8px}#animationReadout{font-size:10px;line-height:1.4;color:#dddbc1}
+</style></head><body><div id="app"><canvas id="game"></canvas><button id="pauseBtn" aria-label="Пауза">Ⅱ <span>ПАУЗА</span></button><div id="roundAlarm"></div><div id="hud"><div class="header"><div class="person"><div class="name"><span id="playerName">ТЫ · КИКБОКСЁР</span> <span class="scoreNumber" id="playerScore">0</span></div><div class="bar"><div class="fill" id="ph"></div></div><div class="balance rhythmFill"><div class="fill" id="pp"></div></div><div class="meter">ЗДОРОВЬЕ <span id="playerHP">500/500</span></div></div><div class="brand">BREAKLINE<small>ВЕРСИЯ 3.13.0 · <span id="roundClock">01:00</span></small></div><div class="person right enemy"><div class="name"><span id="aiName">ПРОТИВНИК · ИИ</span><span class="scoreNumber" id="enemyScore">0</span></div><div class="bar"><div class="fill" id="eh"></div></div><div class="balance rhythmFill"><div class="fill" id="ep"></div></div><div class="meter">ЗДОРОВЬЕ <span id="enemyHP">500/500</span></div></div></div></div><div id="clinchPanel" style="display:none"><div id="clinchLabel">ЗАХВАТ</div><div id="counterCircle" class="counterCircle"><span id="counterIcon">✊</span></div><div id="clinchTip">Жди светящегося круга</div></div><div id="distance">ДИСТАНЦИЯ: —</div><div id="rhythmLevelNotice" aria-live="polite"><span id="rhythmLevelNoticeTitle">УРОВЕНЬ 2</span><small id="rhythmLevelNoticeDetail">СВЕЧЕНИЕ ОТКРЫТО</small></div><div id="rhythmHud"><div class="rhythmTop"><span id="beatLabel">♪ 120 BPM</span><span id="rhythmGrade">ЛОВИ РИТМ</span><span id="flowLabel">ПОТОК · 0/5</span></div><div id="beatTrack"><div id="beatSlots"></div><div id="beatNeedle"></div></div><div id="rhythmPatternLabel">ЧЕТВЕРТИ · 1–2–3–4</div></div><div id="message"></div><div id="subtext"></div><div id="specialBanner" aria-live="polite"><strong>✦ СПЕЦПРИЁМ!</strong><span id="specialBannerName"></span></div><button id="soundBtn" title="Включить или выключить звук" aria-pressed="false">◖ ЗВУК: ВЫКЛ.</button><div id="help">РИТМ: точные попадания повышают энергию и очки. Комбинации у каждого бойца свои. Полная шкала = ПОТОК.</div><div id="comboHint">КОМБО: —</div><div id="streakScore">ЛУЧШАЯ СЕРИЯ ×0</div><div id="dirSelected">ПРИЁМ: ПРЯМОЙ</div><div id="controls"><div class="cluster"><div id="joystick" aria-label="Джойстик движения"><div class="lr"><span>‹</span><span>›</span></div><div id="stick"></div></div></div><div class="cluster right"><button class="ctl strong" id="heavy"><span>✹</span>НОГА<small>быстрый удар</small></button><button class="ctl grab" id="grab"><span>✊</span>БРОСОК<small>только вплотную</small></button><button class="ctl attack" id="attack"><span>✦</span>РУКА<small>комбо в ритм</small></button></div></div><div id="intro"><div class="introInner"><h1>BREAKLINE</h1><p>Музыкальный файтинг: атака, присед, прыжок и захват в долю усиливают ритм. Полная шкала открывает режим ПОТОК.</p><div id="fighterPicker"><div class="difficultyTitle">ВЫБОР БОЙЦА</div><div id="fighterChoices" class="fighterChoices">
 <button class="fighterBtn" data-fighter="boxer"><b>БОКСЁР</b><small>Быстрые серии · 7 комбо</small></button>
 <button class="fighterBtn selected" data-fighter="kickboxer"><b>КИКБОКСЁР</b><small>Баланс рук и ног · 6 комбо</small></button>
 <button class="fighterBtn" data-fighter="power"><b>ТЯЖЕЛОВЕС</b><small>Мощные финалы · 4 комбо</small></button>
 <button class="fighterBtn" data-fighter="acrobat"><b>АКРОБАТКА</b><small>Длинные серии · 5 комбо</small></button>
-</div><div id="fighterDescription">Универсальный стиль с чередованием рук и ног.</div></div><section id="trackPicker" aria-label="Выбор музыки и арены"><div class="difficultyTitle">МУЗЫКА И АРЕНА</div><div class="trackChoices"><button class="trackBtn selected" data-track="neon" aria-pressed="true"><b>NEON PULSE</b><small>120 BPM · Synthwave</small></button><button class="trackBtn" data-track="terrace" aria-pressed="false"><b>AMBER STEPS</b><small>100 BPM · Broken beat</small></button><button class="trackBtn" data-track="orbit" aria-pressed="false"><b>ION DRIVE</b><small>140 BPM · Electro dance</small></button></div><p id="trackDescription">Synthwave · 120 BPM · Неоновый док</p></section><div id="difficultyPicker"><div class="difficultyTitle">СЛОЖНОСТЬ РИТМА</div><div class="difficultyChoices"><button class="difficultyBtn selected" data-difficulty="easy">ЛЁГКАЯ<small>Четверти</small></button><button class="difficultyBtn" data-difficulty="medium">СРЕДНЯЯ<small>Вставки восьмых</small></button><button class="difficultyBtn" data-difficulty="hard">СЛОЖНАЯ<small>Рисунок мелодии</small></button></div><div id="difficultyDescription">Стабильные четыре точки действия в каждом такте.</div></div><details class="introGuide"><summary>УПРАВЛЕНИЕ И РИТМ</summary><div class="tips"><div class="tip"><b>ДЖОЙСТИК</b> — влево/вправо ходьба, вниз присесть, вверх прыгнуть. Диагональ вверх — прыжок с перемещением.</div><div class="tip"><b>ТРИ ПОЗИЦИИ</b> — стойка сбивает прыжок, присед атакует стойку, прыжок пробивает присед. Переходы имеют небольшую задержку.</div><div class="tip"><b>КОМБО</b> — наборы индивидуальны для каждого бойца. Р = рука, Н = нога. Точные последовательности зависят от выбранного стиля.</div><div class="tip"><b>ПОТОК</b> — играй в бит, заполни шкалу ритма, чтобы временно усилить урон и ускорить действия.</div></div></details><div class="difficultyTitle" style="margin-top:10px">РЕЖИМ ИГРЫ</div><div class="difficultyChoices" style="grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:10px"><button id="modeDuel" class="difficultyBtn selected" type="button">ДУЭЛЬ<small>60 секунд · соперник с ИИ</small></button><button id="modePractice" class="difficultyBtn" type="button">ТРЕНИРОВКА<small>∞ время · 100% энергии</small></button></div><button class="mainBtn" id="start">НАЧАТЬ ДУЭЛЬ</button><p class="mini">Работает прямо в браузере · Сенсор / клавиатура: J — рука, K — нога, I — бросок, стрелки — движение, Esc — пауза</p><p class="mini">Вокальные эффекты: EZduzziteh / OpenGameArt, CC0. Для воспроизведения требуется интернет.</p></div></div><div id="pauseOverlay" class="pauseOverlay"><div class="pauseBox"><h2>ПАУЗА</h2><div id="pauseViewMenu" class="pauseView"><button id="pauseResume" class="mainBtn">ПРОДОЛЖИТЬ БОЙ</button><button id="pauseMoves" class="pauseAction">ПРИЁМЫ БОЙЦОВ</button><div id="practicePauseDifficulty" style="display:none"><div class="difficultyTitle">СЛОЖНОСТЬ РИТМА В ТРЕНИРОВКЕ</div><div class="difficultyChoices"><button class="difficultyBtn selected" data-difficulty="easy">ЛЁГКАЯ</button><button class="difficultyBtn" data-difficulty="medium">СРЕДНЯЯ</button><button class="difficultyBtn" data-difficulty="hard">СЛОЖНАЯ</button></div></div><button id="pauseForfeit" class="pauseAction danger">СДАТЬСЯ И ВЫЙТИ</button></div><div id="pauseViewMoves" class="pauseView" style="display:none"><h3>КОМБИНАЦИИ И ПРИЁМЫ</h3><div id="movesBook"></div><button id="pauseBack" class="mainBtn">НАЗАД</button></div></div></div><div id="restartOverlay"><div id="resultTitle"></div><div id="resultInfo"></div><div id="postMatchFighter"><div class="difficultyTitle">БОЕЦ СЛЕДУЮЩЕГО РАУНДА</div><div class="fighterChoices">
+</div><div id="fighterDescription">Универсальный стиль с чередованием рук и ног.</div></div><section id="trackPicker" aria-label="Выбор музыки и арены"><div class="difficultyTitle">МУЗЫКА И АРЕНА</div><div class="trackChoices"><button class="trackBtn selected" data-track="neon" aria-pressed="true"><b>NEON PULSE</b><small>120 BPM · Synthwave</small></button><button class="trackBtn" data-track="terrace" aria-pressed="false"><b>AMBER STEPS</b><small>100 BPM · Broken beat</small></button><button class="trackBtn" data-track="orbit" aria-pressed="false"><b>ION DRIVE</b><small>140 BPM · Electro dance</small></button></div><p id="trackDescription">Synthwave · 120 BPM · Неоновый док</p></section><div id="difficultyPicker"><div class="difficultyTitle">СЛОЖНОСТЬ РИТМА</div><div class="difficultyChoices"><button class="difficultyBtn selected" data-difficulty="easy">ЛЁГКАЯ<small>Четверти</small></button><button class="difficultyBtn" data-difficulty="medium">СРЕДНЯЯ<small>Вставки восьмых</small></button><button class="difficultyBtn" data-difficulty="hard">СЛОЖНАЯ<small>Рисунок мелодии</small></button></div><div id="difficultyDescription">Стабильные четыре точки действия в каждом такте.</div></div><details class="introGuide"><summary>УПРАВЛЕНИЕ И РИТМ</summary><div class="tips"><div class="tip"><b>ДЖОЙСТИК</b> — влево/вправо ходьба, вниз присесть, вверх прыгнуть. Диагональ вверх — прыжок с перемещением.</div><div class="tip"><b>ТРИ ПОЗИЦИИ</b> — стойка сбивает прыжок, присед атакует стойку, прыжок пробивает присед. Переходы имеют небольшую задержку.</div><div class="tip"><b>КОМБО</b> — наборы индивидуальны для каждого бойца. Р = рука, Н = нога. Точные последовательности зависят от выбранного стиля.</div><div class="tip"><b>ПОТОК</b> — играй в бит, заполни шкалу ритма, чтобы временно усилить урон и ускорить действия.</div></div></details><div class="difficultyTitle" style="margin-top:10px">РЕЖИМ ИГРЫ</div><div class="difficultyChoices" style="grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:10px"><button id="modeDuel" class="difficultyBtn selected" type="button">ДУЭЛЬ<small>60 секунд · соперник с ИИ</small></button><button id="modePractice" class="difficultyBtn" type="button">ТРЕНИРОВКА<small>∞ время · выбор уровня</small></button></div><button class="mainBtn" id="start">НАЧАТЬ ДУЭЛЬ</button><p class="mini">Работает прямо в браузере · Сенсор / клавиатура: J — рука, K — нога, I — бросок, стрелки — движение, Esc — пауза</p><p class="mini">Вокальные эффекты: EZduzziteh / OpenGameArt, CC0. Для воспроизведения требуется интернет.</p></div></div><div id="pauseOverlay" class="pauseOverlay"><div class="pauseBox"><h2>ПАУЗА</h2><div id="pauseViewMenu" class="pauseView"><button id="pauseResume" class="mainBtn">ПРОДОЛЖИТЬ БОЙ</button><button id="pauseMoves" class="pauseAction">ПРИЁМЫ БОЙЦОВ</button><div id="practicePauseDifficulty" style="display:none"><div class="difficultyTitle">СЛОЖНОСТЬ РИТМА В ТРЕНИРОВКЕ</div><div class="difficultyChoices"><button class="difficultyBtn selected" data-difficulty="easy">ЛЁГКАЯ</button><button class="difficultyBtn" data-difficulty="medium">СРЕДНЯЯ</button><button class="difficultyBtn" data-difficulty="hard">СЛОЖНАЯ</button></div></div><section id="animationLab" style="display:none"><h3>АНИМАЦИИ · ТРЕНИРОВКА</h3><label>УРОВЕНЬ ЭНЕРГИИ<select id="practiceLevel"><option value="1">1 · 1 вариант</option><option value="2">2 · 3 варианта</option><option value="3">3 · 5 вариантов</option><option value="4">4 · 9 вариантов</option><option value="5" selected>5 · 15 вариантов</option></select></label><label>ВАРИАНТ<select id="practiceVariant"><option value="-1">Автоматический выбор</option></select></label><p id="animationReadout"></p><div class="animationLabActions"><button class="pauseAction" id="animationNext">СЛЕДУЮЩИЙ</button><button class="pauseAction" data-preview="light">▶ РУКА</button><button class="pauseAction" data-preview="heavy">▶ НОГА</button></div><p class="mini">Просмотр начнётся после восстановления на музыкальной доле.</p></section><button id="pauseForfeit" class="pauseAction danger">СДАТЬСЯ И ВЫЙТИ</button></div><div id="pauseViewMoves" class="pauseView" style="display:none"><h3>КОМБИНАЦИИ И ПРИЁМЫ</h3><div id="movesBook"></div><button id="pauseBack" class="mainBtn">НАЗАД</button></div></div></div><div id="restartOverlay"><div id="resultTitle"></div><div id="resultInfo"></div><div id="postMatchFighter"><div class="difficultyTitle">БОЕЦ СЛЕДУЮЩЕГО РАУНДА</div><div class="fighterChoices">
 <button class="fighterBtn" data-fighter="boxer"><b>БОКСЁР</b></button><button class="fighterBtn selected" data-fighter="kickboxer"><b>КИКБОКСЁР</b></button>
 <button class="fighterBtn" data-fighter="power"><b>ТЯЖЕЛОВЕС</b></button><button class="fighterBtn" data-fighter="acrobat"><b>АКРОБАТКА</b></button></div></div><div id="postMatchDifficulty"><div class="difficultyTitle">СЛОЖНОСТЬ СЛЕДУЮЩЕГО БОЯ</div><div class="difficultyChoices"><button class="difficultyBtn selected" data-difficulty="easy">ЛЁГКАЯ<small>Четверти</small></button><button class="difficultyBtn" data-difficulty="medium">СРЕДНЯЯ<small>Восьмые</small></button><button class="difficultyBtn" data-difficulty="hard">СЛОЖНАЯ<small>Рисунок мелодии</small></button></div></div><button class="mainBtn" id="restart">ЕЩЁ ОДНА ДУЭЛЬ</button><button class="pauseAction" id="exitToMenu">ВЫЙТИ К ВЫБОРУ БОЙЦА</button></div></div><script>
 (()=>{'use strict';const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');let W=0,H=0,dpr=1,now=0,last=0,started=false,ended=false,round=0,shake=0,particles=[],impacts=[],logs=[],audio=null,sound=false;const $=id=>document.getElementById(id);let player,enemy,clinch=null,clinchSeq=0,selectedFighter='kickboxer';let paused=false,pauseStarted=0,pausedTotal=0,gameTimeNow=0;
@@ -66,7 +67,7 @@ function initTransport(){
  }catch(e){transport=null}
 }
 let selectedDir='neutral',selectedAt=0;const heldDirs=[];let joyX=0,joyY=0,joyPointer=null;let stanceEvents=[];let jumpLatch=false;let jumpQueuedUntil=0;
-const GAME_VERSION='3.12.0';
+const GAME_VERSION='3.13.0';
 const TRACKS={
  neon:{title:'NEON PULSE',genre:'Synthwave',bpm:120,arena:'Неоновый док',root:55,wave:'sawtooth',sky:['#090e26','#293354'],floor:'#111a32',accent:'#55e4dd',warm:'#ff79b9',
  phrases:[{name:'A',slots:[0,4,6,8,10,14],notes:[4,5,4,2,0,2]},{name:'B',slots:[0,2,4,8,11,12,14],notes:[2,4,5,7,5,4,2]},{name:'C',slots:[0,3,4,7,8,12,14],notes:[7,5,4,5,2,0,2]},{name:'D',slots:[0,2,5,8,10,12,14],notes:[4,2,0,2,4,5,7]}]},
@@ -89,6 +90,7 @@ const COMBO_WINDOW_BEATS=1.25;
 function comboWindowMs(){return COMBO_WINDOW_BEATS*BEAT_MS}
 let rhythmStart=0,rhythmNextIndex=0,roundStart=0,roundDuration=60000,roundBars=30,finale=null,lastAlarmBar=-1;
 let rhythmDifficulty='easy',shownRhythmBar=-1;
+let practiceLevel=5,practiceVariant=-1,practicePreview=null;
 let practiceMode=false; // Chosen in the intro menu; normal duel mechanics are unchanged.
 let photoStop=null,photoAccent=null;
 const SPECIAL_COMMAND_BEATS=2.5;
@@ -233,7 +235,7 @@ function syncVisualLevel(f,t,notify=true){
  }
  f.visualLevel=current;
 }
-function chooseAnimation(f,kind){const count=ANIMATION_COUNTS[Math.max(0,rhythmLevel(f)-1)];const previous=f.actionVariant;f.actionVariant=count===1?0:(previous+1+Math.floor(Math.random()*(count-1)))%count;f.animationSeed=(f.animationSeed+1)%97;return f.actionVariant}
+function chooseAnimation(f,kind){if(practiceMode&&f===player&&practiceVariant>=0&&(kind==='light'||kind==='heavy')){f.actionVariant=Math.min(practiceVariant,ANIMATION_COUNTS[practiceLevel-1]-1);return f.actionVariant;}const count=ANIMATION_COUNTS[Math.max(0,rhythmLevel(f)-1)];const previous=f.actionVariant;f.actionVariant=count===1?0:(previous+1+Math.floor(Math.random()*(count-1)))%count;f.animationSeed=(f.animationSeed+1)%97;return f.actionVariant}
 const MAX_HEALTH=600,MAX_HEAL_PER_ROUND=44;
 // Balance tuning: +10% energy for positive rhythm rewards only; missed-beat penalties are unchanged.
 const ENERGY_GAIN_MULTIPLIER=1.32; // 20% faster than 3.8.5 (1.10)
@@ -271,7 +273,7 @@ function gradeAction(f,t,type){
  else rewardRhythm(f,grade==='perfect'?1:.4,t);
  if(grade==='off')f.rhythmSlowUntil=t+170;
  // The training meter is permanently full, regardless of rhythm misses.
- if(practiceMode&&f===player)f.rhythm=100;
+ if(practiceMode&&f===player)f.rhythm=practiceEnergy();
  // Rhythm grading builds energy; only confirmed hits score points or count toward healing.
  syncVisualLevel(f,t);
  if(!f.ai){
@@ -521,7 +523,7 @@ function updateRhythm(t,dt){
  $('flowLabel').textContent=flowOn(player,t)?'✦ ПОТОК '+Math.ceil((player.flowUntil-t)/1000)+'с':'ЭНЕРГИЯ '+Math.floor(player.rhythm)+'% · '+player.visualLevel+'/5';
  for(const f of [player,enemy]){
   if(f.flowUntil&&t>=f.flowUntil){f.flowUntil=0;f.rhythm=24;syncVisualLevel(f,t,false);f.rhythmSlowUntil=0}
-  else if(!flowOn(f,t)&&f.rhythm>0&&t-f.actionStart>1600){f.rhythm=Math.max(0,f.rhythm-dt*.0012);syncVisualLevel(f,t,false)}
+  else if(!(practiceMode&&f===player)&&!flowOn(f,t)&&f.rhythm>0&&t-f.actionStart>1600){f.rhythm=Math.max(0,f.rhythm-dt*.0012);syncVisualLevel(f,t,false)}
  }
 }
 function newerVersion(remote,local){
@@ -562,10 +564,10 @@ function makeFighter(ai,x,fighterId='kickboxer'){return {ai,x,fighterId,hp:MAX_H
  {id:'universal',name:'УНИВЕРСАЛ',subtitle:'Меняет стойки и изучает привычки',pace:[470,820],approach:.23,guard:.20,retreat:.16}
 ];
 function aiSettings(){return AI_STYLES.find(s=>s.id===enemy.aiStyle)||AI_STYLES[2]}
-function fresh(){initTransport();nextMusicIndex=0;photoStop=null;photoAccent=null;motionHistory=[];specialActivation=null;$('specialBanner').classList.remove('show');paused=false;pausedTotal=0;pauseStarted=0;gameTimeNow=0;$('pauseOverlay').classList.remove('show');$('pauseViewMenu').style.display='grid';$('pauseViewMoves').style.display='none';round++;stopAlarmAudio();finale=null;lastAlarmBar=-1;$('roundAlarm').classList.remove('active','critical','final');if(audio)enableMusic();$('rhythmLevelNotice').classList.remove('show','max');$('rhythmHud').classList.remove('levelUp');roundStart=gameClock()+150;rhythmStart=roundStart;roundBars=Math.ceil(roundDuration/(BEAT_MS*4));rhythmNextIndex=0;shownRhythmBar=-1;drawRhythmBar(0);player=makeFighter(false,.35,selectedFighter);$('playerName').textContent='ТЫ · '+FIGHTERS[player.fighterId].name;const fighterOrder=Object.keys(FIGHTERS);enemy=makeFighter(true,.65,fighterOrder[(fighterOrder.indexOf(selectedFighter)+1+((round-1)%3))%fighterOrder.length]);enemy.aiStyle=AI_STYLES[(round-1)%3].id;enemy.nextThink=practiceMode?Infinity:gameClock()+rng(900,1250);$('aiName').textContent=FIGHTERS[enemy.fighterId].name+' · '+aiSettings().name;if(practiceMode){player.rhythm=100;player.visualLevel=5;enemy.rhythm=0;enemy.guard=false;enemy.stepUntil=0;}
- ended=false;clinch=null;clinchSeq=0;heldDirs.length=0;stanceEvents=[];jumpLatch=false;jumpQueuedUntil=0;joyX=joyY=0;chooseDir('neutral',0);$('comboHint').textContent='КОМБО: —';particles=[];impacts=[];logs=[];shake=0;setMessage(FIGHTERS[player.fighterId].name+' VS '+FIGHTERS[enemy.fighterId].name,practiceMode?'ТРЕНИРОВКА · ∞ ВРЕМЯ · ЭНЕРГИЯ 100%':'60 секунд · '+MAX_HEALTH+' HP · нокаут или очки',1800);$('roundClock').textContent=practiceMode?'∞':'01:00';
+function fresh(){practicePreview=null;initTransport();nextMusicIndex=0;photoStop=null;photoAccent=null;motionHistory=[];specialActivation=null;$('specialBanner').classList.remove('show');paused=false;pausedTotal=0;pauseStarted=0;gameTimeNow=0;$('pauseOverlay').classList.remove('show');$('pauseViewMenu').style.display='grid';$('pauseViewMoves').style.display='none';round++;stopAlarmAudio();finale=null;lastAlarmBar=-1;$('roundAlarm').classList.remove('active','critical','final');if(audio)enableMusic();$('rhythmLevelNotice').classList.remove('show','max');$('rhythmHud').classList.remove('levelUp');roundStart=gameClock()+150;rhythmStart=roundStart;roundBars=Math.ceil(roundDuration/(BEAT_MS*4));rhythmNextIndex=0;shownRhythmBar=-1;drawRhythmBar(0);player=makeFighter(false,.35,selectedFighter);$('playerName').textContent='ТЫ · '+FIGHTERS[player.fighterId].name;const fighterOrder=Object.keys(FIGHTERS);enemy=makeFighter(true,.65,fighterOrder[(fighterOrder.indexOf(selectedFighter)+1+((round-1)%3))%fighterOrder.length]);enemy.aiStyle=AI_STYLES[(round-1)%3].id;enemy.nextThink=practiceMode?Infinity:gameClock()+rng(900,1250);$('aiName').textContent=FIGHTERS[enemy.fighterId].name+' · '+aiSettings().name;if(practiceMode){player.rhythm=practiceEnergy();player.visualLevel=practiceLevel;enemy.rhythm=0;enemy.guard=false;enemy.stepUntil=0;}
+ ended=false;clinch=null;clinchSeq=0;heldDirs.length=0;stanceEvents=[];jumpLatch=false;jumpQueuedUntil=0;joyX=joyY=0;chooseDir('neutral',0);$('comboHint').textContent='КОМБО: —';particles=[];impacts=[];logs=[];shake=0;setMessage(FIGHTERS[player.fighterId].name+' VS '+FIGHTERS[enemy.fighterId].name,practiceMode?'ТРЕНИРОВКА · ∞ ВРЕМЯ · УРОВЕНЬ '+practiceLevel:'60 секунд · '+MAX_HEALTH+' HP · нокаут или очки',1800);$('roundClock').textContent=practiceMode?'∞':'01:00';
  $('pauseForfeit').textContent=practiceMode?'ВЫЙТИ ИЗ ТРЕНИРОВКИ':'СДАТЬСЯ И ВЫЙТИ';
- $('practicePauseDifficulty').style.display=practiceMode?'block':'none';
+ $('practicePauseDifficulty').style.display=practiceMode?'block':'none';refreshAnimationLab();
  updateHud();$('restartOverlay').classList.remove('show');}
 function setMessage(a,b='',duration=700){$('message').textContent=a;$('subtext').textContent=b;$('message').style.opacity='1';$('subtext').style.opacity='1';if(duration){const token=++messageToken;setTimeout(()=>{if(token===messageToken){$('message').style.opacity='0';$('subtext').style.opacity='0';}},duration)}}let messageToken=0;
 function sfx(freq=240,type='triangle',dur=.07){if(!sound)return;try{audio??=new (window.AudioContext||window.webkitAudioContext)();let o=audio.createOscillator(),g=audio.createGain();o.type=type;o.frequency.setValueAtTime(freq,audio.currentTime);o.frequency.exponentialRampToValueAtTime(Math.max(55,freq*.55),audio.currentTime+dur);g.gain.setValueAtTime(.09,audio.currentTime);g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+dur);o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+dur)}catch(e){}}
@@ -869,7 +871,7 @@ function resolveDive(att,def,t){
 }
 function strike(att,def,t){
  const diff=Math.abs(att.x-def.x),range=att.attackRange||strikeRange(att,att.action,att.dir);
- att.hitDone=true;
+ att.hitDone=true;const {visualMotion:unusedMotion,visualContactState:unusedContact,...contactState}=att;const {visualMotion:unusedDefMotion,visualContactState:unusedDefContact,...defenderState}=def;att.visualContactState={at:t,attacker:contactState,defender:defenderState};att.visualContactPositions={attacker:att.x,defender:def.x,at:t};
  if(att.powerFinisher)freezePowerPose(att,t,'attacker');
  if(diff>range){
   if(att.powerFinisher)att.recoveryUntil=Math.max(att.recoveryUntil,att.powerReadyAt||t+BEAT_MS*1.8);
@@ -1011,7 +1013,7 @@ function photoImpactAudio(power){
   thump.type='sine';thump.frequency.setValueAtTime(138,at);
   thump.frequency.exponentialRampToValueAtTime(47,at+.17);
   thumpGain.gain.setValueAtTime(.0001,at);
-  thumpGain.gain.exponentialRampToValueAtTime(.40,at+.009);
+  thumpGain.gain.exponentialRampToValueAtTime(.26,at+.009);
   thumpGain.gain.exponentialRampToValueAtTime(.0001,at+.23);
   thump.connect(thumpGain);thumpGain.connect(direct);thump.start(at);thump.stop(at+.24);
   const sample=noiseSample(audio);
@@ -1024,8 +1026,8 @@ function photoImpactAudio(power){
    src.connect(filter);filter.connect(env);env.connect(direct);
    src.start(start);src.stop(start+len+.01);
   }
-  burst(0,.105,.29,1900);  // primary body crack
-  burst(.019,.03,.37,5700); // recognizable camera shutter
+  burst(0,.105,.18,1900);  // primary body crack
+  burst(.019,.03,.14,5700); // recognizable camera shutter
   burst(.060,.04,.26,4000); // shutter release
   burst(.122,.105,.12,1300); // first echo
   burst(.237,.09,.065,1050); // second echo
@@ -1034,54 +1036,40 @@ function photoImpactAudio(power){
   tail.type='sine';tail.frequency.setValueAtTime(96,at+.095);
   tail.frequency.exponentialRampToValueAtTime(55,at+.33);
   tailGain.gain.setValueAtTime(.0001,at+.095);
-  tailGain.gain.exponentialRampToValueAtTime(.14,at+.107);
+  tailGain.gain.exponentialRampToValueAtTime(.08,at+.107);
   tailGain.gain.exponentialRampToValueAtTime(.0001,at+.34);
   tail.connect(tailGain);tailGain.connect(direct);tail.start(at+.095);tail.stop(at+.35);
   // Crowd audio remains disabled until an approved recording is provided.
  }catch(e){}
 }
+function makeContactSnapshot(f,at,x,defending=false){
+ const state={...f,x,visualMotion:null};
+ if(defending){state.action='stunned';state.actionStart=at;state.actionEnd=at+220;state.hitReactStart=at-55;state.hitReactUntil=at+220;state.hitReactPower=Math.max(1,state.hitReactPower||0);}
+ const skeleton=buildFighterSkeleton(state,at);skeleton.pose.view={x,jump:state.jumpHeight||0};
+ return {state,skeleton,at};
+}
 function photoHit(att,def,t,power){
  if(!att||!def||(!att.powerFinisher&&!att.specialId))return;
- photoStop={start:t,until:t+110,pose:t,x:(att.x+def.x)*.5,y:.57,power};
- photoAccent={start:t,until:Math.max(t+BEAT_MS*.72,att.powerReadyAt||t+BEAT_MS*1.65)};
- photoImpactAudio(power);
- photoPainVoice(def,power);
+ const contact=att.visualContactPositions?.at===t?att.visualContactPositions:{attacker:att.x,defender:def.x};
+ // Immutable contact geometry and world positions, not a past time evaluated
+ // against mutable fighters. update(), collisions and the audio clock continue.
+ const entry=att.visualContactState?.at===t?att.visualContactState:null,attacking=entry?.attacker||att,defending=entry?.defender||def;
+ const frames=new Map([[att,makeContactSnapshot(attacking,attacking.hitAt,contact.attacker)],[def,makeContactSnapshot(defending,t,contact.defender,true)]]);
+ photoStop={start:t,until:t+110,pose:att.hitAt,x:(contact.attacker+contact.defender)*.5,y:.57,power,frames};
+ photoAccent={start:t,until:t+BEAT_MS*.62};
+ photoImpactAudio(power);photoPainVoice(def,power);
 }
 function drawPhotoFlash(t){
  if(!photoStop&&!photoAccent)return;
  const freezing=photoStop&&t<photoStop.until;
- const x=W*(photoStop?.x??(player.x+enemy.x)*.5);
- const y=H*(photoStop?.y??.57);
  ctx.save();
  if(freezing){
-  const fraction=clamp((t-photoStop.start)/(photoStop.until-photoStop.start),0,1);
-  // Strong black-and-white photographic negative, via simple compositing.
-  // No expensive Canvas2D pixel filters and no stop to update()/the beat clock.
-  ctx.globalCompositeOperation='saturation';
-  ctx.globalAlpha=.75;ctx.fillStyle='#808080';ctx.fillRect(0,0,W,H);
-  ctx.globalCompositeOperation='difference';
-  ctx.globalAlpha=.70;ctx.fillStyle='#ffffff';ctx.fillRect(0,0,W,H);
-  ctx.globalAlpha=1;
-  ctx.globalCompositeOperation='source-over';
-  const edge=fraction<.35?.82:.56;
-  ctx.strokeStyle='rgba(255,255,255,'+edge+')';ctx.lineWidth=Math.max(5,Math.min(W,H)*.012);
-  ctx.strokeRect(3,3,W-6,H-6);
-  // Shutter blades / impact lightning: radial straight segments, no ovals.
-  ctx.strokeStyle='rgba(255,255,255,'+(.62*(1-fraction*.5))+')';
-  ctx.lineWidth=3;
-  for(let i=0;i<12;i++){
-   const a=(i+.16)*Math.PI/6,inside=55+12*fraction,outside=155+35*fraction;
-   ctx.beginPath();
-   ctx.moveTo(x+Math.cos(a)*inside,y+Math.sin(a)*inside);
-   ctx.lineTo(x+Math.cos(a)*outside,y+Math.sin(a)*outside);ctx.stroke();
-  }
-  // A true flash, hard onset then immediately decaying: readable on mobile.
-  if(fraction<.20){ctx.fillStyle='rgba(255,255,255,'+(.52*(1-fraction/.20))+')';ctx.fillRect(0,0,W,H)}
+  const p=clamp((t-photoStop.start)/110,0,1);
+  ctx.globalCompositeOperation='saturation';ctx.globalAlpha=.55;ctx.fillStyle='#808080';ctx.fillRect(0,0,W,H);
+  ctx.globalCompositeOperation='source-over';ctx.globalAlpha=.13*Math.pow(1-p,2);ctx.fillStyle='#fff1cf';ctx.fillRect(0,0,W,H);
+  ctx.globalAlpha=.28*(1-p);ctx.strokeStyle='#ffdfa1';ctx.lineWidth=1.5;ctx.strokeRect(4,4,W-8,H-8);
  }else if(photoAccent){
-  // Two very thin frame edges remain during recovery, not shapes over the fighters.
-  const p=clamp((photoAccent.until-t)/BEAT_MS,0,1);
-  ctx.strokeStyle='rgba(245,235,207,'+(.38*p)+')';ctx.lineWidth=2;
-  ctx.strokeRect(8,8,W-16,H-16);
+  ctx.globalAlpha=clamp((photoAccent.until-t)/(BEAT_MS*.62),0,1)*.18;ctx.strokeStyle='#e6ce9d';ctx.lineWidth=1;ctx.strokeRect(5,5,W-10,H-10);
  }
  ctx.restore();
 }
@@ -1263,7 +1251,7 @@ if(enemy.readAttackId!==player.actionStart){enemy.readAttackId=player.actionStar
 if(!enemy.readHandled&&t>=enemy.readAt){enemy.readHandled=true;if(Math.random()<(enemy.aiStyle==='counter'?.84:enemy.aiStyle==='aggressor'?.43:.79)){enemy.guard=true;enemy.guardAt=t;enemy.nextThink=t+550;setMessage('ПРОТИВНИК ЧИТАЕТ СЕРИЮ','Чередуй руку и ногу, захват или уход',570)}}
 }
 function update(t,dt){if(paused||!started)return;
- if(photoStop&&t>=photoStop.until)photoStop=null;
+ if(photoStop&&t>=photoStop.until){for(const [f,frame] of photoStop.frames){f.visualMotion={stamp:'hitstop',at:t,skeleton:frame.skeleton,velocity:{},transition:null};}photoStop=null;}
  if(photoAccent&&t>=photoAccent.until)photoAccent=null;
  // Show a valid command before the attack button is pressed, even during stance recovery.
  if(player&&player.fighterId==='kickboxer'&&!ended){
@@ -1276,7 +1264,7 @@ function update(t,dt){if(paused||!started)return;
   $('roundClock').textContent='∞';
   $('roundAlarm').classList.remove('active','critical','final');
   stopAlarmAudio();
-  player.rhythm=100;
+  player.rhythm=practiceEnergy();
   enemy.hp=MAX_HEALTH;
   enemy.guard=false;
  }else{
@@ -1288,7 +1276,7 @@ function update(t,dt){if(paused||!started)return;
    if(lastAlarmBar!==barsLeft){lastAlarmBar=barsLeft;shake=Math.max(shake,barsLeft<=2?2.5:1.2)}
   }else{$('roundAlarm').classList.remove('active','critical');stopAlarmAudio()}
  }
- updateRhythm(t,dt);updateClinch(t);readRepetitiveAttack(t);for(const f of [player,enemy]){f.facing=(f===player?enemy.x-player.x:player.x-enemy.x)>=0?1:-1;if(f.action==='down'&&t>=f.downUntil){f.downStyle='normal';f.action='idle';f.cooldown=t+160}else if(!clinch&&f.action!=='idle'&&t>f.actionEnd)f.action='idle';if(f.guard&&t-f.guardAt>1000&&f.ai)f.guard=false;
+ updateRhythm(t,dt);updatePracticePreview(t);updateClinch(t);readRepetitiveAttack(t);for(const f of [player,enemy]){f.facing=(f===player?enemy.x-player.x:player.x-enemy.x)>=0?1:-1;if(f.action==='down'&&t>=f.downUntil){f.downStyle='normal';f.action='idle';f.cooldown=t+160}else if(!clinch&&f.action!=='idle'&&t>f.actionEnd)f.action='idle';if(f.guard&&t-f.guardAt>1000&&f.ai)f.guard=false;
 // Stance transitions have anticipation frames. During the transition no auto-guard applies.
 if(f.jumpPendingAt>0&&f.action!=='idle'&&t<f.stunnedUntil){f.jumpPendingAt=0;f.stanceTransition='';}
 if(f.jumpPendingAt>0&&t>=f.jumpPendingAt&&f.action==='idle'&&t>=f.stunnedUntil){
@@ -1353,7 +1341,7 @@ if(f.diveArmed&&t>=f.jumpUntil){resolveDive(f,f===player?enemy:player,t)}if(t<f.
  if(!clinch)flushPendingAttacks(player,t);
  if(!clinch)aiDecide(t);
  for(const f of [player,enemy]){f.travel+=Math.abs(f.x-f.rigLastX);f.rigLastX=f.x;if(f.rigFacing!==f.facing){f.turnFrom=f.rigFacing??f.facing;f.rigFacing=f.facing;f.turnAt=t;}}
- if(practiceMode){enemy.hp=MAX_HEALTH;enemy.guard=false;player.rhythm=100;
+ if(practiceMode){enemy.hp=MAX_HEALTH;enemy.guard=false;player.rhythm=practiceEnergy();
   if(!clinch&&enemy.action==='idle'&&t>=enemy.downUntil)enemy.x=.65;
  }
  for(let i=particles.length-1;i>=0;i--){let p=particles[i];p.x+=p.vx*dt/16;p.y+=p.vy*dt/16;p.vy+=.16*dt/16;p.life-=dt;if(p.life<=0)particles.splice(i,1)}for(let i=impacts.length-1;i>=0;i--){impacts[i].life-=dt;if(impacts[i].life<=0)impacts.splice(i,1)}shake=Math.max(0,shake-dt*.05);let d=Math.abs(enemy.x-player.x);$('distance').textContent=clinch?'БРОСОК · ЖДИ ОКНО КОНТРПРИЁМА':enemy.whiffUntil>t?'ОКНО КОНТРАТАКИ!':player.whiffUntil>t?'ТЫ УЯЗВИМ ПОСЛЕ ПРОМАХА': 'ДИСТАНЦИЯ: '+(d<.100?'ВПЛОТНУЮ • БРОСОК':d<.18?'КОРОТКАЯ · БЫСТРЫЕ УДАРЫ':d<.275?'СРЕДНЯЯ · ПРЯМОЙ / ВЫПАД':'ДАЛЬНЯЯ • СБЛИЗЬСЯ');$('distance').style.color=d<.113?'#f4cb8b':d<.245?'#c5e7c1':'#d5dada';updateHud()}
@@ -1428,13 +1416,13 @@ function bg(){
    All skin/clothing draw from the solved skeleton, then rigid transforms only.
    These poses never modify hitboxes, damage, input timestamps or recovery. */
 const RIGS={
- kickboxer:{shoulder:13,waist:11,hips:13,arm:29,forearm:29,thigh:36,shin:36,head:13.5,skin:'#c88d6d',cloth:'#193e4a',trim:'#72e8de',glove:'#bf663f',hair:'#202429',stance:{hip:[0,-72],chest:[5,-116],lh:[12,-129],rh:[29,-127],lf:[-27,-3],rf:[32,-3]},
+ kickboxer:{shoulder:13,waist:11,hips:13,arm:29,forearm:29,thigh:36,shin:36,head:13.5,pelvisSpine:14,lumbarSpine:16,thoracicSpine:15,skin:'#c88d6d',cloth:'#193e4a',trim:'#72e8de',glove:'#bf663f',hair:'#202429',stance:{hip:[0,-72],chest:[5,-116],lh:[12,-129],rh:[29,-127],lf:[-27,-3],rf:[32,-3]},
  light:['jab','cross','hook','elbow','upper'],heavy:['roundhouse','lowKick','sideKick','knee','spinKick'],finals:['sideKick','backfist','hook','spinKick','cross','knee']},
- boxer:{shoulder:15,waist:11,hips:12,arm:29,forearm:28,thigh:35,shin:35,head:14,skin:'#a66b51',cloth:'#243450',trim:'#e7c48c',glove:'#c53e49',hair:'#1b2028',stance:{hip:[0,-70],chest:[10,-113],lh:[16,-128],rh:[33,-125],lf:[-25,-3],rf:[30,-3]},
+ boxer:{shoulder:15,waist:11,hips:12,arm:29,forearm:28,thigh:35,shin:35,head:14,pelvisSpine:14,lumbarSpine:16,thoracicSpine:15,skin:'#a66b51',cloth:'#243450',trim:'#e7c48c',glove:'#c53e49',hair:'#1b2028',stance:{hip:[0,-70],chest:[10,-113],lh:[16,-128],rh:[33,-125],lf:[-25,-3],rf:[30,-3]},
  light:['jab','cross','hook','shovel','upper'],heavy:['lowKick','bodyKick','knee','sideKick','roundhouse'],finals:['doubleCross','lowKick','cross','upper','barrage','overhand','hook']},
- power:{shoulder:20,waist:16,hips:17,arm:32,forearm:29,thigh:37,shin:35,head:15,skin:'#b67d59',cloth:'#3c3039',trim:'#edb36b',glove:'#6d4c42',hair:'#30262b',stance:{hip:[0,-71],chest:[1,-117],lh:[5,-118],rh:[34,-116],lf:[-34,-3],rf:[36,-3]},
+ power:{shoulder:20,waist:16,hips:17,arm:32,forearm:29,thigh:37,shin:35,head:15,pelvisSpine:14,lumbarSpine:16,thoracicSpine:16,skin:'#b67d59',cloth:'#3c3039',trim:'#edb36b',glove:'#6d4c42',hair:'#30262b',stance:{hip:[0,-71],chest:[1,-117],lh:[5,-118],rh:[34,-116],lf:[-34,-3],rf:[36,-3]},
  light:['body','hook','shovel','elbow','overhand'],heavy:['bodyKick','knee','lowKick','sideKick','roundhouse'],finals:['ram','overhand','knee','hammer']},
- acrobat:{shoulder:12,waist:9,hips:14,arm:28,forearm:27,thigh:40,shin:39,head:12.5,skin:'#d99c80',cloth:'#563c75',trim:'#bff3de',glove:'#674b7d',hair:'#222639',stance:{hip:[0,-77],chest:[-4,-122],lh:[-14,-103],rh:[34,-110],lf:[-34,-3],rf:[35,-3]},
+ acrobat:{shoulder:12,waist:9,hips:14,arm:28,forearm:27,thigh:40,shin:39,head:12.5,pelvisSpine:14,lumbarSpine:16,thoracicSpine:15,skin:'#d99c80',cloth:'#563c75',trim:'#bff3de',glove:'#674b7d',hair:'#222639',stance:{hip:[0,-77],chest:[-4,-122],lh:[-14,-103],rh:[34,-110],lf:[-34,-3],rf:[35,-3]},
  light:['palm','backfist','elbow','cross','upper'],heavy:['roundhouse','heelDrop','sideKick','cartwheel','butterfly'],finals:['spinKick','heelDrop','scissor','cartwheel','somersault']}
 };
 const MOVES={
@@ -1484,38 +1472,83 @@ function rigKeys(frames,t,profile){
  }
  const pose=frames.at(-1)[1];return {pose:poseMix(pose,pose,0),from:pose,to:pose,progress:1};
 }
-function rigMotion(f){
- const r=RIGS[f.fighterId]||RIGS.kickboxer;
- if(f.specialId)return {upper:'upper',counter:'cross',knee:'knee',spin:'spinKick'}[f.specialId];
- if(f.finisher)return r.finals[f.finisherStyle]||r.finals[0];
- if(f.lowSweep)return 'lowKick';
- if(f.attackLow)return f.action==='heavy'?'lowKick':'body';
- return (f.action==='heavy'?r.heavy:r.light)[(f.actionVariant||0)%5];
+// Each unlocked slot is a named movement phrase: entry, contact technique and
+// a substantial recovery pattern. There is no modulo-five alias at playback.
+const CHOREOGRAPHY_STYLES={
+ boxer:{entry:['guard','slipInside','shoulderRoll'],exit:['settle','rollUnder','pivotOut'],phrases:['БАЗА','УКЛОН И СЕРИЯ','ПЛЕЧО И ПИВОТ']},
+ kickboxer:{entry:['guard','levelFeint','shoulderRoll'],exit:['settle','pivotOut','stanceSwitch'],phrases:['БАЗА','СМЕНА УРОВНЯ','СМЕНА СТОЙКИ']},
+ power:{entry:['guard','brace','levelFeint'],exit:['settle','heavySettle','pivotOut'],phrases:['БАЗА','СИЛОВОЙ ПЕРЕНОС','ШАГ И ПОВОРОТ']},
+ acrobat:{entry:['guard','ginga','spiral'],exit:['settle','spiral','lowFlow'],phrases:['СПОРТИВНАЯ БАЗА','ДЖИНГА И СПИРАЛЬ','НИЗКИЙ ТАНЦЕВАЛЬНЫЙ ПЕРЕХОД']}
+};
+const MOVE_NAMES={jab:'ДЖЕБ',cross:'КРОСС',hook:'ХУК',elbow:'ЛОКОТЬ',upper:'АППЕРКОТ',body:'В КОРПУС',shovel:'КОРОТКИЙ СНИЗУ',overhand:'ОВЕРХЕНД',palm:'ЛАДОНЬ',backfist:'ОБРАТНЫЙ УДАР',lowKick:'ЛОУ-КИК',bodyKick:'УДАР В КОРПУС',sideKick:'БОКОВОЙ ПИНОК',roundhouse:'КРУГОВОЙ УДАР',knee:'КОЛЕНО',spinKick:'ВЕРТУШКА',heelDrop:'ПЯТКА СВЕРХУ',cartwheel:'КОЛЕСО',butterfly:'БАБОЧКА'};
+const CHOREOGRAPHY={};
+for(const [id,rig] of Object.entries(RIGS)){
+ const style=CHOREOGRAPHY_STYLES[id];CHOREOGRAPHY[id]={};
+ for(const kind of ['light','heavy']){
+  const moves=kind==='light'?rig.light:rig.heavy;
+  const slots=[[0,0],[1,0],[2,0],[3,0],[4,0],[0,1],[1,1],[2,1],[3,1],[4,1],[0,2],[1,2],[2,2],[3,2],[4,2]];
+  CHOREOGRAPHY[id][kind]=slots.map(([move,group],index)=>Object.freeze({id:id+'/'+kind+'/'+index,move:moves[move],name:(MOVE_NAMES[moves[move]]||moves[move])+' · '+style.phrases[group],entry:style.entry[group],exit:style.exit[group]}));
+ }
 }
+function choreographyClip(f){
+ const rig=RIGS[f.fighterId]||RIGS.kickboxer,active=f.action==='light'||f.action==='heavy';
+ if(!active)return {id:'stance',move:'jab',name:'СТОЙКА',entry:'guard',exit:'settle'};
+ if(f.specialId)return {id:'special/'+f.specialId,move:{upper:'upper',counter:'cross',knee:'knee',spin:'spinKick'}[f.specialId],name:SPECIALS[f.specialId].name,entry:'guard',exit:'settle'};
+ if(f.finisher)return {id:'finisher/'+f.finisherStyle,move:rig.finals[f.finisherStyle]||rig.finals[0],name:f.finisherName,entry:'guard',exit:f.fighterId==='acrobat'?'spiral':'settle'};
+ if(f.lowSweep||f.attackLow)return {id:'low',move:f.action==='heavy'?'lowKick':'body',name:'НИЗКАЯ АТАКА',entry:'guard',exit:'settle'};
+ return CHOREOGRAPHY[f.fighterId||'kickboxer'][f.action][clamp(f.actionVariant||0,0,14)];
+}
+function choreographPose(p,mode,r){
+ const n=poseMix(p,p,0);
+ if(mode==='slipInside'){n.hip[0]-=7;n.hip[1]+=7;n.chest[0]-=19;n.chest[1]+=13;n.rh=[n.chest[0]+32,n.chest[1]-16];}
+ if(mode==='shoulderRoll'){n.hip[0]+=6;n.chest[0]-=17;n.chest[1]+=8;n.lh=[n.chest[0]+6,n.chest[1]-20];n.rh=[n.chest[0]+32,n.chest[1]+5];}
+ if(mode==='levelFeint'){n.hip[1]+=16;n.chest[0]+=12;n.chest[1]+=11;n.lh=[n.chest[0]+8,n.chest[1]-15];}
+ if(mode==='brace'){n.hip[1]+=12;n.chest[0]-=13;n.rh=[n.chest[0]+35,n.chest[1]-16];n.lh=[n.chest[0]+5,n.chest[1]-17];}
+ if(mode==='ginga'){n.hip[0]-=14;n.chest[0]+=16;n.lh=[n.chest[0]+2,n.chest[1]+20];n.rh=[n.chest[0]+41,n.chest[1]+6];}
+ if(mode==='spiral'){n.hip[0]+=12;n.chest[0]-=20;n.chest[1]+=7;n.lh=[n.chest[0]+5,n.chest[1]+21];n.rh=[n.chest[0]+40,n.chest[1]-12];}
+ if(mode==='rollUnder'){n.hip[0]-=11;n.hip[1]+=20;n.chest[0]+=7;n.chest[1]+=20;n.rh=[n.chest[0]+36,n.chest[1]-13];}
+ if(mode==='pivotOut'){n.hip[0]-=13;n.chest[0]-=21;n.rf[0]+=24;n.lh=[n.chest[0]+5,n.chest[1]-17];n.rh=[n.chest[0]+30,n.chest[1]-18];}
+ if(mode==='stanceSwitch'){n.hip[0]+=14;n.chest[0]-=13;n.rf[0]-=23;n.lf[0]-=10;n.rh=[n.chest[0]+42,n.chest[1]-12];}
+ if(mode==='heavySettle'){n.hip[1]+=17;n.hip[0]+=10;n.chest[0]+=20;n.chest[1]+=9;n.lh=[n.chest[0]+8,n.chest[1]-8];}
+ if(mode==='lowFlow'){n.hip[0]-=17;n.hip[1]+=24;n.chest[0]+=18;n.chest[1]+=14;n.lh=[n.chest[0]+7,n.chest[1]+17];n.rh=[n.chest[0]+40,n.chest[1]+13];n.rf[0]+=22;}
+ return n;
+}
+
+function rigMotion(f){return choreographyClip(f).move}
 function rigPose(f,t){
  const r=RIGS[f.fighterId]||RIGS.kickboxer,profile=RIG_KINEMATICS[f.fighterId]||RIG_KINEMATICS.kickboxer;
  const base=poseMix(r.stance,r.stance,0),phase=(t-rhythmStart)/BEAT_MS*Math.PI;
- const attack=f.action==='light'||f.action==='heavy',move=rigMotion(f),m=MOVES[move];
+ const attack=f.action==='light'||f.action==='heavy',clip=choreographyClip(f),move=clip.move,m=MOVES[move];
  const elapsed=Math.max(0,t-f.actionStart),hit=Math.max(1,f.hitAt-f.actionStart);
  const end=Math.max(hit+BEAT_MS*.24,f.actionEnd-f.actionStart);
- let p=poseMix(base,base,0),contact=0,yaw=0,lift=0,roll=0,limbBlend=null;
+ let p=poseMix(base,base,0),contact=0,yaw=0,lift=0,roll=0,limbBlend=null,animationPhase='stance';
  if(attack){
-  const flavor=Math.floor((f.actionVariant||0)/5),load=poseMix(base,base,0),target={...base,...m};
-  load.hip=[base.hip[0]-5-flavor*2,base.hip[1]+4];load.chest=[base.chest[0]-9,base.chest[1]+4];
+  const load=choreographPose(base,clip.entry,r),target={...base,...m};
+  if(clip.entry==='guard'){load.hip=[base.hip[0]-5,base.hip[1]+4];load.chest=[base.chest[0]-9,base.chest[1]+4];}
   load.rh=[base.rh[0]-7,base.rh[1]+3];
   // Contact is anchored to the existing hitAt. Every key time is monotonic,
   // even at 140 BPM: no negative-duration windup or delayed visual contact.
-  const hold=hit+Math.min(BEAT_MS*.12,(end-hit)*.22),retract=hit+(end-hit)*.62;
-  limbBlend=rigKeys([[0,base],[hit*.25,load],[hit,target],[hold,target],[retract,load],[end,base]],elapsed,profile);p=limbBlend.pose;
+  const span=end-hit,hold=hit+Math.min(35,span*.10),retract=hit+Math.min(span*.46,BEAT_MS*.30),land=hit+Math.min(span*.80,BEAT_MS*.52);
+  let frames;
+  if(m.leg&&!m.inverted&&!m.flip&&!m.roll&&(m.lift||0)<17){
+   const chamber=poseMix(load,load,0);chamber.hip=[load.hip[0]+3,load.hip[1]-3];chamber.chest=[load.chest[0]-7,load.chest[1]-3];
+   chamber.rf=f.attackLow||f.crouch?[chamber.hip[0]+30,-18]:move==='spinKick'?[chamber.hip[0]-24,chamber.hip[1]+12]:move==='sideKick'?[chamber.hip[0]+28,chamber.hip[1]-14]:[chamber.hip[0]+24,chamber.hip[1]+9];
+   if(move==='sideKick')target.chest=[target.hip[0]-38,target.hip[1]-34];
+   const chamberAxis=Math.atan2(target.chest[1]-target.hip[1],target.chest[0]-target.hip[0]);chamber.chest=[chamber.hip[0]+Math.cos(chamberAxis)*45,chamber.hip[1]+Math.sin(chamberAxis)*45];
+   const open=f.fighterId==='acrobat';chamber.lh=[chamber.chest[0]+5,chamber.chest[1]+(open?14:-8)];
+   target.lh=[target.chest[0]+5,target.chest[1]+(open?14:-8)];target.rh=[target.chest[0]+28,target.chest[1]-12];
+   const landing=choreographPose(base,clip.exit,r);if(clip.exit==='settle'){landing.hip=[base.hip[0]-5,base.hip[1]+4];landing.chest=[base.chest[0]-8,base.chest[1]+3];}
+   frames=[[0,base],[hit*.52,chamber],[hit,target],[hold,target],[retract,chamber],[land,landing],[end,base]];
+   animationPhase=elapsed<hit*.18?'prepare':elapsed<hit*.52?'chamber':elapsed<hit?'extend':elapsed<=hold?'contact':elapsed<retract?'retract':'balance';
+  }else{
+   const recoverPose=choreographPose(base,clip.exit,r);frames=[[0,base],[hit*.45,load],[hit,target],[hold,target],[retract,recoverPose],[end,base]];
+   animationPhase=elapsed<hit*.45?'prepare':elapsed<hit?'drive':elapsed<=hold?'contact':elapsed<retract?'recoil':'balance';
+  }
+  limbBlend=rigKeys(frames,elapsed,profile);p=limbBlend.pose;
   contact=elapsed<=hit?rigEase(elapsed/hit):1-rigEase((elapsed-hold)/Math.max(1,retract-hold));
   contact=clamp(contact,0,1);
   yaw=(m.yaw||0)*(elapsed<=hit?rigEase(elapsed/hit):1+Math.min(.2,(elapsed-hit)/BEAT_MS));
   lift=(m.lift||0)*contact;
-  // Higher tiers add a slip on recovery, a pivot, then a switch-step. These
-  // change body trajectories rather than merely changing the effect colour.
-  const recover=elapsed>hold?Math.sin(Math.PI*clamp((elapsed-hold)/(end-hold),0,1)):0;
-  if(flavor>0){p.chest=[p.chest[0]-recover*flavor*7,p.chest[1]+recover*flavor*5];p.lf=[p.lf[0]-recover*flavor*5,p.lf[1]];}
-  if(flavor===2){p.hip=[p.hip[0]+recover*6,p.hip[1]-recover*4];p.rf=[p.rf[0]+recover*9,p.rf[1]-recover*5];}
   roll=(m.roll||0)*contact;
   // Aerial rotation follows the contact, so the early musical hit never waits
   // for a long visual preparation. The music/physics continue throughout.
@@ -1534,7 +1567,7 @@ function rigPose(f,t){
    p.lh[0]-=stride*3;p.rh[0]+=stride*3;
   }
  }
- const frame={r,phase,attack,yaw,lift};
+ const frame={r,phase,attack,yaw,lift,contact,m,profile,animationPhase};
  const posture=rigPosture(f,t,p,frame);
  // Impact recoil moves the parent torso and its attached chains. It does not
  // retarget animation keys across a shoulder while the recoil envelope changes.
@@ -1543,9 +1576,9 @@ function rigPose(f,t){
   to:rigPosture(f,t,poseMix(limbBlend.to,limbBlend.to,0),frame,false).p,
   progress:rigEase(Math.pow(limbBlend.progress,1.08))
  }:null;
- return {...posture,move,m,contact,yaw,roll,attack,limbBlend:blend};
+ return {...posture,move,m,clip,contact,yaw,roll,attack,animationPhase,limbBlend:blend};
 }
-function rigPosture(f,t,p,{r,phase,attack,yaw,lift},withReaction=true){
+function rigPosture(f,t,p,{r,phase,attack,yaw,lift,contact,m,profile,animationPhase},withReaction=true){
  // Bend at knees/hips for crouch instead of flattening the whole anatomy.
  let crouch=f.crouch?1:0;
  if(f.stanceTransition==='crouch')crouch=rigEase(1-(f.stanceUntil-t)/(BEAT_MS*.20));
@@ -1569,28 +1602,56 @@ function rigPosture(f,t,p,{r,phase,attack,yaw,lift},withReaction=true){
  const reaction=withReaction&&t<f.hitReactUntil?Math.sin(Math.PI*clamp((t-f.hitReactStart)/Math.max(1,f.hitReactUntil-f.hitReactStart),0,1))*f.hitReactPower:0;
  p.chest=[p.chest[0]-reaction*(f.hitReactLow?7:17),p.chest[1]+reaction*(f.hitReactLow?12:2)];
  if(f.action==='stunned'){p.chest[0]-=9;p.lh=[-20,-99];p.rh=[22,-100];}
- // Spine and neck stay anatomical even when acrobatic poses are upside down.
- const dx=p.chest[0]-p.hip[0],dy=p.chest[1]-p.hip[1],length=Math.hypot(dx,dy)||1;
- const spine=f.fighterId==='power'?46:45;
- p.chest=[p.hip[0]+dx/length*spine,p.hip[1]+dy/length*spine];
- const ux=(p.chest[0]-p.hip[0])/spine,uy=(p.chest[1]-p.hip[1])/spine;
- p.head=[p.chest[0]+ux*27,p.chest[1]+uy*27];
- const width=r.shoulder;
- p.ls=[p.chest[0]+uy*width,p.chest[1]-ux*width];p.rs=[p.chest[0]-uy*width,p.chest[1]+ux*width];
+ // Three rigid spinal links carry pelvis tilt, lumbar flexion and thoracic
+ // counter-rotation. FK keeps every segment at its bind length.
+ const requestedChest=[...p.chest],rawAxis=Math.atan2(p.chest[1]-p.hip[1],p.chest[0]-p.hip[0]);
+ const grounded=t>=f.jumpUntil&&f.action!=='down'&&!clinch&&!m.inverted&&!m.flip&&(m.lift||0)<17;
+ const support=grounded?(attack&&m.leg?'left':'both'):'air';
+ if(withReaction&&grounded){
+  p.hip[0]+=attack?profile.drive*contact:0;
+  const reach=(r.thigh+r.shin)*.997;
+  for(const foot of support==='left'?[p.lf]:[p.lf,p.rf]){
+   const dx=clamp(p.hip[0]-foot[0],-reach*.94,reach*.94);
+   p.hip[1]=Math.max(p.hip[1],foot[1]-Math.sqrt(Math.max(1,reach*reach-dx*dx)));
+  }
+ }
+ const pulse=withReaction?(attack?contact:Math.sin(phase*.5)*.35):0;
+ const turn=withReaction?Math.sin(Math.PI*clamp((t-f.turnAt)/140,0,1)):0;
+ const invertedSupport=m.inverted?rigEase(clamp((Math.sin(rawAxis)-.1)/.65,0,1)):0;
+ const bend=clamp(profile.flex*(m.leg?-.8:1)*pulse+reaction*.18,-.65,.65)*(1-invertedSupport);
+ const pelvisAxis=rawAxis+(profile.pelvis*pulse+turn*.10)*(1-invertedSupport);
+ const lumbarAxis=pelvisAxis+bend*.75,thoraxAxis=lumbarAxis-bend*1.25;
+ const direction=angle=>[Math.cos(angle),Math.sin(angle)],advance=(a,angle,length)=>[a[0]+Math.cos(angle)*length,a[1]+Math.sin(angle)*length];
+ p.pelvisDir=direction(pelvisAxis);p.torsoDir=direction(thoraxAxis);
+ p.lumbar=advance(p.hip,pelvisAxis,r.pelvisSpine);p.thorax=advance(p.lumbar,lumbarAxis,r.lumbarSpine);p.chest=advance(p.thorax,thoraxAxis,r.thoracicSpine);
+ const shoulderAxis=thoraxAxis-profile.shoulders*pulse*(1-invertedSupport);
+ p.shoulderDir=direction(shoulderAxis);p.head=advance(p.chest,thoraxAxis,27);
+ if(!attack){for(const key of ['lh','rh'])p[key]=[p[key][0]+p.chest[0]-requestedChest[0],p[key][1]+p.chest[1]-requestedChest[1]];}
+ const ux=Math.cos(shoulderAxis),uy=Math.sin(shoulderAxis);
+ p.ls=[p.chest[0]+uy*r.shoulder,p.chest[1]-ux*r.shoulder];p.rs=[p.chest[0]-uy*r.shoulder,p.chest[1]+ux*r.shoulder];
+ p.handSupport=[invertedSupport>.999?1:0,0];if(p.handSupport[0]){p.lh=[p.ls[0]-7,-3];p.rh=[p.rs[0]+7,-3];}
+ if(withReaction&&grounded){
+  const com=(p.hip[0]*.5+p.thorax[0]*.35+p.head[0]*.15),feet=support==='left'?[p.lf[0]]:[p.lf[0],p.rf[0]],low=Math.min(...feet)-19,high=Math.max(...feet)+19;
+  const shift=clamp(com,low,high)-com;
+  for(const key of ['hip','lumbar','thorax','chest','head','ls','rs',...(!attack?['lh','rh']:[])])p[key][0]+=shift;
+ }
+ p.support=[support==='left'?1:support==='both'?2:0,0];
+
  return {p,lift,reaction,ux,uy};
 }
 // All animation targets are requests. Only this constrained skeleton can supply
 // draw coordinates. Reach is limited by the immutable bind-pose bone lengths.
 const RIG_KINEMATICS={
- boxer:{hipLead:.70,chestLead:.88,drive:4,armRoot:[-172,88],legRoot:[-130,75],maxArmFlex:148,maxLegFlex:148},
- kickboxer:{hipLead:.73,chestLead:.91,drive:7,armRoot:[-172,88],legRoot:[-148,85],maxArmFlex:148,maxLegFlex:150},
- power:{hipLead:.65,chestLead:.86,drive:8,armRoot:[-165,82],legRoot:[-130,78],maxArmFlex:142,maxLegFlex:145},
- acrobat:{hipLead:.78,chestLead:.94,drive:5,armRoot:[-178,95],legRoot:[-175,160],maxArmFlex:152,maxLegFlex:155}
+ boxer:{flex:.32,pelvis:.12,shoulders:.22,hipLead:.70,chestLead:.88,drive:4,armRoot:[-172,88],legRoot:[-130,75],maxArmFlex:148,maxLegFlex:148},
+ kickboxer:{flex:.32,pelvis:.12,shoulders:.22,hipLead:.73,chestLead:.91,drive:7,armRoot:[-172,88],legRoot:[-148,85],maxArmFlex:148,maxLegFlex:150},
+ power:{flex:.26,pelvis:.16,shoulders:.26,hipLead:.65,chestLead:.86,drive:8,armRoot:[-165,82],legRoot:[-130,78],maxArmFlex:142,maxLegFlex:145},
+ acrobat:{flex:.68,pelvis:.32,shoulders:.28,hipLead:.78,chestLead:.94,drive:5,armRoot:[-178,95],legRoot:[-175,160],maxArmFlex:152,maxLegFlex:155}
 };
 const RIG_LENGTH_TOLERANCE=1e-6;
 const RIG_SEGMENTS=Object.freeze({
  'leftArm.upperArm':'arm','leftArm.forearm':'forearm','rightArm.upperArm':'arm','rightArm.forearm':'forearm',
- 'leftLeg.thigh':'thigh','leftLeg.shin':'shin','rightLeg.thigh':'thigh','rightLeg.shin':'shin'
+ 'leftLeg.thigh':'thigh','leftLeg.shin':'shin','rightLeg.thigh':'thigh','rightLeg.shin':'shin',
+ 'spine.pelvis':'pelvisSpine','spine.lumbar':'lumbarSpine','spine.thorax':'thoracicSpine'
 });
 const RIG_DEBUG=new URLSearchParams(location.search).get('rig')==='1';
 const RIG_INTEGRITY={frames:0,segments:0,maxRelativeError:0,violations:0,lastViolation:null};
@@ -1623,11 +1684,10 @@ function forwardLimb(start,a,b,root,flex,options){
  return {start,joint,end,a,b,root,flex,upper,lower,bend,reference,limits:options};
 }
 function solveRigTargets(p,rig,profile){
- const spine=Math.hypot(p.chest[0]-p.hip[0],p.chest[1]-p.hip[1]);
- const reference=Math.atan2(-(p.chest[1]-p.hip[1])/spine,-(p.chest[0]-p.hip[0])/spine);
+ const reference=Math.atan2(-p.shoulderDir[1],-p.shoulderDir[0]),legReference=Math.atan2(-p.pelvisDir[1],-p.pelvisDir[0]);
  const arm={reference,bend:1,minRoot:rigRadians(profile.armRoot[0]),maxRoot:rigRadians(profile.armRoot[1]),minFlex:rigRadians(4),maxFlex:rigRadians(profile.maxArmFlex)};
- const leg={reference,bend:-1,minRoot:rigRadians(profile.legRoot[0]),maxRoot:rigRadians(profile.legRoot[1]),minFlex:rigRadians(5),maxFlex:rigRadians(profile.maxLegFlex)};
- const leftHip=[p.hip[0]-rig.hips*.55,p.hip[1]],rightHip=[p.hip[0]+rig.hips*.55,p.hip[1]];
+ const leg={reference:legReference,bend:-1,minRoot:rigRadians(profile.legRoot[0]),maxRoot:rigRadians(profile.legRoot[1]),minFlex:rigRadians(5),maxFlex:rigRadians(profile.maxLegFlex)};
+ const leftHip=[p.hip[0]+p.pelvisDir[1]*rig.hips*.55,p.hip[1]-p.pelvisDir[0]*rig.hips*.55],rightHip=[p.hip[0]-p.pelvisDir[1]*rig.hips*.55,p.hip[1]+p.pelvisDir[0]*rig.hips*.55];
  const limbs={
   leftArm:solveLimb(p.ls,p.lh,rig.arm,rig.forearm,arm),
   rightArm:solveLimb(p.rs,p.rh,rig.arm,rig.forearm,arm),
@@ -1649,13 +1709,93 @@ function buildFighterSkeleton(f,t){
    limbs[name]=forwardLimb(current.start,current.a,current.b,a.root+(b.root-a.root)*k,a.flex+(b.flex-a.flex)*k,{...current.limits,reference:current.reference,bend:current.bend});
   }
  }
+ // Planted feet are solved against the ground after angular choreography.
+ // This pass changes joint angles, never the dimensions of either leg.
+ if(p.support[0]>0){
+  for(const name of p.support[0]===1?['leftLeg']:['leftLeg','rightLeg']){
+   const limb=limbs[name],target=name==='leftLeg'?p.lf:p.rf;
+   limbs[name]=solveLimb(limb.start,target,limb.a,limb.b,{...limb.limits,reference:limb.reference,bend:limb.bend});
+  }
+ }
  const bones=[];
  for(const [name,limb] of Object.entries(limbs)){
   bones.push({name:name+(name.endsWith('Arm')?'.upperArm':'.thigh'),start:limb.start,end:limb.joint,length:limb.a});
   bones.push({name:name+(name.endsWith('Arm')?'.forearm':'.shin'),start:limb.joint,end:limb.end,length:limb.b});
  }
+ bones.push({name:'spine.pelvis',start:p.hip,end:p.lumbar,length:rig.pelvisSpine},{name:'spine.lumbar',start:p.lumbar,end:p.thorax,length:rig.lumbarSpine},{name:'spine.thorax',start:p.thorax,end:p.chest,length:rig.thoracicSpine});
  return {pose,rig,limbs,bones};
 }
+// Display-only transition layer. The combat state machine remains authoritative:
+// a pose blend never permits an action, shortens recovery, or moves a hit time.
+function rigStamp(f,t){return [f.action,f.actionStart,f.actionVariant,f.specialId,f.finisherStyle,f.crouch,f.guard,f.stanceTransition,!!(f.jumpUntil>t),f.moveHeld].join(':')}
+function rigSpineAngles(p){return [Math.atan2(p.pelvisDir[1],p.pelvisDir[0]),Math.atan2(p.thorax[1]-p.lumbar[1],p.thorax[0]-p.lumbar[0]),Math.atan2(p.torsoDir[1],p.torsoDir[0]),Math.atan2(p.shoulderDir[1],p.shoulderDir[0])]}
+function rigMotionValues(s,f){
+ const values={hipX:s.pose.p.hip[0],hipY:s.pose.p.hip[1],worldX:s.pose.view?.x??f.x,jump:s.pose.view?.jump??(f.jumpHeight||0),roll:s.pose.roll||0};
+ rigSpineAngles(s.pose.p).forEach((v,i)=>values['spine'+i]=v);
+ for(const [name,limb] of Object.entries(s.limbs)){values[name+'Root']=limb.root;values[name+'Flex']=limb.flex;}
+ return values;
+}
+function rigAssemble(rig,pose,limbs){
+ const p=pose.p,bones=[];
+ for(const [name,limb] of Object.entries(limbs)){
+  bones.push({name:name+(name.endsWith('Arm')?'.upperArm':'.thigh'),start:limb.start,end:limb.joint,length:limb.a});
+  bones.push({name:name+(name.endsWith('Arm')?'.forearm':'.shin'),start:limb.joint,end:limb.end,length:limb.b});
+ }
+ bones.push({name:'spine.pelvis',start:p.hip,end:p.lumbar,length:rig.pelvisSpine},{name:'spine.lumbar',start:p.lumbar,end:p.thorax,length:rig.lumbarSpine},{name:'spine.thorax',start:p.thorax,end:p.chest,length:rig.thoracicSpine});
+ return {rig,pose,limbs,bones};
+}
+function blendDisplaySkeleton(f,from,target,velocity,u,duration,baseline,baselineVelocity={}){
+ const rig=target.rig,p={};for(const key in target.pose.p)p[key]=[...target.pose.p[key]];const a=rigMotionValues(from,f),b=rigMotionValues(target,f);
+ const initial=rigMotionValues(baseline||from,f);
+ const v=(key,angular=false)=>{
+  const offset=angular?rigWrap(a[key]-initial[key]):a[key]-initial[key],limit=key==='worldX'?.001:/Root$|Flex$/.test(key)||angular?.012:.22;
+  const incoming=clamp((velocity?.[key]||0)-(baselineVelocity[key]||0),-limit,limit);
+  return b[key]+offset*(1-rigEase(u))+incoming*duration*u*(1-u)*(1-u);
+ };
+ p.hip=[v('hipX'),v('hipY')];const angles=[0,1,2,3].map(i=>v('spine'+i,true));
+ angles[1]=angles[0]+clamp(rigWrap(angles[1]-angles[0]),-.55,.55);angles[2]=angles[1]+clamp(rigWrap(angles[2]-angles[1]),-.9,.9);angles[3]=angles[2]+clamp(rigWrap(angles[3]-angles[2]),-.4,.4);
+ const advance=(point,angle,length)=>[point[0]+Math.cos(angle)*length,point[1]+Math.sin(angle)*length];
+ p.lumbar=advance(p.hip,angles[0],rig.pelvisSpine);p.thorax=advance(p.lumbar,angles[1],rig.lumbarSpine);p.chest=advance(p.thorax,angles[2],rig.thoracicSpine);
+ p.pelvisDir=[Math.cos(angles[0]),Math.sin(angles[0])];p.torsoDir=[Math.cos(angles[2]),Math.sin(angles[2])];p.shoulderDir=[Math.cos(angles[3]),Math.sin(angles[3])];p.head=advance(p.chest,angles[2],27);
+ const ux=p.shoulderDir[0],uy=p.shoulderDir[1];p.ls=[p.chest[0]+uy*rig.shoulder,p.chest[1]-ux*rig.shoulder];p.rs=[p.chest[0]-uy*rig.shoulder,p.chest[1]+ux*rig.shoulder];
+ const profile=RIG_KINEMATICS[f.fighterId],limbs=solveRigTargets(p,rig,profile);
+ for(const [name,current] of Object.entries(limbs)){
+  const root=clamp(v(name+'Root'),current.limits.minRoot,current.limits.maxRoot),flex=clamp(v(name+'Flex'),current.limits.minFlex,current.limits.maxFlex);
+  limbs[name]=forwardLimb(current.start,current.a,current.b,root,flex,{...current.limits,reference:current.reference,bend:current.bend});
+ }
+ const oldSupport=from.pose.p.support[0],newSupport=p.support[0];
+ for(const name of ['leftLeg','rightLeg']){
+  const common=name==='leftLeg'?(oldSupport===1||oldSupport===2)&&(newSupport===1||newSupport===2):oldSupport===2&&newSupport===2;
+  if(common){const a=from.limbs[name].end,b=target.limbs[name].end,goal=[a[0]+(b[0]-a[0])*rigEase(u),a[1]+(b[1]-a[1])*rigEase(u)],l=limbs[name];limbs[name]=solveLimb(l.start,goal,l.a,l.b,{...l.limits,reference:l.reference,bend:l.bend});}
+ }
+ const pose={...target.pose,p,ux,uy,roll:v('roll',true),view:{x:v('worldX'),jump:v('jump')},transition:u<1};
+ return rigAssemble(rig,pose,limbs);
+}
+function displayFighterSkeleton(f,t){
+ const target=buildFighterSkeleton(f,t);target.pose.view={x:f.x,jump:f.jumpHeight||0};
+ const stamp=rigStamp(f,t),history=f.visualMotion;
+ let transition=history?.transition;
+ if(history&&t>=history.at&&t-history.at<250&&stamp!==history.stamp){
+  const attack=target.pose.attack,release=history.stamp==='hitstop';
+  const duration=release?75:attack?Math.max(1,Math.min(90,f.hitAt-f.actionStart)):f.fighterId==='power'?140:105;
+  const start=attack&&!release?Math.max(history.at,f.actionStart):history.at;
+  const baseline=buildFighterSkeleton(f,start),next=buildFighterSkeleton(f,start+1);baseline.pose.view={x:f.x,jump:f.jumpHeight||0};next.pose.view=baseline.pose.view;
+  const av=rigMotionValues(baseline,f),bv=rigMotionValues(next,f),baselineVelocity={};for(const key of Object.keys(av))baselineVelocity[key]=key.startsWith('spine')||key==='roll'?rigWrap(bv[key]-av[key]):bv[key]-av[key];
+  transition={from:history.skeleton,velocity:history.velocity,start,duration,stamp,baseline,baselineVelocity};
+ }
+ let result=target;
+ if(transition&&transition.stamp===stamp){
+  const u=clamp((t-transition.start)/transition.duration,0,1);
+  if(u<1)result=blendDisplaySkeleton(f,transition.from,target,transition.velocity,u,transition.duration,transition.baseline,transition.baselineVelocity);else transition=null;
+ }
+ const values=rigMotionValues(result,f),velocity={};
+ if(history&&t>history.at&&t-history.at<100){
+  const before=rigMotionValues(history.skeleton,f),dt=t-history.at;
+  for(const key of Object.keys(values)){const angular=key.startsWith('spine')||key==='roll';velocity[key]=(angular?rigWrap(values[key]-before[key]):values[key]-before[key])/dt;}
+ }
+ f.visualMotion={stamp,at:t,skeleton:result,velocity,transition};return result;
+}
+
 function measureFighterSkeleton(skeleton,matrix={a:1,b:0,c:0,d:1,e:0,f:0},displayScale=1){
  const samples=[],violations=[],seen=new Set();
  let maxRelativeError=0;
@@ -1675,6 +1815,8 @@ function measureFighterSkeleton(skeleton,matrix={a:1,b:0,c:0,d:1,e:0,f:0},displa
   if(!Number.isFinite(root)||!Number.isFinite(flex)||root<l.minRoot-1e-7||root>l.maxRoot+1e-7||flex<l.minFlex-1e-7||flex>l.maxFlex+1e-7)violations.push(name+'.jointLimits');
   if(Math.abs(rigWrap(signedFlex+limb.bend*flex))>1e-7)violations.push(name+'.bendDirection');
  }
+ const spineAngles=rigSpineAngles(skeleton.pose.p);
+ if(Math.abs(rigWrap(spineAngles[1]-spineAngles[0]))>.550001||Math.abs(rigWrap(spineAngles[2]-spineAngles[1]))>.900001||Math.abs(rigWrap(spineAngles[3]-spineAngles[2]))>.400001)violations.push('spine.jointLimits');
  return {valid:violations.length===0,maxRelativeError,samples,violations};
 }
 function auditRigFrame(skeleton,matrix,displayScale,f){
@@ -1689,21 +1831,22 @@ function auditRigFrame(skeleton,matrix,displayScale,f){
 }
 function drawRigSkeleton(skeleton){
  for(const bone of skeleton.bones){rigLine(bone.start,bone.end,3,'#d9f9eb');rigDot(bone.start,3,'#ffd278');rigDot(bone.end,3,'#ffd278')}
- rigLine(skeleton.pose.p.hip,skeleton.pose.p.chest,3,'#8abfff');
+
 }
 
 function rigLine(a,b,width,color){ctx.beginPath();ctx.moveTo(...a);ctx.lineTo(...b);ctx.strokeStyle=color;ctx.lineWidth=width;ctx.stroke()}
 function rigDot(p,r,color){ctx.beginPath();ctx.arc(p[0],p[1],r,0,Math.PI*2);ctx.fillStyle=color;ctx.fill()}
 function rigShape(points,color){ctx.beginPath();ctx.moveTo(...points[0]);for(const p of points.slice(1))ctx.lineTo(...p);ctx.closePath();ctx.fillStyle=color;ctx.fill()}
-function fighter(f,t){
- const skeleton=buildFighterSkeleton(f,t),r=skeleton.rig;
+function fighter(f,t,frozen=null){
+ if(frozen){f=frozen.state;t=frozen.at;}
+ const skeleton=frozen?.skeleton||displayFighterSkeleton(f,t),r=skeleton.rig;
  const {p,move,m,contact,yaw,lift,roll,reaction,attack,ux,uy}=skeleton.pose;
  const {leftLeg,rightLeg,leftArm,rightArm}=skeleton.limbs;
  const scale=clamp(Math.min(W/650,H/470),.82,1.3),ground=H*.75;
  const tier=rhythmLevel(f),accent=f.ai?'#ff9b91':r.trim;
  const shadow=ctx.createRadialGradient(W*f.x,ground+3,1,W*f.x,ground+3,48*scale);
  shadow.addColorStop(0,'#00000088');shadow.addColorStop(1,'#00000000');ctx.fillStyle=shadow;ctx.beginPath();ctx.ellipse(W*f.x,ground+3,(43-Math.min(17,(f.jumpHeight||0)/4))*scale,9*scale,0,0,Math.PI*2);ctx.fill();
- ctx.save();ctx.translate(W*f.x,ground-(f.jumpHeight||0)-lift*scale);
+ ctx.save();ctx.translate(W*(skeleton.pose.view?.x??f.x),ground-(skeleton.pose.view?.jump??(f.jumpHeight||0))-lift*scale);
  // Reflection and uniform scale are rigid transforms. A continuous X squash
  // changed visible bone lengths by up to 90%; it must never be used for turning.
  ctx.scale(scale*(f.facing<0?-1:1),scale);
@@ -1711,7 +1854,7 @@ function fighter(f,t){
  const profile=RIG_KINEMATICS[f.fighterId]||RIG_KINEMATICS.kickboxer;
  // Authored weight transfer is independent of opponent distance. No limb or
  // body is stretched to reach a visual hit point.
- ctx.translate(attack?profile.drive*contact:0,0);
+
  if(f.action==='down'){
   const falling=rigEase((t-f.downStart)/(BEAT_MS*.78)),rising=finale?.knockout&&finale.loser===f?1:rigEase((f.downUntil-t)/(BEAT_MS*.9));
   const fall=Math.min(falling,rising);ctx.translate(0,-16*fall);ctx.rotate(-1.48*fall);ctx.translate(-p.hip[0]*fall,72*fall);
@@ -1748,16 +1891,17 @@ function fighter(f,t){
   rigDot(limb.end,f.fighterId==='boxer'?9:f.fighterId==='acrobat'?5:7,r.glove);rigDot([limb.end[0]+1,limb.end[1]-2],f.fighterId==='boxer'?4:2.5,'#ffffff33');
  }
  arm(leftArm.start,leftArm,false);
- const waist=[p.hip[0]+ux*13,p.hip[1]+uy*13];
+ const waist=p.lumbar;
  const side=(c,w,sign)=>[c[0]-uy*w*sign,c[1]+ux*w*sign];
- rigShape([side(p.chest,r.shoulder+2,-1),side(p.chest,r.shoulder+2,1),side(waist,r.waist,1),side(p.hip,r.hips,1),side(p.hip,r.hips,-1),side(waist,r.waist,-1)],r.skin);
+ const contour=(topWidth,midWidth,lowWidth)=>[side(p.chest,topWidth,-1),side(p.chest,topWidth,1),side(p.thorax,midWidth,1),side(p.lumbar,lowWidth,1),side(p.hip,r.hips,1),side(p.hip,r.hips,-1),side(p.lumbar,lowWidth,-1),side(p.thorax,midWidth,-1)];
+ rigShape(contour(r.shoulder+2,r.waist+3,r.waist),r.skin);
  // Individual clothing construction, not recolours of the same silhouette.
  if(f.fighterId==='acrobat'){
-  const hem=[p.hip[0]+ux*20,p.hip[1]+uy*20];
-  rigShape([side(p.chest,r.shoulder,-1),side(p.chest,r.shoulder,1),side(hem,r.waist+1,1),side(hem,r.waist+1,-1)],r.cloth);
+  const hem=[p.lumbar[0]*.6+p.thorax[0]*.4,p.lumbar[1]*.6+p.thorax[1]*.4];
+  rigShape([side(p.chest,r.shoulder,-1),side(p.chest,r.shoulder,1),side(p.thorax,r.waist+3,1),side(hem,r.waist+1,1),side(hem,r.waist+1,-1),side(p.thorax,r.waist+3,-1)],r.cloth);
   rigLine(side(p.chest,r.shoulder-2,-1),side(hem,r.waist-2,-1),2,r.trim);
  }else if(f.fighterId==='power'){
-  rigShape([side(p.chest,r.shoulder-2,-1),side(p.chest,r.shoulder-2,1),side(p.hip,r.hips,1),side(p.hip,r.hips,-1)],r.cloth);
+  rigShape(contour(r.shoulder-2,r.waist+3,r.waist),r.cloth);
   rigLine(side(p.chest,10,-1),side(waist,7,-1),3,r.trim);
  }else{
   // Chest and abdominal planes of the adult male athletes.
@@ -1769,7 +1913,7 @@ function fighter(f,t){
  rigLine(side(p.hip,r.hips,-1),side(p.hip,r.hips,1),2.5,r.trim);
  if(f.fighterId==='kickboxer'){ctx.fillStyle=r.trim;ctx.font='900 8px system-ui';ctx.textAlign='center';ctx.fillText('BL',p.hip[0],p.hip[1]+2)}
  arm(rightArm.start,rightArm,true);
- const neck=[p.chest[0]+ux*12,p.chest[1]+uy*12];rigLine(neck,p.head,9,r.skin);
+ const neck=[p.chest[0]+p.torsoDir[0]*12,p.chest[1]+p.torsoDir[1]*12];rigLine(neck,p.head,9,r.skin);
  if(f.fighterId==='acrobat'){
   // Ponytail follows a lagged beat, attack torque and hit recoil.
   const hairEnd=[p.head[0]-25-Math.sin((t-rhythmStart)/BEAT_MS*Math.PI-.8)*7-contact*9,p.head[1]+19+contact*8];
@@ -1787,8 +1931,8 @@ function fighter(f,t){
 }
 
 function render(t){ctx.save();if(shake&&!photoStop)ctx.translate(rng(-shake,shake),rng(-shake,shake));bg();
- const poseT=photoStop&&t<photoStop.until?photoStop.pose:t;
- if(player&&enemy){fighter(player,poseT);fighter(enemy,poseT)}
+ const held=photoStop&&t<photoStop.until?photoStop.frames:null;
+ if(player&&enemy){fighter(player,t,held?.get(player));fighter(enemy,t,held?.get(enemy))}
  if(RIG_DEBUG){ctx.restore();return;}
  renderSpecialFeedback(t);for(let p of particles){ctx.globalAlpha=clamp(p.life/p.total,0,1);ctx.fillStyle=p.col;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,2*Math.PI);ctx.fill()}
 for(let p of impacts){const a=clamp(p.life/p.total,0,1),progress=1-a;
@@ -1848,6 +1992,35 @@ for(const button of document.querySelectorAll('[data-difficulty]')){
  });
 }
 document.querySelectorAll('[data-track]').forEach(b=>b.onclick=()=>chooseTrack(b.dataset.track));
+function practiceEnergy(){return [0,20,40,60,100][practiceLevel-1]}
+function refreshAnimationLab(){
+ $('animationLab').style.display=practiceMode?'block':'none';$('practiceLevel').value=String(practiceLevel);
+ const select=$('practiceVariant'),count=ANIMATION_COUNTS[practiceLevel-1],old=practiceVariant;
+ select.innerHTML='<option value="-1">Автоматический выбор</option>';
+ for(let i=0;i<count;i++){const option=document.createElement('option');option.value=String(i);option.textContent=(i+1)+' / '+count;select.appendChild(option)}
+ practiceVariant=old<count?old:-1;select.value=String(practiceVariant);
+ const id=player?.fighterId||selectedFighter,index=Math.max(0,practiceVariant);
+ $('animationReadout').textContent=practiceVariant<0?'Автоматический выбор из '+count+' фраз':CHOREOGRAPHY[id].light[index].name+' / '+CHOREOGRAPHY[id].heavy[index].name;
+}
+function setPracticeLevel(level){
+ practiceLevel=clamp(Number(level),1,5);if(player&&practiceMode){player.rhythm=practiceEnergy();player.flowUntil=0;syncVisualLevel(player,gameClock(),false)}refreshAnimationLab();
+}
+$('practiceLevel').onchange=e=>setPracticeLevel(e.target.value);
+$('practiceVariant').onchange=e=>{practiceVariant=Number(e.target.value);refreshAnimationLab()};
+$('animationNext').onclick=()=>{practiceVariant=(Math.max(-1,practiceVariant)+1)%ANIMATION_COUNTS[practiceLevel-1];refreshAnimationLab()};
+for(const b of document.querySelectorAll('[data-preview]'))b.onclick=()=>{
+ if(!practiceMode)return;practicePreview={kind:b.dataset.preview,at:null};resumePause();
+ setMessage('ПРОСМОТР АНИМАЦИИ','На ближайшей доступной доле · кулдаун сохранён',700);
+};
+function updatePracticePreview(t){
+ if(!practiceMode||!practicePreview||clinch)return;
+ const f=player;
+ if(practicePreview.at===null)practicePreview.at=nextRhythmNoteAfter(Math.max(t,f.cooldown,f.recoveryUntil,f.actionEnd,f.stunnedUntil,f.landingRecoverUntil),25);
+ if(t<practicePreview.at)return;
+ if((f.action==='idle'||t>=f.actionEnd)&&t>=f.cooldown&&t>=f.recoveryUntil){f.comboSeq='';f.lastComboInputAt=-1e6;f.pendingAttacks.length=0;}
+ if(startAction(f,practicePreview.kind,t,practicePreview.at))practicePreview=null;else practicePreview.at=nextRhythmNoteAfter(t,BEAT_MS*.3);
+}
+
 function setPracticeMode(v){practiceMode=v;$('modeDuel').classList.toggle('selected',!v);$('modePractice').classList.toggle('selected',v);$('start').textContent=v?'НАЧАТЬ ТРЕНИРОВКУ':'НАЧАТЬ ДУЭЛЬ'}
 $('modeDuel').onclick=()=>setPracticeMode(false);
 $('modePractice').onclick=()=>setPracticeMode(true);
@@ -1857,8 +2030,8 @@ function openPause(){
  motionHistory=[];
  if(!started||ended||paused)return;
  gameTimeNow=gameClock();paused=true;pauseStarted=performance.now();
- $('pauseOverlay').classList.add('show');$('pauseViewMenu').style.display='grid';$('pauseViewMoves').style.display='none';
- joyX=joyY=0;if(player){player.moveHeld=0;player.guard=false}
+ $('pauseOverlay').classList.add('show');$('pauseViewMenu').style.display='grid';$('pauseViewMoves').style.display='none';refreshAnimationLab();
+ keys={};joyPointer=null;joyX=joyY=0;stick.style.transform='translate(-50%,-50%)';if(player){player.moveHeld=0;player.guard=false}
  if(audio&&audio.state==='running')audio.suspend?.();
  for(const clip of activeVoices)clip.pause();activeVoices.length=0;
 }

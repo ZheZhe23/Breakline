@@ -37,6 +37,8 @@ const errors=[];let checks=0;
   }
 
   await require('./kinematics.cjs')({page,run,artifactDir:process.env.ARTIFACT_DIR});
+  await require('./biomechanics.cjs')({page,run});
+  await require('./choreography.cjs')({page,run,artifactDir:process.env.ARTIFACT_DIR});
 
   // Exercise the real combo/action/update functions at exact transport beats.
   // Simulation stays inside one JS task, so RAF cannot race the state fixture.
