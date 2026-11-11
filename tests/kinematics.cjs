@@ -13,7 +13,7 @@ module.exports=async function checkKinematics({page,run,artifactDir}){
    for(const id of Object.keys(RIGS)){
     for(const kind of ['light','heavy'])for(let variant=0;variant<15;variant++){
      const hit=BEAT_MS*(kind==='light'?.085:.11);
-     cases.push(scenario(id,kind+'/'+variant,{action:kind,actionVariant:variant,hitAt:1000+hit,actionEnd:1000+BEAT_MS*.9},BEAT_MS*.9));
+     cases.push(scenario(id,kind+'/'+variant,{action:kind,actionVariant:variant,archivePreview:true,hitAt:1000+hit,actionEnd:1000+BEAT_MS*.9},BEAT_MS*.9));
     }
     for(let i=0;i<RIGS[id].finals.length;i++)cases.push(scenario(id,'finisher/'+i,{action:'heavy',finisher:true,powerFinisher:true,finisherStyle:i,hitAt:1000+BEAT_MS*.11,actionEnd:1000+BEAT_MS*1.65},BEAT_MS*1.65));
     const states={idle:{},walk:{moveHeld:1},retreat:{moveHeld:-1},block:{guard:true},crouch:{crouch:true},crouchBlock:{crouch:true,guard:true},
@@ -124,7 +124,7 @@ module.exports=async function checkKinematics({page,run,artifactDir}){
     BEAT_MS=500;rhythmStart=500;
     for(const id of Object.keys(RIGS))for(const facing of [1,-1]){
      const cases=[];
-     for(const kind of ['light','heavy'])for(let variant=0;variant<15;variant++)cases.push({action:kind,actionVariant:variant});
+     for(const kind of ['light','heavy'])for(let variant=0;variant<15;variant++)cases.push({action:kind,actionVariant:variant,archivePreview:true});
      for(let i=0;i<RIGS[id].finals.length;i++)cases.push({action:'heavy',finisher:true,powerFinisher:true,finisherStyle:i});
      for(const action of ['idle','stunned','down','caught','throwing','dive','celebrate','defeated'])cases.push({action});
      cases.push({action:'heavy',attackLow:true,crouch:true});cases.push({action:'heavy',actionVariant:13,hitReactStart:1020,hitReactUntil:1400,hitReactPower:1.4});

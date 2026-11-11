@@ -38,6 +38,7 @@ const errors=[];let checks=0;
 
   await require('./kinematics.cjs')({page,run,artifactDir:process.env.ARTIFACT_DIR});
   await require('./biomechanics.cjs')({page,run});
+  await require('./combo-tree.cjs')({page,run,artifactDir:process.env.ARTIFACT_DIR});
   await require('./choreography.cjs')({page,run,artifactDir:process.env.ARTIFACT_DIR});
 
   // Exercise the real combo/action/update functions at exact transport beats.
@@ -161,7 +162,9 @@ const errors=[];let checks=0;
    const meters=await page.locator('.meter').evaluateAll(nodes=>nodes.filter(n=>getComputedStyle(n).display!=='none').map(n=>{const r=n.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height}}));
    for(const b of meters)assert.ok(!overlap(b,boxes.distance),'health label avoids distance '+width);
    const bars=await page.locator('#hud .bar').evaluateAll(nodes=>nodes.map(n=>n.getBoundingClientRect().y));assert.ok(Math.abs(bars[0]-bars[1])<1,'health bars align');
-   await page.locator('#pauseBtn').click();await page.locator('#pauseMoves').click();assert.ok((await page.locator('#movesBook').innerText()).includes('СПЕЦПРИЁМЫ'));await page.locator('#pauseBack').click();await page.locator('#pauseResume').click();checks++;
+   await page.locator('#pauseBtn').click();
+   const labBox=await page.locator('#animationLab').boundingBox();for(const id of ['practiceLevel','practiceLabMode','practiceCombo','comboPreview','comboStepPreview','comboBreakPreview']){const b=await page.locator('#'+id).boundingBox();assert.ok(b.x>=labBox.x&&b.x+b.width<=labBox.x+labBox.width+.5,id+' fits training lab '+width);}
+   await page.locator('#pauseMoves').click();assert.ok((await page.locator('#movesBook').innerText()).includes('СПЕЦПРИЁМЫ'));await page.locator('#pauseBack').click();await page.locator('#pauseResume').click();checks++;
   }
   // Real pointer events (including cancellation) on the mobile joystick.
   const touch=await browser.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true,deviceScaleFactor:3});
@@ -172,6 +175,7 @@ const errors=[];let checks=0;
   await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:joy.x+joy.width*.8,y:joy.y+joy.height*.5}]});
   await tp.waitForTimeout(300);assert.equal(await tp.evaluate(()=>__test('player.moveHeld')),1);
   await session.send('Input.dispatchTouchEvent',{type:'touchCancel',touchPoints:[]});assert.equal(await tp.evaluate(()=>__test('player.moveHeld')),0);checks+=2;
+  await tp.locator('#pauseBtn').tap();await tp.locator('#practiceCombo').selectOption('1');await tp.locator('#comboPreview').tap();await tp.waitForFunction(()=>!__test('practicePreview')&&__test('player.finisher'),null,{timeout:6000});assert.equal(await tp.evaluate(()=>__test('player.comboSeq')),'LHL');checks++;
   await touch.close();
   // Desktop Chromium renderer timing only; this is not an Android benchmark.
   const renderTiming=await run(`(()=>{const samples=[];for(let i=0;i<120;i++){const begin=performance.now();render(gameClock()+i*16);samples.push(performance.now()-begin)}samples.sort((a,b)=>a-b);return {meanMs:samples.reduce((a,b)=>a+b,0)/samples.length,p95Ms:samples[114],dpr}})()`);

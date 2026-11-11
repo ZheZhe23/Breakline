@@ -4,7 +4,8 @@
   "scripts": {
     "check": "node tests/syntax.cjs",
     "test": "node tests/syntax.cjs && node tests/browser.cjs",
-    "render:reel": "node tests/render-reel.cjs"
+    "render:reel": "node tests/render-reel.cjs",
+    "render:combos": "node tests/render-combos.cjs"
   },
   "devDependencies": {
     "playwright": "1.62.1"
