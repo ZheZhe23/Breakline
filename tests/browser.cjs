@@ -132,6 +132,10 @@ const errors=[];let checks=0;
    const ids=['joystick','attack','heavy','grab','soundBtn','pauseBtn','rhythmHud','distance','streakScore'];
    const boxes={};for(const id of ids){boxes[id]=await page.locator('#'+id).boundingBox();assert.ok(boxes[id].x>=0&&boxes[id].x+boxes[id].width<=width+.5,id+' fits width '+width);assert.ok(boxes[id].y>=0&&boxes[id].y+boxes[id].height<=height+.5,id+' fits height '+height)}
    for(let i=0;i<ids.length;i++)for(let j=i+1;j<ids.length;j++)assert.ok(!overlap(boxes[ids[i]],boxes[ids[j]]),`${ids[i]} overlaps ${ids[j]} at ${width}x${height}`);
+   const innerIds=['beatLabel','rhythmGrade','flowLabel','beatTrack','rhythmPatternLabel'];
+   for(const id of innerIds){const b=await page.locator('#'+id).boundingBox();assert.ok(b.y+b.height<=boxes.rhythmHud.y+boxes.rhythmHud.height+.5,id+' stays inside rhythm panel '+width);assert.ok(!overlap(b,boxes.streakScore),id+' avoids streak '+width)}
+   const meters=await page.locator('.meter').evaluateAll(nodes=>nodes.filter(n=>getComputedStyle(n).display!=='none').map(n=>{const r=n.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height}}));
+   for(const b of meters)assert.ok(!overlap(b,boxes.distance),'health label avoids distance '+width);
    const bars=await page.locator('#hud .bar').evaluateAll(nodes=>nodes.map(n=>n.getBoundingClientRect().y));assert.ok(Math.abs(bars[0]-bars[1])<1,'health bars align');
    await page.locator('#pauseBtn').click();await page.locator('#pauseMoves').click();assert.ok((await page.locator('#movesBook').innerText()).includes('СПЕЦПРИЁМЫ'));await page.locator('#pauseBack').click();await page.locator('#pauseResume').click();checks++;
   }
