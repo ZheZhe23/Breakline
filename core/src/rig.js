@@ -34,6 +34,8 @@ function forwardLimb(start,a,b,root,flex,options){
 
 const smooth=x=>{x=clamp(x,0,1);return x*x*(3-2*x)};
 const lerp=(a,b,t)=>a+(b-a)*t;
+const angleCache=new WeakMap();
+function anglesOf(p){if(p.angles)return p.angles;if(angleCache.has(p))return angleCache.get(p);const out={};for(const [name,l]of Object.entries(skeleton(p).limbs))out[name]={root:l.root,flex:l.flex};angleCache.set(p,out);return out}
 const base={hip:[0,-71],spine:[.02,.09,.02],lh:[27,-119],rh:[12,-125],lf:[29,-2],rf:[-28,-2],turn:0};
 const pose=(changes={})=>({...base,...changes});
 function mix(a,b,t){
@@ -41,8 +43,8 @@ function mix(a,b,t){
  p.turn=lerp(a.turn,b.turn,t);
  // Interpolate constrained FK angles, not a hand target through its shoulder.
  // IK supplies authored key poses; FK preserves elbow/knee continuity in between.
- const sa=skeleton(a),sb=skeleton(b);p.angles={};
- for(const name of Object.keys(sa.limbs))p.angles[name]={root:lerp(sa.limbs[name].root,sb.limbs[name].root,t),flex:lerp(sa.limbs[name].flex,sb.limbs[name].flex,t)};
+ const sa=anglesOf(a),sb=anglesOf(b);p.angles={};
+ for(const name of Object.keys(sa))p.angles[name]={root:lerp(sa[name].root,sb[name].root,t),flex:lerp(sa[name].flex,sb[name].flex,t)};
  return p;
 }
 const moves={
@@ -56,16 +58,27 @@ const moves={
  knee:{impact:135,duration:720,recovery:675,limb:'leftLeg',contact:pose({hip:[30,-82],spine:[.20,.15,.06],lf:[37,-62],rf:[-9,-6],lh:[55,-136],rh:[31,-136],turn:.35}),chamber:pose({hip:[4,-66],spine:[.12,.08,.03],lf:[25,-30],rf:[-20,-2],lh:[33,-127]}),follow:pose({hip:[32,-79],spine:[.22,.18,.08],lf:[37,-58],rf:[-6,-3],lh:[47,-130],rh:[26,-127],turn:.42}),exit:pose({hip:[6,-72],spine:[.03,.1,.02],lf:[26,-16],rf:[-24,-2],lh:[28,-122]})}
 };
 function idle(t){const b=Math.sin(t*.006)*1.2;return pose({hip:[Math.sin(t*.003)*.7,-71+b],spine:[.02,.09+Math.sin(t*.003)*.015,.02],lh:[27,-119+b],rh:[12,-125+b]})}
+const limbNames=['leftArm','rightArm','leftLeg','rightLeg'];
+function vector(p){const a=anglesOf(p);return [...p.hip,...p.spine,p.turn,...p.lh,...p.rh,...p.lf,...p.rf,...limbNames.flatMap(n=>[a[n].root,a[n].flex])]}
+function unvector(v){const p=pose({hip:v.slice(0,2),spine:v.slice(2,5),turn:v[5],lh:v.slice(6,8),rh:v.slice(8,10),lf:v.slice(10,12),rf:v.slice(12,14)});p.angles={};limbNames.forEach((n,i)=>p.angles[n]={root:v[14+i*2],flex:v[15+i*2]});return p}
+function clip(action,linked){
+ const m=moves[action.move],i=m.impact,times=[0,i*.48,i,i+85,m.duration*.76,m.duration],poses=[action.from,m.chamber,m.contact,m.follow,m.exit,linked?m.exit:idle(action.start+m.duration)],values=poses.map(vector),tangents=values.map(v=>v.map(()=>0));
+ // Shape-preserving Hermite: joints carry momentum through a contact key while
+ // every scalar remains within its neighbouring constrained FK poses.
+ for(let k=1;k<values.length-1;k++)for(let j=0;j<values[k].length;j++){
+  const h0=times[k]-times[k-1],h1=times[k+1]-times[k],d0=(values[k][j]-values[k-1][j])/h0,d1=(values[k+1][j]-values[k][j])/h1;
+  if(d0*d1>0){const w1=2*h1+h0,w2=h1+2*h0;tangents[k][j]=(w1+w2)/(w1/d0+w2/d1)}
+ }
+ return {times,values,tangents};
+}
 function sample(action,t){
  if(!action)return idle(t);
- const m=moves[action.move],elapsed=Math.max(0,t-action.start),i=m.impact;
- // Authored weight transfer -> chamber -> contact -> inertial follow-through.
- // The old pose is the first key, so a legal follow-up never snaps to guard.
- const linked=action.series&&!action.finish&&action.series.clean;
- const endPose=linked?m.exit:idle(t);
- const keys=[[0,action.from],[i*.48,m.chamber],[i,m.contact],[i+85,m.follow],[m.duration*.76,m.exit],[m.duration,endPose]];
- for(let k=1;k<keys.length;k++)if(elapsed<=keys[k][0])return mix(keys[k-1][1],keys[k][1],smooth((elapsed-keys[k-1][0])/(keys[k][0]-keys[k-1][0])));
- return linked?mix(m.exit,idle(t),smooth((elapsed-1250)/220)):idle(t);
+ const m=moves[action.move],elapsed=Math.max(0,t-action.start),linked=!!(action.series&&!action.finish&&action.series.clean);
+ if(elapsed>m.duration)return linked?mix(m.exit,idle(t),smooth((elapsed-1250)/220)):idle(t);
+ if(!action.clip||action.clipLinked!==linked){action.clip=clip(action,linked);action.clipLinked=linked}
+ const {times,values,tangents}=action.clip;let k=1;while(k<times.length-1&&elapsed>times[k])k++;
+ const dt=times[k]-times[k-1],u=clamp((elapsed-times[k-1])/dt,0,1),u2=u*u,u3=u2*u;
+ return unvector(values[k-1].map((v,j)=>(2*u3-3*u2+1)*v+(u3-2*u2+u)*dt*tangents[k-1][j]+(-2*u3+3*u2)*values[k][j]+(u3-u2)*dt*tangents[k][j]));
 }
 function skeleton(p){
  const hip=p.hip.slice(),sp=[hip];let at=hip;
@@ -79,9 +92,9 @@ function skeleton(p){
  for(let i=0;i<3;i++)bones.push({name:'spine.'+['pelvis','lumbar','thorax'][i],start:sp[i],end:sp[i+1],length:[14,16,15][i]});
  return {hip,sp,shoulder,limbs,bones,pose:p};
 }
-function measure(s){
+function measure(s,matrix={a:1,b:0,c:0,d:1},displayScale=1){
  const violations=[];let maxRelativeError=0;
- for(const b of s.bones){const e=Math.abs(Math.hypot(b.end[0]-b.start[0],b.end[1]-b.start[1])/b.length-1);maxRelativeError=Math.max(maxRelativeError,e);if(!Number.isFinite(e)||e>1e-6)violations.push(b.name)}
+ for(const b of s.bones){const e=Math.abs(Math.hypot(matrix.a*(b.end[0]-b.start[0])+matrix.c*(b.end[1]-b.start[1]),matrix.b*(b.end[0]-b.start[0])+matrix.d*(b.end[1]-b.start[1]))/(b.length*displayScale)-1);maxRelativeError=Math.max(maxRelativeError,e);if(!Number.isFinite(e)||e>1e-6)violations.push(b.name)}
  for(const [name,l]of Object.entries(s.limbs)){const o=l.limits;if(l.root<o.minRoot-1e-7||l.root>o.maxRoot+1e-7||l.flex<o.minFlex-1e-7||l.flex>o.maxFlex+1e-7)violations.push(name+'.limits')}
  for(let i=1;i<3;i++)if(Math.abs(poseAngle(s,i)-poseAngle(s,i-1))>.55)violations.push('spine.limit');
  return {valid:!violations.length,violations,maxRelativeError,segments:s.bones.length};

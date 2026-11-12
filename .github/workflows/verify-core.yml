@@ -1,9 +1,9 @@
 name: Verify independent BREAKLINE CORE
 on:
   push:
-    branches: [core]
+    branches: [core, core-rework]
   pull_request:
-    branches: [core]
+    branches: [core, core-rework]
 permissions:
   contents: read
 jobs:
@@ -23,6 +23,6 @@ jobs:
         if: always()
         with:
           name: breakline-core-checks
-          path: test-artifacts/core
+          path: test-artifacts/afterhours
           if-no-files-found: ignore
 # Deliberately no Pages job: CORE must never replace the full game.
