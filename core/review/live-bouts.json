@@ -1,5 +1,5 @@
 {
-  "coreSha256": "cb3b52eef5cc680fc9de35bd59e1b35b237d1ee8c65123970394708a80a2557a",
+  "coreSha256": "d9437d6ff6ca09446ef7c8b266bfac8bfd66f00893fd2ea63abf67eb81149b09",
   "kind": "real-time native touch policy against active AI; silent Chromium video; not a human or Android recording",
   "reports": [
     {
@@ -7,7 +7,7 @@
       "opponent": "brick",
       "winner": "player",
       "stats": {
-        "perfect": 21,
+        "perfect": 19,
         "good": 0,
         "off": 0,
         "combos": 5,
@@ -18,25 +18,25 @@
         ],
         "dodges": 5,
         "blocks": 0,
-        "taken": 1,
-        "counters": 5,
-        "score": 9349,
+        "taken": 0,
+        "counters": 4,
+        "score": 9429,
         "maxLevel": 5,
-        "attempts": 6,
+        "attempts": 5,
         "supers": 2,
         "guarded": 0,
-        "interrupts": 3,
+        "interrupts": 4,
         "lateThreats": 0,
-        "time": 19047.324217687074,
-        "winBonus": 1720
+        "time": 17047.753680272483,
+        "winBonus": 1760
       },
       "rating": {
         "rank": "S",
-        "value": 95,
+        "value": 100,
         "accuracy": 100
       },
       "lateThreats": 0,
-      "nativeTaps": 27,
+      "nativeTaps": 24,
       "errors": []
     },
     {
@@ -44,8 +44,8 @@
       "opponent": "iris",
       "winner": "player",
       "stats": {
-        "perfect": 12,
-        "good": 2,
+        "perfect": 14,
+        "good": 0,
         "off": 0,
         "combos": 4,
         "variety": [
@@ -56,21 +56,21 @@
         "dodges": 8,
         "blocks": 0,
         "taken": 0,
-        "counters": 6,
-        "score": 9744,
+        "counters": 5,
+        "score": 9541,
         "maxLevel": 5,
         "attempts": 8,
         "supers": 2,
         "guarded": 0,
         "interrupts": 3,
         "lateThreats": 0,
-        "time": 14556.39300453515,
+        "time": 14556.945702948404,
         "winBonus": 1800
       },
       "rating": {
         "rank": "S",
-        "value": 98,
-        "accuracy": 96
+        "value": 100,
+        "accuracy": 100
       },
       "lateThreats": 0,
       "nativeTaps": 22,
@@ -81,8 +81,8 @@
       "opponent": "nova",
       "winner": "player",
       "stats": {
-        "perfect": 16,
-        "good": 1,
+        "perfect": 17,
+        "good": 0,
         "off": 0,
         "combos": 5,
         "variety": [
@@ -93,21 +93,21 @@
         "dodges": 6,
         "blocks": 0,
         "taken": 0,
-        "counters": 6,
-        "score": 8984,
+        "counters": 5,
+        "score": 8767,
         "maxLevel": 5,
         "attempts": 6,
         "supers": 1,
         "guarded": 0,
         "interrupts": 3,
         "lateThreats": 0,
-        "time": 14745.434811791292,
+        "time": 14757.059113378687,
         "winBonus": 1800
       },
       "rating": {
         "rank": "S",
-        "value": 99,
-        "accuracy": 98
+        "value": 100,
+        "accuracy": 100
       },
       "lateThreats": 0,
       "nativeTaps": 23,

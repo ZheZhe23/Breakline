@@ -1,0 +1,32 @@
+{
+  "coreSha256": "d9437d6ff6ca09446ef7c8b266bfac8bfd66f00893fd2ea63abf67eb81149b09",
+  "checks": 65,
+  "layouts": [
+    {
+      "width": 320,
+      "height": 568
+    },
+    {
+      "width": 360,
+      "height": 640
+    },
+    {
+      "width": 390,
+      "height": 844
+    },
+    {
+      "width": 412,
+      "height": 915
+    },
+    {
+      "width": 740,
+      "height": 360
+    },
+    {
+      "width": 844,
+      "height": 390
+    }
+  ],
+  "errors": [],
+  "androidHardwareTested": false
+}

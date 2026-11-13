@@ -1,5 +1,5 @@
 {
-  "coreSha256": "cb3b52eef5cc680fc9de35bd59e1b35b237d1ee8c65123970394708a80a2557a",
+  "coreSha256": "d9437d6ff6ca09446ef7c8b266bfac8bfd66f00893fd2ea63abf67eb81149b09",
   "checks": 128,
   "native": [
     {
@@ -173,9 +173,9 @@
     "frames": 120,
     "dpr": 2,
     "desktopCPUThrottle": 4,
-    "p50": 12.600000000093132,
-    "p95": 17,
-    "max": 30.799999999813735,
+    "p50": 13,
+    "p95": 17.200000000186265,
+    "max": 22.100000000558794,
     "androidHardware": false
   },
   "memory": {
@@ -191,7 +191,7 @@
   "errors": [],
   "sound": {
     "peak": 0.830416738986969,
-    "rms": 0.052425473360822594
+    "rms": 0.052425474896729135
   },
   "androidHardwareTested": false
 }
