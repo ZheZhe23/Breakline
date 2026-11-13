@@ -407,12 +407,15 @@ return {create,titles};
 
 (()=>{
 'use strict';
-const $=id=>document.getElementById(id),app=$('app'),canvas=$('arena'),ctx=canvas.getContext('2d'),reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $=id=>document.getElementById(id),app=$('app'),canvas=$('arena'),ctx=canvas.getContext('2d'),motionQuery=matchMedia('(prefers-reduced-motion: reduce)');
+let reduced=motionQuery.matches;
 const defaults={difficulty:'rookie',fighter:'nova',lesson:0,trainingComplete:false,haptic:true,latency:0,bests:{}},prefs=(()=>{try{const p=JSON.parse(localStorage.getItem('breakline.afterhours.v3')||localStorage.getItem('breakline.afterhours.v2')||'null');return p&&typeof p==='object'?{...defaults,...p,bests:p.bests&&typeof p.bests==='object'?p.bests:{}}:{...defaults}}catch{return {...defaults}}})();
 if(!CoreRules.DIFFICULTIES[prefs.difficulty])prefs.difficulty='rookie';prefs.latency=Math.max(-250,Math.min(250,Number(prefs.latency)||0));
 const save=()=>{try{localStorage.setItem('breakline.afterhours.v3',JSON.stringify(prefs))}catch{}};
-let audio=null,paused=false,starting=false,matchOffset=0,selected=prefs.difficulty,selectedFighter=CoreFighters.get(prefs.fighter).id,w=390,h=844,dpr=1,scale=1,ground=600,worldLeft=0,railWidth=360,backdrop=null,hudBottom=110,drawCount=0,auditErrors=0,focusRecipe=null,dojoOptions={mode:'dummy',enemy:null},lastHaptic=-1000,lastTrail=-1000;
+let audio=null,paused=false,starting=false,matchOffset=0,selected=prefs.difficulty,selectedFighter=CoreFighters.get(prefs.fighter).id,w=390,h=844,dpr=1,scale=1,ground=600,worldLeft=0,railWidth=360,backdrop=null,hudBottom=110,drawCount=0,auditErrors=0,focusRecipe=null,dojoOptions={mode:'dummy',enemy:null},lastHaptic=-1000,lastTrail=-1000,paintDirty=true,paintCount=0,loopTicks=0,lastLoopState='';
 const now=()=>audio?audio.now()+matchOffset:0;
+function invalidate(){paintDirty=true}
+motionQuery.addEventListener('change',e=>{reduced=e.matches;invalidate()});
 function vibrate(strong=false){const t=now();if(prefs.haptic&&navigator.vibrate&&t-lastHaptic>110){navigator.vibrate(strong?[13,12,17]:8);lastHaptic=t}}
 const game=CoreRules.create({level:l=>audio?.setLevel(l),sfx:(kind,strong)=>{audio?.sfx(kind,strong);if(kind==='hit'||kind==='counter')vibrate(strong)},fill:(id,q)=>audio?.requestFill(id,q),warning:beat=>audio?.warning(beat-matchOffset),superCharge:id=>audio?.superCharge(id),superHit:id=>{audio?.superHit(id);vibrate(true)},finish:showResult});
 const s=game.s;
@@ -425,7 +428,7 @@ function selectFighter(id){selectedFighter=CoreFighters.get(id).id;prefs.fighter
 function updateRecipes(id){const entries=Object.entries(CoreFighters.get(id).recipes);document.querySelectorAll('.combo').forEach((n,i)=>{const [recipe,f]=entries[i];n.dataset.recipe=recipe;n.querySelector('b').textContent=recipe.replaceAll('L','Р').replaceAll('H','Н').split('').join(' · ');n.querySelector('small').textContent=f.name})}
 for(const f of Object.values(CoreFighters.roster)){const b=document.createElement('button');b.className='fighter-card';b.dataset.fighter=f.id;b.setAttribute('aria-label',f.name+' — '+f.style);const im=document.createElement('img');im.src=CoreSprites.assets[f.id].portrait;im.alt='';const name=document.createElement('b');name.textContent=f.name;b.append(im,name);b.onclick=()=>selectFighter(f.id);$('roster').append(b)}
 selectFighter(selectedFighter);selectDifficulty(selected);for(const n of document.querySelectorAll('.difficulty[data-difficulty]'))n.onclick=()=>selectDifficulty(n.dataset.difficulty);
-function resize(){w=app.clientWidth;h=app.clientHeight;dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);const rect=app.getBoundingClientRect();hudBottom=document.querySelector('.energy').getBoundingClientRect().bottom-rect.top;ground=document.querySelector('.bottom').getBoundingClientRect().top-rect.top-9;const landscape=w>550&&h<510,teaching=lessons.state.active,reserve=teaching&&!landscape?Math.max(100,$('lesson-panel').getBoundingClientRect().height+28):s.practice?62:42;scale=Math.max(.4,Math.min(w/210,(ground-hudBottom-reserve)/152,2.2));worldLeft=w*(teaching&&landscape?.64:.5)-180*scale;$('lesson-panel').style.top=(landscape?hudBottom+14:hudBottom+8)+'px';$('practice-tools').style.top=(hudBottom+8)+'px';railWidth=document.querySelector('.beat-rail').clientWidth;backdrop=createBackdrop();const head=ground-150*scale;$('feedback').style.top=Math.max(hudBottom+3+reserve,head-48)+'px';$('intent').style.top=Math.max(hudBottom+8,head-25)+'px';$('guard-hint').style.top=Math.max(hudBottom+35,head+5)+'px'}
+function resize(){w=app.clientWidth;h=app.clientHeight;dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);const rect=app.getBoundingClientRect();hudBottom=document.querySelector('.energy').getBoundingClientRect().bottom-rect.top;ground=document.querySelector('.bottom').getBoundingClientRect().top-rect.top-9;const landscape=w>550&&h<510,teaching=lessons.state.active,reserve=teaching&&!landscape?Math.max(100,$('lesson-panel').getBoundingClientRect().height+28):s.practice?62:42;scale=Math.max(.4,Math.min(w/210,(ground-hudBottom-reserve)/152,2.2));worldLeft=w*(teaching&&landscape?.64:.5)-180*scale;$('lesson-panel').style.top=(landscape?hudBottom+14:hudBottom+8)+'px';$('practice-tools').style.top=(hudBottom+8)+'px';railWidth=document.querySelector('.beat-rail').clientWidth;backdrop=createBackdrop();const head=ground-150*scale;$('feedback').style.top=Math.max(hudBottom+3+reserve,head-48)+'px';$('intent').style.top=Math.max(hudBottom+8,head-25)+'px';$('guard-hint').style.top=Math.max(hudBottom+35,head+5)+'px';invalidate()}
 new ResizeObserver(resize).observe(app);
 async function startFight(difficulty=selected,training=false,resumeLesson=0,practice=null){
  if(starting)return;starting=true;$('start').disabled=true;
@@ -525,7 +528,18 @@ function hud(t){
  if(lessons.state.active){$('feedback').style.opacity=0;const l=lessons.state;$('lesson-progress').textContent=l.progress+' / '+l.total+(s.feedback&&t-s.feedback.at<850?' · '+s.feedback.label:'')}
  setText($('scene-name'),s.practice?(s.practice.mode==='dummy'?'ПРАКТИКА / МАНЕКЕН':'ПРАКТИКА / ЖИВОЙ СОПЕРНИК'):t<s.start?CoreFighters.get(s.enemy.fighter).name+' / '+game.rival().name:s.phase===1?'AFTERHOURS':s.phase===2?'PRESSURE':'LAST LIGHT');
 }
-CoreSprites.load('stage').then(()=>{backdrop=createBackdrop()}).catch(()=>{});resize();function frame(){const t=now();if(!paused){game.step(t);lessons.tick(t)}updateLesson();render(t);hud(t);requestAnimationFrame(frame)}
+CoreSprites.load('stage').then(()=>{backdrop=createBackdrop();invalidate()}).catch(()=>{});
+resize();
+function frame(){
+ loopTicks++;
+ const state=paused+':'+s.mode+':'+document.hidden;
+ if(state!==lastLoopState){lastLoopState=state;invalidate()}
+ if(!document.hidden){
+  const active=!paused&&(s.mode==='fight'||s.mode==='ending');
+  if(active||paintDirty){const t=now();if(!paused){game.step(t);lessons.tick(t)}updateLesson();render(t);hud(t);paintCount++;paintDirty=false}
+ }
+ requestAnimationFrame(frame);
+}
 // CORE_TEST_HOOK — tests inject access into an in-memory copy, never this release.
 requestAnimationFrame(frame);
 })();
