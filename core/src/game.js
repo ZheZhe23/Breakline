@@ -63,10 +63,11 @@ function line(a,b,width,color){ctx.strokeStyle=color;ctx.lineWidth=width;ctx.lin
 function circle(p,r,color){ctx.fillStyle=color;ctx.beginPath();ctx.arc(p[0],p[1],r,0,Math.PI*2);ctx.fill()}
 function fighter(a,token,t,enemy=false){if(!CoreSprites.ready(a.fighter)){if(s.mode!=='idle')auditErrors++;return}
  const f=CoreFighters.get(a.fighter),rootX=worldLeft+a.x*scale,rootY=ground+(enemy?-2:1)*scale,level=enemy?1:s.level;
- ctx.save();const lift=Math.max(0,-token.y);ctx.fillStyle=`rgba(3,2,11,${.53-lift*.009})`;ctx.beginPath();ctx.ellipse(rootX,rootY+2*scale,(37-lift*.38)*scale,(5-lift*.045)*scale,0,0,Math.PI*2);ctx.fill();
- if(level>=2){const g=ctx.createRadialGradient(rootX,rootY-75*scale,10,rootX,rootY-75*scale,85*scale);g.addColorStop(0,level===5?f.color+'32':f.color+'18');g.addColorStop(1,'#00000000');ctx.fillStyle=g;ctx.fillRect(rootX-100*scale,rootY-190*scale,200*scale,195*scale)}
+ const bodyX=rootX+token.x*scale*a.facing,bodyY=rootY+token.y*scale;
+ ctx.save();const lift=Math.max(0,-token.y);ctx.fillStyle=`rgba(3,2,11,${.53-lift*.009})`;ctx.beginPath();ctx.ellipse(bodyX,rootY+2*scale,(37-lift*.38)*scale,(5-lift*.045)*scale,0,0,Math.PI*2);ctx.fill();
+ if(level>=2){const g=ctx.createRadialGradient(bodyX,bodyY-75*scale,10,bodyX,bodyY-75*scale,85*scale);g.addColorStop(0,level===5?f.color+'32':f.color+'18');g.addColorStop(1,'#00000000');ctx.fillStyle=g;ctx.fillRect(bodyX-100*scale,bodyY-190*scale,200*scale,195*scale)}
  if(CoreSprites.draw(ctx,token,rootX,rootY,scale,a.facing)){drawCount++}else auditErrors++;
- if(!enemy&&s.level>=4&&!reduced){for(let i=0;i<level;i++){const y=-15-(t*.035+i*29)%140,x=Math.sin(t*.002+i*3)*32;circle([rootX+x*scale,rootY+y*scale],scale,f.color)}}
+ if(!enemy&&s.level>=4&&!reduced){for(let i=0;i<level;i++){const y=-15-(t*.035+i*29)%140,x=Math.sin(t*.002+i*3)*32;circle([bodyX+x*scale,bodyY+y*scale],scale,f.color)}}
  ctx.restore();
 }
 function render(t){
@@ -79,6 +80,8 @@ function render(t){
  if(s.level>=3&&!reduced&&!frozen&&t-lastTrail>16&&s.player.action&&t-s.player.action.start<300){const point=CoreFighters.contact(s.player,t);s.trails.push({x:s.player.x+point.x,y:point.y,at:t});lastTrail=t;if(s.trails.length>14)s.trails.shift()}
  for(const p of s.trails){const age=t-p.at;if(age<0||age>145)continue;circle([worldLeft+p.x*scale,ground+p.y*scale],(s.level===5?4:2.5)*scale,`rgba(221,255,120,${(1-age/145)*.20})`)}
  ctx.save();if(frozen&&!reduced)ctx.translate(Math.sin(t*.12)*2.5,Math.cos(t*.1)*1.2);fighter(s.enemy,enemy,t,true);fighter(s.player,player,t);ctx.restore();
+ // Small local impact drawings, bounded and distinct from blocked contacts.
+ for(const hit of s.impacts){const age=t-hit.at;if(age<0||age>150)continue;const u=age/150,x=worldLeft+hit.x*scale,y=ground+hit.y*scale;ctx.save();ctx.globalAlpha=(1-u)*(hit.kind==='guard'?.35:.6);ctx.translate(x,y);const size=(reduced?5:hit.strong?16:9)*scale*(reduced?1:.65+u*.8);if(hit.kind==='guard'){ctx.strokeStyle='#c0b3ff';ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,0,size,-1.3,1.3);ctx.stroke()}else{const color=hit.kind==='enemy'?'#ff8fae':hit.kind==='counter'?'#c0b3ff':'#f5ffd4';for(let i=0;i<6;i++){const a=i*Math.PI/3;line([Math.cos(a)*size*.4,Math.sin(a)*size*.4],[Math.cos(a)*size,Math.sin(a)*size],hit.strong?2:1,color)}if(hit.strong&&!reduced){ctx.strokeStyle=color;ctx.lineWidth=1;ctx.beginPath();ctx.ellipse(0,0,size*1.4,size*.65,-.3,0,Math.PI*2);ctx.stroke()}}ctx.restore()}
  for(const p of s.particles){const age=(t-p.at)/1000;if(age<0||age>.44)continue;const x=worldLeft+(p.x+p.vx*age)*scale,y=ground+(p.y+p.vy*age+90*age*age)*scale;ctx.globalAlpha=1-age/.44;line([x,y],[x-p.vx*.025*scale,y-p.vy*.025*scale],p.strong?2.5:1.5,p.kind==='guard'?'#c0b3ff':p.kind==='enemy'?'#ff638f':'#edffa4');ctx.globalAlpha=1}
  if(t<s.flash&&!reduced){ctx.fillStyle=`rgba(225,215,255,${Math.min(1,Math.max(0,(s.flash-t)/100))*.07})`;ctx.fillRect(0,0,w,h)}
 }

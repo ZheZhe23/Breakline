@@ -11,8 +11,8 @@ const RECIPES=CoreFighters.get('nova').recipes,trie=CoreFighters.get('nova').tri
 function error(at){return at-Math.round(at/BEAT)*BEAT}
 function grade(at,difficulty='fighter'){const d=DIFFICULTIES[difficulty]??DIFFICULTIES.fighter,e=Math.abs(error(at));return e<=d.perfect?'PERFECT':e<=d.good?'GOOD':'OFF'}
 function create(hooks={}){
- let serial=0;const actor=(x,facing,hp,fighter='nova')=>({x,facing,fighter,hp,maxHP:hp,action:null,ready:0,stun:0,hit:null,defence:null,guardBlend:null});
- const s={fighterId:'nova',super:0,training:false,mode:'idle',difficulty:'rookie',now:0,start:0,end:0,player:actor(137,1,150),enemy:actor(221,-1,220),energy:0,level:1,phase:1,series:null,buffer:null,block:false,incoming:null,enemyIndex:0,guard:null,repeat:{key:null,count:0},counterUntil:0,feedback:null,freeze:null,flash:0,particles:[],trails:[],history:[],events:[],lastStep:0,lastEarned:0,streak:0,coach:0,stats:{perfect:0,good:0,off:0,combos:0,variety:[],dodges:0,blocks:0,taken:0,counters:0,score:0,maxLevel:1,attempts:0,supers:0,guarded:0,interrupts:0,lateThreats:0},fills:0};
+ let serial=0;const actor=(x,facing,hp,fighter='nova')=>({x,facing,fighter,hp,maxHP:hp,action:null,ready:0,stun:0,hit:null,evade:null,defence:null,guardBlend:null});
+ const s={fighterId:'nova',super:0,training:false,mode:'idle',difficulty:'rookie',now:0,start:0,end:0,player:actor(137,1,150),enemy:actor(221,-1,220),energy:0,level:1,phase:1,series:null,buffer:null,block:false,incoming:null,enemyIndex:0,guard:null,repeat:{key:null,count:0},counterUntil:0,feedback:null,freeze:null,flash:0,impacts:[],particles:[],trails:[],history:[],events:[],lastStep:0,lastEarned:0,streak:0,coach:0,stats:{perfect:0,good:0,off:0,combos:0,variety:[],dodges:0,blocks:0,taken:0,counters:0,score:0,maxLevel:1,attempts:0,supers:0,guarded:0,interrupts:0,lateThreats:0},fills:0};
  const emit=(name,...args)=>hooks[name]?.(...args),profile=()=>DIFFICULTIES[s.difficulty],book=()=>CoreFighters.get(s.fighterId);
  function charge(amount,t){s.super=clamp(s.super+amount,0,100)}
  function record(type,t,extra={}){s.events.push({id:++serial,type,t,...extra});if(s.events.length>128)s.events.shift()}
@@ -26,13 +26,13 @@ function create(hooks={}){
  }
  function reset(now,difficulty=s.difficulty,fighterId=s.fighterId,training=false){
   s.difficulty=DIFFICULTIES[difficulty]?difficulty:'rookie';const d=profile(),f=CoreFighters.get(fighterId),ids=Object.keys(CoreFighters.roster),enemyId=ids[(ids.indexOf(f.id)+1)%ids.length],enemy=CoreFighters.get(enemyId),start=(Math.floor(now/BEAT)+1)*BEAT+3*BEAT;
-  Object.assign(s,{fighterId:f.id,super:0,training,mode:'fight',now,start,end:start+45000,player:actor(137,1,Math.round(d.hp*f.hp),f.id),enemy:actor(221,-1,Math.round(d.enemyHP*enemy.hp),enemyId),energy:0,level:1,phase:1,series:null,buffer:null,block:false,incoming:null,enemyIndex:0,guard:null,repeat:{key:null,count:0},counterUntil:0,feedback:null,freeze:null,flash:0,particles:[],trails:[],history:[],events:[],lastStep:now,lastEarned:now,streak:0,coach:0,stats:{perfect:0,good:0,off:0,combos:0,variety:[],dodges:0,blocks:0,taken:0,counters:0,score:0,maxLevel:1,attempts:0,supers:0,guarded:0,interrupts:0,lateThreats:0},fills:0});
+  Object.assign(s,{fighterId:f.id,super:0,training,mode:'fight',now,start,end:start+45000,player:actor(137,1,Math.round(d.hp*f.hp),f.id),enemy:actor(221,-1,Math.round(d.enemyHP*enemy.hp),enemyId),energy:0,level:1,phase:1,series:null,buffer:null,block:false,incoming:null,enemyIndex:0,guard:null,repeat:{key:null,count:0},counterUntil:0,feedback:null,freeze:null,flash:0,impacts:[],particles:[],trails:[],history:[],events:[],lastStep:now,lastEarned:now,streak:0,coach:0,stats:{perfect:0,good:0,off:0,combos:0,variety:[],dodges:0,blocks:0,taken:0,counters:0,score:0,maxLevel:1,attempts:0,supers:0,guarded:0,interrupts:0,lateThreats:0},fills:0});
   plan(start+7*BEAT);emit('level',1);return s;
  }
  function getGuard(t){if(s.incoming&&!s.incoming.cancelled&&!s.incoming.resolved&&t>s.incoming.beatAt-180)return null;return s.guard&&t>=s.guard.start&&t<s.guard.end?s.guard.key:null}
  function warning(t){return s.incoming&&!s.incoming.resolved&&!s.incoming.cancelled&&t>=s.incoming.beatAt-700&&t<s.incoming.contactAt}
  function getPose(a,t){return CoreFighters.visual(a,t,{warning:a===s.enemy&&warning(t),victory:s.mode==='result'&&((a===s.player&&s.winner==='player')||(a===s.enemy&&s.winner==='enemy')),defeat:(s.mode==='result'||s.mode==='ending'&&(!a.hit||t>=a.hit.end))&&((a===s.player&&s.winner==='enemy')||(a===s.enemy&&s.winner==='player'))})}
- function action(a,move,t,meta={}){const from={...getPose(a,t),...CoreFighters.velocity(a,t)};a.hit=null;a.defence=null;a.guardBlend=null;a.action={id:++serial,move,start:t,from,resolved:false,...meta};a.ready=t+CoreFighters.move(a.fighter,move).recovery;return a.action}
+ function action(a,move,t,meta={}){const from={...getPose(a,t),...CoreFighters.velocity(a,t)};a.hit=null;a.evade=null;a.defence=null;a.guardBlend=null;a.action={id:++serial,move,start:t,from,resolved:false,...meta};a.ready=t+CoreFighters.move(a.fighter,move).recovery;return a.action}
  function breakSeries(){s.series=null}
  function input(key,at,executionAt=at){
   if(s.mode!=='fight'||at<s.start)return {accepted:false,reason:'countdown'};
@@ -61,9 +61,9 @@ function create(hooks={}){
  function release(t){s.block=false;const p=s.player;if(p.guardBlend?.to)p.guardBlend={from:getPose(p,t),at:t,to:false}}
  function setBlock(value,t){if(value){s.block=true}else release(t)}
  function react(a,t,strong,move='jab'){const from={...getPose(a,t),...CoreFighters.velocity(a,t)};if(a===s.player||strong)a.action=null;a.guardBlend=null;a.defence=null;a.hit={start:t,end:t+(strong?350:230),from,keepAttack:a===s.enemy&&!strong&&a.action?.enemyPending&&!a.action.resolved};a.stun=Math.max(a.stun,t+(strong?180:105))}
- function burst(x,y,t,strong,kind='hit'){for(let i=0;i<(strong?16:8);i++){const a=i*2.399;s.particles.push({x,y,vx:Math.cos(a)*(strong?140:80),vy:Math.sin(a)*85-35,at:t,strong,kind})}if(s.particles.length>48)s.particles.splice(0,s.particles.length-48)}
+ function burst(x,y,t,strong,kind='hit'){s.impacts.push({x,y,at:t,strong,kind,color:CoreFighters.get(s.fighterId).color});if(s.impacts.length>6)s.impacts.shift();for(let i=0;i<(strong?16:8);i++){const a=i*2.399;s.particles.push({x,y,vx:Math.cos(a)*(strong?140:80),vy:Math.sin(a)*85-35,at:t,strong,kind})}if(s.particles.length>48)s.particles.splice(0,s.particles.length-48)}
  function playerImpact(a,t){
-  if(a.quality==='OFF'){if(a.series)a.series.clean=false;if(s.series?.id===a.series?.id)breakSeries();return}
+  if(a.quality==='OFF'){if(a.series)a.series.clean=false;if(s.series?.id===a.series?.id)breakSeries();const e=s.enemy;if(e.hp>0&&!(e.action?.enemyPending&&!e.action.resolved)){e.evade={start:t,end:t+330,from:{...getPose(e,t),...CoreFighters.velocity(e,t)}};e.hit=null}record('offContact',t);return}
   const e=s.enemy,p=s.player,point=CoreFighters.contact(p,t),worldX=p.x+point.x;
   if(e.hp<=0)return;
   if(Math.abs(e.x-worldX)>32||point.y>-45||point.y<-153){if(a.series)a.series.clean=false;if(s.series?.id===a.series?.id)breakSeries();energy(-3,t);record('miss',t);return}
@@ -131,7 +131,7 @@ function create(hooks={}){
   const guardKey=getGuard(t);if(s.enemy.guardKey!==guardKey&&!(s.enemy.action?.enemyPending&&!s.enemy.action.resolved)&&!s.enemy.hit){const from=getPose(s.enemy,t);s.enemy.guardBlend={from,at:t,to:!!guardKey,key:guardKey};s.enemy.guardKey=guardKey}
   const p=s.player;if(s.block&&(!p.defence||t>=p.defence.end)&&!p.guardBlend?.to){p.guardBlend={from:getPose(p,t),at:t,to:true}}
   if(s.enemy.hit&&t>=s.enemy.hit.end)s.enemy.hit=null;
-  if(s.freeze&&t>s.freeze.until)s.freeze=null;s.particles=s.particles.filter(p=>t-p.at<440);s.trails=s.trails.filter(p=>t-p.at<145);
+  if(s.freeze&&t>s.freeze.until)s.freeze=null;s.impacts=s.impacts.filter(p=>t-p.at<190);s.particles=s.particles.filter(p=>t-p.at<440);s.trails=s.trails.filter(p=>t-p.at<145);
  }
  return {s,reset,step,charge,book,input,defend,release,setBlock,energy,grade:at=>grade(at,s.difficulty),getPose,getGuard,warning,action,playerImpact,enemyImpact,rating,review,rival,interval};
 }

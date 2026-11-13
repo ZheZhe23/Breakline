@@ -79,6 +79,14 @@ for(const d of Object.keys(C.DIFFICULTIES))for(const id of Object.keys(F.roster)
 {
  const {g}=make();let r=g.review();eq(r.title,'СНАЧАЛА — ДОЛЯ');Object.assign(g.s.stats,{perfect:12,attempts:6,taken:4});r=g.review();eq(r.title,'ПРОЧИТАЙ СОПЕРНИКА');Object.assign(g.s.stats,{dodges:5,guarded:3});r=g.review();eq(r.title,'СМЕНИ ТРАЕКТОРИЮ');g.s.stats.variety=Object.keys(g.book().recipes);eq(g.review().title,'ПРЕВРАТИ РИТМ В СУПЕР');g.s.stats.supers=1;g.s.winner='player';eq(g.review().title,'ТВОЙ СЛЕДУЮЩИЙ УРОВЕНЬ');g.s.difficulty='master';ok(g.review().goal.includes('ранг S'),'master goal remains skill based');eq(g.review().title,'РИТМ ПОД КОНТРОЛЕМ','achieved S is acknowledged, not suggested again');
 }
+// OFF is an actual visible near-miss: no successful-contact effects or charge.
+for(const id of Object.keys(F.roster)){
+ const {g,t}=make(id);const hp=g.s.enemy.hp,from=g.getPose(g.s.enemy,t+250);const a=g.input('L',t+250);ok(a.accepted);const at=a.action.start+F.move(id,a.action.move).impact;g.step(at);eq(g.s.enemy.hp,hp,'OFF does no damage');eq(g.s.super,0,'OFF grants no super');eq(g.s.impacts.length,0,'OFF has no hit mark');eq(g.s.freeze,null,'OFF has no hitstop');ok(g.s.enemy.evade,'visible avoidance recorded');eq(g.getPose(g.s.enemy,at).frame,g.s.enemy.evade.from.frame,'avoidance starts from current drawing');const mid=g.getPose(g.s.enemy,at+165);eq(mid.frame,25,'authored avoidance cel');ok(mid.x<=-10,'defender moves away from contact');const end=g.getPose(g.s.enemy,at+330);ok(Math.abs(end.x)<.01,'avoidance root settles');
+ const beat=at+400;g.s.incoming={id:2000,beatAt:beat,contactAt:beat+115,move:'cross',started:false,resolved:false,cancelled:false};g.step(beat+115);eq(g.s.enemy.evade,null,'announced attack supersedes avoidance');eq(g.getPose(g.s.enemy,beat+115).frame,F.move(g.s.enemy.fighter,'cross').frames[3],'avoidance never hides real incoming contact');
+}
+{
+ const {g,t}=make();g.s.guard={key:'L',start:t,end:t+2000};attack(g,'L',t);eq(g.s.impacts.at(-1).kind,'guard','block has distinct guard drawing');eq(g.s.freeze,null,'block never starts successful hitstop');
+}
 // Real interactive curriculum: no direct completion flags or mocked successful events.
 const lessonReports=[];
 for(const id of Object.keys(F.roster)){
