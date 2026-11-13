@@ -5,9 +5,23 @@ let reduced=motionQuery.matches;
 const defaults={difficulty:'rookie',fighter:'nova',lesson:0,trainingComplete:false,haptic:true,latency:0,bests:{}},prefs=(()=>{try{const p=JSON.parse(localStorage.getItem('breakline.afterhours.v3')||localStorage.getItem('breakline.afterhours.v2')||'null');return p&&typeof p==='object'?{...defaults,...p,bests:p.bests&&typeof p.bests==='object'?p.bests:{}}:{...defaults}}catch{return {...defaults}}})();
 if(!CoreRules.DIFFICULTIES[prefs.difficulty])prefs.difficulty='rookie';prefs.latency=Math.max(-250,Math.min(250,Number(prefs.latency)||0));
 const save=()=>{try{localStorage.setItem('breakline.afterhours.v3',JSON.stringify(prefs))}catch{}};
-let audio=null,paused=false,starting=false,matchOffset=0,selected=prefs.difficulty,selectedFighter=CoreFighters.get(prefs.fighter).id,w=390,h=844,dpr=1,scale=1,ground=600,worldLeft=0,railWidth=360,backdrop=null,hudBottom=110,drawCount=0,auditErrors=0,focusRecipe=null,dojoOptions={mode:'dummy',enemy:null},lastHaptic=-1000,lastTrail=-1000,paintDirty=true,paintCount=0,loopTicks=0,lastLoopState='';
+let audio=null,paused=false,starting=false,matchOffset=0,selected=prefs.difficulty,selectedFighter=CoreFighters.get(prefs.fighter).id,w=390,h=844,dpr=1,scale=1,ground=600,worldLeft=0,railWidth=360,backdrop=null,hudBottom=110,drawCount=0,auditErrors=0,focusRecipe=null,dojoOptions={mode:'dummy',enemy:null},lastHaptic=-1000,lastTrail=-1000,paintDirty=true,paintCount=0,loopTicks=0,lastLoopState='',audioQueue=Promise.resolve(),audioCommand=0,audioDesired=false,lifecycleEpoch=0;
 const now=()=>audio?audio.now()+matchOffset:0;
 function invalidate(){paintDirty=true}
+function canInput(){return !!audio&&!paused&&!starting&&!document.hidden&&audio.ctx.state==='running'}
+function requestAudio(running){
+ const instance=audio,command=++audioCommand;audioDesired=running;
+ const operation=audioQueue.catch(()=>{}).then(async()=>{
+  if(command!==audioCommand||instance!==audio)return false;
+  const ac=instance.ctx;if(ac.state==='closed')throw Error('closed');
+  if(running&&document.hidden)return false;
+  if(running&&ac.state!=='running')await ac.resume();
+  if(!running&&ac.state!=='suspended')await ac.suspend();
+  return command===audioCommand&&instance===audio&&(running?ac.state==='running':ac.state==='suspended');
+ });audioQueue=operation.catch(()=>{});return operation;
+}
+function watchAudio(ac){ac.addEventListener('statechange',()=>{if(audio?.ctx===ac&&ac.state!=='running'&&!paused&&['fight','ending','lessonWait'].includes(s.mode))pause()})}
+function audioProblem(closed=false){$('audio-error').hidden=false;$('audio-error').textContent=closed?'Браузер отключил аудио. Нажми «Начать заново», чтобы восстановить звук.':'Звук пока не включился. Нажми «Вернуться в бой» ещё раз.';invalidate()}
 motionQuery.addEventListener('change',e=>{reduced=e.matches;invalidate()});
 function vibrate(strong=false){const t=now();if(prefs.haptic&&navigator.vibrate&&t-lastHaptic>110){navigator.vibrate(strong?[13,12,17]:8);lastHaptic=t}}
 const game=CoreRules.create({level:l=>audio?.setLevel(l),sfx:(kind,strong)=>{audio?.sfx(kind,strong);if(kind==='hit'||kind==='counter')vibrate(strong)},fill:(id,q)=>audio?.requestFill(id,q),warning:beat=>audio?.warning(beat-matchOffset),superCharge:id=>audio?.superCharge(id),superHit:id=>{audio?.superHit(id);vibrate(true)},finish:showResult});
@@ -24,12 +38,16 @@ selectFighter(selectedFighter);selectDifficulty(selected);for(const n of documen
 function resize(){w=app.clientWidth;h=app.clientHeight;dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);const rect=app.getBoundingClientRect();hudBottom=document.querySelector('.energy').getBoundingClientRect().bottom-rect.top;ground=document.querySelector('.bottom').getBoundingClientRect().top-rect.top-9;const landscape=w>550&&h<510,teaching=lessons.state.active,reserve=teaching&&!landscape?Math.max(100,$('lesson-panel').getBoundingClientRect().height+28):s.practice?62:42;scale=Math.max(.4,Math.min(w/210,(ground-hudBottom-reserve)/152,2.2));worldLeft=w*(teaching&&landscape?.64:.5)-180*scale;$('lesson-panel').style.top=(landscape?hudBottom+14:hudBottom+8)+'px';$('practice-tools').style.top=(hudBottom+8)+'px';railWidth=document.querySelector('.beat-rail').clientWidth;backdrop=createBackdrop();const head=ground-150*scale;$('feedback').style.top=Math.max(hudBottom+3+reserve,head-48)+'px';$('intent').style.top=Math.max(hudBottom+8,head-25)+'px';$('guard-hint').style.top=Math.max(hudBottom+35,head+5)+'px';invalidate()}
 new ResizeObserver(resize).observe(app);
 async function startFight(difficulty=selected,training=false,resumeLesson=0,practice=null){
- if(starting)return;starting=true;$('start').disabled=true;
+ if(starting)return;starting=true;paused=true;const epoch=++lifecycleEpoch,fighterId=selectedFighter;$('start').disabled=true;
  try{
-  if(!audio){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)throw Error('Браузер не поддерживает Web Audio');const ac=new AC({latencyHint:'interactive'});await ac.resume();audio=CoreAudio.create(ac);audio.start()}else await audio.ctx.resume();
-  const ids=Object.keys(CoreFighters.roster),enemy=practice?.enemy??ids[(ids.indexOf(selectedFighter)+1)%ids.length];await Promise.all([CoreSprites.load(selectedFighter),CoreSprites.load(enemy),CoreSprites.load('stage')]);CoreSprites.retain([selectedFighter,enemy]);
-  prefs.difficulty=difficulty;save();selected=difficulty;matchOffset=prefs.latency;paused=false;focusRecipe=null;auditErrors=0;lastLessonState='';lessons.exit();if(training)lessons.begin(selectedFighter,now(),resumeLesson);else game.reset(now(),difficulty,selectedFighter,!!practice,practice);app.classList.toggle('learning',training);app.classList.toggle('dojo',!!practice);$('practice-tools').hidden=!practice;$('lesson-panel').hidden=!training;updateRecipes(selectedFighter);updateLesson();
-  for(const id of ['start-overlay','pause-overlay','result-overlay','practice-panel'])$(id).hidden=true;resize();$('start-error').hidden=true;if(document.hidden)await pause();
+  if(!audio||audio.ctx.state==='closed'){
+   const muted=audio?.muted??false;audio?.stop();const AC=window.AudioContext||window.webkitAudioContext;if(!AC)throw Error('Браузер не поддерживает Web Audio');
+   const ac=new AC({latencyHint:'interactive'});audio=CoreAudio.create(ac);if(muted)audio.mute(true);watchAudio(ac);
+  }
+  const running=await requestAudio(true);if(epoch!==lifecycleEpoch)return;if(!running)throw Error('Не удалось включить звук');audio.start();
+  const ids=Object.keys(CoreFighters.roster),enemy=practice?.enemy??ids[(ids.indexOf(fighterId)+1)%ids.length];await Promise.all([CoreSprites.load(fighterId),CoreSprites.load(enemy),CoreSprites.load('stage')]);if(epoch!==lifecycleEpoch)return;CoreSprites.retain([fighterId,enemy]);
+  prefs.difficulty=difficulty;prefs.fighter=fighterId;selectedFighter=fighterId;save();selected=difficulty;matchOffset=prefs.latency;paused=false;focusRecipe=null;auditErrors=0;lastLessonState='';lessons.exit();if(training)lessons.begin(fighterId,now(),resumeLesson);else game.reset(now(),difficulty,fighterId,!!practice,practice);app.classList.toggle('learning',training);app.classList.toggle('dojo',!!practice);$('practice-tools').hidden=!practice;$('lesson-panel').hidden=!training;updateRecipes(fighterId);updateLesson();
+  for(const id of ['start-overlay','pause-overlay','result-overlay','practice-panel'])$(id).hidden=true;resize();$('start-error').hidden=true;$('audio-error').hidden=true;if(document.hidden)await pause();
  }catch(e){$('start-error').hidden=false;$('start-error').textContent='Нажми ещё раз, чтобы включить звук. '+e.message}finally{starting=false;$('start').disabled=false}
 }
 // Free practice uses the same input windows and recovery, with isolated resources.
@@ -43,8 +61,18 @@ for(const b of document.querySelectorAll('[data-practice-mode]'))b.onclick=()=>{
 $('practice-start').onclick=showPracticeSetup;$('practice-cancel').onclick=()=>{$('practice-panel').hidden=true;$('start-overlay').hidden=false;$('practice-start').focus()};$('practice-go').onclick=()=>startFight(selected,false,0,{...dojoOptions});
 $('practice-charge').onclick=()=>{if(s.practice&&!paused)game.charge(100,now())};$('practice-level').onclick=()=>{if(s.practice&&!paused)game.practiceLevel(s.practice.level===5?null:(s.practice.level??0)+1,now())};
 $('practice-exit').onclick=()=>{if(paused)return;game.release(now());lessons.exit();s.practice=null;app.classList.remove('dojo','learning');$('practice-tools').hidden=true;$('lesson-panel').hidden=true;$('start-overlay').hidden=false;resize()};
-async function pause(){if(!audio||paused||!['fight','ending','lessonWait'].includes(s.mode))return;paused=true;game.release(now());s.buffer=null;held.clear();$('defend').classList.remove('pressed');await audio.ctx.suspend();$('pause-overlay').hidden=false;syncSettings()}
-async function resume(){if(!audio||!paused)return;await audio.ctx.resume();paused=false;$('pause-overlay').hidden=true}
+async function pause(){
+ if(!audio||!['fight','ending','lessonWait'].includes(s.mode)||paused&&!audioDesired)return;
+ const epoch=++lifecycleEpoch;paused=true;game.release(now());s.buffer=null;held.clear();$('defend').classList.remove('pressed');$('pause-overlay').hidden=false;$('resume').disabled=false;syncSettings();invalidate();
+ if(audio.ctx.state==='closed'){audioDesired=false;audioProblem(true);return}
+ try{await requestAudio(false);if(epoch===lifecycleEpoch)invalidate()}catch{if(epoch===lifecycleEpoch)audioProblem(audio.ctx.state==='closed')}
+}
+async function resume(){
+ if(!audio||!paused||document.hidden)return;const epoch=++lifecycleEpoch;$('resume').disabled=true;
+ try{const running=await requestAudio(true);if(epoch!==lifecycleEpoch)return;if(!running){audioProblem();return}paused=false;$('pause-overlay').hidden=true;$('audio-error').hidden=true;invalidate()}
+ catch{if(epoch===lifecycleEpoch){paused=true;audioProblem(audio.ctx.state==='closed')}}
+ finally{if(epoch===lifecycleEpoch)$('resume').disabled=false}
+}
 function syncSettings(){$('restart').textContent=lessons.state.active?'НАЧАТЬ УРОК ЗАНОВО':s.practice?'СБРОСИТЬ ПРАКТИКУ':'НАЧАТЬ ЗАНОВО';$('haptic-toggle').textContent=prefs.haptic?'ВКЛ':'ВЫКЛ';$('haptic-toggle').setAttribute('aria-pressed',String(prefs.haptic));$('latency').value=prefs.latency;$('latency-value').textContent=prefs.latency+' ms'}
 $('haptic-toggle').onclick=()=>{prefs.haptic=!prefs.haptic;save();syncSettings()};$('latency').oninput=()=>{prefs.latency=Number($('latency').value);save();syncSettings()};
 $('start').onclick=()=>startFight();$('training-start').onclick=()=>startFight('rookie',true,prefs.lesson||0);$('lesson-next').onclick=()=>{lessons.next(now());updateLesson();resize()};$('lesson-exit').onclick=()=>{lessons.exit();app.classList.remove('learning');$('lesson-panel').hidden=true;$('start-overlay').hidden=false;resize()};$('pause').onclick=pause;$('resume').onclick=resume;$('restart').onclick=()=>startFight(s.difficulty,lessons.state.active,lessons.state.index,s.practice?{mode:s.practice.mode,enemy:s.practice.enemy}:null);$('rematch').onclick=()=>startFight(s.difficulty);
@@ -60,13 +88,13 @@ function showResult(winner,stats,rating){if(s.training)return;
 function showTrainingResult(){$('result-focus').hidden=true;app.classList.remove('learning');$('lesson-panel').hidden=true;$('rank').textContent='✓';$('result-title').textContent='Ритм освоен.';$('result-subtitle').textContent='Бой, защита, комбо, Groove и супер — теперь твои.';$('result-stats').replaceChildren();$('new-best').textContent='12 УРОКОВ ПРОЙДЕНО';$('next-difficulty').hidden=true;$('result-overlay').hidden=false;updateTrainingButton();resize()}
 let lastLessonState='';function updateLesson(){const l=lessons.state;if(!l.active)return;const key=l.index+':'+l.waiting+':'+l.progress+':'+l.stage+':'+l.recipe;if(key===lastLessonState)return;lastLessonState=key;$('lesson-title').textContent='УРОК '+String(l.index+1).padStart(2,'0')+'/12 · '+lessons.titles[l.index];$('lesson-description').textContent=l.waiting?'Отлично. Этот навык выполнен в игре. Переходи дальше, когда будешь готов.':lessons.description();$('lesson-progress').textContent=l.progress+' / '+l.total;$('lesson-next').hidden=!l.waiting;$('lesson-next').textContent=l.index===11?'В БОЙ →':'ДАЛЬШЕ →';focusRecipe=l.recipe;resize()}
 function eventAt(e,t=now()){const age=e&&Number.isFinite(e.timeStamp)?performance.now()-e.timeStamp:0;return t-(age>=0&&age<1000?age:0)}
-function press(key,event){if(!audio||paused)return;const t=now();game.step(t);const result=game.input(key,eventAt(event,t),t);if(!result.accepted&&result.reason==='recovery'){$('coach-text').textContent='ВЫДОХ. СЛЕДУЮЩИЙ УДАР — ПОСЛЕ ВОССТАНОВЛЕНИЯ.'}}
+function press(key,event){if(!canInput())return;const t=now();game.step(t);const result=game.input(key,eventAt(event,t),t);if(!result.accepted&&result.reason==='recovery'){$('coach-text').textContent='ВЫДОХ. СЛЕДУЮЩИЙ УДАР — ПОСЛЕ ВОССТАНОВЛЕНИЯ.'}}
 for(const [id,key]of [['hand','L'],['foot','H'],['special','S']]){$(id).addEventListener('pointerdown',e=>{e.preventDefault();press(key,e)});$(id).onclick=e=>{if(e.detail===0)press(key,e)}}
-$('defend').addEventListener('pointerdown',e=>{e.preventDefault();if(paused||!audio)return;$('defend').setPointerCapture(e.pointerId);const t=now();game.step(t);game.defend(eventAt(e,t),t);$('defend').classList.add('pressed')});
+$('defend').addEventListener('pointerdown',e=>{e.preventDefault();if(!canInput())return;$('defend').setPointerCapture(e.pointerId);const t=now();game.step(t);game.defend(eventAt(e,t),t);$('defend').classList.add('pressed')});
 function release(){game.release(now());$('defend').classList.remove('pressed')}
-for(const type of ['pointerup','pointercancel','lostpointercapture'])$('defend').addEventListener(type,release);$('defend').onclick=e=>{if(e.detail===0&&!paused&&audio){const t=now();game.step(t);game.defend(eventAt(e,t),t);game.release(t)}};
+for(const type of ['pointerup','pointercancel','lostpointercapture'])$('defend').addEventListener(type,release);$('defend').onclick=e=>{if(e.detail===0&&canInput()){const t=now();game.step(t);game.defend(eventAt(e,t),t);game.release(t)}};
 for(const n of document.querySelectorAll('.combo'))n.onclick=()=>{focusRecipe=n.dataset.recipe};
-const held=new Set();window.addEventListener('keydown',e=>{if(e.code==='Space'&&e.target.closest?.('button')&&!['hand','foot','defend','special'].includes(e.target.id))return;if(e.code!=='Escape'&&(paused||['idle','result','lessonWait'].includes(s.mode)))return;if(['KeyJ','KeyK','KeyI','Space','Escape'].includes(e.code))e.preventDefault();if(held.has(e.code))return;held.add(e.code);if(e.code==='Escape'){paused?resume():pause();return}if(paused||!audio)return;if(e.code==='KeyJ')press('L',e);if(e.code==='KeyK')press('H',e);if(e.code==='KeyI')press('S',e);if(e.code==='Space'){const t=now();game.step(t);game.defend(eventAt(e,t),t);$('defend').classList.add('pressed')}});window.addEventListener('keyup',e=>{held.delete(e.code);if(e.code==='Space')release()});window.addEventListener('blur',()=>{held.clear();release();pause()});document.addEventListener('visibilitychange',()=>{if(document.hidden){held.clear();release();pause()}});
+const held=new Set();window.addEventListener('keydown',e=>{if(e.code==='Space'&&e.target.closest?.('button')&&!['hand','foot','defend','special'].includes(e.target.id))return;if(e.code!=='Escape'&&(paused||['idle','result','lessonWait'].includes(s.mode)))return;if(['KeyJ','KeyK','KeyI','Space','Escape'].includes(e.code))e.preventDefault();if(held.has(e.code))return;held.add(e.code);if(e.code==='Escape'){paused?resume():pause();return}if(!canInput())return;if(e.code==='KeyJ')press('L',e);if(e.code==='KeyK')press('H',e);if(e.code==='KeyI')press('S',e);if(e.code==='Space'){const t=now();game.step(t);game.defend(eventAt(e,t),t);$('defend').classList.add('pressed')}});window.addEventListener('keyup',e=>{held.delete(e.code);if(e.code==='Space')release()});window.addEventListener('blur',()=>{held.clear();release();pause()});document.addEventListener('visibilitychange',()=>{if(document.hidden){held.clear();release();pause()}});
 function createBackdrop(){
  const c=document.createElement('canvas');c.width=w*dpr;c.height=h*dpr;const b=c.getContext('2d');b.scale(dpr,dpr);b.fillStyle='#100f1c';b.fillRect(0,0,w,h);
  const stage=CoreSprites.image('stage');if(stage){const ratio=Math.max(w/stage.width,(ground+30)/(stage.height*.82)),dx=(w-stage.width*ratio)*.5,dy=ground-stage.height*ratio*.82;b.drawImage(stage,dx,dy,stage.width*ratio,stage.height*ratio);b.fillStyle='#0b071936';b.fillRect(0,0,w,h)}
