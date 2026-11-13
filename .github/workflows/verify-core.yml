@@ -1,10 +1,10 @@
 name: Verify independent BREAKLINE CORE
 on:
   push:
-    branches: [core, core-rework, afterhours-roster, afterhours-motion]
+    branches: [core, core-rework, afterhours-roster, afterhours-motion, afterhours-dojo]
     paths: ['core/**', 'tests/**', 'tools/**', 'package*.json', 'index.html', '.github/workflows/verify-core.yml']
   pull_request:
-    branches: [core, core-rework, afterhours-roster, afterhours-motion]
+    branches: [core, core-rework, afterhours-roster, afterhours-motion, afterhours-dojo]
     paths: ['core/**', 'tests/**', 'tools/**', 'package*.json', 'index.html', '.github/workflows/verify-core.yml']
 permissions:
   contents: read
