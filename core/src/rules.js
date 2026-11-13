@@ -27,7 +27,7 @@ function create(hooks={}){
  function getGuard(t){if(s.incoming&&!s.incoming.cancelled&&!s.incoming.resolved&&t>s.incoming.beatAt-180)return null;return s.guard&&t>=s.guard.start&&t<s.guard.end?s.guard.key:null}
  function warning(t){return s.incoming&&!s.incoming.resolved&&!s.incoming.cancelled&&t>=s.incoming.beatAt-700&&t<s.incoming.contactAt}
  function getPose(a,t){return CoreFighters.visual(a,t,{warning:a===s.enemy&&warning(t),victory:s.mode==='result'&&((a===s.player&&s.winner==='player')||(a===s.enemy&&s.winner==='enemy')),defeat:(s.mode==='result'||s.mode==='ending'&&(!a.hit||t>=a.hit.end))&&((a===s.player&&s.winner==='enemy')||(a===s.enemy&&s.winner==='player'))})}
- function action(a,move,t,meta={}){const from=getPose(a,t);a.hit=null;a.defence=null;a.guardBlend=null;a.action={id:++serial,move,start:t,from,resolved:false,...meta};a.ready=t+CoreFighters.move(a.fighter,move).recovery;return a.action}
+ function action(a,move,t,meta={}){const from={...getPose(a,t),...CoreFighters.velocity(a,t)};a.hit=null;a.defence=null;a.guardBlend=null;a.action={id:++serial,move,start:t,from,resolved:false,...meta};a.ready=t+CoreFighters.move(a.fighter,move).recovery;return a.action}
  function breakSeries(){s.series=null}
  function input(key,at,executionAt=at){
   if(s.mode!=='fight'||at<s.start)return {accepted:false,reason:'countdown'};
@@ -51,11 +51,11 @@ function create(hooks={}){
  }
  function defend(at,executionAt=at){
   const p=s.player;if(s.mode!=='fight'||at<s.start||executionAt-at>110||at<p.stun||p.defence&&at<p.defence.start+300)return false;
-  const from=getPose(p,executionAt);p.defence={start:executionAt,end:executionAt+330,from,quality:grade(at,s.difficulty),beat:Math.round(at/BEAT),used:false,savedSeries:s.series};p.guardBlend=null;p.action=null;p.hit=null;s.buffer=null;breakSeries();s.block=true;emit('sfx','dodge');return true;
+  const from={...getPose(p,executionAt),...CoreFighters.velocity(p,executionAt)};p.defence={start:executionAt,end:executionAt+330,from,quality:grade(at,s.difficulty),beat:Math.round(at/BEAT),used:false,savedSeries:s.series};p.guardBlend=null;p.action=null;p.hit=null;s.buffer=null;breakSeries();s.block=true;emit('sfx','dodge');return true;
  }
  function release(t){s.block=false;const p=s.player;if(p.guardBlend?.to)p.guardBlend={from:getPose(p,t),at:t,to:false}}
  function setBlock(value,t){if(value){s.block=true}else release(t)}
- function react(a,t,strong,move='jab'){const from=getPose(a,t);if(a===s.player||strong)a.action=null;a.guardBlend=null;a.defence=null;a.hit={start:t,end:t+(strong?350:230),from};a.stun=Math.max(a.stun,t+(strong?180:105))}
+ function react(a,t,strong,move='jab'){const from={...getPose(a,t),...CoreFighters.velocity(a,t)};if(a===s.player||strong)a.action=null;a.guardBlend=null;a.defence=null;a.hit={start:t,end:t+(strong?350:230),from};a.stun=Math.max(a.stun,t+(strong?180:105))}
  function burst(x,y,t,strong,kind='hit'){for(let i=0;i<(strong?16:8);i++){const a=i*2.399;s.particles.push({x,y,vx:Math.cos(a)*(strong?140:80),vy:Math.sin(a)*85-35,at:t,strong,kind})}if(s.particles.length>48)s.particles.splice(0,s.particles.length-48)}
  function playerImpact(a,t){
   if(a.quality==='OFF'){if(a.series)a.series.clean=false;if(s.series?.id===a.series?.id)breakSeries();return}
@@ -73,7 +73,7 @@ function create(hooks={}){
   react(e,t,a.strong,a.move);
   if(a.strong){
    if(warning(t)){s.incoming.cancelled=true;record('interrupt',t)}
-   const attacker=getPose(p,t),defender={...getPose(e,t),frame:26,x:-8,y:0},stop=a.super?110:85;e.hit.from=defender;e.hit.start+=stop;e.hit.end+=stop;s.freeze={until:t+stop,at:t,player:attacker,enemy:defender};s.flash=t+100;
+   const attacker=getPose(p,t),defender={...getPose(e,t),frame:26,x:-8,y:0},stop=a.super?110:85;a.visualStop={at:t,duration:stop};e.hit.from=defender;e.hit.start+=stop;e.hit.end+=stop;s.freeze={until:t+stop,at:t,player:attacker,enemy:defender};s.flash=t+100;
    if(guardBreak){s.guard=null;message('BREAK','ЗАЩИТА СЛОМАНА',t,'counter')}
   }
   burst(worldX,point.y,t,a.strong,a.counter?'counter':'hit');if(a.super){s.stats.supers++;message(book().superName,'СУПЕР ПОПАДАНИЕ',t,'super');emit('superHit',s.fighterId);record('super',t)}else emit('sfx',a.counter?'counter':'hit',a.strong);
@@ -90,7 +90,7 @@ function create(hooks={}){
    d.used=true;if(d.savedSeries&&!s.series&&!p.action){s.series=d.savedSeries;s.series.lastInput=incoming.beatAt;s.series.allPerfect&&=d.quality==='PERFECT'}s.stats.dodges++;const perfect=d.quality==='PERFECT';energy(perfect?8:4,t);charge(perfect?12:6,t);s.counterUntil=perfect?t+1050:0;s.stats.score+=perfect?180:90;message(perfect?'ИДЕАЛЬНЫЙ УХОД':'УХОД',perfect?'ТВОЯ КОНТРА →':'ЧИСТО',t,perfect?'counter':'good');emit('sfx',perfect?'counterReady':'dodge');record('dodge',t,{quality:d.quality});return;
   }
   if(s.block&&t>=p.stun){p.hp=Math.max(s.training?1:0,p.hp-4);s.stats.blocks++;message('БЛОК','УДЕРЖАНИЕ ЗАЩИЩАЕТ · ТОЧНЫЙ ТАП ДАЁТ КОНТРУ',t,'guard');emit('sfx','block');record('block',t);return}
-  const damage=profile().damage+(incoming.double?2:0)+(incoming.signature?4:0);const armoured=p.action?.super&&!p.action.resolved;p.hp=Math.max(s.training?1:0,p.hp-(armoured?Math.ceil(damage*.5):damage));if(armoured){message('БРОНЯ','СУПЕР ПРОДОЛЖАЕТСЯ',t,'counter');emit('sfx','block');record('armour',t);return}s.stats.taken++;s.streak=0;energy(-9,t);charge(-6,t);breakSeries();s.buffer=null;react(p,t,!!incoming.signature,incoming.move);if(incoming.signature){const defender={...getPose(p,t),frame:26,x:-8,y:0};p.hit.from=defender;p.hit.start+=85;p.hit.end+=85;s.freeze={at:t,until:t+85,player:defender,enemy:getPose(s.enemy,t)};s.flash=t+100}p.ready=Math.max(p.ready,t+160);message('ПОПАДАНИЕ','КРАСНАЯ ДОЛЯ → УХОД',t,'hurt');burst(p.x+5,-104,t,false,'enemy');emit('sfx','hit',!!incoming.signature);record('hurt',t,{damage});
+  const damage=profile().damage+(incoming.double?2:0)+(incoming.signature?4:0);const armoured=p.action?.super&&!p.action.resolved;p.hp=Math.max(s.training?1:0,p.hp-(armoured?Math.ceil(damage*.5):damage));if(armoured){message('БРОНЯ','СУПЕР ПРОДОЛЖАЕТСЯ',t,'counter');emit('sfx','block');record('armour',t);return}s.stats.taken++;s.streak=0;energy(-9,t);charge(-6,t);breakSeries();s.buffer=null;react(p,t,!!incoming.signature,incoming.move);if(incoming.signature){const defender={...getPose(p,t),frame:26,x:-8,y:0};if(s.enemy.action)s.enemy.action.visualStop={at:t,duration:85};p.hit.from=defender;p.hit.start+=85;p.hit.end+=85;s.freeze={at:t,until:t+85,player:defender,enemy:getPose(s.enemy,t)};s.flash=t+100}p.ready=Math.max(p.ready,t+160);message('ПОПАДАНИЕ','КРАСНАЯ ДОЛЯ → УХОД',t,'hurt');burst(p.x+5,-104,t,false,'enemy');emit('sfx','hit',!!incoming.signature);record('hurt',t,{damage});
  }
  function finish(t){if(s.mode!=='fight')return;s.mode='ending';s.resultAt=t+650;s.block=false;s.buffer=null;breakSeries();s.winner=s.enemy.hp<=0?'player':s.player.hp<=0?'enemy':s.player.hp/s.player.maxHP>s.enemy.hp/s.enemy.maxHP?'player':'enemy';s.stats.time=Math.max(0,t-s.start);if(s.winner==='player'){s.stats.winBonus=1200+Math.round(Math.max(0,s.end-t)/1000)*20;s.stats.score+=s.stats.winBonus}s.rating=rating();}
  function rating(){const st=s.stats,n=st.perfect+st.good+st.off,accuracy=n?(st.perfect+st.good*.7)/n:0,defence=st.attempts?(st.dodges+st.blocks*.35)/st.attempts:0,points=accuracy*55+defence*20+st.variety.length/3*15+s.player.hp/s.player.maxHP*10;return {rank:points>=92?'S':points>=80?'A':points>=65?'B':points>=45?'C':'D',value:Math.round(points),accuracy:Math.round(accuracy*100)}}

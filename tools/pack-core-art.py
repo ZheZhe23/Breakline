@@ -24,10 +24,11 @@ extra=root/'core/art-source/crosses.png'
 if not extra.exists():shutil.copy2('/workspace/generated_images/exec-73f69b08-499a-4806-938d-063d8db481cb.png',extra)
 extraImage=Image.open(extra).convert('RGBA');extraFigures=figures(extraImage,6,3)
 manifest={'format':'36 complete illustrated frames per fighter, connected-component sliced','cell':cell,'columns':6,'rows':6,'origin':'Original generated illustrations commissioned for BREAKLINE, 2026-11-13. No third-party game assets.','fighters':{}}
+bases={}
 for fighter,name in inputs.items():
  src=root/'core/art-source'/f'{fighter}.png'
  if not src.exists():shutil.copy2(Path('/workspace/generated_images')/name,src)
- im=Image.open(src).convert('RGBA');base=figures(im,6,5);atlas=Image.new('RGBA',(cell*6,cell*6));frames=[];side=im.width/6
+ im=Image.open(src).convert('RGBA');base=figures(im,6,5);bases[fighter]=base;atlas=Image.new('RGBA',(cell*6,cell*6));frames=[];side=im.width/6
  for frame in range(36):
   c,r=frame%6,frame//6
   if frame<30:
@@ -43,3 +44,28 @@ stage=root/'core/art-source/stage.png'
 if not stage.exists():shutil.copy2('/workspace/generated_images/exec-86c486fb-467a-4ed9-a1e4-9c4082122b07.png',stage)
 Image.open(stage).convert('RGB').save(root/'core/assets/stage.webp','WEBP',quality=88,method=6)
 (root/'core/assets/manifest.json').write_text(json.dumps(manifest,indent=2)+'\n');print({p.name:p.stat().st_size for p in (root/'core/assets').glob('*.webp')})
+
+# Supplemental bridge drawings: independent 6x2 atlases keep textures <=2048.
+flowSource=root/'core/art-source/motion-bridge.png'
+if flowSource.exists():
+ flowImage=Image.open(flowSource).convert('RGBA');flowFigures=figures(flowImage,6,6)
+ for hi,hero in enumerate(['nova','brick','iris']):
+  baseGuard=bases[hero][(0,0)][0]
+  ref,rb=flowFigures[(hi*2,0)];ratio=baseGuard.height/ref.height;side=flowImage.width/6
+  # Register the source guard's foot centre once; retain relative translations.
+  aa=np.asarray(ref.getchannel('A'));yy,xx=np.where(aa>20);foot=xx[yy>ref.height*.85]
+  centre=rb[0]+float(np.median(foot));offset=anchor[0]-centre*ratio
+  atlas=Image.new('RGBA',(cell*6,cell*2));frames=[];prepared=[]
+  for j in range(12):
+   r,c=divmod(j,6);tile,b=flowFigures[(hi*2+r,c)];tile=tile.resize((round(tile.width*ratio),round(tile.height*ratio)),Image.Resampling.LANCZOS)
+   x=round(offset+(b[0]-c*side)*ratio);y=anchor[1]-tile.height
+   prepared.append((j,r,c,tile,x,y))
+  dx=max(0,4-min(z[4] for z in prepared));flowAnchor=[anchor[0]+dx,anchor[1]]
+  for j,r,c,tile,x,y in prepared:
+   x+=dx;assert x>=3 and y>=3 and x+tile.width<cell-3,(hero,j,x,y,tile.size)
+   atlas.paste(tile,(c*cell+x,r*cell+y));frames.append({'index':36+j,'bbox':[x,y,x+tile.width,y+tile.height]})
+  target=root/'core/assets'/f'flow-{hero}.webp';atlas.save(target,'WEBP',quality=91,method=6)
+  manifest['fighters'][hero]['flow']={'source_sha256':hashlib.sha256(flowSource.read_bytes()).hexdigest(),'atlas_sha256':hashlib.sha256(target.read_bytes()).hexdigest(),'anchor':flowAnchor,'frames':frames}
+ manifest['format']='48 complete illustrated frames per fighter across base and flow atlases'
+ (root/'core/assets/manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
+ print('Packed 36 supplementary flow drawings; no limb deformation.')

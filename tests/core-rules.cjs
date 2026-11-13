@@ -13,7 +13,7 @@ for(const id of Object.keys(F.roster)){
  for(const [recipe,finish]of Object.entries(f.recipes))for(const offset of [0,Math.floor((C.DIFFICULTIES.fighter.perfect+C.DIFFICULTIES.fighter.good)/2),190]){
   const {g,t,fills}=make(id);recipe.split('').forEach((k,i)=>ok(attack(g,k,t+i*500+offset).accepted,'accepted recipe '+id+recipe));
   eq(g.s.stats.combos,offset===190?0:1,'clean combo '+id+recipe);eq(fills.length,offset===0?1:0,'musical response gated');
-  if(offset===0){eq(g.s.history.at(-1).move,finish.move);ok(g.s.freeze,'contact snapshot');const hp=g.s.enemy.hp;g.step(g.s.now+20);eq(g.s.enemy.hp,hp,'single hit');eq(g.s.player.ready-g.s.player.action.start,675,'recovery');const action=g.s.player.action,m=F.move(id,action.move);eq(F.visual(g.s.player,action.start+m.impact).frame,m.row*6+3,'contact illustration exact');}
+  if(offset===0){eq(g.s.history.at(-1).move,finish.move);ok(g.s.freeze,'contact snapshot');const hp=g.s.enemy.hp;g.step(g.s.now+20);eq(g.s.enemy.hp,hp,'single hit');eq(g.s.player.ready-g.s.player.action.start,675,'recovery');const action=g.s.player.action,m=F.move(id,action.move);eq(F.visual(g.s.player,action.start+m.impact).frame,m.frames[3],'contact illustration exact');}
  }
  // Exhaustive accepted prefixes are independent of the eventual recipe branch.
  for(const a of Object.keys(f.recipes))for(const b of Object.keys(f.recipes)){const ga=make(id),gb=make(id);let n=0;while(a[n]&&a[n]===b[n]){attack(ga.g,a[n],ga.t+n*500);attack(gb.g,b[n],gb.t+n*500);eq(ga.g.s.history.at(-1).move,gb.g.s.history.at(-1).move,'shared trie edge');n++}}
@@ -21,7 +21,7 @@ for(const id of Object.keys(F.roster)){
  const x=make(id);x.g.charge(100,x.t);x.g.input('S',x.t);const saved=x.g.s.player.action;x.g.enemyImpact({move:'cross',beatAt:x.t,double:false},x.t+115);eq(x.g.s.player.action,saved,'armour does not cancel super');ok(x.g.s.player.hp<x.g.s.player.maxHP,'armour still takes damage');
  const manifest=JSON.parse(read('core/assets/manifest.json')).fighters[id];eq(manifest.frames.length,36,'authored frame count');for(const frame of manifest.frames){ok(frame.bbox[0]>=3&&frame.bbox[1]>=3&&frame.bbox[2]<336-3&&frame.bbox[3]<=260,'padded frame does not bleed')}
  // Every visible move is whole-frame, constant-scale data; sample transitions densely.
- for(const name of ['jab','cross','bodyKick',...Object.values(f.recipes).map(x=>x.move),f.superMove]){const m=F.move(id,name),a={fighter:id,action:{move:name,start:0,from:{frame:0,x:0,y:0}}};for(let time=0;time<=m.duration+100;time+=4){const v=F.visual(a,time);ok(Number.isInteger(v.frame)&&v.frame>=0&&v.frame<36,'valid atlas frame');ok(Number.isFinite(v.x)&&Number.isFinite(v.y)&&Math.abs(v.x)<60&&Math.abs(v.y)<30,'bounded whole-body root motion')}}
+ for(const name of ['jab','cross','bodyKick',...Object.values(f.recipes).map(x=>x.move),f.superMove]){const m=F.move(id,name),a={fighter:id,action:{move:name,start:0,from:{frame:0,x:0,y:0}}};for(let time=0;time<=m.duration+100;time+=4){const v=F.visual(a,time);ok(Number.isInteger(v.frame)&&v.frame>=0&&v.frame<48,'valid atlas frame');ok(Number.isFinite(v.x)&&Number.isFinite(v.y)&&Math.abs(v.x)<60&&Math.abs(v.y)<30,'bounded whole-body root motion')}}
 }
 {
  const {g,t}=make();'LHHH'.split('').forEach((k,i)=>attack(g,k,t+i*500));eq(g.s.stats.combos,0,'bad suffix no finisher');ok(g.s.history[2].standalone);const hp=g.s.enemy.hp;g.step(t+3000);eq(g.s.enemy.hp,hp,'no phantom impact');
@@ -32,6 +32,27 @@ for(const id of Object.keys(F.roster)){
 }
 {
  const {g,t}=make();g.s.guard={key:'L',start:t,end:t+2000};attack(g,'L',t);eq(g.s.super,0,'blocked hit no charge');eq(g.s.freeze,null);g.input('L',t+700);g.step(t+1000);eq(g.s.super,0,'OFF no charge');
+}
+// Whole-drawing motion contracts. These check roots/timing, not hidden bones in art.
+const motionReports=[];
+for(const id of Object.keys(F.roster)){
+ const f=F.get(id),manifest=JSON.parse(read('core/assets/manifest.json')).fighters[id];
+ eq(manifest.flow.frames.length,12,'twelve extra drawings');
+ for(const cell of manifest.flow.frames)ok(cell.bbox[0]>=3&&cell.bbox[1]>=3&&cell.bbox[2]<333&&cell.bbox[3]<=260,'flow cel padding');
+ for(const name of ['jab','cross','bodyKick',...Object.values(f.recipes).map(f=>f.move),f.superMove]){
+  const m=F.move(id,name),a={fighter:id,action:{move:name,start:0,from:{frame:0,x:0,y:0}}};let jump=0;
+  for(let t=1;t<=m.duration+150;t++){const before=F.visual(a,t-1),after=F.visual(a,t);jump=Math.max(jump,Math.hypot(after.x-before.x,after.y-before.y))}
+  ok(jump<.55,'no whole-body root teleport '+id+name+' '+jump);eq(F.visual(a,m.impact).frame,m.frames[3],'authored contact phase');
+  eq(F.visual(a,m.impact+70).frame,m.frames[3],'contact continues through follow-through');
+  const from={frame:44,x:11,y:-9,vx:.06,vy:-.025},b={fighter:id,action:{move:name,start:0,from}};
+  const v=F.visual(b,0);eq(v.frame,from.frame,'transition retains actual current drawing');eq(v.x,from.x,'position continuity x');eq(v.y,from.y,'position continuity y');
+  const next=F.visual(b,.01),vel={vx:(next.x-v.x)/.01,vy:(next.y-v.y)/.01};ok(Math.abs(vel.vx-from.vx)<.0001&&Math.abs(vel.vy-from.vy)<.0001,'incoming root velocity preserved '+id+name+' '+JSON.stringify(vel));
+  motionReports.push({fighter:id,move:name,impact:m.impact,duration:m.duration,maxRootPixelsPerMs:jump});
+ }
+ const {g,t}=make(id);g.charge(100,t);const r=g.input('S',t);g.step(t+500);const contact=g.getPose(g.s.player,t+500),expiry=g.s.freeze.until;
+ for(const time of [t+510,t+550,expiry]){const pose=g.getPose(g.s.player,time);eq(pose.frame,contact.frame,'hitstop holds contact cel');ok(Math.hypot(pose.x-contact.x,pose.y-contact.y)<.001,'visual clock freezes without gameplay clock')}
+ const after=g.getPose(g.s.player,expiry+1);ok(Math.hypot(after.x-contact.x,after.y-contact.y)<.2,'no skipped motion after visual hitstop');
+ const hp=g.s.enemy.hp;g.step(expiry+600);eq(g.s.enemy.hp,hp,'visual stop cannot replay gameplay impact');eq(g.s.player.ready,r.action.start+1250,'visual hold never changes cooldown');
 }
 // Real interactive curriculum: no direct completion flags or mocked successful events.
 const lessonReports=[];
@@ -67,4 +88,4 @@ for(const id of Object.keys(F.roster))for(const policy of ['reader','repeat']){
 }
 // Preserve the previous anatomy audit as an archived reference, not a sprite claim.
 for(const [name,m]of Object.entries(R.moves))for(let t=0;t<=m.duration;t+=4){const a={move:name,start:0,from:R.idle(0)},result=R.measure(R.skeleton(R.sample(a,t)));ok(result.valid,'legacy fixed lengths');legacyFrames++;legacySegments+=result.segments}
-const report={coreSha256:crypto.createHash('sha256').update(read('core/index.html')).digest('hex'),checks,fighters:Object.keys(F.roster),recipes:9,illustratedFrames:108,lessonReports,policies,legacyFrames,legacySegments,rendering:'whole illustrated sprites, no runtime skeleton'};fs.mkdirSync(root+'/test-artifacts/roster',{recursive:true});fs.writeFileSync(root+'/test-artifacts/roster/rules.json',JSON.stringify(report,null,2));console.log(JSON.stringify(report,null,2));
+const report={coreSha256:crypto.createHash('sha256').update(read('core/index.html')).digest('hex'),checks,fighters:Object.keys(F.roster),recipes:9,illustratedFrames:144,lessonReports,policies,motionReports,legacyFrames,legacySegments,rendering:'whole illustrated sprites, no runtime skeleton'};fs.mkdirSync(root+'/test-artifacts/roster',{recursive:true});fs.writeFileSync(root+'/test-artifacts/roster/rules.json',JSON.stringify(report,null,2));console.log(JSON.stringify(report,null,2));

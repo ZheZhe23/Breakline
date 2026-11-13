@@ -63,7 +63,7 @@ function line(a,b,width,color){ctx.strokeStyle=color;ctx.lineWidth=width;ctx.lin
 function circle(p,r,color){ctx.fillStyle=color;ctx.beginPath();ctx.arc(p[0],p[1],r,0,Math.PI*2);ctx.fill()}
 function fighter(a,token,t,enemy=false){if(!CoreSprites.ready(a.fighter)){if(s.mode!=='idle')auditErrors++;return}
  const f=CoreFighters.get(a.fighter),rootX=worldLeft+a.x*scale,rootY=ground+(enemy?-2:1)*scale,level=enemy?1:s.level;
- ctx.save();ctx.fillStyle='#03020b88';ctx.beginPath();ctx.ellipse(rootX,rootY+2*scale,37*scale,5*scale,0,0,Math.PI*2);ctx.fill();
+ ctx.save();const lift=Math.max(0,-token.y);ctx.fillStyle=`rgba(3,2,11,${.53-lift*.009})`;ctx.beginPath();ctx.ellipse(rootX,rootY+2*scale,(37-lift*.38)*scale,(5-lift*.045)*scale,0,0,Math.PI*2);ctx.fill();
  if(level>=2){const g=ctx.createRadialGradient(rootX,rootY-75*scale,10,rootX,rootY-75*scale,85*scale);g.addColorStop(0,level===5?f.color+'32':f.color+'18');g.addColorStop(1,'#00000000');ctx.fillStyle=g;ctx.fillRect(rootX-100*scale,rootY-190*scale,200*scale,195*scale)}
  if(CoreSprites.draw(ctx,token,rootX,rootY,scale,a.facing)){drawCount++}else auditErrors++;
  if(!enemy&&s.level>=4&&!reduced){for(let i=0;i<level;i++){const y=-15-(t*.035+i*29)%140,x=Math.sin(t*.002+i*3)*32;circle([rootX+x*scale,rootY+y*scale],scale,f.color)}}
