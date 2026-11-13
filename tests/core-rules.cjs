@@ -54,6 +54,31 @@ for(const id of Object.keys(F.roster)){
  const after=g.getPose(g.s.player,expiry+1);ok(Math.hypot(after.x-contact.x,after.y-contact.y)<.2,'no skipped motion after visual hitstop');
  const hp=g.s.enemy.hp;g.step(expiry+600);eq(g.s.enemy.hp,hp,'visual stop cannot replay gameplay impact');eq(g.s.player.ready,r.action.start+1250,'visual hold never changes cooldown');
 }
+// Announced enemy attacks remain visible during an ordinary trading hit.
+for(const id of Object.keys(F.roster)){
+ const {g,t}=make(id),beat=t+500;
+ g.s.incoming={id:800,beatAt:beat,contactAt:beat+115,move:'cross',started:false,resolved:false,cancelled:false,warned:false};
+ g.step(beat-60);const a=g.input('L',beat-60);ok(a.accepted);g.step(a.action.start+F.move(id,a.action.move).impact);
+ ok(g.s.enemy.hit?.keepAttack,'trade retains announced enemy animation '+id);
+ g.step(beat+115);const m=F.move(g.s.enemy.fighter,'cross');eq(g.getPose(g.s.enemy,beat+115).frame,m.frames[3],'visible enemy contact is the real damaging contact '+id);eq(g.s.stats.taken,1,'trade is not secretly cancelled');
+}
+{
+ const {g,t}=make(),at=g.s.incoming?.contactAt;
+ g.s.incoming={id:900,beatAt:t+500,contactAt:t+615,move:'cross',started:false,resolved:false,cancelled:false};
+ const hp=g.s.player.hp;g.step(t+1700);eq(g.s.player.hp,hp,'late threat causes no unseen damage');eq(g.s.stats.lateThreats,1,'late threat recorded');ok(g.s.incoming.beatAt>=t+2700,'fresh warning after stall');g.step(t+1750);eq(g.s.player.hp,hp,'no backlog burst');
+ const next=g.s.incoming;g.step(next.contactAt);eq(g.s.stats.taken,1,'normal threat resumes normally');
+}
+const rivalReports=[];
+for(const id of Object.keys(F.roster)){
+ const g=C.create();g.reset(0,'master',id);const timeline=[];
+ for(let i=0;i<8;i++){const inc=g.s.incoming;timeline.push({beat:inc.beatAt,move:inc.move,strong:inc.signature});g.step(inc.beatAt-80);g.defend(inc.beatAt);g.release(inc.beatAt);g.step(inc.contactAt+1)}
+ rivalReports.push({fighter:id,opponent:g.s.enemy.fighter,style:g.rival().name,timeline});
+}
+eq(new Set(rivalReports.map(x=>JSON.stringify(x.timeline))).size,3,'rival cadences and techniques actually differ');
+for(const d of Object.keys(C.DIFFICULTIES))for(const id of Object.keys(F.roster)){const {g}=make(id,d);for(let i=0;i<12;i++)ok(g.interval(i)>= (d==='rookie'?3:d==='fighter'?2:1),'difficulty never creates impossible rapid enemy cadence')}
+{
+ const {g}=make();let r=g.review();eq(r.title,'СНАЧАЛА — ДОЛЯ');Object.assign(g.s.stats,{perfect:12,attempts:6,taken:4});r=g.review();eq(r.title,'ПРОЧИТАЙ СОПЕРНИКА');Object.assign(g.s.stats,{dodges:5,guarded:3});r=g.review();eq(r.title,'СМЕНИ ТРАЕКТОРИЮ');g.s.stats.variety=Object.keys(g.book().recipes);eq(g.review().title,'ПРЕВРАТИ РИТМ В СУПЕР');g.s.stats.supers=1;g.s.winner='player';eq(g.review().title,'ТВОЙ СЛЕДУЮЩИЙ УРОВЕНЬ');g.s.difficulty='master';ok(g.review().goal.includes('ранг S'),'master goal remains skill based');
+}
 // Real interactive curriculum: no direct completion flags or mocked successful events.
 const lessonReports=[];
 for(const id of Object.keys(F.roster)){
@@ -82,10 +107,10 @@ const policies=[];
 for(const id of Object.keys(F.roster))for(const policy of ['reader','repeat']){
  const g=C.create();g.reset(0,'master',id);let cycle=0;
  for(let t=g.s.start;t<g.s.start+46000&&g.s.mode!=='result';t+=5){
-  if(t%500===0){if(policy==='reader'&&g.s.incoming&&!g.s.incoming.cancelled&&g.s.incoming.beatAt===t){g.defend(t);g.release(t)}else if(t>=g.s.player.ready){const recipes=Object.keys(g.book().recipes),target=recipes[cycle%3],prefix=g.s.series?.prefix??'';let key=policy==='repeat'?'L':target.startsWith(prefix)?target[prefix.length]:target[0];if(g.s.super>=100)key='S';const r=g.input(key,t);if(r.action?.finish)cycle++}}g.step(t)
+  if(t%500===0){if(policy==='reader'&&g.s.incoming&&!g.s.incoming.cancelled&&g.s.incoming.beatAt===t&&!(g.s.player.action?.super&&!g.s.player.action.resolved)){g.defend(t);g.release(t)}else if(t>=g.s.player.ready){const recipes=Object.keys(g.book().recipes),target=recipes[cycle%3],prefix=g.s.series?.prefix??'';let key=policy==='repeat'?'L':target.startsWith(prefix)?target[prefix.length]:target[0];if(g.s.super>=100&&(policy==='repeat'||!g.s.series))key='S';const r=g.input(key,t);if(r.action?.finish)cycle++}}g.step(t)
  }
  eq(g.s.mode,'result','bout terminates');eq(g.s.winner,policy==='reader'?'player':'enemy','skill advantage '+id);if(policy==='reader'){eq(g.s.stats.variety.length,3);ok(g.s.stats.supers>0);ok(g.s.stats.dodges>0)}policies.push({fighter:id,policy,winner:g.s.winner,combos:g.s.stats.combos,supers:g.s.stats.supers,score:g.s.stats.score});
 }
 // Preserve the previous anatomy audit as an archived reference, not a sprite claim.
 for(const [name,m]of Object.entries(R.moves))for(let t=0;t<=m.duration;t+=4){const a={move:name,start:0,from:R.idle(0)},result=R.measure(R.skeleton(R.sample(a,t)));ok(result.valid,'legacy fixed lengths');legacyFrames++;legacySegments+=result.segments}
-const report={coreSha256:crypto.createHash('sha256').update(read('core/index.html')).digest('hex'),checks,fighters:Object.keys(F.roster),recipes:9,illustratedFrames:144,lessonReports,policies,motionReports,legacyFrames,legacySegments,rendering:'whole illustrated sprites, no runtime skeleton'};fs.mkdirSync(root+'/test-artifacts/roster',{recursive:true});fs.writeFileSync(root+'/test-artifacts/roster/rules.json',JSON.stringify(report,null,2));console.log(JSON.stringify(report,null,2));
+const report={coreSha256:crypto.createHash('sha256').update(read('core/index.html')).digest('hex'),checks,fighters:Object.keys(F.roster),recipes:9,illustratedFrames:144,lessonReports,policies,rivalReports,motionReports,legacyFrames,legacySegments,rendering:'whole illustrated sprites, no runtime skeleton'};fs.mkdirSync(root+'/test-artifacts/roster',{recursive:true});fs.writeFileSync(root+'/test-artifacts/roster/rules.json',JSON.stringify(report,null,2));console.log(JSON.stringify(report,null,2));

@@ -7,6 +7,11 @@ const roster={
  iris:{id:'iris',name:'IRIS',style:'АКРОБАТИКА',tag:'Пластика. Ладони. Воздушная техника.',color:'#8dece8',hp:.95,power:.94,impact:{hand:135,kick:180},superName:'PRISM FLIGHT',superMove:'prismSuper',superDamage:68,superSound:'iris',recipes:{LLH:{move:'crescentFinish',name:'ВЫСОКИЙ УДАР',damage:28},HLL:{move:'risingPalm',name:'ВОСХОДЯЩАЯ ЛАДОНЬ',damage:30},HLHH:{move:'cartwheel',name:'КОЛЕСО',damage:40}},prefix:{L:'jab',LL:'cross',H:'bodyKick',HL:'hook',HLH:'bodyKick'}}
 };
 for(const f of Object.values(roster)){const trie={};for(const [text,finish]of Object.entries(f.recipes)){let n=trie;for(const key of text)n=n[key]??(n[key]={});n.finish={...finish,recipe:text}}f.trie=trie;Object.freeze(f)}
+const rivals=Object.freeze({
+ nova:Object.freeze({name:'ТЕХНИК',cadence:[4,3,4,2,4,3],moves:['cross','bodyKick','hook'],signatureEvery:4,guardBeats:3}),
+ brick:Object.freeze({name:'ДАВЛЕНИЕ',cadence:[5,4,3,4],moves:['cross','hook','bodyKick'],signatureEvery:3,guardBeats:4}),
+ iris:Object.freeze({name:'СМЕНА ТЕМПА',cadence:[4,2,1,4,3,1],moves:['bodyKick','cross','hook'],signatureEvery:4,guardBeats:2})
+});
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),smooth=v=>{v=clamp(v,0,1);return v*v*(3-2*v)},lerp=(a,b,t)=>a+(b-a)*t;
 const rows={jab:0,cross:5,hook:5,bodyKick:1,uppercut:2,frontKick:1,spinKick:3,knee:4,heavyUpper:2,shoulderRush:3,powerStomp:1,crescentFinish:1,risingPalm:2,cartwheel:3};
 const specialMoves=new Set(['uppercut','frontKick','spinKick','heavyUpper','shoulderRush','powerStomp','crescentFinish','risingPalm','cartwheel']);
@@ -44,11 +49,12 @@ function visual(a,t,flags={}){
  }
  if(a.guardBlend?.to&&(!act||t>=act.start+move(a.fighter,act.move).duration)){const b=a.guardBlend,age=t-b.at;frame=age<40?b.from.frame:age<85?2:b.key==='H'?2:24;x=carry(b.from.x,b.from.vx,age);y=carry(b.from.y,b.from.vy,age)}
  if(a.defence&&t<a.defence.end){const d=a.defence,age=Math.max(0,t-d.start);frame=age<35?d.from.frame:age<245?25:5;x=carry(d.from.x,d.from.vx,age)+(age<80?lerp(0,-7,smooth(age/80)):age<165?-7:lerp(-7,0,smooth((age-165)/165)));y=carry(d.from.y,d.from.vy,age)}
- if(a.hit&&t<a.hit.end){const h=a.hit,age=Math.max(0,t-h.start),duration=h.end-h.start;frame=age<22?h.from.frame:age<duration-85?26:24;x=carry(h.from.x,h.from.vx,age)+(age<60?lerp(0,-8,smooth(age/60)):lerp(-8,0,smooth((age-60)/(duration-60))));y=carry(h.from.y,h.from.vy,age)}
+ if(a.hit&&t<a.hit.end&&!a.hit.keepAttack){const h=a.hit,age=Math.max(0,t-h.start),duration=h.end-h.start;frame=age<22?h.from.frame:age<duration-85?26:24;x=carry(h.from.x,h.from.vx,age)+(age<60?lerp(0,-8,smooth(age/60)):lerp(-8,0,smooth((age-60)/(duration-60))));y=carry(h.from.y,h.from.vy,age)}
+ if(a.hit?.keepAttack&&t<a.hit.end){const age=Math.max(0,t-a.hit.start);x-=Math.sin(Math.PI*clamp(age/(a.hit.end-a.hit.start),0,1))*3}
  if(flags.warning&&!act&&!a.hit&&!a.defence){frame=2;x=-2}
  return {fighter:f.id,frame:clamp(frame,0,47),x,y,flash};
 }
 function velocity(a,t){const before=visual(a,t-.5),after=visual(a,t+.5);return {vx:after.x-before.x,vy:after.y-before.y}}
 function contact(a,t){const m=move(a.fighter,a.action?.move??'jab'),v=visual(a,t);return {x:v.x+m.contact.x,y:v.y+m.contact.y}}
-return {roster,get,move,visual,velocity,clip,contact,rows};
+return {roster,rivals,get,move,visual,velocity,clip,contact,rows};
 })();

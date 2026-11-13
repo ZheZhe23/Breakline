@@ -53,14 +53,16 @@ if flowSource.exists():
   baseGuard=bases[hero][(0,0)][0]
   ref,rb=flowFigures[(hi*2,0)];ratio=baseGuard.height/ref.height;side=flowImage.width/6
   # Register the source guard's foot centre once; retain relative translations.
-  aa=np.asarray(ref.getchannel('A'));yy,xx=np.where(aa>20);foot=xx[yy>ref.height*.85]
-  centre=rb[0]+float(np.median(foot));offset=anchor[0]-centre*ratio
+  baseTile,baseBox=bases[hero][(0,0)];ba=np.asarray(baseTile.getchannel('A'));by,bx=np.where(ba>20);rear=bx[(by>baseTile.height*.82)&(bx<baseTile.width*.45)]
+  supportX=paddingX+baseBox[0]+float(np.median(rear))
   atlas=Image.new('RGBA',(cell*6,cell*2));frames=[];prepared=[]
   for j in range(12):
    r,c=divmod(j,6);tile,b=flowFigures[(hi*2+r,c)];tile=tile.resize((round(tile.width*ratio),round(tile.height*ratio)),Image.Resampling.LANCZOS)
-   x=round(offset+(b[0]-c*side)*ratio);y=anchor[1]-tile.height
+   aa=np.asarray(tile.getchannel('A'));yy,xx=np.where(aa>20);rear=xx[(yy>tile.height*.82)&(xx<tile.width*.45)]
+   if not len(rear):rear=xx[yy>tile.height*.92]
+   x=round(supportX-float(np.median(rear)));y=anchor[1]-tile.height
    prepared.append((j,r,c,tile,x,y))
-  dx=max(0,4-min(z[4] for z in prepared));flowAnchor=[anchor[0]+dx,anchor[1]]
+  dx=4-min(z[4] for z in prepared);flowAnchor=[anchor[0]+dx,anchor[1]]
   for j,r,c,tile,x,y in prepared:
    x+=dx;assert x>=3 and y>=3 and x+tile.width<cell-3,(hero,j,x,y,tile.size)
    atlas.paste(tile,(c*cell+x,r*cell+y));frames.append({'index':36+j,'bbox':[x,y,x+tile.width,y+tile.height]})
