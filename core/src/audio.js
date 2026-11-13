@@ -81,10 +81,20 @@ function create(context){
   if(strong){tone(effects,at,82,.35,.09,'triangle',500);percussion(effects,at+.09,.13,.033,1200,'bandpass')}
  }
  function warning(beatAt){const at=origin+beatAt/1000-BEAT;if(at>=ctx.currentTime+.005){tone(effects,at,660,.09,.025,'triangle');percussion(effects,at,.04,.025,3500,'highpass')}}
+ function superCharge(fighter,at=ctx.currentTime+.003){
+  const o=ctx.createOscillator(),g=ctx.createGain(),f=ctx.createBiquadFilter();o.type=fighter==='brick'?'triangle':'sawtooth';const base=fighter==='brick'?42:fighter==='iris'?220:100;
+  o.frequency.setValueAtTime(base,at);o.frequency.exponentialRampToValueAtTime(base*4,at+.44);f.type='lowpass';f.frequency.setValueAtTime(500,at);f.frequency.exponentialRampToValueAtTime(fighter==='iris'?3400:1700,at+.44);
+  g.gain.setValueAtTime(.0001,at);g.gain.exponentialRampToValueAtTime(.095,at+.30);g.gain.exponentialRampToValueAtTime(.0001,at+.49);o.connect(f);f.connect(g);g.connect(effects);o.start(at);o.stop(at+.50);o.onended=()=>{o.disconnect();f.disconnect();g.disconnect()};
+  const root=rootAt(Math.max(0,Math.round((at-origin)/STEP)));for(let i=0;i<4;i++){if(fighter==='brick')kick(effects,at+i*.1,.08+i*.012);else tone(effects,at+i*.1,hz(root+[12,19,24,31][i]),.17,.035,fighter==='iris'?'sine':'triangle',2400)}
+ }
+ function superHit(fighter,at=ctx.currentTime+.003){
+  kick(effects,at,fighter==='brick'?.5:.4);percussion(effects,at,.25,.18,950,'lowpass');tone(effects,at,fighter==='brick'?42:65,.48,.14,'triangle',500);
+  const root=rootAt(Math.max(0,Math.round((at-origin)/STEP)));for(let i=0;i<3;i++){const t=at+i*.13;tone(effects,t,hz(root+(fighter==='iris'?24:12)+[0,7,12][i]),.30,.07/(i+1),fighter==='iris'?'sine':'warm',2300);if(i)percussion(effects,t,.10,.04/(i+1),1200,'bandpass')}
+ }
  function mute(value){muted=value;master.gain.cancelScheduledValues(ctx.currentTime);master.gain.setTargetAtTime(value?.0001:.75,ctx.currentTime,.025)}
  function start(){if(!timer)timer=setInterval(()=>schedule(),25);schedule()}
  function stop(){if(timer)clearInterval(timer);timer=null}
- return {ctx,origin,BPM,BEAT,STEP,plans,events,fills,buses,master,music,effects,fillBus,noise,levelAt,setLevel,schedule,requestFill,sfx,warning,mute,start,stop,now,latency:()=>latency,get muted(){return muted}};
+ return {ctx,origin,BPM,BEAT,STEP,plans,events,fills,buses,master,music,effects,fillBus,noise,levelAt,setLevel,schedule,requestFill,sfx,warning,superCharge,superHit,mute,start,stop,now,latency:()=>latency,get muted(){return muted}};
 }
 return {create,estimateLatency,BPM,BEAT,STEP};
 })();

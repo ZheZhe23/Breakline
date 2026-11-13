@@ -1,7 +1,7 @@
 {
-  "coreSha256": "413439df220ea448e41ca5fc8a40fcf4afb0f439399ba6917c47df82bd3d7805",
-  "frames": 416,
-  "duration": 13.833333333333334,
-  "combinedAudioPeak": 0.7782596349716187,
-  "kind": "deterministic input-driven duel, reconstructed same-engine soundtrack; not an Android capture"
+  "coreSha256": "5575fb02bbfef874e125e9e2d0a9c1d7c2f5d9aa12c83de027c1b563a4f1ae0d",
+  "frames": 540,
+  "seconds": 18,
+  "peak": 0.6410878896713257,
+  "kind": "controlled character/finisher/super showcase; super gauge prefilled for demonstration; same-engine reconstructed soundtrack, not an Android recording"
 }

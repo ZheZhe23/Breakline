@@ -1,89 +1,122 @@
 {
-  "coreSha256": "413439df220ea448e41ca5fc8a40fcf4afb0f439399ba6917c47df82bd3d7805",
-  "checks": 74,
-  "errors": [],
+  "coreSha256": "5575fb02bbfef874e125e9e2d0a9c1d7c2f5d9aa12c83de027c1b563a4f1ae0d",
+  "checks": 113,
+  "native": [
+    {
+      "fighter": "nova",
+      "recipe": "LLL"
+    },
+    {
+      "fighter": "nova",
+      "recipe": "LLH"
+    },
+    {
+      "fighter": "nova",
+      "recipe": "LHLH"
+    },
+    {
+      "fighter": "brick",
+      "recipe": "LLL"
+    },
+    {
+      "fighter": "brick",
+      "recipe": "HHL"
+    },
+    {
+      "fighter": "brick",
+      "recipe": "LHH"
+    },
+    {
+      "fighter": "iris",
+      "recipe": "LLH"
+    },
+    {
+      "fighter": "iris",
+      "recipe": "HLL"
+    },
+    {
+      "fighter": "iris",
+      "recipe": "HLHH"
+    }
+  ],
   "layouts": [
     {
       "width": 320,
       "height": 568,
+      "teaching": false,
       "scale": 1.1578947368421053
     },
     {
       "width": 360,
       "height": 640,
+      "teaching": false,
       "scale": 1.5723684210526316
     },
     {
       "width": 390,
       "height": 844,
-      "scale": 2.2941176470588234
+      "teaching": false,
+      "scale": 1.8571428571428572
     },
     {
       "width": 412,
       "height": 915,
-      "scale": 2.3
+      "teaching": false,
+      "scale": 1.9619047619047618
     },
     {
       "width": 740,
       "height": 360,
+      "teaching": false,
       "scale": 0.9671052631578947
     },
     {
       "width": 844,
       "height": 390,
+      "teaching": false,
       "scale": 1.1644736842105263
+    },
+    {
+      "width": 320,
+      "height": 568,
+      "teaching": true,
+      "scale": 0.9296875
+    },
+    {
+      "width": 360,
+      "height": 640,
+      "teaching": true,
+      "scale": 1.3507401315789473
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "teaching": true,
+      "scale": 1.8571428571428572
+    },
+    {
+      "width": 412,
+      "height": 915,
+      "teaching": true,
+      "scale": 1.9619047619047618
+    },
+    {
+      "width": 740,
+      "height": 360,
+      "teaching": true,
+      "scale": 0.9736842105263158
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "teaching": true,
+      "scale": 1.1710526315789473
     }
   ],
-  "audio": {
-    "peak": 0.6394786834716797,
-    "rms": [
-      0.04247239516201038,
-      0.04002473274624192,
-      0.04324318611382568,
-      0.04064895114875652,
-      0.04421775581472264,
-      0.03940177657937465,
-      0.04773455373876717,
-      0.042619391190776845,
-      0.049788686320548156,
-      0.04175278980091102,
-      0.051619734404273636,
-      0.04241758159650028,
-      0.042720560525588286,
-      0.04058348098340862,
-      0.041512207012780314,
-      0.04039352938897635
-    ],
-    "totalRms": 0.04333295997856449,
-    "fills": 1,
-    "duplicate": false,
-    "bad": false,
-    "plans": [
-      {
-        "at": 0.15,
-        "level": 1
-      },
-      {
-        "at": 2.15,
-        "level": 2
-      },
-      {
-        "at": 4.15,
-        "level": 3
-      },
-      {
-        "at": 6.15,
-        "level": 4
-      },
-      {
-        "at": 8.15,
-        "level": 5
-      },
-      {
-        "at": 12.15,
-        "level": 1
-      }
-    ]
+  "errors": [],
+  "sound": {
+    "peak": 0.830416738986969,
+    "rms": 0.052425477836183856
   },
   "androidHardwareTested": false
 }

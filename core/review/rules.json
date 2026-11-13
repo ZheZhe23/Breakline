@@ -1,179 +1,84 @@
 {
-  "coreSha256": "413439df220ea448e41ca5fc8a40fcf4afb0f439399ba6917c47df82bd3d7805",
-  "checks": 63916,
-  "frames": 5920,
-  "segments": 65120,
-  "maxRelativeBoneError": 7.771561172376096e-16,
-  "maxJointDeltaPer2ms": 4.023387816171209,
-  "maxAngleDeltaPer2ms": 0.14200822723760265,
+  "coreSha256": "5575fb02bbfef874e125e9e2d0a9c1d7c2f5d9aa12c83de027c1b563a4f1ae0d",
+  "checks": 10294,
+  "fighters": [
+    "nova",
+    "brick",
+    "iris"
+  ],
+  "recipes": 9,
+  "illustratedFrames": 108,
+  "lessonReports": [
+    {
+      "fighter": "nova",
+      "seconds": 42.125,
+      "inputs": 29,
+      "completed": 12
+    },
+    {
+      "fighter": "brick",
+      "seconds": 41.625,
+      "inputs": 28,
+      "completed": 12
+    },
+    {
+      "fighter": "iris",
+      "seconds": 42.125,
+      "inputs": 29,
+      "completed": 12
+    }
+  ],
   "policies": [
     {
-      "difficulty": "rookie",
-      "policy": "mash",
-      "winner": "player",
-      "hp": 28,
-      "enemy": 0,
-      "score": 4068,
-      "combos": 0,
-      "variety": 0,
-      "dodges": 0,
-      "counters": 0,
-      "level": 1,
-      "rank": "D"
-    },
-    {
-      "difficulty": "rookie",
-      "policy": "pressure",
-      "winner": "player",
-      "hp": 150,
-      "enemy": 0,
-      "score": 5209,
-      "combos": 4,
-      "variety": 1,
-      "dodges": 0,
-      "counters": 0,
-      "level": 5,
-      "rank": "B"
-    },
-    {
-      "difficulty": "rookie",
+      "fighter": "nova",
       "policy": "reader",
       "winner": "player",
-      "hp": 150,
-      "enemy": 0,
-      "score": 6195,
-      "combos": 4,
-      "variety": 3,
-      "dodges": 3,
-      "counters": 3,
-      "level": 5,
-      "rank": "S"
+      "combos": 3,
+      "supers": 2,
+      "score": 8854
     },
     {
-      "difficulty": "rookie",
-      "policy": "defenceOnly",
+      "fighter": "nova",
+      "policy": "repeat",
       "winner": "enemy",
-      "hp": 150,
-      "enemy": 220,
-      "score": 4320,
-      "combos": 0,
-      "variety": 0,
-      "dodges": 24,
-      "counters": 0,
-      "level": 5,
-      "rank": "D"
+      "combos": 3,
+      "supers": 1,
+      "score": 2993
     },
     {
-      "difficulty": "fighter",
-      "policy": "mash",
-      "winner": "enemy",
-      "hp": 0,
-      "enemy": 226,
-      "score": 644,
-      "combos": 0,
-      "variety": 0,
-      "dodges": 0,
-      "counters": 0,
-      "level": 1,
-      "rank": "D"
-    },
-    {
-      "difficulty": "fighter",
-      "policy": "pressure",
-      "winner": "player",
-      "hp": 102,
-      "enemy": 0,
-      "score": 5338,
-      "combos": 2,
-      "variety": 1,
-      "dodges": 0,
-      "counters": 0,
-      "level": 5,
-      "rank": "B"
-    },
-    {
-      "difficulty": "fighter",
+      "fighter": "brick",
       "policy": "reader",
       "winner": "player",
-      "hp": 140,
-      "enemy": 0,
-      "score": 7362,
+      "combos": 3,
+      "supers": 2,
+      "score": 9167
+    },
+    {
+      "fighter": "brick",
+      "policy": "repeat",
+      "winner": "enemy",
       "combos": 4,
-      "variety": 3,
-      "dodges": 6,
-      "counters": 5,
-      "level": 5,
-      "rank": "S"
+      "supers": 1,
+      "score": 4095
     },
     {
-      "difficulty": "fighter",
-      "policy": "defenceOnly",
-      "winner": "enemy",
-      "hp": 140,
-      "enemy": 290,
-      "score": 4860,
-      "combos": 0,
-      "variety": 0,
-      "dodges": 27,
-      "counters": 0,
-      "level": 5,
-      "rank": "D"
-    },
-    {
-      "difficulty": "master",
-      "policy": "mash",
-      "winner": "enemy",
-      "hp": 0,
-      "enemy": 323,
-      "score": 276,
-      "combos": 0,
-      "variety": 0,
-      "dodges": 0,
-      "counters": 0,
-      "level": 1,
-      "rank": "D"
-    },
-    {
-      "difficulty": "master",
-      "policy": "pressure",
-      "winner": "enemy",
-      "hp": 0,
-      "enemy": 139,
-      "score": 2674,
-      "combos": 2,
-      "variety": 1,
-      "dodges": 0,
-      "counters": 0,
-      "level": 4,
-      "rank": "C"
-    },
-    {
-      "difficulty": "master",
+      "fighter": "iris",
       "policy": "reader",
       "winner": "player",
-      "hp": 120,
-      "enemy": 0,
-      "score": 9732,
-      "combos": 6,
-      "variety": 3,
-      "dodges": 10,
-      "counters": 7,
-      "level": 5,
-      "rank": "S"
+      "combos": 3,
+      "supers": 2,
+      "score": 8701
     },
     {
-      "difficulty": "master",
-      "policy": "defenceOnly",
+      "fighter": "iris",
+      "policy": "repeat",
       "winner": "enemy",
-      "hp": 120,
-      "enemy": 350,
-      "score": 5940,
       "combos": 0,
-      "variety": 0,
-      "dodges": 33,
-      "counters": 0,
-      "level": 5,
-      "rank": "D"
+      "supers": 0,
+      "score": 1190
     }
-  ]
+  ],
+  "legacyFrames": 1232,
+  "legacySegments": 13552,
+  "rendering": "whole illustrated sprites, no runtime skeleton"
 }
