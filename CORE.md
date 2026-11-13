@@ -1,8 +1,8 @@
-# BREAKLINE: AFTERHOURS — MOTION / 3.1 candidate
+# BREAKLINE: AFTERHOURS — MOTION / 3.1
 
-**[Опубликованная 3.0](https://breakline-core-zhezhe23.mixedblossom1.chatgpt.site)** · **[Кадры и контрольная запись](https://breakline-core-zhezhe23.mixedblossom1.chatgpt.site/review/)**
+**[Играть в прототип 3.1](https://breakline-core-zhezhe23.mixedblossom1.chatgpt.site)** · **[Кадры и контрольная запись](https://breakline-core-zhezhe23.mixedblossom1.chatgpt.site/review/)**
 
-**Кандидат 3.1 пока не опубликован.** Запускаемый файл текущей ветки — `core/index.html`; он самостоятельный, работает без сервера и внешних ресурсов. Новая публикация требует согласования по последней инструкции владельца.
+**Прототип 3.1 опубликован по запросу владельца.** Запускаемый файл текущей ветки — `core/index.html`; он самостоятельный, работает без сервера и внешних ресурсов. Подтверждённое развёртывание Sites: `appgdep_6af748fe37788191acd66ba9ebe1b7a0`, 13.11.2026. Основная игра сохранена отдельно.
 
 Выберите NOVA, BRICK или IRIS и нажмите **ПОЙМАТЬ РИТМ**. Для первого знакомства — **ОБУЧЕНИЕ · ПО ШАГАМ**. На Android открывайте в Chrome; приватный доступ Sites сохранён владельцу, при запросе войдите в свой аккаунт ChatGPT.
 
