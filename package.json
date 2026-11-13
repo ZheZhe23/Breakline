@@ -10,7 +10,8 @@
     "build:core": "node tools/build-core.cjs",
     "check:core": "node tests/core-syntax.cjs",
     "test:core": "node tests/core-syntax.cjs && node tests/core-rules.cjs && node tests/core-browser.cjs",
-    "render:core": "node tests/render-core.cjs"
+    "render:core": "node tests/render-core.cjs",
+    "test:core:live": "node tests/core-live-bout.cjs"
   },
   "devDependencies": {
     "playwright": "1.62.1"

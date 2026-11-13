@@ -77,7 +77,7 @@ for(const id of Object.keys(F.roster)){
 eq(new Set(rivalReports.map(x=>JSON.stringify(x.timeline))).size,3,'rival cadences and techniques actually differ');
 for(const d of Object.keys(C.DIFFICULTIES))for(const id of Object.keys(F.roster)){const {g}=make(id,d);for(let i=0;i<12;i++)ok(g.interval(i)>= (d==='rookie'?3:d==='fighter'?2:1),'difficulty never creates impossible rapid enemy cadence')}
 {
- const {g}=make();let r=g.review();eq(r.title,'СНАЧАЛА — ДОЛЯ');Object.assign(g.s.stats,{perfect:12,attempts:6,taken:4});r=g.review();eq(r.title,'ПРОЧИТАЙ СОПЕРНИКА');Object.assign(g.s.stats,{dodges:5,guarded:3});r=g.review();eq(r.title,'СМЕНИ ТРАЕКТОРИЮ');g.s.stats.variety=Object.keys(g.book().recipes);eq(g.review().title,'ПРЕВРАТИ РИТМ В СУПЕР');g.s.stats.supers=1;g.s.winner='player';eq(g.review().title,'ТВОЙ СЛЕДУЮЩИЙ УРОВЕНЬ');g.s.difficulty='master';ok(g.review().goal.includes('ранг S'),'master goal remains skill based');
+ const {g}=make();let r=g.review();eq(r.title,'СНАЧАЛА — ДОЛЯ');Object.assign(g.s.stats,{perfect:12,attempts:6,taken:4});r=g.review();eq(r.title,'ПРОЧИТАЙ СОПЕРНИКА');Object.assign(g.s.stats,{dodges:5,guarded:3});r=g.review();eq(r.title,'СМЕНИ ТРАЕКТОРИЮ');g.s.stats.variety=Object.keys(g.book().recipes);eq(g.review().title,'ПРЕВРАТИ РИТМ В СУПЕР');g.s.stats.supers=1;g.s.winner='player';eq(g.review().title,'ТВОЙ СЛЕДУЮЩИЙ УРОВЕНЬ');g.s.difficulty='master';ok(g.review().goal.includes('ранг S'),'master goal remains skill based');eq(g.review().title,'РИТМ ПОД КОНТРОЛЕМ','achieved S is acknowledged, not suggested again');
 }
 // Real interactive curriculum: no direct completion flags or mocked successful events.
 const lessonReports=[];
