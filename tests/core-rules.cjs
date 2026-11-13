@@ -87,6 +87,21 @@ for(const id of Object.keys(F.roster)){
 {
  const {g,t}=make();g.s.guard={key:'L',start:t,end:t+2000};attack(g,'L',t);eq(g.s.impacts.at(-1).kind,'guard','block has distinct guard drawing');eq(g.s.freeze,null,'block never starts successful hitstop');
 }
+// Practice is unranked, keeps real windows/recovery, and never leaks free resources.
+const practiceReports=[];
+for(const id of Object.keys(F.roster))for(const enemy of Object.keys(F.roster))for(const difficulty of Object.keys(C.DIFFICULTIES))for(const mode of ['dummy','rival']){
+ let finishes=0;const g=C.create({finish:()=>finishes++});g.reset(0,difficulty,id,false,{enemy,mode});const t=g.s.start;
+ ok(g.s.training,'practice always unranked, even if caller omitted training flag');eq(g.s.enemy.fighter,enemy,'selected practice target');eq(g.s.practice.mode,mode);eq(g.s.incoming===null,mode==='dummy','dummy never attacks');
+ for(let level=1;level<=5;level++){ok(g.practiceLevel(level,t));g.energy(100,t);eq(g.s.level,level,'pinned layer ignores gains');g.energy(-100,t);eq(g.s.level,level,'pinned layer ignores losses')}
+ g.practiceLevel(null,t);g.energy(-100,t);eq(g.s.level,1,'auto layer resumes normal energy');g.charge(100,t);const a=g.input('S',t);ok(a.accepted,'free practice charge still needs legal rhythm');eq(g.s.player.ready,t+1250,'practice super has full recovery');ok(!g.input('L',t+500).accepted,'practice cannot bypass cooldown');
+ let signature=false;for(let at=t;at<t+65000;at+=5){g.step(at);signature ||= !!g.s.incoming?.signature}
+ eq(g.s.mode,'fight','practice has no 45 second result');eq(finishes,0,'practice never writes ranked finish');ok(g.s.player.hp>=1&&g.s.enemy.hp>=1,'practice never KOs');eq(signature,mode==='rival','live rival keeps signature attacks');
+ g.reset(t+70000,difficulty,id);eq(g.s.practice,null,'duel clears practice profile');eq(g.s.training,false,'duel restores defeat');eq(g.s.super,0,'practice charge cannot carry');eq(g.s.energy,0,'practice energy cannot carry');ok(!g.practiceLevel(5,t+70000),'practice controls disabled in duel');practiceReports.push({fighter:id,enemy,difficulty,mode});
+}
+{
+ const g=C.create();g.reset(0,'fighter','nova',true,{mode:'dummy',enemy:'iris'});for(let n=0;n<20;n++)attack(g,'L',g.s.start+n*500);eq(g.s.stats.guarded,0,'dummy never adapts a guard');
+ const h=C.create();h.reset(0,'fighter','nova',true,{mode:'rival',enemy:'iris'});h.s.incoming=null;for(let n=0;n<20;n++)attack(h,'L',h.s.start+n*500);ok(h.s.stats.guarded>0,'live practice rival keeps adaptive guard');
+}
 // Real interactive curriculum: no direct completion flags or mocked successful events.
 const lessonReports=[];
 for(const id of Object.keys(F.roster)){
@@ -121,4 +136,4 @@ for(const id of Object.keys(F.roster))for(const policy of ['reader','repeat']){
 }
 // Preserve the previous anatomy audit as an archived reference, not a sprite claim.
 for(const [name,m]of Object.entries(R.moves))for(let t=0;t<=m.duration;t+=4){const a={move:name,start:0,from:R.idle(0)},result=R.measure(R.skeleton(R.sample(a,t)));ok(result.valid,'legacy fixed lengths');legacyFrames++;legacySegments+=result.segments}
-const report={coreSha256:crypto.createHash('sha256').update(read('core/index.html')).digest('hex'),checks,fighters:Object.keys(F.roster),recipes:9,illustratedFrames:144,lessonReports,policies,rivalReports,motionReports,legacyFrames,legacySegments,rendering:'whole illustrated sprites, no runtime skeleton'};fs.mkdirSync(root+'/test-artifacts/roster',{recursive:true});fs.writeFileSync(root+'/test-artifacts/roster/rules.json',JSON.stringify(report,null,2));console.log(JSON.stringify(report,null,2));
+const report={coreSha256:crypto.createHash('sha256').update(read('core/index.html')).digest('hex'),checks,fighters:Object.keys(F.roster),recipes:9,illustratedFrames:144,lessonReports,practiceCases:practiceReports.length,policies,rivalReports,motionReports,legacyFrames,legacySegments,rendering:'whole illustrated sprites, no runtime skeleton'};fs.mkdirSync(root+'/test-artifacts/roster',{recursive:true});fs.writeFileSync(root+'/test-artifacts/roster/rules.json',JSON.stringify(report,null,2));console.log(JSON.stringify(report,null,2));
