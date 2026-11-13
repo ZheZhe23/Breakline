@@ -1,0 +1,117 @@
+{
+  "coreSha256": "cb3b52eef5cc680fc9de35bd59e1b35b237d1ee8c65123970394708a80a2557a",
+  "kind": "real-time native touch policy against active AI; silent Chromium video; not a human or Android recording",
+  "reports": [
+    {
+      "fighter": "nova",
+      "opponent": "brick",
+      "winner": "player",
+      "stats": {
+        "perfect": 21,
+        "good": 0,
+        "off": 0,
+        "combos": 5,
+        "variety": [
+          "LLL",
+          "LLH",
+          "LHLH"
+        ],
+        "dodges": 5,
+        "blocks": 0,
+        "taken": 1,
+        "counters": 5,
+        "score": 9349,
+        "maxLevel": 5,
+        "attempts": 6,
+        "supers": 2,
+        "guarded": 0,
+        "interrupts": 3,
+        "lateThreats": 0,
+        "time": 19047.324217687074,
+        "winBonus": 1720
+      },
+      "rating": {
+        "rank": "S",
+        "value": 95,
+        "accuracy": 100
+      },
+      "lateThreats": 0,
+      "nativeTaps": 27,
+      "errors": []
+    },
+    {
+      "fighter": "brick",
+      "opponent": "iris",
+      "winner": "player",
+      "stats": {
+        "perfect": 12,
+        "good": 2,
+        "off": 0,
+        "combos": 4,
+        "variety": [
+          "LLL",
+          "HHL",
+          "LHH"
+        ],
+        "dodges": 8,
+        "blocks": 0,
+        "taken": 0,
+        "counters": 6,
+        "score": 9744,
+        "maxLevel": 5,
+        "attempts": 8,
+        "supers": 2,
+        "guarded": 0,
+        "interrupts": 3,
+        "lateThreats": 0,
+        "time": 14556.39300453515,
+        "winBonus": 1800
+      },
+      "rating": {
+        "rank": "S",
+        "value": 98,
+        "accuracy": 96
+      },
+      "lateThreats": 0,
+      "nativeTaps": 22,
+      "errors": []
+    },
+    {
+      "fighter": "iris",
+      "opponent": "nova",
+      "winner": "player",
+      "stats": {
+        "perfect": 16,
+        "good": 1,
+        "off": 0,
+        "combos": 5,
+        "variety": [
+          "LLH",
+          "HLL",
+          "HLHH"
+        ],
+        "dodges": 6,
+        "blocks": 0,
+        "taken": 0,
+        "counters": 6,
+        "score": 8984,
+        "maxLevel": 5,
+        "attempts": 6,
+        "supers": 1,
+        "guarded": 0,
+        "interrupts": 3,
+        "lateThreats": 0,
+        "time": 14745.434811791292,
+        "winBonus": 1800
+      },
+      "rating": {
+        "rank": "S",
+        "value": 99,
+        "accuracy": 98
+      },
+      "lateThreats": 0,
+      "nativeTaps": 23,
+      "errors": []
+    }
+  ]
+}

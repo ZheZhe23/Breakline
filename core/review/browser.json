@@ -1,6 +1,6 @@
 {
-  "coreSha256": "5575fb02bbfef874e125e9e2d0a9c1d7c2f5d9aa12c83de027c1b563a4f1ae0d",
-  "checks": 113,
+  "coreSha256": "cb3b52eef5cc680fc9de35bd59e1b35b237d1ee8c65123970394708a80a2557a",
+  "checks": 128,
   "native": [
     {
       "fighter": "nova",
@@ -113,10 +113,85 @@
       "scale": 1.1710526315789473
     }
   ],
+  "registration": [
+    {
+      "fighter": "nova",
+      "maxSupportError": 1,
+      "errors": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        -1,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "fighter": "brick",
+      "maxSupportError": 1,
+      "errors": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "fighter": "iris",
+      "maxSupportError": 1,
+      "errors": [
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        -1,
+        1
+      ]
+    }
+  ],
+  "performanceSample": {
+    "frames": 120,
+    "dpr": 2,
+    "desktopCPUThrottle": 4,
+    "p50": 12.600000000093132,
+    "p95": 17,
+    "max": 30.799999999813735,
+    "androidHardware": false
+  },
+  "memory": {
+    "resident": [
+      "stage",
+      "iris",
+      "irisFlow",
+      "nova",
+      "novaFlow"
+    ],
+    "pending": 0
+  },
   "errors": [],
   "sound": {
     "peak": 0.830416738986969,
-    "rms": 0.052425477836183856
+    "rms": 0.052425473360822594
   },
   "androidHardwareTested": false
 }

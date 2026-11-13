@@ -1,13 +1,13 @@
 {
-  "coreSha256": "5575fb02bbfef874e125e9e2d0a9c1d7c2f5d9aa12c83de027c1b563a4f1ae0d",
-  "checks": 10294,
+  "coreSha256": "cb3b52eef5cc680fc9de35bd59e1b35b237d1ee8c65123970394708a80a2557a",
+  "checks": 11234,
   "fighters": [
     "nova",
     "brick",
     "iris"
   ],
   "recipes": 9,
-  "illustratedFrames": 108,
+  "illustratedFrames": 144,
   "lessonReports": [
     {
       "fighter": "nova",
@@ -33,41 +33,41 @@
       "fighter": "nova",
       "policy": "reader",
       "winner": "player",
-      "combos": 3,
+      "combos": 5,
       "supers": 2,
-      "score": 8854
+      "score": 9277
     },
     {
       "fighter": "nova",
       "policy": "repeat",
       "winner": "enemy",
-      "combos": 3,
+      "combos": 2,
       "supers": 1,
-      "score": 2993
+      "score": 3810
     },
     {
       "fighter": "brick",
       "policy": "reader",
       "winner": "player",
-      "combos": 3,
-      "supers": 2,
-      "score": 9167
+      "combos": 5,
+      "supers": 1,
+      "score": 8584
     },
     {
       "fighter": "brick",
       "policy": "repeat",
       "winner": "enemy",
-      "combos": 4,
+      "combos": 2,
       "supers": 1,
-      "score": 4095
+      "score": 3289
     },
     {
       "fighter": "iris",
       "policy": "reader",
       "winner": "player",
-      "combos": 3,
-      "supers": 2,
-      "score": 8701
+      "combos": 4,
+      "supers": 1,
+      "score": 8197
     },
     {
       "fighter": "iris",
@@ -75,7 +75,299 @@
       "winner": "enemy",
       "combos": 0,
       "supers": 0,
-      "score": 1190
+      "score": 1088
+    }
+  ],
+  "rivalReports": [
+    {
+      "fighter": "nova",
+      "opponent": "brick",
+      "style": "ДАВЛЕНИЕ",
+      "timeline": [
+        {
+          "beat": 5500,
+          "move": "cross",
+          "strong": false
+        },
+        {
+          "beat": 8000,
+          "move": "hook",
+          "strong": false
+        },
+        {
+          "beat": 10000,
+          "move": "shoulderRush",
+          "strong": true
+        },
+        {
+          "beat": 11500,
+          "move": "cross",
+          "strong": false
+        },
+        {
+          "beat": 13500,
+          "move": "hook",
+          "strong": false
+        },
+        {
+          "beat": 16000,
+          "move": "shoulderRush",
+          "strong": true
+        },
+        {
+          "beat": 18000,
+          "move": "cross",
+          "strong": false
+        },
+        {
+          "beat": 19500,
+          "move": "hook",
+          "strong": false
+        }
+      ]
+    },
+    {
+      "fighter": "brick",
+      "opponent": "iris",
+      "style": "СМЕНА ТЕМПА",
+      "timeline": [
+        {
+          "beat": 5500,
+          "move": "bodyKick",
+          "strong": false
+        },
+        {
+          "beat": 7500,
+          "move": "cross",
+          "strong": false
+        },
+        {
+          "beat": 8500,
+          "move": "hook",
+          "strong": false
+        },
+        {
+          "beat": 9000,
+          "move": "cartwheel",
+          "strong": true
+        },
+        {
+          "beat": 11000,
+          "move": "cross",
+          "strong": false
+        },
+        {
+          "beat": 12500,
+          "move": "hook",
+          "strong": false
+        },
+        {
+          "beat": 13000,
+          "move": "bodyKick",
+          "strong": false
+        },
+        {
+          "beat": 15000,
+          "move": "cartwheel",
+          "strong": true
+        }
+      ]
+    },
+    {
+      "fighter": "iris",
+      "opponent": "nova",
+      "style": "ТЕХНИК",
+      "timeline": [
+        {
+          "beat": 5500,
+          "move": "cross",
+          "strong": false
+        },
+        {
+          "beat": 7500,
+          "move": "bodyKick",
+          "strong": false
+        },
+        {
+          "beat": 9000,
+          "move": "hook",
+          "strong": false
+        },
+        {
+          "beat": 11000,
+          "move": "spinKick",
+          "strong": true
+        },
+        {
+          "beat": 12000,
+          "move": "bodyKick",
+          "strong": false
+        },
+        {
+          "beat": 14000,
+          "move": "hook",
+          "strong": false
+        },
+        {
+          "beat": 15500,
+          "move": "cross",
+          "strong": false
+        },
+        {
+          "beat": 17500,
+          "move": "spinKick",
+          "strong": true
+        }
+      ]
+    }
+  ],
+  "motionReports": [
+    {
+      "fighter": "nova",
+      "move": "jab",
+      "impact": 130,
+      "duration": 580,
+      "maxRootPixelsPerMs": 0.0362307968999539
+    },
+    {
+      "fighter": "nova",
+      "move": "cross",
+      "impact": 130,
+      "duration": 580,
+      "maxRootPixelsPerMs": 0.0362307968999539
+    },
+    {
+      "fighter": "nova",
+      "move": "bodyKick",
+      "impact": 180,
+      "duration": 640,
+      "maxRootPixelsPerMs": 0.026174048577950026
+    },
+    {
+      "fighter": "nova",
+      "move": "uppercut",
+      "impact": 190,
+      "duration": 760,
+      "maxRootPixelsPerMs": 0.19799558974221654
+    },
+    {
+      "fighter": "nova",
+      "move": "frontKick",
+      "impact": 205,
+      "duration": 760,
+      "maxRootPixelsPerMs": 0.022981870180156738
+    },
+    {
+      "fighter": "nova",
+      "move": "spinKick",
+      "impact": 230,
+      "duration": 760,
+      "maxRootPixelsPerMs": 0.020482707751273588
+    },
+    {
+      "fighter": "nova",
+      "move": "neonSuper",
+      "impact": 500,
+      "duration": 1250,
+      "maxRootPixelsPerMs": 0.19109271929900778
+    },
+    {
+      "fighter": "brick",
+      "move": "jab",
+      "impact": 155,
+      "duration": 580,
+      "maxRootPixelsPerMs": 0.050654783583843344
+    },
+    {
+      "fighter": "brick",
+      "move": "cross",
+      "impact": 155,
+      "duration": 580,
+      "maxRootPixelsPerMs": 0.050654783583843344
+    },
+    {
+      "fighter": "brick",
+      "move": "bodyKick",
+      "impact": 200,
+      "duration": 640,
+      "maxRootPixelsPerMs": 0.03925776408987125
+    },
+    {
+      "fighter": "brick",
+      "move": "heavyUpper",
+      "impact": 190,
+      "duration": 760,
+      "maxRootPixelsPerMs": 0.20933553052603138
+    },
+    {
+      "fighter": "brick",
+      "move": "shoulderRush",
+      "impact": 230,
+      "duration": 760,
+      "maxRootPixelsPerMs": 0.1975692984064139
+    },
+    {
+      "fighter": "brick",
+      "move": "powerStomp",
+      "impact": 205,
+      "duration": 760,
+      "maxRootPixelsPerMs": 0.0383031169669279
+    },
+    {
+      "fighter": "brick",
+      "move": "faultSuper",
+      "impact": 500,
+      "duration": 1250,
+      "maxRootPixelsPerMs": 0.26143084753745255
+    },
+    {
+      "fighter": "iris",
+      "move": "jab",
+      "impact": 135,
+      "duration": 580,
+      "maxRootPixelsPerMs": 0.0348970155515933
+    },
+    {
+      "fighter": "iris",
+      "move": "cross",
+      "impact": 135,
+      "duration": 580,
+      "maxRootPixelsPerMs": 0.0348970155515933
+    },
+    {
+      "fighter": "iris",
+      "move": "bodyKick",
+      "impact": 180,
+      "duration": 640,
+      "maxRootPixelsPerMs": 0.026174048577950026
+    },
+    {
+      "fighter": "iris",
+      "move": "crescentFinish",
+      "impact": 205,
+      "duration": 760,
+      "maxRootPixelsPerMs": 0.022981870180156738
+    },
+    {
+      "fighter": "iris",
+      "move": "risingPalm",
+      "impact": 190,
+      "duration": 760,
+      "maxRootPixelsPerMs": 0.19799558974221654
+    },
+    {
+      "fighter": "iris",
+      "move": "cartwheel",
+      "impact": 230,
+      "duration": 760,
+      "maxRootPixelsPerMs": 0.020482707751273588
+    },
+    {
+      "fighter": "iris",
+      "move": "prismSuper",
+      "impact": 500,
+      "duration": 1250,
+      "maxRootPixelsPerMs": 0.18946668610584716
     }
   ],
   "legacyFrames": 1232,
