@@ -28,9 +28,10 @@ function create(context){
  const hz=n=>440*2**((n-69)/12),rootAt=step=>[38,38,39,36][Math.floor(step/32)%4];
  function safeBeat(now=ctx.currentTime,unit=1){return Math.max(0,Math.ceil((transport.beatAt(now+LOOK+.04)-1e-8)/unit)*unit)}
  function setTempo(target,now=ctx.currentTime){
-  target=Math.max(120,Math.min(160,Math.round(target/10)*10));let bpm=transport.segments.at(-1).bpm,beat=Math.max(safeBeat(now,4),transport.segments.at(-1).beat+4);
+  target=Math.max(120,Math.min(160,Math.round(target/10)*10));let bpm=transport.segments.at(-1).bpm,beat=Math.max(safeBeat(now,4),(Math.floor(transport.segments.at(-1).beat/4)+1)*4);
   while(bpm<target){bpm+=10;transport.setTempo(bpm,beat);beat+=4}return transport.segments;
  }
+ function nextTempo(ticks){const beat=ticks/500,current=transport.bpmAt(beat),next=transport.segments.find(s=>s.beat>beat+1e-7&&s.bpm!==current);return next?{beat:next.beat,bpm:next.bpm,inBeats:next.beat-beat}:null}
  function resetTempo(now=ctx.currentTime){clearWarnings();accents.length=0;return transport.setTempo(120,safeBeat(now))}
  function tone(bus,at,freq,duration,volume,type='sine',filter=0,pan=0){
   const o=ctx.createOscillator(),g=ctx.createGain();if(type==='warm')o.setPeriodicWave(warm);else o.type=type;o.frequency.setValueAtTime(freq,at);
@@ -116,7 +117,7 @@ function create(context){
  function mute(value){muted=value;master.gain.cancelScheduledValues(ctx.currentTime);master.gain.setTargetAtTime(value?.0001:.82,ctx.currentTime,.025)}
  function start(){if(!timer)timer=setInterval(()=>schedule(),25);schedule()}
  function stop(){if(timer)clearInterval(timer);timer=null}
- return {ctx,origin,BPM,BEAT,STEP,transport,bassBus,bedBus,setTempo,resetTempo,eventTime,delayUntil,rhythmError,elapsedMs,bpmAt:t=>transport.bpmAt(t/500),plans,events,cues,fills,buses,master,music,effects,fillBus,noise,levelAt,setLevel,schedule,requestFill,sfx,warning,cancelWarning,clearWarnings,superCharge,superHit,mute,start,stop,now,latency:()=>latency,get muted(){return muted}};
+ return {ctx,origin,BPM,BEAT,STEP,transport,bassBus,bedBus,setTempo,nextTempo,resetTempo,eventTime,delayUntil,rhythmError,elapsedMs,bpmAt:t=>transport.bpmAt(t/500),plans,events,cues,fills,buses,master,music,effects,fillBus,noise,levelAt,setLevel,schedule,requestFill,sfx,warning,cancelWarning,clearWarnings,superCharge,superHit,mute,start,stop,now,latency:()=>latency,get muted(){return muted}};
 }
 return {create,estimateLatency,BPM,BEAT,STEP};
 })();
