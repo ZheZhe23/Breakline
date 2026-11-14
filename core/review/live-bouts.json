@@ -1,5 +1,5 @@
 {
-  "coreSha256": "c2a3b19852c9085c75ff8065c6aef0fb44133379a81669e5a65ea667ac7bca82",
+  "coreSha256": "7dca01a8a1c4bef2b676b5b41c503f032e79ac456952caf2e6fd5ec7dc2bd7db",
   "kind": "real-time native touch policy against active AI; silent Chromium video; not a human or Android recording",
   "reports": [
     {
@@ -7,8 +7,8 @@
       "opponent": "brick",
       "winner": "player",
       "stats": {
-        "perfect": 15,
-        "good": 4,
+        "perfect": 18,
+        "good": 0,
         "off": 0,
         "combos": 5,
         "variety": [
@@ -19,24 +19,39 @@
         "dodges": 5,
         "blocks": 0,
         "taken": 0,
-        "counters": 4,
-        "score": 9248,
+        "counters": 5,
+        "score": 9521,
         "maxLevel": 5,
         "attempts": 5,
         "supers": 2,
         "guarded": 0,
-        "interrupts": 4,
+        "interrupts": 3,
         "lateThreats": 0,
-        "time": 17063.534106575964,
-        "winBonus": 1760
+        "time": 15325.886138322088,
+        "winBonus": 1800
       },
       "rating": {
         "rank": "S",
-        "value": 97,
-        "accuracy": 94
+        "value": 100,
+        "accuracy": 100
       },
       "lateThreats": 0,
-      "nativeTaps": 24,
+      "tempo": 130,
+      "enemyGroove": 2,
+      "bpm": 130,
+      "tempoSegments": [
+        {
+          "beat": 0,
+          "time": 0.15,
+          "bpm": 120
+        },
+        {
+          "beat": 28,
+          "time": 14.15,
+          "bpm": 130
+        }
+      ],
+      "nativeTaps": 23,
       "errors": []
     },
     {
@@ -45,7 +60,7 @@
       "winner": "player",
       "stats": {
         "perfect": 14,
-        "good": 1,
+        "good": 0,
         "off": 0,
         "combos": 4,
         "variety": [
@@ -56,24 +71,44 @@
         "dodges": 8,
         "blocks": 0,
         "taken": 0,
-        "counters": 3,
-        "score": 8115,
+        "counters": 5,
+        "score": 9535,
         "maxLevel": 5,
         "attempts": 8,
-        "supers": 1,
+        "supers": 2,
         "guarded": 0,
-        "interrupts": 2,
+        "interrupts": 3,
         "lateThreats": 0,
-        "time": 14745.933215419538,
-        "winBonus": 1800
+        "time": 13957.395972789302,
+        "winBonus": 1820
       },
       "rating": {
         "rank": "S",
-        "value": 99,
-        "accuracy": 98
+        "value": 100,
+        "accuracy": 100
       },
       "lateThreats": 0,
-      "nativeTaps": 23,
+      "tempo": 140,
+      "enemyGroove": 3,
+      "bpm": 140,
+      "tempoSegments": [
+        {
+          "beat": 0,
+          "time": 0.15,
+          "bpm": 120
+        },
+        {
+          "beat": 20,
+          "time": 10.15,
+          "bpm": 130
+        },
+        {
+          "beat": 28,
+          "time": 13.842307692307692,
+          "bpm": 140
+        }
+      ],
+      "nativeTaps": 22,
       "errors": []
     },
     {
@@ -93,16 +128,16 @@
         "dodges": 6,
         "blocks": 0,
         "taken": 0,
-        "counters": 5,
-        "score": 8767,
+        "counters": 6,
+        "score": 9032,
         "maxLevel": 5,
         "attempts": 6,
         "supers": 1,
         "guarded": 0,
         "interrupts": 3,
         "lateThreats": 0,
-        "time": 14745.45829478462,
-        "winBonus": 1800
+        "time": 14405.092646258689,
+        "winBonus": 1820
       },
       "rating": {
         "rank": "S",
@@ -110,6 +145,26 @@
         "accuracy": 100
       },
       "lateThreats": 0,
+      "tempo": 140,
+      "enemyGroove": 2,
+      "bpm": 130,
+      "tempoSegments": [
+        {
+          "beat": 0,
+          "time": 0.15,
+          "bpm": 120
+        },
+        {
+          "beat": 24,
+          "time": 12.15,
+          "bpm": 130
+        },
+        {
+          "beat": 36,
+          "time": 17.68846153846154,
+          "bpm": 140
+        }
+      ],
       "nativeTaps": 23,
       "errors": []
     }

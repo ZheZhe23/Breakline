@@ -1,5 +1,5 @@
 {
-  "coreSha256": "c2a3b19852c9085c75ff8065c6aef0fb44133379a81669e5a65ea667ac7bca82",
+  "coreSha256": "7dca01a8a1c4bef2b676b5b41c503f032e79ac456952caf2e6fd5ec7dc2bd7db",
   "checks": 128,
   "native": [
     {
@@ -44,13 +44,13 @@
       "width": 320,
       "height": 568,
       "teaching": false,
-      "scale": 1.1578947368421053
+      "scale": 1.118421052631579
     },
     {
       "width": 360,
       "height": 640,
       "teaching": false,
-      "scale": 1.5723684210526316
+      "scale": 1.5328947368421053
     },
     {
       "width": 390,
@@ -68,25 +68,25 @@
       "width": 740,
       "height": 360,
       "teaching": false,
-      "scale": 0.9671052631578947
+      "scale": 0.9342105263157895
     },
     {
       "width": 844,
       "height": 390,
       "teaching": false,
-      "scale": 1.1644736842105263
+      "scale": 1.131578947368421
     },
     {
       "width": 320,
       "height": 568,
       "teaching": true,
-      "scale": 0.9296875
+      "scale": 0.8902138157894737
     },
     {
       "width": 360,
       "height": 640,
       "teaching": true,
-      "scale": 1.3507401315789473
+      "scale": 1.311266447368421
     },
     {
       "width": 390,
@@ -104,13 +104,13 @@
       "width": 740,
       "height": 360,
       "teaching": true,
-      "scale": 0.9736842105263158
+      "scale": 0.9407894736842105
     },
     {
       "width": 844,
       "height": 390,
       "teaching": true,
-      "scale": 1.1710526315789473
+      "scale": 1.138157894736842
     }
   ],
   "registration": [
@@ -173,9 +173,9 @@
     "frames": 120,
     "dpr": 2,
     "desktopCPUThrottle": 4,
-    "p50": 13.299999999988358,
-    "p95": 21.79999999998836,
-    "max": 40.600000000034925,
+    "p50": 13.100000000093132,
+    "p95": 15.799999999813735,
+    "max": 26.5,
     "androidHardware": false
   },
   "memory": {
@@ -190,8 +190,8 @@
   },
   "errors": [],
   "sound": {
-    "peak": 0.830416738986969,
-    "rms": 0.05242548165907987
+    "peak": 0.8771759867668152,
+    "rms": 0.10012599698007188
   },
   "androidHardwareTested": false
 }
