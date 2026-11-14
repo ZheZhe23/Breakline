@@ -1,6 +1,6 @@
 'use strict';
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict'),path=require('node:path'),crypto=require('node:crypto');
-const root=path.resolve(__dirname,'..'),read=p=>fs.readFileSync(root+'/'+p,'utf8'),env={performance:{now:()=>0}};vm.createContext(env);vm.runInContext(['fighters','audio','rules','lessons'].map(n=>read('core/src/'+n+'.js')).join('\n')+'\n'+read('tests/reference/rig-v2.js')+';this.C=CoreRules;this.F=CoreFighters;this.L=CoreLessons;this.R=CoreRig;this.A=CoreAudio;',env);const {C,F,L,R,A}=env;
+const root=path.resolve(__dirname,'..'),read=p=>fs.readFileSync(root+'/'+p,'utf8'),env={performance:{now:()=>0}};vm.createContext(env);vm.runInContext(['fighters','transport','audio','rules','lessons'].map(n=>read('core/src/'+n+'.js')).join('\n')+'\n'+read('tests/reference/rig-v2.js')+';this.C=CoreRules;this.F=CoreFighters;this.L=CoreLessons;this.R=CoreRig;this.A=CoreAudio;',env);const {C,F,L,R,A}=env;
 let checks=0,legacyFrames=0,legacySegments=0;const ok=(v,m)=>{checks++;assert.ok(v,m)},eq=(a,b,m)=>{checks++;assert.equal(a,b,m)};
 function make(id='nova',d='fighter'){const fills=[],g=C.create({fill:(...x)=>fills.push(x)});g.reset(0,d,id);g.s.incoming=null;return {g,t:g.s.start,fills}}
 function attack(g,k,t){const r=g.input(k,t);if(r.accepted)g.step(r.action.start+F.move(g.s.fighterId,r.action.move).impact+20);return r}
@@ -111,19 +111,19 @@ for(const id of Object.keys(F.roster)){
   const s=g.s,index=l.state.index;
   if(t>=s.start&&t%500===0){const due=s.incoming?.beatAt===t;
    if(index===4){if(s.incoming&&t===s.incoming.beatAt-500)g.defend(t)}
-   else if([5,6,11].includes(index)&&due){g.defend(t);g.release(t)}
+   else if([5,6,11,12].includes(index)&&due){g.defend(t);g.release(t)}
    else if(t>=s.player.ready){
     let key=null;
     if(index===0||index===9)key='L';if(index===1||index===7)key='H';
     if([2,3,8].includes(index)){const target=l.state.recipe,prefix=s.series?.prefix??'';key=target.startsWith(prefix)?target[prefix.length]:'L';if(index===3&&l.state.stage)key='L'}
     if(index===6&&t<s.counterUntil)key='L';if(index===10)key='S';
-    if(index===11){if(s.super>=100&&!l.state.seen.includes('super'))key='S';else {const target=Object.keys(book.recipes)[0],prefix=s.series?.prefix??'';key=target.startsWith(prefix)?target[prefix.length]:target[0]}}
+    if(index===12){if(s.super>=100&&!l.state.seen.includes('super'))key='S';else {const target=Object.keys(book.recipes)[0],prefix=s.series?.prefix??'';key=target.startsWith(prefix)?target[prefix.length]:target[0]}}
     if(key){g.input(key,t);attempts++}
    }
   }
   g.step(t);l.tick(t);
  }
- ok(l.state.graduated,'all twelve lessons completed '+id+' stuck '+l.state.index+' '+l.state.progress);eq(l.state.completed.length,12,'no skipped lesson');lessonReports.push({fighter:id,seconds:t/1000,inputs:attempts,completed:l.state.completed.length});
+ ok(l.state.graduated,'all thirteen lessons completed '+id+' stuck '+l.state.index+' '+l.state.progress);eq(l.state.completed.length,13,'no skipped lesson');lessonReports.push({fighter:id,seconds:t/1000,inputs:attempts,completed:l.state.completed.length});
 }
 // Full live-AI bouts preserve the skill advantage with every fighter.
 const policies=[];

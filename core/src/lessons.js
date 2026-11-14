@@ -1,18 +1,19 @@
 /* Interactive curriculum. A lesson advances only on verified gameplay events. */
 const CoreLessons=(()=>{
 'use strict';
-const titles=['ПОЙМАЙ ДОЛЮ','ДОБАВЬ НОГУ','ПЕРВОЕ КОМБО','ДОЛЯ ВЫДОХА','ОБЫЧНЫЙ БЛОК','ТОЧНЫЙ УХОД','КОНТРУДАР','ЧИТАЙ ЗАЩИТУ','ТРИ ФИНАЛА','МУЗЫКА И GROOVE','ТВОЙ СУПЕР','СВОБОДНЫЙ СПАРРИНГ'];
+const titles=['ПОЙМАЙ ДОЛЮ','ДОБАВЬ НОГУ','ПЕРВОЕ КОМБО','ДОЛЯ ВЫДОХА','ОБЫЧНЫЙ БЛОК','ТОЧНЫЙ УХОД','КОНТРУДАР','ЧИТАЙ ЗАЩИТУ','ТРИ ФИНАЛА','МУЗЫКА И GROOVE','ТВОЙ СУПЕР','ОБЩИЙ GROOVE','СВОБОДНЫЙ СПАРРИНГ'];
 function create(game,hooks={}){
  const state={active:false,index:0,waiting:false,graduated:false,progress:0,total:1,cursor:0,started:0,stage:0,seen:[],fighter:'nova',completed:[]};
  function enter(index,now){
   const f=CoreFighters.get(state.fighter),recipes=Object.keys(f.recipes);game.reset(now,'rookie',f.id,true);const s=game.s;
-  Object.assign(state,{index,waiting:false,progress:0,total:[3,2,1,2,1,1,1,1,2,1,1,3][index],cursor:0,started:now,stage:0,seen:[],levelAt:0});
+  Object.assign(state,{index,waiting:false,progress:0,total:[3,2,1,2,1,1,1,1,2,1,1,1,3][index],cursor:0,started:now,stage:0,seen:[],levelAt:0});
   s.incoming=null;s.guard=null;s.super=0;s.energy=0;s.level=1;
-  if([4,5,6,11].includes(index)){const at=s.start+1500;s.incoming={id:1,beatAt:at,contactAt:at+115,move:'cross',started:false,resolved:false,cancelled:false,warned:false}}
+  if([4,5,6,11,12].includes(index)){const at=s.start+1500;s.incoming={id:1,beatAt:at,contactAt:at+115,move:'cross',started:false,resolved:false,cancelled:false,warned:false}}
   if(index===7)s.guard={key:'L',start:s.start,end:s.start+1e9};
   if(index===9){game.energy(70,now);game.charge(80,now)}
   if(index===10){game.charge(100,now);game.energy(80,now)};
-  if(index===11)game.charge(70,now);
+  if(index===11){game.energy(30,now);game.enemyEnergy(19,now);s.lessonTempo=true}
+  if(index===12)game.charge(70,now);
   state.recipe=recipes[index===8?1:0];hooks.progress?.(index,false);return state;
  }
  function begin(fighter,now,resume=0){state.active=true;state.graduated=false;state.fighter=CoreFighters.get(fighter).id;state.completed=[];return enter(Math.max(0,Math.min(titles.length-1,resume)),now)}
@@ -30,8 +31,9 @@ function create(game,hooks={}){
    if(index===7&&e.type==='hit'&&e.key==='H'&&!e.strong)state.progress=1;
    if(index===8&&e.type==='combo'&&[recipes[1],recipes[2]].includes(e.recipe)&&!state.seen.includes(e.recipe)){state.seen.push(e.recipe);state.progress=state.seen.length;state.recipe=state.seen.includes(recipes[1])?recipes[2]:recipes[1]}
    if(index===10&&e.type==='super')state.progress=1;
-   if(index===11){const k=e.type==='combo'?'combo':e.type==='dodge'?'dodge':e.type==='super'?'super':null;if(k&&!state.seen.includes(k)){state.seen.push(k);state.progress=state.seen.length}}
+   if(index===12){const k=e.type==='combo'?'combo':e.type==='dodge'?'dodge':e.type==='super'?'super':null;if(k&&!state.seen.includes(k)){state.seen.push(k);state.progress=state.seen.length}}
   }
+  if(index===11&&s.tempoTarget>=130&&(game.bpmAt(now)>=130))state.progress=1;
   if(index===9){if(s.level===5){if(!state.levelAt)state.levelAt=now;if(now-state.levelAt>650)state.progress=1}else state.levelAt=0}
   if(state.progress>=state.total)done(now);
  }
@@ -49,6 +51,7 @@ function create(game,hooks={}){
  'Освой ещё два финала. Сейчас '+r+'. Чистая серия даёт заряд и музыкальный ответ.',
  'Groove усиливает эффекты и пять слоёв музыки. Точно атакуй, чтобы поднять уровень с 4 до 5.',
  'Супер заряжен. Нажми СУПЕР в долю. Контакт через одну долю, затем доля восстановления. Броня уменьшает урон при подготовке. Уход отменяет приём без возврата заряда. Groove не тратится.',
+ 'У обоих бойцов свой Groove. Когда оба достигают уровня 2, на следующем такте включается 130 BPM. Держи блок и услышь ускорение. Далее каждый общий уровень добавит 10, до 160. Разгон сохраняется до конца раунда, супер его не сбрасывает.',
  'Свободная тренировка: выполни чистое комбо, уход и супер. Раненые бойцы здесь не проигрывают. В дуэли счёт и ранг растут от точности, защиты и разных финалов.'
  ][state.index]}
  return {state,begin,enter,tick,next,exit,description,titles};

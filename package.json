@@ -9,11 +9,12 @@
     "render:half": "node tests/render-half-beat.cjs",
     "build:core": "node tools/build-core.cjs",
     "check:core": "node tests/core-syntax.cjs",
-    "test:core": "node tests/core-syntax.cjs && node tests/core-rules.cjs && node tests/core-loader.cjs && node tests/core-browser.cjs && node tests/core-practice.cjs && node tests/core-runtime.cjs",
+    "test:core": "node tests/core-syntax.cjs && node tests/core-rules.cjs && node tests/core-loader.cjs && node tests/core-browser.cjs && node tests/core-practice.cjs && node tests/core-runtime.cjs && node tests/core-groove.cjs",
     "render:core": "node tests/render-core.cjs",
     "test:core:live": "node tests/core-live-bout.cjs",
     "test:core:practice": "node tests/core-practice.cjs",
-    "test:core:runtime": "node tests/core-loader.cjs && node tests/core-runtime.cjs"
+    "test:core:runtime": "node tests/core-loader.cjs && node tests/core-runtime.cjs",
+    "test:core:groove": "node tests/core-groove.cjs"
   },
   "devDependencies": {
     "playwright": "1.62.1"

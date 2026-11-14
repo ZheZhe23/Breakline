@@ -1,4 +1,4 @@
-<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#111020"><meta name="description" content="BREAKLINE AFTERHOURS — слушай бит, читай соперника, отвечай своим комбо."><title>BREAKLINE — AFTERHOURS PULSE 3.3</title><style>
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#111020"><meta name="description" content="BREAKLINE AFTERHOURS — слушай бит, читай соперника, отвечай своим комбо."><title>BREAKLINE — AFTERHOURS OVERDRIVE 3.4</title><style>
 :root{color-scheme:dark;--bg:#100f1c;--paper:#f2eee9;--dim:#9b97b0;--lime:#ddff78;--pink:#ff638f;--blue:#a09bff;--line:#39344b}*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}body{margin:0;overflow:hidden;background:#0b0a11;color:var(--paper);font:14px system-ui,-apple-system,BlinkMacSystemFont,sans-serif;overscroll-behavior:none}button{font:inherit;color:inherit;cursor:pointer}button:focus-visible,input:focus-visible{outline:2px solid var(--lime);outline-offset:3px}#app{position:relative;isolation:isolate;width:min(100%,1100px);height:100dvh;min-height:320px;margin:auto;overflow:hidden;background:var(--bg)}canvas{position:absolute;inset:0;width:100%;height:100%;z-index:-1}.hud{position:absolute;inset:0 0 auto;padding:calc(env(safe-area-inset-top) + 12px) 16px 0;pointer-events:none}.topline{display:flex;justify-content:space-between;align-items:center}.brand{font-size:12px;letter-spacing:2px;font-weight:900}.brand i{font-style:normal;color:var(--pink)}.tools{display:flex;gap:6px;pointer-events:auto}.tool{background:#171522c9;border:1px solid #494152;border-radius:50%;width:44px;height:44px;font-size:14px}.healths{display:grid;grid-template-columns:1fr 44px 1fr;gap:8px;align-items:center;margin-top:7px}.name{font-size:9px;letter-spacing:2px;color:#c4bdd0;display:flex;justify-content:space-between}.enemy .name{flex-direction:row-reverse}.health{height:7px;background:#332b42;margin-top:5px;transform:skewX(-13deg);overflow:hidden}.health i{display:block;height:100%;width:100%;background:var(--lime);transition:width .12s}.enemy .health i{background:var(--pink);float:right}#clock{font:700 22px ui-monospace,monospace;text-align:center}.energy{display:flex;gap:4px;align-items:center;margin-top:11px}.energy span{font-size:9px;letter-spacing:1px;color:var(--dim);min-width:66px}.energy i{height:3px;background:#373146;flex:1;transition:background .15s}.energy i.on{background:var(--lime);box-shadow:0 0 9px #ddff7844}#streak{min-width:50px;text-align:right;color:var(--lime)}.scene-label{position:absolute;left:16px;top:132px;color:#78728a;font:9px ui-monospace,monospace;letter-spacing:2px}.scene-label strong{color:#c4b6d9;font-weight:400}.feedback{position:absolute;left:0;right:0;top:24%;text-align:center;pointer-events:none}.feedback strong{display:block;line-height:1;font-size:clamp(23px,6vw,38px);font-weight:950;font-style:italic;letter-spacing:-1px;text-shadow:0 2px 15px #100f1c}.feedback small{display:block;line-height:1.2;font-size:9px;letter-spacing:1.5px;margin-top:5px;color:#d6cbdc}#intent{position:absolute;right:15%;top:40%;font-size:10px;letter-spacing:1px;color:var(--pink);border:1px solid #ff638f77;border-radius:20px;padding:6px 10px;background:#241225e8;opacity:0;pointer-events:none}#guard-hint{position:absolute;right:14%;top:46%;font-size:10px;color:#c7c1ff;letter-spacing:1px;opacity:0;pointer-events:none}.bottom{position:absolute;bottom:0;left:0;right:0;padding:0 12px calc(env(safe-area-inset-bottom) + 12px);background:linear-gradient(transparent,#110f1fe8 30%,#110f1f 60%)}.combo-guide{display:flex;gap:6px;justify-content:center;margin-bottom:8px}.combo{flex:1;max-width:180px;position:relative;background:#171422d9;border:1px solid #3a314b;border-radius:6px;padding:7px 2px;text-align:center;min-height:44px}.combo b{font-size:11px;letter-spacing:2px;color:#b6adc8}.combo small{display:block;font-size:7px;letter-spacing:1px;color:#777087;margin-top:3px}.combo.active{border-color:var(--lime)}.combo.active b{color:var(--lime)}.combo.done:after{content:'✓';position:absolute;right:5px;top:3px;font-size:9px;color:var(--lime)}.beat-rail{position:relative;height:36px;margin-bottom:8px;border-top:1px solid #514461;border-bottom:1px solid #30263e;background:#191225ab;overflow:hidden}.beat-target{position:absolute;left:25%;top:2px;height:29px;width:25px;border:1px solid #ddff7877;border-radius:4px;transform:translateX(-50%);box-shadow:0 0 15px #ddff7811}.beat-node{position:absolute;top:10px;width:12px;height:12px;border:1px solid #a59ab8;transform:translateX(-50%) rotate(45deg);background:#3b314d}.beat-node.down{background:var(--lime);border-color:var(--lime)}.beat-node.danger{clip-path:polygon(50% 0,100% 100%,0 100%);transform:translateX(-50%);background:var(--pink);border-color:var(--pink);width:15px;height:15px;top:8px}.beat-node.rest{background:#262130;border-color:#4f465d}.beat-label{position:absolute;bottom:0;left:5px;top:10px;font:8px ui-monospace,monospace;letter-spacing:1px;color:#91839f}.coach{display:flex;justify-content:space-between;gap:8px;margin-bottom:8px;font-size:9px;letter-spacing:1px;min-height:12px;color:#aaa0b9}.coach>span{align-self:center}.coach em{font-style:normal;color:var(--pink)}#special{white-space:nowrap;flex-shrink:0;border:0;color:#8d829d;background:transparent;font-size:9px;letter-spacing:1px;padding:2px 0;min-height:44px;cursor:default}#special.ready{color:var(--lime);cursor:pointer}#special.ready:before{content:'✦ ';}.controls{display:grid;grid-template-columns:1fr .8fr 1fr;gap:7px;touch-action:none;user-select:none}.action{min-height:75px;border:1px solid #bdcc8d;background:var(--lime);color:#20251a;border-radius:12px;font-weight:950;letter-spacing:2px;font-size:16px;box-shadow:inset 0 1px #fff6;touch-action:none}.action span{display:block;font-size:8px;font-weight:500;letter-spacing:1px;margin-top:6px;opacity:.7}.action.foot{background:#c0b3ff;border-color:#c0b3ff;color:#211935}.action.defence{background:#2a203a;border-color:#6e527a;color:#f0bad3;font-size:12px}.action:active,.action.pressed{transform:translateY(1px);filter:brightness(.85)}.controls.recovering .action:not(.defence){filter:saturate(.35) brightness(.65)}.panel{position:absolute;inset:0;z-index:4;padding:24px;display:flex;align-items:center;justify-content:center;background:#0e0c19d9;backdrop-filter:blur(9px);overflow:auto}.panel[hidden]{display:none}.card{width:min(100%,440px)}.eyebrow{font-size:9px;letter-spacing:3px;color:var(--pink);margin:0 0 18px}.hero-title{font-size:clamp(62px,19vw,92px);font-weight:1000;line-height:.77;letter-spacing:-5px;font-style:italic;margin:0;position:relative}.hero-title span{color:var(--lime);display:block;margin-left:30px}.hero-rule{height:3px;background:var(--lime);width:80px;margin:25px 0 17px}.subtitle{font:10px ui-monospace,monospace;letter-spacing:5px;color:#aba0ba;margin:0 0 25px}.lead{color:#c3b7cf;line-height:1.7;font-size:13px;max-width:340px;margin-bottom:23px}.lead strong{color:var(--paper);font-weight:500}.difficulties{display:flex;gap:6px;margin-bottom:16px}.difficulty{flex:1;background:#1c1629;border:1px solid #443550;min-height:48px;border-radius:6px;font-size:9px;letter-spacing:1px;color:#aaa0b7}.difficulty.selected{border-color:var(--lime);color:var(--lime);background:#2c3223}.primary{width:100%;min-height:56px;border:0;background:var(--lime);color:#20251a;border-radius:9px;font-size:13px;font-weight:900;letter-spacing:2px}.secondary{width:100%;min-height:44px;border:1px solid #44364f;background:#1a1426;border-radius:7px;font-size:11px;letter-spacing:1px;margin-top:9px;color:#bcb0c7}.footnote{font-size:9px;line-height:1.8;color:#7d728d;margin-top:15px}.hint-strip{display:flex;justify-content:space-between;gap:10px;border-top:1px solid #3d3049;margin:20px 0 0;padding-top:12px;font-size:9px;color:#aaa0b8}.hint-strip b{color:var(--paper)}.result-top{display:flex;align-items:center;gap:22px}.rank{font-size:100px;font-style:italic;font-weight:1000;line-height:1;color:var(--lime);letter-spacing:-7px}.result-top h2{font-size:26px;letter-spacing:-1px;line-height:1.1;margin:0 0 10px}.result-top p{font-size:10px;color:#afa0bc;margin:0}.stats{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin:25px 0}.stat{padding:10px 0;border-bottom:1px solid #3f304d;font-size:9px;color:#a899b7;letter-spacing:1px}.stat b{display:block;font-size:22px;color:#ece4f3;margin-bottom:4px;font-family:ui-monospace,monospace}#new-best{color:var(--pink);font-size:10px;letter-spacing:2px;min-height:16px;margin-bottom:18px}details{font-size:11px;color:#b7a8c4;margin:18px 0}summary{cursor:pointer}label{display:block;margin:14px 0 5px;font-size:10px;color:#b7a8c4}input[type=range]{width:100%;accent-color:var(--lime)}#start-error{color:var(--pink);font-size:12px}.settings-row{display:flex;justify-content:space-between;align-items:center;margin:10px 0}.settings-row button{min-height:44px;min-width:92px;border:1px solid #57425f;background:#271c34;border-radius:6px}.pause-title{font-size:30px;letter-spacing:-1px;margin:8px 0 20px}.help{font-size:12px;color:#ad9cba;line-height:1.8}.help b{color:#e2d9ec}
 @media(max-width:350px){.hud{padding-left:12px;padding-right:12px}.panel{padding:20px}.action{font-size:14px;min-height:67px}.action.defence{font-size:10px}.hero-title{font-size:67px}.eyebrow{margin-bottom:15px}.lead{font-size:12px;margin-bottom:16px}.subtitle{margin-bottom:16px}.hero-rule{margin:20px 0 14px}.footnote{font-size:8px}.combo small{font-size:6px}.coach{font-size:8px}}
 @media(max-height:510px) and (min-width:550px){.hud{padding-top:7px}.topline{position:absolute;left:14px;top:8px;right:14px}.brand{font-size:10px}.tool{height:44px;width:44px;border-radius:7px}.healths{margin:0 100px}.energy{max-width:330px;margin:9px auto 0}.scene-label{top:64px;left:14px}.bottom{padding-bottom:7px;display:grid;grid-template-columns:1fr 1.4fr;column-gap:15px;align-items:end}.combo-guide{grid-column:1;grid-row:1;margin-bottom:6px}.beat-rail{grid-column:1;grid-row:2;margin-bottom:0;height:31px}.coach{grid-column:2;grid-row:1;font-size:8px;margin-bottom:5px}.controls{grid-column:2;grid-row:2}.action{min-height:51px;font-size:12px;border-radius:7px}.action.defence{font-size:10px}.action span{font-size:7px;margin-top:3px}.combo{padding:4px 0;min-height:44px}.combo small{display:none}.combo b{font-size:9px}.feedback{top:22%}.feedback strong{font-size:22px}.feedback small{font-size:8px}#intent{top:34%}#guard-hint{top:42%}.card{width:590px}.hero-layout{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center}.hero-title{font-size:75px}.hero-rule{margin:20px 0 12px}.subtitle{margin-bottom:0}.eyebrow{margin-bottom:16px}.lead{font-size:12px;margin:0 0 14px}.difficulty{min-height:44px;font-size:8px}.primary{min-height:46px}.difficulties{margin-bottom:12px}.hint-strip{margin-top:12px;padding-top:9px;font-size:8px}.footnote{margin-top:9px;font-size:8px}.result-top{gap:20px}.rank{font-size:80px}.stats{display:flex;margin:12px 0;gap:20px}.stat{flex:1}.stat b{font-size:20px}#new-best{margin-bottom:10px}.pause-title{font-size:25px;margin:5px 0 10px}.help{font-size:11px;line-height:1.6}.settings-row{margin:5px 0}.panel{padding:16px 24px}}
@@ -22,13 +22,14 @@
 .runtime-error{font-size:11px;line-height:1.5;color:var(--pink);margin:10px 0}.runtime-error[hidden]{display:none}
 .primary:disabled{opacity:.5;cursor:default}
 .audio-recovery .help,.audio-recovery .settings-row,.audio-recovery details{display:none}.audio-closed #resume{display:none}.audio-closed #restart{min-height:56px;background:var(--lime);color:#20251a;font-weight:900;border:0}
+.grooves{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-top:10px}.grooves .energy{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;margin:0;min-width:0}.grooves .energy span{grid-column:1/-1;min-width:0;font-size:8px;letter-spacing:.3px}.grooves .energy i{height:4px}.grooves #enemy-groove span{text-align:right}.grooves #enemy-groove i.on{background:var(--pink);box-shadow:0 0 8px #ff638f33}#tempo{font:700 10px ui-monospace,monospace;color:#c0b3ff;white-space:nowrap;padding-top:9px}#tempo.accelerated{color:var(--lime)}.grooves #streak{display:none}@media(max-height:510px) and (min-width:550px){.grooves{margin:7px 100px 0;gap:8px}.grooves .energy{max-width:none;margin:0}.grooves .energy span{font-size:7px}}
 </style></head><body><main id="app" aria-label="BREAKLINE — музыкальная дуэль">
-<canvas id="arena" aria-label="Два бойца на ночной сцене"></canvas><div class="hud"><div class="topline"><div class="brand">BREAK<i>/</i>LINE</div><div class="tools"><button class="tool" id="mute" aria-label="Выключить звук" aria-pressed="false">♫</button><button class="tool" id="pause" aria-label="Пауза и настройки">Ⅱ</button></div></div><div class="healths"><div><div class="name"><span id="player-name">NOVA</span><span id="hp-player-label">150</span></div><div class="health"><i id="hp-player"></i></div></div><div id="clock">45</div><div class="enemy"><div class="name"><span id="enemy-name">BRICK</span><span id="hp-enemy-label">220</span></div><div class="health"><i id="hp-enemy"></i></div></div></div><div class="energy"><span id="energy-label">GROOVE 1</span><i class="on"></i><i></i><i></i><i></i><i></i><span id="streak">×0</span></div></div>
-<div class="scene-label">01 / <strong id="scene-name">AFTERHOURS</strong> · 120 BPM</div><div class="feedback" id="feedback" aria-live="polite"><strong></strong><small></small></div><div id="intent">! УХОД НА КРАСНУЮ ДОЛЮ</div><div id="guard-hint"></div>
+<canvas id="arena" aria-label="Два бойца на ночной сцене"></canvas><div class="hud"><div class="topline"><div class="brand">BREAK<i>/</i>LINE</div><div class="tools"><button class="tool" id="mute" aria-label="Выключить звук" aria-pressed="false">♫</button><button class="tool" id="pause" aria-label="Пауза и настройки">Ⅱ</button></div></div><div class="healths"><div><div class="name"><span id="player-name">NOVA</span><span id="hp-player-label">150</span></div><div class="health"><i id="hp-player"></i></div></div><div id="clock">45</div><div class="enemy"><div class="name"><span id="enemy-name">BRICK</span><span id="hp-enemy-label">220</span></div><div class="health"><i id="hp-enemy"></i></div></div></div><div class="grooves"><div class="energy" id="player-groove" aria-label="Groove игрока"><span id="energy-label">ТЫ · 1</span><i class="on"></i><i></i><i></i><i></i><i></i></div><strong id="tempo">120 BPM</strong><div class="energy" id="enemy-groove" aria-label="Groove соперника"><span id="enemy-energy-label">СОПЕРНИК · 1</span><i class="on"></i><i></i><i></i><i></i><i></i></div><span id="streak">×0</span></div></div>
+<div class="scene-label">01 / <strong id="scene-name">AFTERHOURS</strong> · ОБЩИЙ GROOVE</div><div class="feedback" id="feedback" aria-live="polite"><strong></strong><small></small></div><div id="intent">! УХОД НА КРАСНУЮ ДОЛЮ</div><div id="guard-hint"></div>
 <section id="lesson-panel" class="lesson-panel" hidden><button id="lesson-exit" class="lesson-exit" aria-label="Выйти из обучения">×</button><strong id="lesson-title"></strong><p id="lesson-description"></p><span id="lesson-progress"></span><button id="lesson-next" class="lesson-next" hidden>ДАЛЬШЕ →</button></section><div id="practice-tools" class="practice-tools" hidden><button id="practice-level">GROOVE АВТО</button><button id="practice-charge">СУПЕР +100</button><button id="practice-exit">В МЕНЮ ×</button></div><div class="bottom"><div class="combo-guide" aria-label="Три финишера"><button class="combo" data-recipe="LLL" aria-label="Показать комбинацию апперкот"><b>Р · Р · Р</b><small>АППЕРКОТ</small></button><button class="combo" data-recipe="LLH" aria-label="Показать комбинацию удар ногой"><b>Р · Р · Н</b><small>ПРОБИВНОЙ</small></button><button class="combo" data-recipe="LHLH" aria-label="Показать комбинацию разворот"><b>Р · Н · Р · Н</b><small>РАЗВОРОТ</small></button></div><div class="beat-rail" aria-label="Ритмическая дорожка, красные отметки означают атаку соперника"><div class="beat-label">BEAT</div><div class="beat-target"></div><div id="beat-dots"></div></div><div class="coach"><span id="coach-text">БЕЙ В ДОЛЮ. КРАСНАЯ ДОЛЯ — УХОД.</span><button id="special" disabled>СУПЕР 0%</button></div><div class="controls"><button id="hand" class="action">РУКА<span>J / В ДОЛЮ</span></button><button id="defend" class="action defence">УХОД<span>ТАП / ДЕРЖИ</span></button><button id="foot" class="action foot">НОГА<span>K / В ДОЛЮ</span></button></div></div>
 <section id="start-overlay" class="panel"><div class="card"><div class="hero-layout"><div><p class="eyebrow">ILLUSTRATED FIGHT CLUB / VOL. 06</p><h1 class="hero-title">BREAK<span>LINE.</span></h1><div class="hero-rule"></div><p class="subtitle">A F T E R H O U R S</p><div class="roster" id="roster" aria-label="Выбор бойца"></div><p id="fighter-tag" class="fighter-tag"></p></div><div><p class="lead"><strong>Твой ритм. Твой ответ.</strong><br>Бей в бит. Читай соперника.<br>Уходи точно — отвечай мощно.</p><div class="difficulties" aria-label="Сложность"><button class="difficulty selected" data-difficulty="rookie" aria-pressed="true">РАЗОГРЕВ</button><button class="difficulty" data-difficulty="fighter" aria-pressed="false">ДУЭЛЬ</button><button class="difficulty" data-difficulty="master" aria-pressed="false">МАСТЕР</button></div><button id="start" class="primary">ПОЙМАТЬ РИТМ →</button><button id="training-start" class="secondary">ОБУЧЕНИЕ · ПО ШАГАМ</button><button id="practice-start" class="secondary">СВОБОДНАЯ ПРАКТИКА</button><div class="hint-strip"><span><b>Р + Н</b> · собери комбо</span><span><b>КРАСНЫЙ БИТ</b> · уход</span></div><p class="footnote" id="best-label">45 секунд · оригинальный грув · наушники рекомендуются</p><p id="start-error" role="alert" hidden></p></div></div></div></section>
-<section id="practice-panel" class="panel" hidden><div class="card"><p class="eyebrow">DOJO / FIND YOUR FLOW</p><h2 class="pause-title">Практика.</h2><p class="help">Без поражений и рекордов. Ритм и восстановление — как в бою.</p><p class="practice-label">С КЕМ ТРЕНИРУЕМСЯ</p><div id="practice-opponents" class="difficulties"></div><p class="practice-label">ПОВЕДЕНИЕ СОПЕРНИКА</p><div class="difficulties"><button class="difficulty" data-practice-mode="dummy">МАНЕКЕН</button><button class="difficulty" data-practice-mode="rival">ЖИВОЙ СОПЕРНИК</button></div><p class="footnote">Манекен не атакует и не блокирует. Живой соперник использует приёмы и защиту. Заряд супера и Groove можно менять.</p><button id="practice-go" class="primary">НАЧАТЬ ПРАКТИКУ →</button><button id="practice-cancel" class="secondary">НАЗАД</button></div></section>
-<section id="pause-overlay" class="panel" hidden><div class="card"><p class="eyebrow">PAUSE / TAKE A BREATH</p><h2 class="pause-title">Музыка подождёт.</h2><p class="help"><b>Рука J · Нога K · Уход Space</b><br>Нажимай на музыкальную долю. На красной — уход.<br>Точный уход даёт контрудар. Удержание защищает блоком.<br>После финишера — одна доля выдоха. Супер заряжается попаданиями, комбо и уходами; I активирует его в долю.</p><div class="settings-row"><span class="help">Вибрация при контакте</span><button id="haptic-toggle" aria-pressed="true">ВКЛ</button></div><details><summary>Синхронизация звука</summary><label for="latency">Сдвиг ритма: <b id="latency-value">0 ms</b></label><input id="latency" type="range" min="-250" max="250" step="5" value="0"><p class="footnote">Задержка звука учитывается автоматически. Здесь можно уточнить синхронизацию; если звук запаздывает — отрицательное значение. Применится со следующего боя; текущая музыка не сдвигается.</p></details><p id="audio-error" class="runtime-error" role="alert" hidden></p><button id="resume" class="primary">ВЕРНУТЬСЯ В БОЙ →</button><button id="restart" class="secondary">НАЧАТЬ ЗАНОВО</button></div></section>
+<section id="practice-panel" class="panel" hidden><div class="card"><p class="eyebrow">DOJO / FIND YOUR FLOW</p><h2 class="pause-title">Практика.</h2><p class="help">Без поражений и рекордов. Ритм и восстановление — как в бою.</p><p class="practice-label">С КЕМ ТРЕНИРУЕМСЯ</p><div id="practice-opponents" class="difficulties"></div><p class="practice-label">ПОВЕДЕНИЕ СОПЕРНИКА</p><div class="difficulties"><button class="difficulty" data-practice-mode="dummy">МАНЕКЕН</button><button class="difficulty" data-practice-mode="rival">ЖИВОЙ СОПЕРНИК</button></div><p class="footnote">Манекен не атакует и не блокирует. Живой соперник использует приёмы и защиту. Кнопка Groove задаёт уровень обоим бойцам: проверь разгон на следующих тактах. АВТО возвращает обычное накопление. СУПЕР тратит только отдельный заряд.</p><button id="practice-go" class="primary">НАЧАТЬ ПРАКТИКУ →</button><button id="practice-cancel" class="secondary">НАЗАД</button></div></section>
+<section id="pause-overlay" class="panel" hidden><div class="card"><p class="eyebrow">PAUSE / TAKE A BREATH</p><h2 class="pause-title">Музыка подождёт.</h2><p class="help"><b>Рука J · Нога K · Уход Space</b><br>Нажимай на музыкальную долю. На красной — уход.<br>Точный уход даёт контрудар. Удержание защищает блоком.<br>После финишера — одна доля выдоха. Супер заряжается попаданиями, комбо и уходами; I активирует его в долю. Groove есть у обоих: каждый общий уровень добавляет 10 BPM со следующего такта. Темп сохраняется до конца раунда; супер не тратит Groove.</p><div class="settings-row"><span class="help">Вибрация при контакте</span><button id="haptic-toggle" aria-pressed="true">ВКЛ</button></div><details><summary>Синхронизация звука</summary><label for="latency">Сдвиг ритма: <b id="latency-value">0 ms</b></label><input id="latency" type="range" min="-250" max="250" step="5" value="0"><p class="footnote">Задержка звука учитывается автоматически. Здесь можно уточнить синхронизацию; если звук запаздывает — отрицательное значение. Применится со следующего боя; текущая музыка не сдвигается.</p></details><p id="audio-error" class="runtime-error" role="alert" hidden></p><button id="resume" class="primary">ВЕРНУТЬСЯ В БОЙ →</button><button id="restart" class="secondary">НАЧАТЬ ЗАНОВО</button></div></section>
 <section id="result-overlay" class="panel" hidden><div class="card"><p class="eyebrow">THE ROUND / YOUR SIGNATURE</p><div class="result-top"><div class="rank" id="rank">B</div><div><h2 id="result-title">Это был твой бит.</h2><p id="result-subtitle">Бей точно. Играй по-своему.</p></div></div><div class="stats" id="result-stats"></div><div id="new-best"></div><aside id="result-focus" class="result-focus"><strong id="focus-title"></strong><p id="focus-detail"></p><small id="focus-goal"></small></aside><button id="rematch" class="primary">ЕЩЁ ОДИН РАУНД →</button><button id="next-difficulty" class="secondary">ПОПРОБОВАТЬ ДУЭЛЬ</button><button id="back-menu" class="secondary">ВЫБРАТЬ СЛОЖНОСТЬ</button></div></section>
 </main><script>
 /* Authored whole-body sprite choreography. No per-limb rendering or deformation. */
@@ -115,7 +116,22 @@ function retain(ids){const keep=new Set(['stage',...ids,...ids.map(id=>id+'Flow'
 return {assets,load,draw,retain,diagnostics:()=>({resident:[...decoded.keys()],pending:pending.size}),ready:id=>decoded.has(id)&&(!assets[id+'Flow']||decoded.has(id+'Flow')),image:id=>decoded.get(id)};
 })();
 
-/* Original procedural composition, AFTERHOURS / 120 BPM. No samples or voices. */
+/* Musical time is continuous in beats; tempo changes never restart the phrase. */
+const CoreTransport=(()=>{
+'use strict';
+function create(origin=0,bpm=120){
+ const segments=[{beat:0,time:origin,bpm}];
+ function find(value,key){let lo=0,hi=segments.length-1;while(lo<hi){const mid=Math.ceil((lo+hi)/2);if(segments[mid][key]<=value)lo=mid;else hi=mid-1}return segments[lo]}
+ function beatAt(time){const s=find(time,'time');return s.beat+(time-s.time)*s.bpm/60}
+ function timeAt(beat){const s=find(beat,'beat');return s.time+(beat-s.beat)*60/s.bpm}
+ function bpmAt(beat){return find(beat,'beat').bpm}
+ function setTempo(bpm,beat){if(!Number.isFinite(bpm)||bpm<60||bpm>200||!Number.isFinite(beat)||beat<0)throw Error('Invalid tempo');const time=timeAt(beat);while(segments.length>1&&segments.at(-1).beat>=beat)segments.pop();if(beat===0)segments[0]={beat:0,time,bpm};else if(bpmAt(beat)!==bpm)segments.push({beat,time,bpm});return {beat,time,bpm}}
+ return {segments,beatAt,timeAt,bpmAt,setTempo};
+}
+return {create};
+})();
+
+/* Original procedural composition: OVERDRIVE, D / Phrygian. 120–160 BPM. No samples or voices. */
 const CoreAudio = (() => {
 'use strict';
 const BPM=120,BEAT=.5,STEP=BEAT/4,LOOK=.12;
@@ -126,17 +142,29 @@ function estimateLatency(ctx,when){
 }
 function create(context){
  const ctx=context,origin=ctx.currentTime+.15,master=ctx.createGain(),compressor=ctx.createDynamicsCompressor(),music=ctx.createGain(),effects=ctx.createGain(),fillBus=ctx.createGain();
- master.gain.value=.75;music.gain.value=.74;effects.gain.value=.62;fillBus.gain.value=.42;
- compressor.threshold.value=-16;compressor.knee.value=12;compressor.ratio.value=3;compressor.attack.value=.008;compressor.release.value=.15;
+ master.gain.value=.82;music.gain.value=.88;effects.gain.value=.58;fillBus.gain.value=.34;
+ compressor.threshold.value=-6;compressor.knee.value=4;compressor.ratio.value=8;compressor.attack.value=.003;compressor.release.value=.10;
  music.connect(compressor);effects.connect(compressor);fillBus.connect(compressor);compressor.connect(master);master.connect(ctx.destination);
- const buses=Array.from({length:5},(_,i)=>{const g=ctx.createGain();g.gain.value=i?0:1;g.connect(music);return g});
+ const transport=CoreTransport.create(origin,BPM),bassBus=ctx.createGain(),bedBus=ctx.createGain();bassBus.gain.value=1;bedBus.gain.value=1;bassBus.connect(music);bedBus.connect(music);
+ const buses=Array.from({length:5},(_,i)=>{const g=ctx.createGain();g.gain.value=i?0:1;g.connect(i?bedBus:music);return g});
  const noise=ctx.createBuffer(1,ctx.sampleRate,ctx.sampleRate),data=noise.getChannelData(0);let seed=23051;
  for(let i=0;i<data.length;i++){seed=(seed*1664525+1013904223)>>>0;data[i]=seed/2147483648-1}
  const warm=ctx.createPeriodicWave(new Float32Array(8),new Float32Array([0,1,.35,.22,.12,.07,.04,.02]));
  let latency=estimateLatency(ctx,performance.now()),lastNow=-Infinity;const latencySamples=[];
- function now(){if(ctx.state==='running'&&ctx.currentTime-origin<1.15){latencySamples.push(estimateLatency(ctx,performance.now()));if(latencySamples.length>31)latencySamples.shift();latency=[...latencySamples].sort((a,b)=>a-b)[Math.floor(latencySamples.length/2)]}const t=(ctx.currentTime-origin-latency)*1000;lastNow=Math.max(lastNow,t);return lastNow}
- const plans=[{at:origin,level:1}],fills=[],events=[];let next=0,requested=1,muted=false,timer=null;
- const hz=n=>440*2**((n-69)/12),rootAt=step=>[45,41,48,43][Math.floor(step/32)%4],thirdAt=step=>Math.floor(step/32)%4===0?3:4;
+ function sampleLatency(){if(ctx.state==='running'&&ctx.currentTime-origin<1.15){latencySamples.push(estimateLatency(ctx,performance.now()));if(latencySamples.length>31)latencySamples.shift();latency=[...latencySamples].sort((a,b)=>a-b)[Math.floor(latencySamples.length/2)]}}
+ function now(offset=0){sampleLatency();const t=transport.beatAt(ctx.currentTime-latency+offset/1000)*500;lastNow=Math.max(lastNow,t);return lastNow}
+ function eventTime(age=0,offset=0){return transport.beatAt(ctx.currentTime-latency+(offset-age)/1000)*500}
+ function delayUntil(ticks,offset=0){return (transport.timeAt(ticks/500)+latency-offset/1000-ctx.currentTime)*1000}
+ function rhythmError(ticks){const beat=ticks/500;return (transport.timeAt(beat)-transport.timeAt(Math.round(beat)))*1000}
+ function elapsedMs(a,b){return (transport.timeAt(b/500)-transport.timeAt(a/500))*1000}
+ const plans=[{at:origin,level:1}],fills=[],events=[],cues=[],accents=[],warnings=[];let next=0,requested=1,muted=false,timer=null;
+ const hz=n=>440*2**((n-69)/12),rootAt=step=>[38,38,39,36][Math.floor(step/32)%4];
+ function safeBeat(now=ctx.currentTime,unit=1){return Math.max(0,Math.ceil((transport.beatAt(now+LOOK+.04)-1e-8)/unit)*unit)}
+ function setTempo(target,now=ctx.currentTime){
+  target=Math.max(120,Math.min(160,Math.round(target/10)*10));let bpm=transport.segments.at(-1).bpm,beat=Math.max(safeBeat(now,4),transport.segments.at(-1).beat+4);
+  while(bpm<target){bpm+=10;transport.setTempo(bpm,beat);beat+=4}return transport.segments;
+ }
+ function resetTempo(now=ctx.currentTime){warnings.length=0;accents.length=0;return transport.setTempo(120,safeBeat(now))}
  function tone(bus,at,freq,duration,volume,type='sine',filter=0,pan=0){
   const o=ctx.createOscillator(),g=ctx.createGain();if(type==='warm')o.setPeriodicWave(warm);else o.type=type;o.frequency.setValueAtTime(freq,at);
   g.gain.setValueAtTime(.0001,at);g.gain.exponentialRampToValueAtTime(Math.max(.0002,volume),at+(duration>1?.07:.008));g.gain.exponentialRampToValueAtTime(Math.max(.0002,volume*.45),at+duration*.65);g.gain.exponentialRampToValueAtTime(.0001,at+duration);
@@ -147,49 +175,48 @@ function create(context){
   const s=ctx.createBufferSource(),f=ctx.createBiquadFilter(),g=ctx.createGain();s.buffer=noise;f.type=type;f.frequency.value=cutoff;
   g.gain.setValueAtTime(volume,at);g.gain.exponentialRampToValueAtTime(.0001,at+duration);s.connect(f);f.connect(g);g.connect(bus);s.start(at);s.stop(at+duration+.02);s.onended=()=>{s.disconnect();f.disconnect();g.disconnect()};
  }
- function kick(bus,at,volume=.27){
-  const o=ctx.createOscillator(),g=ctx.createGain();o.frequency.setValueAtTime(145,at);o.frequency.exponentialRampToValueAtTime(43,at+.12);g.gain.setValueAtTime(volume,at);g.gain.exponentialRampToValueAtTime(.0001,at+.25);o.connect(g);g.connect(bus);o.start(at);o.stop(at+.27);o.onended=()=>{o.disconnect();g.disconnect()};
+ function kick(bus,at,volume=.48){
+  const o=ctx.createOscillator(),g=ctx.createGain();o.frequency.setValueAtTime(165,at);o.frequency.exponentialRampToValueAtTime(54,at+.028);o.frequency.exponentialRampToValueAtTime(43,at+.13);g.gain.setValueAtTime(.0001,at);g.gain.exponentialRampToValueAtTime(volume,at+.0015);g.gain.exponentialRampToValueAtTime(volume*.48,at+.038);g.gain.exponentialRampToValueAtTime(.0001,at+.19);o.connect(g);g.connect(bus);o.start(at);o.stop(at+.21);o.onended=()=>{o.disconnect();g.disconnect()};percussion(bus,at,.013,volume*.16,3200,'highpass');
  }
+ function duck(bus,at){const g=bus.gain;g.cancelScheduledValues(at);g.setValueAtTime(.25,at);g.exponentialRampToValueAtTime(1,at+.11)}
+ function bass(at,root,length){tone(bassBus,at,hz(root-12),length,.27,'sine');tone(bassBus,at,hz(root),length*.90,.19,'warm',1800);tone(bassBus,at,hz(root+12),length*.64,.055,'triangle',2200)}
  function levelAt(at){let level=1;for(const p of plans){if(p.at<=at+1e-7)level=p.level;else break}return level}
  function setLevel(level,now=ctx.currentTime){
   level=Math.max(1,Math.min(5,level));if(level===requested)return;
-  requested=level;const at=origin+Math.max(0,Math.ceil((now+LOOK+.006-origin)/BEAT))*BEAT,previous=levelAt(at-1e-6);
+  requested=level;const at=transport.timeAt(safeBeat(now)),previous=levelAt(at-1e-6);
   while(plans.length>1&&plans.at(-1).at>=at)plans.pop();plans.push({at,level});
-  buses.forEach((bus,i)=>{const g=bus.gain;g.cancelScheduledValues(at);g.setValueAtTime(i<previous?1:.0001,at);g.linearRampToValueAtTime(i<level?1:.0001,at+.24)});
+  buses.forEach((bus,i)=>{const g=bus.gain;g.cancelScheduledValues(at);g.setValueAtTime(i<previous?1:.0001,at);g.linearRampToValueAtTime(i<level?1:.0001,at+.16)});
   return {at,level};
  }
  function schedule(now=ctx.currentTime){
-  while(origin+next*STEP<now+LOOK){
-   const at=origin+next*STEP,step=next++;if(at<now-.02)continue;
-   const bar=step%16,root=rootAt(step),third=thirdAt(step),level=levelAt(at);
-   // A full groove at level one: four-to-the-floor, offbeat hats, syncopated bass.
-   if(bar%4===0)kick(buses[0],at,bar===0?.32:.26);
-   if(bar===4||bar===12){percussion(buses[0],at,.14,.15,1300,'highpass');tone(buses[0],at,185,.1,.05,'triangle')}
-   if(bar%2===0)percussion(buses[0],at,.035,bar%4===2?.028:.014,7200);
-   if([0,3,6,8,10,14].includes(bar)){const octave=bar===14?0:-12;tone(buses[0],at,hz(root+octave),bar===0?.26:.17,.10,'warm',850)}
-   const phrase=Math.floor(step/16)%8;
-   if([2,7,10,14].includes(bar)){
-    const melody=[12,19,12+third,24],note=melody[[2,7,10,14].indexOf(bar)];
-    tone(buses[0],at,hz(root+note),bar===14?.30:.18,.043,'warm',2300);
-    if(phrase===7&&bar===14)tone(buses[0],at+STEP,hz(root+19),.12,.024,'triangle');
-   }
-   if(level>=2){if(bar%2===1)percussion(buses[1],at,.045,.032,5200);if([3,11,15].includes(bar)){tone(buses[1],at,bar===15?410:290,.085,.04,'sine');percussion(buses[1],at,.04,.02,1800,'bandpass')}}
-   if(level>=3&&bar===0){for(const [i,interval]of [0,third,7].entries())tone(buses[2],at,hz(root+12+interval),1.85,.034,'warm',1350,(i-1)*.55)}
-   if(level>=4&&[1,6,9,14].includes(bar)){const notes=[19,12+third,24,19];tone(buses[3],at,hz(root+notes[Math.floor(bar/4)]),.22,.046,'triangle',3200);tone(buses[3],at+.015,hz(root+notes[Math.floor(bar/4)])*1.003,.24,.014,'sine')}
-   if(level>=5){if(bar%2===0)percussion(buses[4],at,.10,.025,5000);if(bar===0||bar===8){tone(buses[4],at,hz(root+24),.5,.036,'warm',2800);tone(buses[4],at,hz(root+31),.6,.018,'triangle')}if(bar===4||bar===12)percussion(buses[4],at+.015,.11,.05,2100);if(bar===15)kick(buses[4],at,.08)}
-   events.push({step,at,level});if(events.length>256)events.shift();
+  while(transport.timeAt(next/4)<now+LOOK){
+   const at=transport.timeAt(next/4),step=next++;if(at<now-.02)continue;
+   const bar=step%16,root=rootAt(step),level=levelAt(at),duration=60/transport.bpmAt(step/4),sixteenth=duration/4;
+   // The quarter-note kick is invariant. Upper layers stay short and out of its way.
+   if(bar%4===0){kick(buses[0],at,bar===0?.55:.48);duck(bassBus,at);duck(bedBus,at)}
+   if(bar===4||bar===12){percussion(buses[0],at,.085,.20,1450,'highpass');tone(buses[0],at,185,.065,.12,'triangle');percussion(buses[0],at+.012,.045,.07,2600,'bandpass')}
+   if(bar%2===0)percussion(buses[0],at,.024,bar%4===2?.047:.018,7800);
+   if([1,3,6,9,11,14].includes(bar))bass(at,root+(bar===14?-2:0),Math.min(.14,sixteenth*.95));
+   if([2,7,10,15].includes(bar))tone(buses[0],at,hz(root+[12,13,12,7][[2,7,10,15].indexOf(bar)]),.075,.037,'warm',1900);
+   if(level>=2){if([3,7,11,15].includes(bar))percussion(buses[1],at,.026,.038,5500);if([6,14].includes(bar))tone(buses[1],at,bar===6?108:144,.065,.052,'triangle')}
+   if(level>=3&&[2,10].includes(bar))for(const interval of [0,3,7])tone(buses[2],at,hz(root+12+interval),.15,.035,'warm',1450,interval===3?-.25:.25);
+   if(level>=4&&[3,6,11,14].includes(bar))tone(buses[3],at,hz(root+[12,7,13,10][[3,6,11,14].indexOf(bar)]),.085,.065,'warm',2300);
+   if(level>=5){if([2,6,10,14].includes(bar))percussion(buses[4],at,.055,.048,6200);if([7,15].includes(bar)){tone(buses[4],at,hz(root),.09,.075,'warm',1350);percussion(buses[4],at,.045,.035,2100,'bandpass')}}
+   events.push({step,at,level,bpm:transport.bpmAt(step/4)});if(events.length>256)events.shift();
   }
+  for(const a of accents){if(!a.done&&transport.timeAt(a.beat)<now+LOOK){a.done=true;const at=transport.timeAt(a.beat);if(at<now-.02)continue;cues.push({kind:'fill',beat:a.beat,at});if(cues.length>64)cues.shift();const root=rootAt(Math.round(a.beat*4));percussion(fillBus,at,.055,.075-a.index*.008,1800,'highpass');tone(fillBus,at,hz(root+[12,10,7,0][a.index]),.085,.055,'warm',1700)}}
+  for(const w of warnings){if(!w.done&&transport.timeAt(w.beat)<now+LOOK){w.done=true;const at=transport.timeAt(w.beat);if(at>=now-.02){cues.push({kind:'warning',beat:w.beat,at});if(cues.length>64)cues.shift();tone(effects,at,660,.065,.045,'triangle');percussion(effects,at,.025,.035,3500,'highpass')}}}
+  while(accents.length&&accents[0].done)accents.shift();while(warnings.length&&warnings[0].done)warnings.shift();
  }
  function requestFill(id,quality,now=ctx.currentTime){
-  if(!quality||fills.some(f=>f.id===id)||fills.length&&now-fills.at(-1).at<BEAT*2)return false;
-  const at=origin+Math.ceil((now+.045-origin)/(BEAT/2))*(BEAT/2),step=Math.round((at-origin)/STEP),root=rootAt(step),third=thirdAt(step);
-  for(let i=0;i<4;i++){percussion(fillBus,at+i*STEP,.08,.065-i*.007,1800,'highpass');tone(fillBus,at+i*STEP,hz(root+[19,12+third,12,24][i]),.16,.045,'triangle',2600)}
-  fills.push({id,at});if(fills.length>32)fills.shift();return true;
+  const beat=Math.ceil(transport.beatAt(now+LOOK+.01)*2)/2;
+  if(!quality||fills.some(f=>f.id===id)||fills.length&&beat-fills.at(-1).beat<2)return false;
+  for(let i=0;i<4;i++)accents.push({beat:beat+i/4,index:i,done:false});fills.push({id,beat,at:transport.timeAt(beat)});if(fills.length>32)fills.shift();return true;
  }
  function sfx(kind,strong=false,at=ctx.currentTime+.003){
-  if(kind==='handAccent'||kind==='kickAccent'){const root=rootAt(Math.max(0,Math.round((at-origin)/STEP)));tone(effects,at,hz(root+(kind==='handAccent'?24:19)),.095,.045,'triangle',2900);return}
+  if(kind==='handAccent'||kind==='kickAccent'){percussion(effects,at,.035,.035,kind==='handAccent'?2200:1100,'bandpass');return}
   if(kind==='warning'){tone(effects,at,660,.09,.025,'triangle');return}
-  if(kind==='counter'||kind==='counterReady'){const root=rootAt(Math.max(0,Math.round((at-origin)/STEP)));tone(effects,at,hz(root+24),.20,.08,'warm',2600);tone(effects,at+.06,hz(root+31),.24,.045,'sine');if(kind==='counterReady')return}
+  if(kind==='counter'||kind==='counterReady'){const root=rootAt(Math.max(0,Math.round(transport.beatAt(at)*4)));tone(effects,at,hz(root+24),.20,.08,'warm',2600);tone(effects,at+.06,hz(root+31),.24,.045,'sine');if(kind==='counterReady')return}
   if(kind==='swing'){percussion(effects,at,.07,.035,3000,'bandpass');return}
   if(kind==='block'){percussion(effects,at,.07,.075,1700,'bandpass');tone(effects,at,320,.07,.055,'triangle');return}
   if(kind==='dodge'){percussion(effects,at,.12,.04,4300,'highpass');return}
@@ -197,21 +224,21 @@ function create(context){
   kick(effects,at,strong?.36:.18);percussion(effects,at,strong?.18:.085,strong?.13:.075,850,'lowpass');
   if(strong){tone(effects,at,82,.35,.09,'triangle',500);percussion(effects,at+.09,.13,.033,1200,'bandpass')}
  }
- function warning(beatAt){const at=origin+beatAt/1000-BEAT;if(at>=ctx.currentTime+.005){tone(effects,at,660,.09,.025,'triangle');percussion(effects,at,.04,.025,3500,'highpass')}}
+ function warning(beatAt){const beat=beatAt/500-1;if(transport.timeAt(beat)>=ctx.currentTime+.005&&!warnings.some(w=>w.beat===beat)){warnings.push({beat,done:false});if(warnings.length>32)warnings.shift()}}
  function superCharge(fighter,at=ctx.currentTime+.003){
-  const o=ctx.createOscillator(),g=ctx.createGain(),f=ctx.createBiquadFilter();o.type=fighter==='brick'?'triangle':'sawtooth';const base=fighter==='brick'?42:fighter==='iris'?220:100;
-  o.frequency.setValueAtTime(base,at);o.frequency.exponentialRampToValueAtTime(base*4,at+.44);f.type='lowpass';f.frequency.setValueAtTime(500,at);f.frequency.exponentialRampToValueAtTime(fighter==='iris'?3400:1700,at+.44);
-  g.gain.setValueAtTime(.0001,at);g.gain.exponentialRampToValueAtTime(.095,at+.30);g.gain.exponentialRampToValueAtTime(.0001,at+.49);o.connect(f);f.connect(g);g.connect(effects);o.start(at);o.stop(at+.50);o.onended=()=>{o.disconnect();f.disconnect();g.disconnect()};
-  const root=rootAt(Math.max(0,Math.round((at-origin)/STEP)));for(let i=0;i<4;i++){if(fighter==='brick')kick(effects,at+i*.1,.08+i*.012);else tone(effects,at+i*.1,hz(root+[12,19,24,31][i]),.17,.035,fighter==='iris'?'sine':'triangle',2400)}
+  const scale=(transport.timeAt(transport.beatAt(at)+1)-at)/.5,o=ctx.createOscillator(),g=ctx.createGain(),f=ctx.createBiquadFilter();o.type=fighter==='brick'?'triangle':'sawtooth';const base=fighter==='brick'?42:fighter==='iris'?220:100;
+  o.frequency.setValueAtTime(base,at);o.frequency.exponentialRampToValueAtTime(base*4,at+.44*scale);f.type='lowpass';f.frequency.setValueAtTime(500,at);f.frequency.exponentialRampToValueAtTime(fighter==='iris'?3400:1700,at+.44*scale);
+  g.gain.setValueAtTime(.0001,at);g.gain.exponentialRampToValueAtTime(.095,at+.30*scale);g.gain.exponentialRampToValueAtTime(.0001,at+.49*scale);o.connect(f);f.connect(g);g.connect(effects);o.start(at);o.stop(at+.50*scale);o.onended=()=>{o.disconnect();f.disconnect();g.disconnect()};
+  const root=rootAt(Math.max(0,Math.round(transport.beatAt(at)*4)));for(let i=0;i<4;i++){if(fighter==='brick')kick(effects,at+i*.1*scale,.08+i*.012);else tone(effects,at+i*.1*scale,hz(root+[0,7,12,13][i]),.17,.035,fighter==='iris'?'sine':'triangle',2400)}
  }
  function superHit(fighter,at=ctx.currentTime+.003){
   kick(effects,at,fighter==='brick'?.5:.4);percussion(effects,at,.25,.18,950,'lowpass');tone(effects,at,fighter==='brick'?42:65,.48,.14,'triangle',500);
-  const root=rootAt(Math.max(0,Math.round((at-origin)/STEP)));for(let i=0;i<3;i++){const t=at+i*.13;tone(effects,t,hz(root+(fighter==='iris'?24:12)+[0,7,12][i]),.30,.07/(i+1),fighter==='iris'?'sine':'warm',2300);if(i)percussion(effects,t,.10,.04/(i+1),1200,'bandpass')}
+  const root=rootAt(Math.max(0,Math.round(transport.beatAt(at)*4)));for(let i=0;i<3;i++){const t=at+i*.13;tone(effects,t,hz(root+(fighter==='iris'?24:12)+[0,7,12][i]),.30,.07/(i+1),fighter==='iris'?'sine':'warm',2300);if(i)percussion(effects,t,.10,.04/(i+1),1200,'bandpass')}
  }
- function mute(value){muted=value;master.gain.cancelScheduledValues(ctx.currentTime);master.gain.setTargetAtTime(value?.0001:.75,ctx.currentTime,.025)}
+ function mute(value){muted=value;master.gain.cancelScheduledValues(ctx.currentTime);master.gain.setTargetAtTime(value?.0001:.82,ctx.currentTime,.025)}
  function start(){if(!timer)timer=setInterval(()=>schedule(),25);schedule()}
  function stop(){if(timer)clearInterval(timer);timer=null}
- return {ctx,origin,BPM,BEAT,STEP,plans,events,fills,buses,master,music,effects,fillBus,noise,levelAt,setLevel,schedule,requestFill,sfx,warning,superCharge,superHit,mute,start,stop,now,latency:()=>latency,get muted(){return muted}};
+ return {ctx,origin,BPM,BEAT,STEP,transport,bassBus,bedBus,setTempo,resetTempo,eventTime,delayUntil,rhythmError,elapsedMs,bpmAt:t=>transport.bpmAt(t/500),plans,events,cues,fills,buses,master,music,effects,fillBus,noise,levelAt,setLevel,schedule,requestFill,sfx,warning,superCharge,superHit,mute,start,stop,now,latency:()=>latency,get muted(){return muted}};
 }
 return {create,estimateLatency,BPM,BEAT,STEP};
 })();
@@ -219,6 +246,7 @@ return {create,estimateLatency,BPM,BEAT,STEP};
 /* BREAKLINE AFTERHOURS. One audible beat, three decisions: hand, foot, defence. */
 const CoreRules=(()=>{
 'use strict';
+// 500 logical ticks per quarter, not wall milliseconds. Real judgement/round time comes from transport hooks.
 const BEAT=500,clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const DIFFICULTIES=Object.freeze({
  rookie:{name:'РАЗОГРЕВ',perfect:85,good:145,hp:150,enemyHP:220,damage:15,repeats:3,intervals:[4,4,4,4,3,1,4,4]},
@@ -229,15 +257,23 @@ const RECIPES=CoreFighters.get('nova').recipes,trie=CoreFighters.get('nova').tri
 function error(at){return at-Math.round(at/BEAT)*BEAT}
 function grade(at,difficulty='fighter'){const d=DIFFICULTIES[difficulty]??DIFFICULTIES.fighter,e=Math.abs(error(at));return e<=d.perfect?'PERFECT':e<=d.good?'GOOD':'OFF'}
 function create(hooks={}){
+ const elapsed=(a,b)=>hooks.elapsedMs?.(a,b)??b-a,rhythmError=at=>hooks.rhythmError?.(at)??error(at),judge=at=>{const d=profile(),e=Math.abs(rhythmError(at));return e<=d.perfect?'PERFECT':e<=d.good?'GOOD':'OFF'};
  let serial=0;const actor=(x,facing,hp,fighter='nova')=>({x,facing,fighter,hp,maxHP:hp,action:null,ready:0,stun:0,hit:null,evade:null,defence:null,guardBlend:null});
- const s={fighterId:'nova',super:0,training:false,practice:null,mode:'idle',difficulty:'rookie',now:0,start:0,end:0,player:actor(137,1,150),enemy:actor(221,-1,220),energy:0,level:1,phase:1,series:null,buffer:null,block:false,incoming:null,enemyIndex:0,guard:null,repeat:{key:null,count:0},counterUntil:0,feedback:null,freeze:null,flash:0,impacts:[],particles:[],trails:[],history:[],events:[],lastStep:0,lastEarned:0,streak:0,coach:0,stats:{perfect:0,good:0,off:0,combos:0,variety:[],dodges:0,blocks:0,taken:0,counters:0,score:0,maxLevel:1,attempts:0,supers:0,guarded:0,interrupts:0,lateThreats:0},fills:0};
+ const s={fighterId:'nova',super:0,training:false,practice:null,mode:'idle',difficulty:'rookie',now:0,start:0,end:0,player:actor(137,1,150),enemy:actor(221,-1,220),energy:0,level:1,enemyEnergy:0,enemyLevel:1,musicLevel:1,tempoTarget:120,lastGrooveBeat:0,lessonTempo:false,phase:1,series:null,buffer:null,block:false,incoming:null,enemyIndex:0,guard:null,repeat:{key:null,count:0},counterUntil:0,feedback:null,freeze:null,flash:0,impacts:[],particles:[],trails:[],history:[],events:[],lastStep:0,lastEarned:0,streak:0,coach:0,stats:{perfect:0,good:0,off:0,combos:0,variety:[],dodges:0,blocks:0,taken:0,counters:0,score:0,maxLevel:1,attempts:0,supers:0,guarded:0,interrupts:0,lateThreats:0},fills:0};
  const emit=(name,...args)=>hooks[name]?.(...args),profile=()=>DIFFICULTIES[s.difficulty],book=()=>CoreFighters.get(s.fighterId);
  function charge(amount,t){s.super=clamp(s.super+amount,0,100)}
  function record(type,t,extra={}){s.events.push({id:++serial,type,t,...extra});if(s.events.length>128)s.events.shift()}
  function message(label,detail,t,kind='good'){s.feedback={label,detail,at:t,kind}}
- function energy(delta,t){s.energy=s.practice?.level?(s.practice.level-1)*20+10:clamp(s.energy+delta,0,100);const level=Math.min(5,1+Math.floor(s.energy/20));if(level!==s.level){s.level=level;s.stats.maxLevel=Math.max(s.stats.maxLevel,level);emit('level',level)}if(delta>0)s.lastEarned=t}
+ function syncGroove(t){
+  s.level=Math.min(5,1+Math.floor(s.energy/20));s.enemyLevel=Math.min(5,1+Math.floor(s.enemyEnergy/20));s.stats.maxLevel=Math.max(s.stats.maxLevel,s.level);
+  const musicLevel=Math.max(s.level,s.enemyLevel);if(musicLevel!==s.musicLevel){s.musicLevel=musicLevel;emit('level',musicLevel)}
+  const target=120+(Math.min(s.level,s.enemyLevel)-1)*10;if(target>s.tempoTarget){s.tempoTarget=target;emit('tempo',target);record('tempo',t,{bpm:target})}
+ }
+ function energy(delta,t){s.energy=s.practice?.level?(s.practice.level-1)*20+10:clamp(s.energy+delta,0,100);if(delta>0)s.lastEarned=t;syncGroove(t)}
+ function enemyEnergy(delta,t){s.enemyEnergy=s.practice?.level?(s.practice.level-1)*20+10:clamp(s.enemyEnergy+delta,0,100);syncGroove(t)}
+ function remaining(t){return Math.max(0,45000-elapsed(s.start,t))}
  function rivalActive(){return !s.training||s.practice?.mode==='rival'}
- function practiceLevel(level,t){if(!s.practice)return false;s.practice.level=Number.isInteger(level)&&level>=1&&level<=5?level:null;if(s.practice.level)energy(0,t);return true}
+ function practiceLevel(level,t){if(!s.practice)return false;s.practice.level=Number.isInteger(level)&&level>=1&&level<=5?level:null;if(s.practice.level){enemyEnergy(0,t);energy(0,t)};return true}
  function rival(){return CoreFighters.rivals[s.enemy.fighter]}
  function interval(index,signature=false){const r=rival(),minimum=s.difficulty==='rookie'?3:s.difficulty==='fighter'?2:1,raw=r.cadence[index%r.cadence.length]-(s.phase===3?1:0);return Math.max(signature?2:minimum,raw)}
  function plan(beatAt){
@@ -247,8 +283,8 @@ function create(hooks={}){
  function reset(now,difficulty=s.difficulty,fighterId=s.fighterId,training=false,practiceOptions=null){
   s.difficulty=DIFFICULTIES[difficulty]?difficulty:'rookie';const d=profile(),f=CoreFighters.get(fighterId),ids=Object.keys(CoreFighters.roster),enemyId=practiceOptions&&ids.includes(practiceOptions.enemy)?practiceOptions.enemy:ids[(ids.indexOf(f.id)+1)%ids.length],enemy=CoreFighters.get(enemyId),start=(Math.floor(now/BEAT)+1)*BEAT+3*BEAT;
   const practice=practiceOptions?{mode:practiceOptions.mode==='rival'?'rival':'dummy',enemy:enemy.id,level:null}:null;training=training||!!practice;
-  Object.assign(s,{fighterId:f.id,super:0,training,practice,mode:'fight',now,start,end:start+45000,player:actor(137,1,Math.round(d.hp*f.hp),f.id),enemy:actor(221,-1,Math.round(d.enemyHP*enemy.hp),enemyId),energy:0,level:1,phase:1,series:null,buffer:null,block:false,incoming:null,enemyIndex:0,guard:null,repeat:{key:null,count:0},counterUntil:0,feedback:null,freeze:null,flash:0,impacts:[],particles:[],trails:[],history:[],events:[],lastStep:now,lastEarned:now,streak:0,coach:0,stats:{perfect:0,good:0,off:0,combos:0,variety:[],dodges:0,blocks:0,taken:0,counters:0,score:0,maxLevel:1,attempts:0,supers:0,guarded:0,interrupts:0,lateThreats:0},fills:0});
-  plan(start+7*BEAT);if(practice?.mode==='dummy')s.incoming=null;emit('level',1);return s;
+  Object.assign(s,{fighterId:f.id,super:0,training,practice,mode:'fight',now,start,end:start+45000,player:actor(137,1,Math.round(d.hp*f.hp),f.id),enemy:actor(221,-1,Math.round(d.enemyHP*enemy.hp),enemyId),energy:0,level:1,enemyEnergy:0,enemyLevel:1,musicLevel:1,tempoTarget:120,lastGrooveBeat:0,lessonTempo:false,phase:1,series:null,buffer:null,block:false,incoming:null,enemyIndex:0,guard:null,repeat:{key:null,count:0},counterUntil:0,feedback:null,freeze:null,flash:0,impacts:[],particles:[],trails:[],history:[],events:[],lastStep:now,lastEarned:now,streak:0,coach:0,stats:{perfect:0,good:0,off:0,combos:0,variety:[],dodges:0,blocks:0,taken:0,counters:0,score:0,maxLevel:1,attempts:0,supers:0,guarded:0,interrupts:0,lateThreats:0},fills:0});
+  s.lastGrooveBeat=Math.floor(start/BEAT);emit('resetTempo');plan(start+7*BEAT);if(practice?.mode==='dummy')s.incoming=null;emit('level',1);return s;
  }
  function getGuard(t){if(s.incoming&&!s.incoming.cancelled&&!s.incoming.resolved&&t>s.incoming.beatAt-180)return null;return s.guard&&t>=s.guard.start&&t<s.guard.end?s.guard.key:null}
  function warning(t){return s.incoming&&!s.incoming.resolved&&!s.incoming.cancelled&&t>=s.incoming.beatAt-700&&t<s.incoming.contactAt}
@@ -258,10 +294,10 @@ function create(hooks={}){
  function input(key,at,executionAt=at){
   if(s.mode!=='fight'||at<s.start)return {accepted:false,reason:'countdown'};
   if(!['L','H','S'].includes(key))return {accepted:false,reason:'input'};
-  const p=s.player;if(executionAt-at>110)return {accepted:false,reason:'stale'};if(at<p.ready-80)return {accepted:false,reason:'recovery'};if(at<p.stun||p.defence&&at<p.defence.start+240)return {accepted:false,reason:'defence'};
-  if(executionAt<p.ready){if(p.ready-at<=80&&!s.buffer){s.buffer={key,at};return {accepted:false,buffered:true}}return {accepted:false,reason:'recovery'}}
+  const p=s.player;if(elapsed(at,executionAt)>110)return {accepted:false,reason:'stale'};if(at<p.ready&&elapsed(at,p.ready)>80)return {accepted:false,reason:'recovery'};if(at<p.stun||p.defence&&at<p.defence.start+240)return {accepted:false,reason:'defence'};
+  if(executionAt<p.ready){if(elapsed(at,p.ready)<=80&&!s.buffer){s.buffer={key,at};return {accepted:false,buffered:true}}return {accepted:false,reason:'recovery'}}
   if(key==='S'&&s.super<100)return {accepted:false,reason:'super'};
-  s.buffer=null;s.block=false;const quality=grade(at,s.difficulty);let move,series=null,finish=null,standalone=false;
+  s.buffer=null;s.block=false;const quality=judge(at);let move,series=null,finish=null,standalone=false;
   if(key==='S'){if(quality==='OFF'){message('СУПЕР В РИТМ','ЗАРЯД СОХРАНЁН',executionAt,'off');return {accepted:false,reason:'rhythm'}}charge(-100,executionAt);breakSeries();move=book().superMove;emit('superCharge',s.fighterId);record('superStart',executionAt)}
   else{
    let previous=s.series;if(previous&&at-previous.lastInput>1250){breakSeries();previous=null}
@@ -271,13 +307,13 @@ function create(hooks={}){
   }
   const counter=executionAt<s.counterUntil&&quality!=='OFF';if(counter){s.counterUntil=0;if(!finish&&key==='L')move='cross'}
   const strong=!!finish||key==='S',a=action(p,move,executionAt,{key,inputAt:at,quality,strong,super:key==='S',finish,series,seriesStep:series?.steps??0,standalone,counter});
-  s.stats[quality.toLowerCase()]++;if(quality==='OFF'){s.streak=0;energy(-5,executionAt);message('МИМО РИТМА',error(at)>0?'ЧУТЬ РАНЬШЕ':'ЧУТЬ ПОЗЖЕ',executionAt,'off');emit('sfx','off')}else {s.streak++;message(quality,Math.round(error(at))+' ms',executionAt,quality==='PERFECT'?'perfect':'good');emit('sfx','swing');emit('sfx',key==='H'?'kickAccent':'handAccent')}
+  s.stats[quality.toLowerCase()]++;if(quality==='OFF'){s.streak=0;energy(-5,executionAt);message('МИМО РИТМА',rhythmError(at)>0?'ЧУТЬ РАНЬШЕ':'ЧУТЬ ПОЗЖЕ',executionAt,'off');emit('sfx','off')}else {s.streak++;message(quality,Math.round(rhythmError(at))+' ms',executionAt,quality==='PERFECT'?'perfect':'good');emit('sfx','swing');emit('sfx',key==='H'?'kickAccent':'handAccent')}
   if(key==='S')message(book().superName,'СУПЕР · '+book().name,executionAt,'super');
   s.history.push({id:a.id,key,move,prefix:series?.prefix??'',quality,strong,counter,standalone,inputAt:at,start:executionAt});if(s.history.length>120)s.history.shift();if(finish)breakSeries();return {accepted:true,action:a};
  }
  function defend(at,executionAt=at){
-  const p=s.player;if(s.mode!=='fight'||at<s.start||executionAt-at>110||at<p.stun||p.defence&&at<p.defence.start+300)return false;
-  const from={...getPose(p,executionAt),...CoreFighters.velocity(p,executionAt)};p.defence={start:executionAt,end:executionAt+330,from,quality:grade(at,s.difficulty),beat:Math.round(at/BEAT),used:false,savedSeries:s.series};p.guardBlend=null;p.action=null;p.hit=null;s.buffer=null;breakSeries();s.block=true;emit('sfx','dodge');return true;
+  const p=s.player;if(s.mode!=='fight'||at<s.start||elapsed(at,executionAt)>110||at<p.stun||p.defence&&at<p.defence.start+300)return false;
+  const from={...getPose(p,executionAt),...CoreFighters.velocity(p,executionAt)};p.defence={start:executionAt,end:executionAt+330,from,quality:judge(at),beat:Math.round(at/BEAT),used:false,savedSeries:s.series};p.guardBlend=null;p.action=null;p.hit=null;s.buffer=null;breakSeries();s.block=true;emit('sfx','dodge');return true;
  }
  function release(t){s.block=false;const p=s.player;if(p.guardBlend?.to)p.guardBlend={from:getPose(p,t),at:t,to:false}}
  function setBlock(value,t){if(value){s.block=true}else release(t)}
@@ -292,7 +328,7 @@ function create(hooks={}){
   if(blocked){s.stats.guarded++;e.hp=Math.max(s.training?1:0,e.hp-1);if(a.series)a.series.clean=false;s.streak=0;message('ЗАЩИТА',a.key==='L'?'СМЕНИ НА НОГУ':'СМЕНИ НА РУКУ',t,'guard');burst(worldX,point.y,t,false,'guard');emit('sfx','block');record('guarded',t,{key:a.key});return}
   const clean=!!(a.series&&a.series.clean&&a.series.confirmed===a.seriesStep-1),guardBreak=!!(getGuard(t)&&a.strong);
   const amount=(a.key==='S'?book().superDamage:a.finish?a.finish.damage:(a.key==='H'?11:9)*book().power)*(a.quality==='PERFECT'?1:.8)*(a.counter?1.45:1);
-  e.hp=Math.max(s.training?1:0,e.hp-amount);s.stats.score+=Math.round(amount*10*(1+Math.min(s.streak,20)*.025));energy(a.quality==='PERFECT'?5:2,t);if(!a.super)charge(a.quality==='PERFECT'?8:4,t);
+  enemyEnergy(a.strong?-3:-1,t);e.hp=Math.max(s.training?1:0,e.hp-amount);s.stats.score+=Math.round(amount*10*(1+Math.min(s.streak,20)*.025));energy(a.quality==='PERFECT'?5:2,t);if(!a.super)charge(a.quality==='PERFECT'?8:4,t);
   if(a.series){a.series.confirmed++;a.series.clean=clean}
   if(a.key!=='S'&&rivalActive()){s.repeat=s.repeat.key===a.key?{key:a.key,count:s.repeat.count+1}:{key:a.key,count:1};if(s.repeat.count>=profile().repeats&&t>s.start+3500){s.guard={key:a.key,start:t+170,end:t+170+BEAT*rival().guardBeats};s.repeat.count=0}}
   if(a.counter){s.stats.counters++;energy(4,t);charge(8,t);message('КОНТРА','×1.45 УРОН',t,'counter')}
@@ -315,10 +351,10 @@ function create(hooks={}){
   if(d&&!d.used&&d.beat===Math.round(incoming.beatAt/BEAT)&&d.quality!=='OFF'&&d.start<=t&&d.end>=t){
    d.used=true;if(d.savedSeries&&!s.series&&!p.action){s.series=d.savedSeries;s.series.lastInput=incoming.beatAt;s.series.allPerfect&&=d.quality==='PERFECT'}s.stats.dodges++;const perfect=d.quality==='PERFECT';energy(perfect?8:4,t);charge(perfect?12:6,t);s.counterUntil=perfect?t+1050:0;s.stats.score+=perfect?180:90;message(perfect?'ИДЕАЛЬНЫЙ УХОД':'УХОД',perfect?'ТВОЯ КОНТРА →':'ЧИСТО',t,perfect?'counter':'good');emit('sfx',perfect?'counterReady':'dodge');record('dodge',t,{quality:d.quality});return;
   }
-  if(s.block&&t>=p.stun){p.hp=Math.max(s.training?1:0,p.hp-4);s.stats.blocks++;message('БЛОК','УДЕРЖАНИЕ ЗАЩИЩАЕТ · ТОЧНЫЙ ТАП ДАЁТ КОНТРУ',t,'guard');emit('sfx','block');record('block',t);return}
-  const damage=profile().damage+(incoming.double?2:0)+(incoming.signature?4:0);const armoured=p.action?.super&&!p.action.resolved;p.hp=Math.max(s.training?1:0,p.hp-(armoured?Math.ceil(damage*.5):damage));if(armoured){message('БРОНЯ','СУПЕР ПРОДОЛЖАЕТСЯ',t,'counter');emit('sfx','block');record('armour',t);return}s.stats.taken++;s.streak=0;energy(-9,t);charge(-6,t);breakSeries();s.buffer=null;react(p,t,!!incoming.signature,incoming.move);if(incoming.signature){const defender={...getPose(p,t),frame:26,x:-8,y:0};if(s.enemy.action)s.enemy.action.visualStop={at:t,duration:85};p.hit.from=defender;p.hit.start+=85;p.hit.end+=85;s.freeze={at:t,until:t+85,player:defender,enemy:getPose(s.enemy,t)};s.flash=t+100}p.ready=Math.max(p.ready,t+160);message('ПОПАДАНИЕ','КРАСНАЯ ДОЛЯ → УХОД',t,'hurt');burst(p.x+5,-104,t,false,'enemy');emit('sfx','hit',!!incoming.signature);record('hurt',t,{damage});
+  if(s.block&&t>=p.stun){p.hp=Math.max(s.training?1:0,p.hp-4);s.stats.blocks++;enemyEnergy(2,t);message('БЛОК','УДЕРЖАНИЕ ЗАЩИЩАЕТ · ТОЧНЫЙ ТАП ДАЁТ КОНТРУ',t,'guard');emit('sfx','block');record('block',t);return}
+  enemyEnergy(4,t);const damage=profile().damage+(incoming.double?2:0)+(incoming.signature?4:0);const armoured=p.action?.super&&!p.action.resolved;p.hp=Math.max(s.training?1:0,p.hp-(armoured?Math.ceil(damage*.5):damage));if(armoured){message('БРОНЯ','СУПЕР ПРОДОЛЖАЕТСЯ',t,'counter');emit('sfx','block');record('armour',t);return}s.stats.taken++;s.streak=0;energy(-9,t);charge(-6,t);breakSeries();s.buffer=null;react(p,t,!!incoming.signature,incoming.move);if(incoming.signature){const defender={...getPose(p,t),frame:26,x:-8,y:0};if(s.enemy.action)s.enemy.action.visualStop={at:t,duration:85};p.hit.from=defender;p.hit.start+=85;p.hit.end+=85;s.freeze={at:t,until:t+85,player:defender,enemy:getPose(s.enemy,t)};s.flash=t+100}p.ready=Math.max(p.ready,t+160);message('ПОПАДАНИЕ','КРАСНАЯ ДОЛЯ → УХОД',t,'hurt');burst(p.x+5,-104,t,false,'enemy');emit('sfx','hit',!!incoming.signature);record('hurt',t,{damage});
  }
- function finish(t){if(s.mode!=='fight')return;s.mode='ending';s.resultAt=t+650;s.block=false;s.buffer=null;breakSeries();s.winner=s.enemy.hp<=0?'player':s.player.hp<=0?'enemy':s.player.hp/s.player.maxHP>s.enemy.hp/s.enemy.maxHP?'player':'enemy';s.stats.time=Math.max(0,t-s.start);if(s.winner==='player'){s.stats.winBonus=1200+Math.round(Math.max(0,s.end-t)/1000)*20;s.stats.score+=s.stats.winBonus}s.rating=rating();}
+ function finish(t){if(s.mode!=='fight')return;s.mode='ending';s.resultAt=t+650;s.block=false;s.buffer=null;breakSeries();s.winner=s.enemy.hp<=0?'player':s.player.hp<=0?'enemy':s.player.hp/s.player.maxHP>s.enemy.hp/s.enemy.maxHP?'player':'enemy';s.stats.time=Math.max(0,elapsed(s.start,t));if(s.winner==='player'){s.stats.winBonus=1200+Math.round(remaining(t)/1000)*20;s.stats.score+=s.stats.winBonus}s.rating=rating();}
  function rating(){const st=s.stats,n=st.perfect+st.good+st.off,accuracy=n?(st.perfect+st.good*.7)/n:0,defence=st.attempts?(st.dodges+st.blocks*.35)/st.attempts:0,points=accuracy*55+defence*20+st.variety.length/3*15+s.player.hp/s.player.maxHP*10;return {rank:points>=92?'S':points>=80?'A':points>=65?'B':points>=45?'C':'D',value:Math.round(points),accuracy:Math.round(accuracy*100)}}
  function review(){
   const st=s.stats,n=st.perfect+st.good+st.off,accuracy=n?(st.perfect+st.good*.7)/n:0;
@@ -333,17 +369,18 @@ function create(hooks={}){
  function step(t){
   const dt=clamp(t-s.lastStep,0,50);s.lastStep=t;s.now=t;
   if(s.mode==='ending'&&t>=s.resultAt){s.mode='result';emit('finish',s.winner,s.stats,s.rating)}if(s.mode!=='fight'||t<s.start)return;
-  if(!s.training&&t>=s.end){finish(t);return}
+  if(!s.training&&remaining(t)<=0){finish(t);return}
+  const grooveBeat=Math.floor(t/BEAT);if(grooveBeat>s.lastGrooveBeat){if(rivalActive())enemyEnergy(Math.min(4,grooveBeat-s.lastGrooveBeat),t);s.lastGrooveBeat=grooveBeat}
   if(t-s.lastEarned>2200)energy(-dt*.003,t);
   const phase=s.enemy.hp/s.enemy.maxHP>.66?1:s.enemy.hp/s.enemy.maxHP>.33?2:3;if(phase!==s.phase){s.phase=phase;record('phase',t,{phase})}
   if(s.series&&t-s.series.lastInput>1250)breakSeries();
-  if(s.buffer&&t>=s.player.ready){const b=s.buffer;s.buffer=null;if(t-b.at<=110)input(b.key,b.at,t)}
+  if(s.buffer&&t>=s.player.ready){const b=s.buffer;s.buffer=null;if(elapsed(b.at,t)<=110)input(b.key,b.at,t)}
   // A long foreground stall must not burst several unheard threats on recovery.
   if(s.incoming&&!s.incoming.resolved&&t-s.incoming.contactAt>200){s.incoming.resolved=true;s.incoming.cancelled=true;s.stats.lateThreats++;record('lateThreat',t);if(s.enemy.action?.enemyPending)s.enemy.action=null;plan((Math.ceil(t/BEAT)+2)*BEAT)}
   const inc=s.incoming;
   if(inc&&!inc.resolved){
    if(warning(t)&&!inc.warned){inc.warned=true;emit('warning',inc.beatAt);record('warning',t)}
-   if(!inc.cancelled&&!inc.started&&t>=inc.contactAt-CoreFighters.move(s.enemy.fighter,inc.move).impact){const start=inc.contactAt-CoreFighters.move(s.enemy.fighter,inc.move).impact,from=getPose(s.enemy,start);inc.started=true;action(s.enemy,inc.move,start,{enemyPending:true,strong:inc.signature,from})}
+   if(!inc.cancelled&&!inc.started&&t>=inc.contactAt-CoreFighters.move(s.enemy.fighter,inc.move).impact){const start=inc.contactAt-CoreFighters.move(s.enemy.fighter,inc.move).impact,from=getPose(s.enemy,start);inc.started=true;if(rivalActive()||s.lessonTempo)enemyEnergy(5,start);action(s.enemy,inc.move,start,{enemyPending:true,strong:inc.signature,from})}
   }
   const due=[];const a=s.player.action;if(a&&!a.resolved&&t>=a.start+CoreFighters.move(s.player.fighter,a.move).impact)due.push({t:a.start+CoreFighters.move(s.player.fighter,a.move).impact,type:'player',a});
   if(inc&&!inc.resolved&&t>=inc.contactAt)due.push({t:inc.contactAt,type:'enemy',a:inc});
@@ -354,7 +391,7 @@ function create(hooks={}){
   if(s.enemy.hit&&t>=s.enemy.hit.end)s.enemy.hit=null;
   if(s.freeze&&t>s.freeze.until)s.freeze=null;s.impacts=s.impacts.filter(p=>t-p.at<190);s.particles=s.particles.filter(p=>t-p.at<440);s.trails=s.trails.filter(p=>t-p.at<145);
  }
- return {s,reset,step,charge,book,input,defend,release,setBlock,energy,grade:at=>grade(at,s.difficulty),getPose,getGuard,warning,action,playerImpact,enemyImpact,rating,review,rival,interval,practiceLevel};
+ return {s,reset,step,charge,book,input,defend,release,setBlock,energy,grade:judge,rhythmError,elapsed,remaining,enemyEnergy,bpmAt:t=>hooks.bpmAt?.(t)??s.tempoTarget,getPose,getGuard,warning,action,playerImpact,enemyImpact,rating,review,rival,interval,practiceLevel};
 }
 return {create,grade,error,RECIPES,trie,prefixMoves,DIFFICULTIES,BEAT};
 })();
@@ -362,18 +399,19 @@ return {create,grade,error,RECIPES,trie,prefixMoves,DIFFICULTIES,BEAT};
 /* Interactive curriculum. A lesson advances only on verified gameplay events. */
 const CoreLessons=(()=>{
 'use strict';
-const titles=['ПОЙМАЙ ДОЛЮ','ДОБАВЬ НОГУ','ПЕРВОЕ КОМБО','ДОЛЯ ВЫДОХА','ОБЫЧНЫЙ БЛОК','ТОЧНЫЙ УХОД','КОНТРУДАР','ЧИТАЙ ЗАЩИТУ','ТРИ ФИНАЛА','МУЗЫКА И GROOVE','ТВОЙ СУПЕР','СВОБОДНЫЙ СПАРРИНГ'];
+const titles=['ПОЙМАЙ ДОЛЮ','ДОБАВЬ НОГУ','ПЕРВОЕ КОМБО','ДОЛЯ ВЫДОХА','ОБЫЧНЫЙ БЛОК','ТОЧНЫЙ УХОД','КОНТРУДАР','ЧИТАЙ ЗАЩИТУ','ТРИ ФИНАЛА','МУЗЫКА И GROOVE','ТВОЙ СУПЕР','ОБЩИЙ GROOVE','СВОБОДНЫЙ СПАРРИНГ'];
 function create(game,hooks={}){
  const state={active:false,index:0,waiting:false,graduated:false,progress:0,total:1,cursor:0,started:0,stage:0,seen:[],fighter:'nova',completed:[]};
  function enter(index,now){
   const f=CoreFighters.get(state.fighter),recipes=Object.keys(f.recipes);game.reset(now,'rookie',f.id,true);const s=game.s;
-  Object.assign(state,{index,waiting:false,progress:0,total:[3,2,1,2,1,1,1,1,2,1,1,3][index],cursor:0,started:now,stage:0,seen:[],levelAt:0});
+  Object.assign(state,{index,waiting:false,progress:0,total:[3,2,1,2,1,1,1,1,2,1,1,1,3][index],cursor:0,started:now,stage:0,seen:[],levelAt:0});
   s.incoming=null;s.guard=null;s.super=0;s.energy=0;s.level=1;
-  if([4,5,6,11].includes(index)){const at=s.start+1500;s.incoming={id:1,beatAt:at,contactAt:at+115,move:'cross',started:false,resolved:false,cancelled:false,warned:false}}
+  if([4,5,6,11,12].includes(index)){const at=s.start+1500;s.incoming={id:1,beatAt:at,contactAt:at+115,move:'cross',started:false,resolved:false,cancelled:false,warned:false}}
   if(index===7)s.guard={key:'L',start:s.start,end:s.start+1e9};
   if(index===9){game.energy(70,now);game.charge(80,now)}
   if(index===10){game.charge(100,now);game.energy(80,now)};
-  if(index===11)game.charge(70,now);
+  if(index===11){game.energy(30,now);game.enemyEnergy(19,now);s.lessonTempo=true}
+  if(index===12)game.charge(70,now);
   state.recipe=recipes[index===8?1:0];hooks.progress?.(index,false);return state;
  }
  function begin(fighter,now,resume=0){state.active=true;state.graduated=false;state.fighter=CoreFighters.get(fighter).id;state.completed=[];return enter(Math.max(0,Math.min(titles.length-1,resume)),now)}
@@ -391,8 +429,9 @@ function create(game,hooks={}){
    if(index===7&&e.type==='hit'&&e.key==='H'&&!e.strong)state.progress=1;
    if(index===8&&e.type==='combo'&&[recipes[1],recipes[2]].includes(e.recipe)&&!state.seen.includes(e.recipe)){state.seen.push(e.recipe);state.progress=state.seen.length;state.recipe=state.seen.includes(recipes[1])?recipes[2]:recipes[1]}
    if(index===10&&e.type==='super')state.progress=1;
-   if(index===11){const k=e.type==='combo'?'combo':e.type==='dodge'?'dodge':e.type==='super'?'super':null;if(k&&!state.seen.includes(k)){state.seen.push(k);state.progress=state.seen.length}}
+   if(index===12){const k=e.type==='combo'?'combo':e.type==='dodge'?'dodge':e.type==='super'?'super':null;if(k&&!state.seen.includes(k)){state.seen.push(k);state.progress=state.seen.length}}
   }
+  if(index===11&&s.tempoTarget>=130&&(game.bpmAt(now)>=130))state.progress=1;
   if(index===9){if(s.level===5){if(!state.levelAt)state.levelAt=now;if(now-state.levelAt>650)state.progress=1}else state.levelAt=0}
   if(state.progress>=state.total)done(now);
  }
@@ -410,6 +449,7 @@ function create(game,hooks={}){
  'Освой ещё два финала. Сейчас '+r+'. Чистая серия даёт заряд и музыкальный ответ.',
  'Groove усиливает эффекты и пять слоёв музыки. Точно атакуй, чтобы поднять уровень с 4 до 5.',
  'Супер заряжен. Нажми СУПЕР в долю. Контакт через одну долю, затем доля восстановления. Броня уменьшает урон при подготовке. Уход отменяет приём без возврата заряда. Groove не тратится.',
+ 'У обоих бойцов свой Groove. Когда оба достигают уровня 2, на следующем такте включается 130 BPM. Держи блок и услышь ускорение. Далее каждый общий уровень добавит 10, до 160. Разгон сохраняется до конца раунда, супер его не сбрасывает.',
  'Свободная тренировка: выполни чистое комбо, уход и супер. Раненые бойцы здесь не проигрывают. В дуэли счёт и ранг растут от точности, защиты и разных финалов.'
  ][state.index]}
  return {state,begin,enter,tick,next,exit,description,titles};
@@ -423,12 +463,12 @@ const $=id=>document.getElementById(id),app=$('app'),canvas=$('arena'),ctx=canva
 let reduced=motionQuery.matches;
 const defaults={difficulty:'rookie',fighter:'nova',lesson:0,trainingComplete:false,haptic:true,latency:0,bests:{}},prefs=(()=>{try{const p=JSON.parse(localStorage.getItem('breakline.afterhours.v3')||localStorage.getItem('breakline.afterhours.v2')||'null');return p&&typeof p==='object'?{...defaults,...p,bests:p.bests&&typeof p.bests==='object'?p.bests:{}}:{...defaults}}catch{return {...defaults}}})();
 if(!CoreRules.DIFFICULTIES[prefs.difficulty])prefs.difficulty='rookie';prefs.fighter=CoreFighters.get(prefs.fighter).id;
-prefs.latency=Math.max(-250,Math.min(250,Number(prefs.latency)||0));prefs.lesson=Number.isInteger(Number(prefs.lesson))&&Number(prefs.lesson)>=0&&Number(prefs.lesson)<12?Number(prefs.lesson):0;prefs.trainingComplete=prefs.trainingComplete===true;prefs.haptic=prefs.haptic!==false;
+prefs.latency=Math.max(-250,Math.min(250,Number(prefs.latency)||0));prefs.lesson=Number.isInteger(Number(prefs.lesson))&&Number(prefs.lesson)>=0&&Number(prefs.lesson)<13?Number(prefs.lesson):0;prefs.trainingComplete=prefs.trainingComplete===true;prefs.haptic=prefs.haptic!==false;
 const validBests={};for(const id of Object.keys(CoreFighters.roster))for(const d of Object.keys(CoreRules.DIFFICULTIES)){const key=id+':'+d,v=prefs.bests[key];if(v&&Number.isFinite(v.score)&&v.score>=0&&['S','A','B','C','D'].includes(v.rank))validBests[key]={score:Math.min(Number.MAX_SAFE_INTEGER,Math.floor(v.score)),rank:v.rank}}prefs.bests=validBests;
 for(const key of Object.keys(prefs))if(!Object.hasOwn(defaults,key))delete prefs[key];
 const save=()=>{try{localStorage.setItem('breakline.afterhours.v3',JSON.stringify(prefs))}catch{}};
 let audio=null,paused=false,starting=false,matchOffset=0,selected=prefs.difficulty,selectedFighter=CoreFighters.get(prefs.fighter).id,w=390,h=844,dpr=1,scale=1,ground=600,worldLeft=0,railWidth=360,backdrop=null,hudBottom=110,drawCount=0,auditErrors=0,focusRecipe=null,dojoOptions={mode:'dummy',enemy:null},lastHaptic=-1000,lastTrail=-1000,paintDirty=true,paintCount=0,loopTicks=0,lastLoopState='',audioQueue=Promise.resolve(),audioCommand=0,audioDesired=false,lifecycleEpoch=0;
-const now=()=>audio?audio.now()+matchOffset:0;
+const now=()=>audio?audio.now(matchOffset):0;
 function invalidate(){paintDirty=true}
 function canInput(){return !!audio&&!paused&&!starting&&!document.hidden&&audio.ctx.state==='running'}
 function requestAudio(running){
@@ -450,10 +490,10 @@ function watchAudio(ac){ac.addEventListener('statechange',()=>{
 function audioProblem(closed=false){$('pause-overlay').classList.add('audio-recovery');$('pause-overlay').classList.toggle('audio-closed',closed);$('resume').disabled=closed;$('audio-error').hidden=false;$('audio-error').textContent=closed?'Браузер отключил аудио. Нажми «'+$('restart').textContent+'», чтобы восстановить звук.':'Звук пока не включился. Нажми «Вернуться в бой» ещё раз.';invalidate()}
 motionQuery.addEventListener('change',e=>{reduced=e.matches;invalidate()});
 function vibrate(strong=false){const t=now();if(prefs.haptic&&navigator.vibrate&&t-lastHaptic>110){navigator.vibrate(strong?[13,12,17]:8);lastHaptic=t}}
-const game=CoreRules.create({level:l=>audio?.setLevel(l),sfx:(kind,strong)=>{audio?.sfx(kind,strong);if(kind==='hit'||kind==='counter')vibrate(strong)},fill:(id,q)=>audio?.requestFill(id,q),warning:beat=>audio?.warning(beat-matchOffset),superCharge:id=>audio?.superCharge(id),superHit:id=>{audio?.superHit(id);vibrate(true)},finish:showResult});
+const game=CoreRules.create({rhythmError:t=>audio?.rhythmError?.(t)??CoreRules.error(t),elapsedMs:(a,b)=>audio?.elapsedMs?.(a,b)??b-a,tempo:b=>audio?.setTempo?.(b),resetTempo:()=>audio?.resetTempo?.(),bpmAt:t=>audio?.bpmAt?.(t)??120,level:l=>audio?.setLevel(l),sfx:(kind,strong)=>{audio?.sfx(kind,strong);if(kind==='hit'||kind==='counter')vibrate(strong)},fill:(id,q)=>audio?.requestFill(id,q),warning:beat=>audio?.warning(beat),superCharge:id=>audio?.superCharge(id),superHit:id=>{audio?.superHit(id);vibrate(true)},finish:showResult});
 const s=game.s;
 const lessons=CoreLessons.create(game,{progress:(index,complete)=>{prefs.lesson=complete?0:index;prefs.trainingComplete=complete;save();updateTrainingButton()},complete:showTrainingResult});
-function updateTrainingButton(){$('training-start').textContent=prefs.trainingComplete?'ПОВТОРИТЬ ОБУЧЕНИЕ':prefs.lesson?'ПРОДОЛЖИТЬ ОБУЧЕНИЕ · '+(prefs.lesson+1)+'/12':'ОБУЧЕНИЕ · ПО ШАГАМ'}
+function updateTrainingButton(){$('training-start').textContent=prefs.trainingComplete?'ПОВТОРИТЬ ОБУЧЕНИЕ':prefs.lesson?'ПРОДОЛЖИТЬ ОБУЧЕНИЕ · '+(prefs.lesson+1)+'/13':'ОБУЧЕНИЕ · ПО ШАГАМ'}
 updateTrainingButton();
 const beatNodes=Array.from({length:9},()=>{const n=document.createElement('i');n.className='beat-node';n.style.left='25%';$('beat-dots').append(n);return n});
 function selectDifficulty(value){selected=value;document.querySelectorAll('.difficulty[data-difficulty]').forEach(n=>{const yes=n.dataset.difficulty===value;n.classList.toggle('selected',yes);n.setAttribute('aria-pressed',String(yes))});const best=prefs.bests[selectedFighter+':'+value];$('best-label').textContent=best?'ЛИЧНЫЙ РЕКОРД '+best.score+' · РАНГ '+best.rank:'45 секунд · оригинальный грув · наушники рекомендуются'}
@@ -461,7 +501,7 @@ function selectFighter(id){selectedFighter=CoreFighters.get(id).id;prefs.fighter
 function updateRecipes(id){const entries=Object.entries(CoreFighters.get(id).recipes);document.querySelectorAll('.combo').forEach((n,i)=>{const [recipe,f]=entries[i];n.dataset.recipe=recipe;n.querySelector('b').textContent=recipe.replaceAll('L','Р').replaceAll('H','Н').split('').join(' · ');n.querySelector('small').textContent=f.name})}
 for(const f of Object.values(CoreFighters.roster)){const b=document.createElement('button');b.className='fighter-card';b.dataset.fighter=f.id;b.setAttribute('aria-label',f.name+' — '+f.style);const im=document.createElement('img');im.src=CoreSprites.assets[f.id].portrait;im.alt='';const name=document.createElement('b');name.textContent=f.name;b.append(im,name);b.onclick=()=>selectFighter(f.id);$('roster').append(b)}
 selectFighter(selectedFighter);selectDifficulty(selected);for(const n of document.querySelectorAll('.difficulty[data-difficulty]'))n.onclick=()=>selectDifficulty(n.dataset.difficulty);
-function resize(){w=app.clientWidth;h=app.clientHeight;dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);const rect=app.getBoundingClientRect();hudBottom=document.querySelector('.energy').getBoundingClientRect().bottom-rect.top;ground=document.querySelector('.bottom').getBoundingClientRect().top-rect.top-9;const landscape=w>550&&h<510,teaching=lessons.state.active,reserve=teaching&&!landscape?Math.max(100,$('lesson-panel').getBoundingClientRect().height+28):s.practice?62:42;scale=Math.max(.4,Math.min(w/210,(ground-hudBottom-reserve)/152,2.2));worldLeft=w*(teaching&&landscape?.64:.5)-180*scale;$('lesson-panel').style.top=(landscape?hudBottom+14:hudBottom+8)+'px';$('practice-tools').style.top=(hudBottom+8)+'px';railWidth=document.querySelector('.beat-rail').clientWidth;backdrop=createBackdrop();const head=ground-150*scale;$('feedback').style.top=Math.max(hudBottom+3+reserve,head-48)+'px';$('intent').style.top=Math.max(hudBottom+8,head-25)+'px';$('guard-hint').style.top=Math.max(hudBottom+35,head+5)+'px';invalidate()}
+function resize(){w=app.clientWidth;h=app.clientHeight;dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);const rect=app.getBoundingClientRect();hudBottom=document.querySelector('.grooves').getBoundingClientRect().bottom-rect.top;ground=document.querySelector('.bottom').getBoundingClientRect().top-rect.top-9;const landscape=w>550&&h<510,teaching=lessons.state.active,reserve=teaching&&!landscape?Math.max(100,$('lesson-panel').getBoundingClientRect().height+28):s.practice?62:42;scale=Math.max(.4,Math.min(w/210,(ground-hudBottom-reserve)/152,2.2));worldLeft=w*(teaching&&landscape?.64:.5)-180*scale;$('lesson-panel').style.top=(landscape?hudBottom+14:hudBottom+8)+'px';$('practice-tools').style.top=(hudBottom+8)+'px';railWidth=document.querySelector('.beat-rail').clientWidth;backdrop=createBackdrop();const head=ground-150*scale;$('feedback').style.top=Math.max(hudBottom+3+reserve,head-48)+'px';$('intent').style.top=Math.max(hudBottom+8,head-25)+'px';$('guard-hint').style.top=Math.max(hudBottom+35,head+5)+'px';invalidate()}
 new ResizeObserver(resize).observe(app);
 function startBusy(value){for(const b of document.querySelectorAll('#start,#training-start,#practice-start,#practice-go,#practice-cancel,.fighter-card,[data-difficulty],[data-opponent],[data-practice-mode]'))b.disabled=value;$('start-overlay').setAttribute('aria-busy',String(value));$('practice-panel').setAttribute('aria-busy',String(value))}
 async function startFight(difficulty=selected,training=false,resumeLesson=0,practice=null){
@@ -516,9 +556,9 @@ function showResult(winner,stats,rating){if(s.training)return;
  $('result-stats').replaceChildren(...[['ОЧКИ',stats.score],['ТОЧНОСТЬ',rating.accuracy+'%'],['УХОДЫ / КОНТРЫ',stats.dodges+' / '+stats.counters],['ФИНАЛЫ',stats.variety.length+' / 3']].map(([label,value])=>{const n=document.createElement('div');n.className='stat';const b=document.createElement('b');b.textContent=value;n.append(b,document.createTextNode(label));return n}));
  $('new-best').textContent=better?'↑ НОВЫЙ ЛИЧНЫЙ РЕКОРД':'ЛИЧНЫЙ РЕКОРД '+old.score;$('next-difficulty').hidden=!won||s.difficulty==='master';$('next-difficulty').textContent=s.difficulty==='rookie'?'ДАЛЬШЕ: ДУЭЛЬ →':'ДАЛЬШЕ: МАСТЕР →';$('result-overlay').hidden=false;
 }
-function showTrainingResult(){$('result-focus').hidden=true;app.classList.remove('learning');$('lesson-panel').hidden=true;$('rank').textContent='✓';$('result-title').textContent='Ритм освоен.';$('result-subtitle').textContent='Бой, защита, комбо, Groove и супер — теперь твои.';$('result-stats').replaceChildren();$('new-best').textContent='12 УРОКОВ ПРОЙДЕНО';$('next-difficulty').hidden=true;$('result-overlay').hidden=false;updateTrainingButton();resize()}
-let lastLessonState='';function updateLesson(){const l=lessons.state;if(!l.active)return;const key=l.index+':'+l.waiting+':'+l.progress+':'+l.stage+':'+l.recipe;if(key===lastLessonState)return;lastLessonState=key;$('lesson-title').textContent='УРОК '+String(l.index+1).padStart(2,'0')+'/12 · '+lessons.titles[l.index];$('lesson-description').textContent=l.waiting?'Отлично. Этот навык выполнен в игре. Переходи дальше, когда будешь готов.':lessons.description();$('lesson-progress').textContent=l.progress+' / '+l.total;$('lesson-next').hidden=!l.waiting;$('lesson-next').textContent=l.index===11?'В БОЙ →':'ДАЛЬШЕ →';focusRecipe=l.recipe;resize()}
-function eventAt(e,t=now()){const age=e&&Number.isFinite(e.timeStamp)?performance.now()-e.timeStamp:0;return t-(age>=0&&age<1000?age:0)}
+function showTrainingResult(){$('result-focus').hidden=true;app.classList.remove('learning');$('lesson-panel').hidden=true;$('rank').textContent='✓';$('result-title').textContent='Ритм освоен.';$('result-subtitle').textContent='Бой, защита, комбо, Groove и супер — теперь твои.';$('result-stats').replaceChildren();$('new-best').textContent='13 УРОКОВ ПРОЙДЕНО';$('next-difficulty').hidden=true;$('result-overlay').hidden=false;updateTrainingButton();resize()}
+let lastLessonState='';function updateLesson(){const l=lessons.state;if(!l.active)return;const key=l.index+':'+l.waiting+':'+l.progress+':'+l.stage+':'+l.recipe;if(key===lastLessonState)return;lastLessonState=key;$('lesson-title').textContent='УРОК '+String(l.index+1).padStart(2,'0')+'/13 · '+lessons.titles[l.index];$('lesson-description').textContent=l.waiting?'Отлично. Этот навык выполнен в игре. Переходи дальше, когда будешь готов.':lessons.description();$('lesson-progress').textContent=l.progress+' / '+l.total;$('lesson-next').hidden=!l.waiting;$('lesson-next').textContent=l.index===12?'В БОЙ →':'ДАЛЬШЕ →';focusRecipe=l.recipe;resize()}
+function eventAt(e,t=now()){const age=e&&Number.isFinite(e.timeStamp)?performance.now()-e.timeStamp:0;return audio?.eventTime?audio.eventTime(age>=0&&age<1000?age:0,matchOffset):t-(age>=0&&age<1000?age:0)}
 function press(key,event){if(!canInput())return;const t=now();game.step(t);const result=game.input(key,eventAt(event,t),t);if(!result.accepted&&result.reason==='recovery'){$('coach-text').textContent='ВЫДОХ. СЛЕДУЮЩИЙ УДАР — ПОСЛЕ ВОССТАНОВЛЕНИЯ.'}}
 for(const [id,key]of [['hand','L'],['foot','H'],['special','S']]){$(id).addEventListener('pointerdown',e=>{e.preventDefault();press(key,e)});$(id).onclick=e=>{if(e.detail===0)press(key,e)}}
 $('defend').addEventListener('pointerdown',e=>{e.preventDefault();if(!canInput())return;$('defend').setPointerCapture(e.pointerId);const t=now();game.step(t);game.defend(eventAt(e,t),t);$('defend').classList.add('pressed')});
@@ -535,12 +575,12 @@ function createBackdrop(){
 function line(a,b,width,color){ctx.strokeStyle=color;ctx.lineWidth=width;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(...a);ctx.lineTo(...b);ctx.stroke()}
 function circle(p,r,color){ctx.fillStyle=color;ctx.beginPath();ctx.arc(p[0],p[1],r,0,Math.PI*2);ctx.fill()}
 function fighter(a,token,t,enemy=false){if(!CoreSprites.ready(a.fighter)){if(s.mode!=='idle')auditErrors++;return}
- const f=CoreFighters.get(a.fighter),rootX=worldLeft+a.x*scale,rootY=ground+(enemy?-2:1)*scale,level=enemy?1:s.level;
+ const f=CoreFighters.get(a.fighter),rootX=worldLeft+a.x*scale,rootY=ground+(enemy?-2:1)*scale,level=enemy?s.enemyLevel:s.level;
  const bodyX=rootX+token.x*scale*a.facing,bodyY=rootY+token.y*scale;
  ctx.save();const lift=Math.max(0,-token.y);ctx.fillStyle=`rgba(3,2,11,${.53-lift*.009})`;ctx.beginPath();ctx.ellipse(bodyX,rootY+2*scale,(37-lift*.38)*scale,(5-lift*.045)*scale,0,0,Math.PI*2);ctx.fill();
  if(level>=2){const g=ctx.createRadialGradient(bodyX,bodyY-75*scale,10,bodyX,bodyY-75*scale,85*scale);g.addColorStop(0,level===5?f.color+'32':f.color+'18');g.addColorStop(1,'#00000000');ctx.fillStyle=g;ctx.fillRect(bodyX-100*scale,bodyY-190*scale,200*scale,195*scale)}
  if(CoreSprites.draw(ctx,token,rootX,rootY,scale,a.facing)){drawCount++}else auditErrors++;
- if(!enemy&&s.level>=4&&!reduced){for(let i=0;i<level;i++){const y=-15-(t*.035+i*29)%140,x=Math.sin(t*.002+i*3)*32;circle([bodyX+x*scale,bodyY+y*scale],scale,f.color)}}
+ if(level>=4&&!reduced){for(let i=0;i<level;i++){const y=-15-(t*.035+i*29)%140,x=Math.sin(t*.002+i*3)*32;circle([bodyX+x*scale,bodyY+y*scale],scale,f.color)}}
  ctx.restore();
 }
 function render(t){
@@ -559,11 +599,11 @@ function render(t){
  if(t<s.flash&&!reduced){ctx.fillStyle=`rgba(225,215,255,${Math.min(1,Math.max(0,(s.flash-t)/100))*.07})`;ctx.fillRect(0,0,w,h)}
 }
 const feedbackStrong=$('feedback').querySelector('strong'),feedbackSmall=$('feedback').querySelector('small');let lastMessage=null;
-const energyNodes=[...document.querySelectorAll('.energy i')],comboNodes=[...document.querySelectorAll('.combo')],controls=document.querySelector('.controls');let lastHP='';
+const energyNodes=[...document.querySelectorAll('#player-groove i')],enemyEnergyNodes=[...document.querySelectorAll('#enemy-groove i')],comboNodes=[...document.querySelectorAll('.combo')],controls=document.querySelector('.controls');let lastHP='';
 function setText(node,value){value=String(value);if(node.textContent!==value)node.textContent=value}
 function hud(t){
  if(s.practice)setText($('practice-level'),'GROOVE '+(s.practice.level??'АВТО'));
- const hpKey=s.player.hp+':'+s.player.maxHP+':'+s.enemy.hp+':'+s.enemy.maxHP;if(lastHP!==hpKey){$('hp-player').style.width=100*s.player.hp/s.player.maxHP+'%';$('hp-enemy').style.width=100*s.enemy.hp/s.enemy.maxHP+'%';lastHP=hpKey}setText($('hp-player-label'),Math.ceil(s.player.hp));setText($('hp-enemy-label'),Math.ceil(s.enemy.hp));setText($('clock'),lessons.state.active?'L'+(lessons.state.index+1):s.practice?'∞':s.mode==='idle'?'45':String(Math.min(45,Math.max(0,Math.ceil((s.end-t)/1000)))).padStart(2,'0'));
+ const hpKey=s.player.hp+':'+s.player.maxHP+':'+s.enemy.hp+':'+s.enemy.maxHP;if(lastHP!==hpKey){$('hp-player').style.width=100*s.player.hp/s.player.maxHP+'%';$('hp-enemy').style.width=100*s.enemy.hp/s.enemy.maxHP+'%';lastHP=hpKey}setText($('hp-player-label'),Math.ceil(s.player.hp));setText($('hp-enemy-label'),Math.ceil(s.enemy.hp));setText($('clock'),lessons.state.active?'L'+(lessons.state.index+1):s.practice?'∞':s.mode==='idle'?'45':String(Math.min(45,Math.max(0,Math.ceil(game.remaining(t)/1000)))).padStart(2,'0'));
  const phase=t/500,whole=Math.floor(phase),fraction=phase-whole;
  for(let i=0;i<beatNodes.length;i++){const beat=whole+i-1,n=beatNodes[i],danger=s.incoming&&!s.incoming.cancelled&&Math.round(s.incoming.beatAt/500)===beat;n.style.translate=(i-1-fraction)*railWidth*.23+'px 0';const className='beat-node'+(danger?' danger':beat%4===0?' down':'')+(s.player.action?.strong&&beat*500<s.player.ready&&beat*500>s.player.action.start?' rest':'');if(n.className!==className)n.className=className}
  const count=t<s.start?Math.ceil((s.start-t)/500):0;
@@ -571,7 +611,7 @@ function hud(t){
  else if(s.mode==='fight'&&t<s.start+250&&!s.feedback){feedbackStrong.textContent='GO';feedbackSmall.textContent='ТВОЙ БИТ';$('feedback').style.color='var(--lime)';$('feedback').style.opacity=1}
  else if(s.feedback&&t-s.feedback.at<850){if(lastMessage!==s.feedback){feedbackStrong.textContent=s.feedback.label;feedbackSmall.textContent=s.feedback.detail;lastMessage=s.feedback}$('feedback').style.color=({perfect:'var(--lime)',good:'var(--paper)',combo:'var(--lime)',counter:'var(--blue)',off:'var(--pink)',hurt:'var(--pink)',guard:'var(--blue)',super:CoreFighters.get(s.fighterId).color})[s.feedback.kind];$('feedback').style.opacity=Math.min(1,(850-t+s.feedback.at)/200)}else $('feedback').style.opacity=0;
  setText($('player-name'),CoreFighters.get(s.player.fighter).name);setText($('enemy-name'),s.training&&!s.practice?'ПРАКТИКА':CoreFighters.get(s.enemy.fighter).name);if(s.training){setText($('hp-player-label'),'∞');$('hp-enemy-label').textContent='∞'}
- setText($('energy-label'),'GROOVE '+s.level);energyNodes.forEach((n,i)=>n.classList.toggle('on',i<s.level));setText($('streak'),'×'+s.streak);
+ setText($('energy-label'),'ТЫ · '+s.level);setText($('enemy-energy-label'),'СОПЕРНИК · '+s.enemyLevel);energyNodes.forEach((n,i)=>n.classList.toggle('on',i<s.level));enemyEnergyNodes.forEach((n,i)=>n.classList.toggle('on',i<s.enemyLevel));const bpm=Math.round(audio?.bpmAt?.(t)??120);setText($('tempo'),bpm+' BPM'+(s.tempoTarget>bpm?' → '+(bpm+10):''));$('tempo').classList.toggle('accelerated',bpm>120);setText($('streak'),'×'+s.streak);
  $('special').disabled=s.super<100||s.mode!=='fight'||paused;$('special').classList.toggle('ready',s.super>=100);setText($('special'),s.super>=100?'✦ СУПЕР · I':'СУПЕР '+Math.floor(s.super)+'%');$('special').style.setProperty('--super-charge',s.super+'%');
  const warning=game.warning(t);$('intent').style.opacity=warning?1:0;setText($('intent'),s.incoming?.signature?'! СИЛОВОЙ УДАР → УХОД':'! УХОД НА КРАСНУЮ ДОЛЮ');const guard=game.getGuard(t);$('guard-hint').style.opacity=guard&&!warning?1:0;setText($('guard-hint'),guard==='L'?'ЗАЩИЩАЕТ ГОЛОВУ → НОГА':'ЗАЩИЩАЕТ КОРПУС → РУКА');
  const prefix=s.series?.prefix??'';for(const n of comboNodes){n.classList.toggle('active',prefix?n.dataset.recipe.startsWith(prefix):n.dataset.recipe===focusRecipe);n.classList.toggle('done',s.stats.variety.includes(n.dataset.recipe))}
