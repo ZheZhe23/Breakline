@@ -7,7 +7,7 @@ function create(origin=0,bpm=120){
  function beatAt(time){const s=find(time,'time');return s.beat+(time-s.time)*s.bpm/60}
  function timeAt(beat){const s=find(beat,'beat');return s.time+(beat-s.beat)*60/s.bpm}
  function bpmAt(beat){return find(beat,'beat').bpm}
- function setTempo(bpm,beat){if(!Number.isFinite(bpm)||bpm<60||bpm>200||!Number.isFinite(beat)||beat<0)throw Error('Invalid tempo');const time=timeAt(beat);while(segments.length>1&&segments.at(-1).beat>=beat)segments.pop();if(beat===0)segments[0]={beat:0,time,bpm};else if(bpmAt(beat)!==bpm)segments.push({beat,time,bpm});return {beat,time,bpm}}
+ function setTempo(bpm,beat){if(!Number.isFinite(bpm)||bpm<60||bpm>240||!Number.isFinite(beat)||beat<0)throw Error('Invalid tempo');const time=timeAt(beat);while(segments.length>1&&segments.at(-1).beat>=beat)segments.pop();if(beat===0)segments[0]={beat:0,time,bpm};else if(bpmAt(beat)!==bpm)segments.push({beat,time,bpm});return {beat,time,bpm}}
  return {segments,beatAt,timeAt,bpmAt,setTempo};
 }
 return {create};

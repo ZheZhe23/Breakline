@@ -1,4 +1,4 @@
-/* Original procedural composition: OVERDRIVE, D / Phrygian. 120–160 BPM. No samples or voices. */
+/* Original procedural composition: OVERDRIVE, D / Phrygian. 90 BPM lobby / 120–240 BPM fight. No samples or voices. */
 const CoreAudio = (() => {
 'use strict';
 const BPM=120,BEAT=.5,STEP=BEAT/4,LOOK=.12;
@@ -7,12 +7,12 @@ function estimateLatency(ctx,when){
  try{const ts=ctx.getOutputTimestamp?.();if(ts&&ts.contextTime>0&&ts.performanceTime>0){const delay=ctx.currentTime-(ts.contextTime+(when-ts.performanceTime)/1000);if(delay>=0&&delay<.5)return delay}}catch{}
  return fallback;
 }
-function create(context){
- const ctx=context,origin=ctx.currentTime+.15,master=ctx.createGain(),compressor=ctx.createDynamicsCompressor(),music=ctx.createGain(),effects=ctx.createGain(),fillBus=ctx.createGain();
- master.gain.value=.82;music.gain.value=.88;effects.gain.value=.58;fillBus.gain.value=.34;
+function create(context,initialScene='battle'){
+ const ctx=context,origin=ctx.currentTime+.15,master=ctx.createGain(),compressor=ctx.createDynamicsCompressor(),music=ctx.createGain(),effects=ctx.createGain(),fillBus=ctx.createGain(),menuMusic=ctx.createGain();
+ menuMusic.gain.value=initialScene==='menu'?.64:0;menuMusic.connect(compressor);master.gain.value=.82;music.gain.value=initialScene==='menu'?.0001:.88;effects.gain.value=.58;fillBus.gain.value=.34;
  compressor.threshold.value=-6;compressor.knee.value=4;compressor.ratio.value=8;compressor.attack.value=.003;compressor.release.value=.10;
  music.connect(compressor);effects.connect(compressor);fillBus.connect(compressor);compressor.connect(master);master.connect(ctx.destination);
- const transport=CoreTransport.create(origin,BPM),bassBus=ctx.createGain(),bedBus=ctx.createGain();bassBus.gain.value=1;bedBus.gain.value=1;bassBus.connect(music);bedBus.connect(music);
+ const transport=CoreTransport.create(origin,initialScene==='menu'?90:BPM),bassBus=ctx.createGain(),bedBus=ctx.createGain();bassBus.gain.value=1;bedBus.gain.value=1;bassBus.connect(music);bedBus.connect(music);
  const buses=Array.from({length:5},(_,i)=>{const g=ctx.createGain();g.gain.value=i?0:1;g.connect(i?bedBus:music);return g});
  const noise=ctx.createBuffer(1,ctx.sampleRate,ctx.sampleRate),data=noise.getChannelData(0);let seed=23051;
  for(let i=0;i<data.length;i++){seed=(seed*1664525+1013904223)>>>0;data[i]=seed/2147483648-1}
@@ -24,12 +24,24 @@ function create(context){
  function delayUntil(ticks,offset=0){return (transport.timeAt(ticks/500)+latency-offset/1000-ctx.currentTime)*1000}
  function rhythmError(ticks){const beat=ticks/500;return (transport.timeAt(beat)-transport.timeAt(Math.round(beat)))*1000}
  function elapsedMs(a,b){return (transport.timeAt(b/500)-transport.timeAt(a/500))*1000}
- const plans=[{at:origin,level:1}],fills=[],events=[],cues=[],accents=[],warnings=[],warningIds=[],warningVoices=new Map();let next=0,requested=1,muted=false,timer=null;
+ const plans=[{at:origin,level:1}],fills=[],events=[],cues=[],scenePlans=[{beat:0,scene:initialScene==='menu'?'menu':'battle'}],accents=[],warnings=[],warningIds=[],warningVoices=new Map();let next=0,requested=1,muted=false,timer=null;
  const hz=n=>440*2**((n-69)/12),rootAt=step=>[38,38,39,36][Math.floor(step/32)%4];
  function safeBeat(now=ctx.currentTime,unit=1){return Math.max(0,Math.ceil((transport.beatAt(now+LOOK+.04)-1e-8)/unit)*unit)}
  function setTempo(target,now=ctx.currentTime){
-  target=Math.max(120,Math.min(160,Math.round(target/10)*10));let bpm=transport.segments.at(-1).bpm,beat=Math.max(safeBeat(now,4),(Math.floor(transport.segments.at(-1).beat/4)+1)*4);
+  target=Math.max(120,Math.min(240,Math.round(target/10)*10));let bpm=transport.segments.at(-1).bpm,beat=Math.max(safeBeat(now,4),(Math.floor(transport.segments.at(-1).beat/4)+1)*4);
   while(bpm<target){bpm+=10;transport.setTempo(bpm,beat);beat+=4}return transport.segments;
+ }
+ function startRamp(startTicks,cap=240){
+  const now=ctx.currentTime,first=Math.max(safeBeat(now,4),Math.ceil((startTicks/500+4)/4)*4);let bpm=120;
+  // Only future, unscheduled measures change. The transport origin and phrase never restart.
+  transport.setTempo(120,safeBeat(now));for(let beat=first;bpm<cap;beat+=4){bpm+=10;transport.setTempo(Math.min(cap,bpm),beat)}return transport.segments;
+ }
+ function pinTempo(bpm,now=ctx.currentTime){return transport.setTempo(Math.max(120,Math.min(240,bpm)),safeBeat(now,4))}
+ function sceneAt(at){const beat=transport.beatAt(at);let scene='battle';for(const plan of scenePlans){if(plan.beat<=beat+1e-7)scene=plan.scene;else break}return scene}
+ function setScene(scene,now=ctx.currentTime){
+  scene=scene==='menu'?'menu':'battle';if(scenePlans.at(-1).scene===scene)return;const beat=safeBeat(now),at=transport.timeAt(beat);while(scenePlans.length>1&&scenePlans.at(-1).beat>=beat)scenePlans.pop();scenePlans.push({beat,scene});
+  for(const [bus,value]of [[music,scene==='battle'?.88:.0001],[menuMusic,scene==='menu'?.64:.0001]]){bus.gain.cancelScheduledValues(at);bus.gain.setTargetAtTime(value,at,.035)}
+  if(scene==='menu'){clearWarnings();accents.length=0;transport.setTempo(90,beat)}else transport.setTempo(120,beat)
  }
  function nextTempo(ticks){const beat=ticks/500,current=transport.bpmAt(beat),next=transport.segments.find(s=>s.beat>beat+1e-7&&s.bpm!==current);return next?{beat:next.beat,bpm:next.bpm,inBeats:next.beat-beat}:null}
  function resetTempo(now=ctx.currentTime){clearWarnings();accents.length=0;return transport.setTempo(120,safeBeat(now))}
@@ -59,7 +71,14 @@ function create(context){
  function schedule(now=ctx.currentTime){
   while(transport.timeAt(next/4)<now+LOOK){
    const at=transport.timeAt(next/4),step=next++;if(at<now-.02)continue;
-   const bar=step%16,root=rootAt(step),level=levelAt(at),duration=60/transport.bpmAt(step/4),sixteenth=duration/4;
+   const bar=step%16,root=rootAt(step),level=levelAt(at),scene=sceneAt(at),duration=60/transport.bpmAt(step/4),sixteenth=duration/4;
+   if(scene==='menu'){
+    if(bar===0||bar===8)tone(menuMusic,at,hz(38),.40,.052,'warm',700);
+    if([0,3,7,10,14].includes(bar))tone(menuMusic,at,hz(38+[12,19,15,14,7][[0,3,7,10,14].indexOf(bar)]),.28,.046,'triangle',1700,bar%2?.18:-.18);
+    if(bar===0)for(const interval of [0,3,7])tone(menuMusic,at,hz(50+interval),.85,.017,'sine',1200);
+    if(bar===4||bar===12)percussion(menuMusic,at,.045,.016,4000);
+    events.push({step,at,level:1,bpm:transport.bpmAt(step/4),scene});if(events.length>256)events.shift();continue;
+   }
    // The quarter-note kick is invariant. Upper layers stay short and out of its way.
    if(bar%4===0){kick(buses[0],at,bar===0?.55:.48);duck(bassBus,at);duck(bedBus,at)}
    if(bar===4||bar===12){percussion(buses[0],at,.085,.20,1450,'highpass');tone(buses[0],at,185,.065,.12,'triangle');percussion(buses[0],at+.012,.045,.07,2600,'bandpass')}
@@ -70,7 +89,7 @@ function create(context){
    if(level>=3&&[2,10].includes(bar))for(const interval of [0,3,7])tone(buses[2],at,hz(root+12+interval),.15,.035,'warm',1450,interval===3?-.25:.25);
    if(level>=4&&[3,6,11,14].includes(bar))tone(buses[3],at,hz(root+[12,7,13,10][[3,6,11,14].indexOf(bar)]),.085,.065,'warm',2300);
    if(level>=5){if([2,6,10,14].includes(bar))percussion(buses[4],at,.055,.048,6200);if([7,15].includes(bar)){tone(buses[4],at,hz(root),.09,.075,'warm',1350);percussion(buses[4],at,.045,.035,2100,'bandpass')}}
-   events.push({step,at,level,bpm:transport.bpmAt(step/4)});if(events.length>256)events.shift();
+   events.push({step,at,level,scene,bpm:transport.bpmAt(step/4)});if(events.length>256)events.shift();
   }
   for(const a of accents){if(!a.done&&transport.timeAt(a.beat)<now+LOOK){a.done=true;const at=transport.timeAt(a.beat);if(at<now-.02)continue;cues.push({kind:'fill',beat:a.beat,at});if(cues.length>64)cues.shift();const root=rootAt(Math.round(a.beat*4));percussion(fillBus,at,.055,.075-a.index*.008,1800,'highpass');tone(fillBus,at,hz(root+[12,10,7,0][a.index]),.085,.055,'warm',1700)}}
   for(const w of warnings){if(!w.done&&!w.cancelled&&transport.timeAt(w.beat)<now+LOOK){w.done=true;const at=transport.timeAt(w.beat);if(at>=now-.02){
@@ -117,7 +136,7 @@ function create(context){
  function mute(value){muted=value;master.gain.cancelScheduledValues(ctx.currentTime);master.gain.setTargetAtTime(value?.0001:.82,ctx.currentTime,.025)}
  function start(){if(!timer)timer=setInterval(()=>schedule(),25);schedule()}
  function stop(){if(timer)clearInterval(timer);timer=null}
- return {ctx,origin,BPM,BEAT,STEP,transport,bassBus,bedBus,setTempo,nextTempo,resetTempo,eventTime,delayUntil,rhythmError,elapsedMs,bpmAt:t=>transport.bpmAt(t/500),plans,events,cues,fills,buses,master,music,effects,fillBus,noise,levelAt,setLevel,schedule,requestFill,sfx,warning,cancelWarning,clearWarnings,superCharge,superHit,mute,start,stop,now,latency:()=>latency,get muted(){return muted}};
+ return {ctx,origin,BPM,BEAT,STEP,transport,bassBus,bedBus,menuMusic,scenePlans,sceneAt,setScene,startRamp,pinTempo,setTempo,nextTempo,resetTempo,eventTime,delayUntil,rhythmError,elapsedMs,bpmAt:t=>transport.bpmAt(t/500),plans,events,cues,fills,buses,master,music,effects,fillBus,noise,levelAt,setLevel,schedule,requestFill,sfx,warning,cancelWarning,clearWarnings,superCharge,superHit,mute,start,stop,now,latency:()=>latency,get muted(){return muted}};
 }
 return {create,estimateLatency,BPM,BEAT,STEP};
 })();

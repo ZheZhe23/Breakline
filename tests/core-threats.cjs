@@ -3,9 +3,9 @@ const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/st
 const root=path.resolve(__dirname,'..'),env=vm.createContext({performance:{now:()=>0}});vm.runInContext(['fighters','transport','rules','lessons'].map(n=>fs.readFileSync(root+'/core/src/'+n+'.js','utf8')).join('\n')+';this.R=CoreRules;this.L=CoreLessons;',env);const {R,L}=env;let checks=0;const ok=(v,m)=>{checks++;assert.ok(v,m)},eq=(a,b,m)=>{checks++;assert.equal(a,b,m)};
 for(const hero of ['nova','brick','iris'])for(const rival of ['nova','brick','iris'])for(const difficulty of ['rookie','fighter','master']){
  const queued=[],cancelled=[],g=R.create({warning:(beat,id)=>queued.push({beat,id,at:g.s.now}),cancelWarning:id=>cancelled.push(id)});g.reset(0,difficulty,hero,true,{mode:'rival',enemy:rival});
- ok(queued.length===3,'three threats queued before the visual warning, including the second in a pair');ok(g.s.nextIncoming,'second committed threat exists');let pairs=0;
+ ok(queued.length===4,'four threats queued before the visual warning, including the second in a pair');ok(g.s.nextIncoming,'second committed threat exists');let pairs=0;
  for(let i=0;i<12;i++){const first=g.s.incoming,next=g.s.nextIncoming;ok(first.beatAt<next.beatAt,'ordered attacks');ok(queued.some(q=>q.id===next.id),'preview already has a sound cue');const before=next.beatAt;g.s.phase=3;g.s.enemy.hp=g.s.enemy.maxHP*.2;
-  g.step(first.beatAt-150);g.defend(first.beatAt);g.release(first.beatAt);g.step(first.contactAt);eq(g.s.incoming.id,next.id,'promote the announced threat');eq(g.s.incoming.beatAt,before,'HP phase never retimes an announced beat');if(next.beatAt-first.beatAt===500)pairs++;
+  g.step(first.beatAt-150);g.defend(first.beatAt+R.DIFFICULTIES[difficulty].perfect+1);g.release(first.beatAt+R.DIFFICULTIES[difficulty].perfect+1);g.step(first.contactAt);eq(g.s.incoming.id,next.id,'promote the announced threat');eq(g.s.incoming.beatAt,before,'HP phase never retimes an announced beat');if(next.beatAt-first.beatAt===500)pairs++;
  }
  eq(new Set(queued.map(x=>x.id)).size,queued.length,'no duplicate queue');g.cancelThreats();eq(g.s.incoming,null,'no current after exit');eq(g.s.nextIncoming,null,'no preview after exit');ok(cancelled.length>=3,'current and both future warning sounds cancelled');
  if(rival==='iris'&&difficulty==='master')ok(pairs>0,'fast pair really exercised');

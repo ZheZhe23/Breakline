@@ -11,9 +11,9 @@ for(const [d,p]of Object.entries(C.DIFFICULTIES))for(let i=0;i<10;i++){const t=i
 for(const id of Object.keys(F.roster)){
  const f=F.get(id);eq(Object.keys(f.recipes).length,3,'three distinct recipes');
  for(const [recipe,finish]of Object.entries(f.recipes))for(const offset of [0,Math.floor((C.DIFFICULTIES.fighter.perfect+C.DIFFICULTIES.fighter.good)/2),190]){
-  const {g,t,fills}=make(id);recipe.split('').forEach((k,i)=>ok(attack(g,k,t+i*500+offset).accepted,'accepted recipe '+id+recipe));
+  const {g,t,fills}=make(id);recipe.split('').forEach((k,i)=>ok(attack(g,k,t+i*(offset===190?1000:500)+offset).accepted,'accepted recipe '+id+recipe));
   eq(g.s.stats.combos,offset===190?0:1,'clean combo '+id+recipe);eq(fills.length,offset===0?1:0,'musical response gated');
-  if(offset===0){eq(g.s.history.at(-1).move,finish.move);ok(g.s.freeze,'contact snapshot');const hp=g.s.enemy.hp;g.step(g.s.now+20);eq(g.s.enemy.hp,hp,'single hit');eq(g.s.player.ready-g.s.player.action.start,675,'recovery');const action=g.s.player.action,m=F.move(id,action.move);eq(F.visual(g.s.player,action.start+m.impact).frame,m.frames[3],'contact illustration exact');}
+  if(offset===0){eq(g.s.history.at(-1).move,finish.move);ok(g.s.freeze,'contact snapshot');const hp=g.s.enemy.hp;g.step(g.s.now+20);eq(g.s.enemy.hp,hp,'single hit');eq(g.s.player.ready-g.s.player.action.start,F.move(id,finish.move).impact+500,'one beat after contact');const action=g.s.player.action,m=F.move(id,action.move);eq(F.visual(g.s.player,action.start+m.impact).frame,m.frames[3],'contact illustration exact');}
  }
  // Exhaustive accepted prefixes are independent of the eventual recipe branch.
  for(const a of Object.keys(f.recipes))for(const b of Object.keys(f.recipes)){const ga=make(id),gb=make(id);let n=0;while(a[n]&&a[n]===b[n]){attack(ga.g,a[n],ga.t+n*500);attack(gb.g,b[n],gb.t+n*500);eq(ga.g.s.history.at(-1).move,gb.g.s.history.at(-1).move,'shared trie edge');n++}}
@@ -27,7 +27,7 @@ for(const id of Object.keys(F.roster)){
  const {g,t}=make();'LHHH'.split('').forEach((k,i)=>attack(g,k,t+i*500));eq(g.s.stats.combos,0,'bad suffix no finisher');ok(g.s.history[2].standalone);const hp=g.s.enemy.hp;g.step(t+3000);eq(g.s.enemy.hp,hp,'no phantom impact');
 }
 {
- const {g,t}=make();attack(g,'L',t);attack(g,'L',t+500);const series=g.s.series.id;g.defend(t+1000);g.release(t+1000);g.enemyImpact({beatAt:t+1000,move:'cross'},t+1115);eq(g.s.series.id,series,'defence bridge');attack(g,'H',t+1500);eq(g.s.stats.combos,1);eq(g.s.stats.counters,1);
+ const {g,t}=make();attack(g,'L',t);attack(g,'L',t+500);const series=g.s.series.id;g.defend(t+1000);g.release(t+1000);g.enemyImpact({beatAt:t+1000,move:'cross'},t+1115);eq(g.s.series,null,'defence instead of the next attack breaks consecutive combo');attack(g,'H',t+1500);eq(g.s.stats.combos,0);eq(g.s.stats.counters,1);
  const p=g.s.player.ready;g.defend(t+2000);eq(g.s.player.ready,p,'defence cannot erase attack recovery');
 }
 {
@@ -71,7 +71,7 @@ for(const id of Object.keys(F.roster)){
 const rivalReports=[];
 for(const id of Object.keys(F.roster)){
  const g=C.create();g.reset(0,'master',id);const timeline=[];
- for(let i=0;i<8;i++){const inc=g.s.incoming;timeline.push({beat:inc.beatAt,move:inc.move,strong:inc.signature});g.step(inc.beatAt-80);g.defend(inc.beatAt);g.release(inc.beatAt);g.step(inc.contactAt+1)}
+ for(let i=0;i<8;i++){const inc=g.s.incoming;timeline.push({beat:inc.beatAt,move:inc.move,strong:inc.signature});g.step(inc.beatAt-80);g.defend(inc.beatAt+46);g.release(inc.beatAt+46);g.step(inc.contactAt+1)}
  rivalReports.push({fighter:id,opponent:g.s.enemy.fighter,style:g.rival().name,timeline});
 }
 eq(new Set(rivalReports.map(x=>JSON.stringify(x.timeline))).size,3,'rival cadences and techniques actually differ');

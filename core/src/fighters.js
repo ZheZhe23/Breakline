@@ -34,6 +34,8 @@ function carry(value,speed,age,span=180){const u=clamp(age/span,0,1);return (2*u
 function visual(a,t,flags={}){
  const f=get(a.fighter),act=a.action;
  if(flags.victory||flags.defeat)return {fighter:f.id,frame:flags.victory?29:26,x:0,y:0,flash:false};
+ if(a.recovery){const r=a.recovery;if(t>=r.end)return {fighter:f.id,frame:0,x:0,y:0,flash:false};const span=r.end-r.start-r.stop,u=clamp((t-r.start-r.stop)/span,0,1),age=u*span,m=move(f.id,r.move),frame=u<.16?r.from.frame:r.kind==='defender'?(u<.55?26:u<.83?24:0):(u<.48?m.frames[4]:u<.78?m.frames[5]:u<.92?5:0);return {fighter:f.id,frame,x:carry(r.from.x,r.from.vx,age,span),y:carry(r.from.y,r.from.vy,age,span),flash:false}}
+ if(a.visualReturn&&t<a.visualReturn.end){const r=a.visualReturn,age=t-r.start;return {fighter:f.id,frame:age<35?r.from.frame:age<110?5:0,x:carry(r.from.x,r.from.vx,age,160),y:carry(r.from.y,r.from.vy,age,160),flash:false}}
  let frame=0,x=0,y=0,flash=false;
  if(act){
   const m=move(a.fighter,act.move),stop=act.visualStop,lag=stop?clamp(t-stop.at,0,stop.duration):0,age=Math.max(0,t-act.start-lag),i=m.impact,from=act.from??{frame:0,x:0,y:0};
@@ -51,7 +53,7 @@ function visual(a,t,flags={}){
  if(a.defence&&t<a.defence.end){const d=a.defence,age=Math.max(0,t-d.start);frame=age<35?d.from.frame:age<245?25:5;x=carry(d.from.x,d.from.vx,age)+(age<80?lerp(0,-7,smooth(age/80)):age<165?-7:lerp(-7,0,smooth((age-165)/165)));y=carry(d.from.y,d.from.vy,age)}
  // OFF has a visible near-miss rather than a damaging-looking ghost contact.
  if(a.evade&&t<a.evade.end){const d=a.evade,age=Math.max(0,t-d.start),u=clamp(age/330,0,1);frame=age<35?d.from.frame:age<245?(f.id==='iris'?27:25):5;x=carry(d.from.x,d.from.vx,age)-Math.sin(Math.PI*smooth(u))*12;y=carry(d.from.y,d.from.vy,age)}
- if(a.hit&&t<a.hit.end&&!a.hit.keepAttack){const h=a.hit,age=Math.max(0,t-h.start),duration=h.end-h.start;frame=age<22?h.from.frame:age<duration-85?26:24;x=carry(h.from.x,h.from.vx,age)+(age<60?lerp(0,-8,smooth(age/60)):lerp(-8,0,smooth((age-60)/(duration-60))));y=carry(h.from.y,h.from.vy,age)}
+ if(a.hit&&(t<a.hit.end||flags.held)&&!a.hit.keepAttack){const h=a.hit,age=Math.max(0,t-h.start),duration=h.end-h.start;frame=age<22?h.from.frame:flags.held||age<duration-85?26:24;x=carry(h.from.x,h.from.vx,age)+(age<60?lerp(0,-8,smooth(age/60)):lerp(-8,flags.held?-6:0,smooth((age-60)/(duration-60))));y=carry(h.from.y,h.from.vy,age)}
  if(a.hit?.keepAttack&&t<a.hit.end){const age=Math.max(0,t-a.hit.start);x-=Math.sin(Math.PI*clamp(age/(a.hit.end-a.hit.start),0,1))*3}
  if(flags.warning&&!act&&!a.hit&&!a.defence){frame=2;x=-2}
  return {fighter:f.id,frame:clamp(frame,0,47),x,y,flash};
