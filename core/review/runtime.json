@@ -1,0 +1,49 @@
+{
+  "coreSha256": "c2a3b19852c9085c75ff8065c6aef0fb44133379a81669e5a65ea667ac7bca82",
+  "checks": 38,
+  "paintSamples": {
+    "menu": {
+      "paints": 0,
+      "ticks": 27,
+      "clock": 0
+    },
+    "active": {
+      "paints": 27,
+      "ticks": 27,
+      "clock": 0.46149659863945613
+    },
+    "paused": {
+      "paints": 0,
+      "ticks": 27,
+      "clock": 0
+    },
+    "afterResize": {
+      "paints": 0,
+      "ticks": 28,
+      "clock": 0
+    },
+    "resumed": {
+      "paints": 27,
+      "ticks": 27,
+      "clock": 0.4498866213151924
+    },
+    "result": {
+      "paints": 0,
+      "ticks": 27,
+      "clock": 0.45278911564625846
+    },
+    "returned": {
+      "paints": 0,
+      "ticks": 27,
+      "clock": 0.44988662131519286
+    },
+    "reduced": {
+      "paints": 0,
+      "ticks": 27,
+      "clock": 0.44988662131519286
+    }
+  },
+  "lifecycle": "queued transitions, actual suspend/close/rejected resume, synthetic visibility",
+  "errors": [],
+  "androidHardwareTested": false
+}

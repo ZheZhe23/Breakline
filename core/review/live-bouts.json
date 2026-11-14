@@ -1,5 +1,5 @@
 {
-  "coreSha256": "d9437d6ff6ca09446ef7c8b266bfac8bfd66f00893fd2ea63abf67eb81149b09",
+  "coreSha256": "c2a3b19852c9085c75ff8065c6aef0fb44133379a81669e5a65ea667ac7bca82",
   "kind": "real-time native touch policy against active AI; silent Chromium video; not a human or Android recording",
   "reports": [
     {
@@ -7,8 +7,8 @@
       "opponent": "brick",
       "winner": "player",
       "stats": {
-        "perfect": 19,
-        "good": 0,
+        "perfect": 15,
+        "good": 4,
         "off": 0,
         "combos": 5,
         "variety": [
@@ -20,20 +20,20 @@
         "blocks": 0,
         "taken": 0,
         "counters": 4,
-        "score": 9429,
+        "score": 9248,
         "maxLevel": 5,
         "attempts": 5,
         "supers": 2,
         "guarded": 0,
         "interrupts": 4,
         "lateThreats": 0,
-        "time": 17047.753680272483,
+        "time": 17063.534106575964,
         "winBonus": 1760
       },
       "rating": {
         "rank": "S",
-        "value": 100,
-        "accuracy": 100
+        "value": 97,
+        "accuracy": 94
       },
       "lateThreats": 0,
       "nativeTaps": 24,
@@ -45,7 +45,7 @@
       "winner": "player",
       "stats": {
         "perfect": 14,
-        "good": 0,
+        "good": 1,
         "off": 0,
         "combos": 4,
         "variety": [
@@ -56,24 +56,24 @@
         "dodges": 8,
         "blocks": 0,
         "taken": 0,
-        "counters": 5,
-        "score": 9541,
+        "counters": 3,
+        "score": 8115,
         "maxLevel": 5,
         "attempts": 8,
-        "supers": 2,
+        "supers": 1,
         "guarded": 0,
-        "interrupts": 3,
+        "interrupts": 2,
         "lateThreats": 0,
-        "time": 14556.945702948404,
+        "time": 14745.933215419538,
         "winBonus": 1800
       },
       "rating": {
         "rank": "S",
-        "value": 100,
-        "accuracy": 100
+        "value": 99,
+        "accuracy": 98
       },
       "lateThreats": 0,
-      "nativeTaps": 22,
+      "nativeTaps": 23,
       "errors": []
     },
     {
@@ -101,7 +101,7 @@
         "guarded": 0,
         "interrupts": 3,
         "lateThreats": 0,
-        "time": 14757.059113378687,
+        "time": 14745.45829478462,
         "winBonus": 1800
       },
       "rating": {
