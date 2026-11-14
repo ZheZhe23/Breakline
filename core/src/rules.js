@@ -14,7 +14,7 @@ function grade(at,difficulty='fighter'){const d=DIFFICULTIES[difficulty]??DIFFIC
 function create(hooks={}){
  const elapsed=(a,b)=>hooks.elapsedMs?.(a,b)??b-a,rhythmError=at=>hooks.rhythmError?.(at)??error(at),judge=at=>{const d=profile(),e=Math.abs(rhythmError(at));return e<=d.perfect?'PERFECT':e<=d.good?'GOOD':'OFF'};
  let serial=0;const actor=(x,facing,hp,fighter='nova')=>({x,facing,fighter,hp,maxHP:hp,action:null,ready:0,stun:0,hit:null,evade:null,defence:null,guardBlend:null});
- const s={fighterId:'nova',super:0,training:false,practice:null,mode:'idle',difficulty:'rookie',now:0,start:0,end:0,player:actor(137,1,150),enemy:actor(221,-1,220),energy:0,level:1,enemyEnergy:0,enemyLevel:1,musicLevel:1,tempoTarget:120,lastGrooveBeat:0,lessonTempo:false,phase:1,series:null,buffer:null,block:false,incoming:null,enemyIndex:0,guard:null,repeat:{key:null,count:0},counterUntil:0,feedback:null,freeze:null,flash:0,impacts:[],particles:[],trails:[],history:[],events:[],lastStep:0,lastEarned:0,streak:0,coach:0,stats:{perfect:0,good:0,off:0,combos:0,variety:[],dodges:0,blocks:0,taken:0,counters:0,score:0,maxLevel:1,attempts:0,supers:0,guarded:0,interrupts:0,lateThreats:0},fills:0};
+ const s={fighterId:'nova',super:0,training:false,practice:null,mode:'idle',difficulty:'rookie',now:0,start:0,end:0,player:actor(137,1,150),enemy:actor(221,-1,220),energy:0,level:1,enemyEnergy:0,enemyLevel:1,musicLevel:1,tempoTarget:120,lastGrooveBeat:0,lessonTempo:false,phase:1,series:null,buffer:null,block:false,incoming:null,nextIncoming:null,upcoming:[],enemyIndex:0,guard:null,repeat:{key:null,count:0},counterUntil:0,feedback:null,freeze:null,flash:0,impacts:[],particles:[],trails:[],history:[],events:[],lastStep:0,lastEarned:0,streak:0,coach:0,stats:{perfect:0,good:0,off:0,combos:0,variety:[],dodges:0,blocks:0,taken:0,counters:0,score:0,maxLevel:1,attempts:0,supers:0,guarded:0,interrupts:0,lateThreats:0},fills:0};
  const emit=(name,...args)=>hooks[name]?.(...args),profile=()=>DIFFICULTIES[s.difficulty],book=()=>CoreFighters.get(s.fighterId);
  function charge(amount,t){s.super=clamp(s.super+amount,0,100)}
  function record(type,t,extra={}){s.events.push({id:++serial,type,t,...extra});if(s.events.length>128)s.events.shift()}
@@ -31,15 +31,30 @@ function create(hooks={}){
  function practiceLevel(level,t){if(!s.practice)return false;s.practice.level=Number.isInteger(level)&&level>=1&&level<=5?level:null;if(s.practice.level){enemyEnergy(0,t);energy(0,t)};return true}
  function rival(){return CoreFighters.rivals[s.enemy.fighter]}
  function interval(index,signature=false){const r=rival(),minimum=s.difficulty==='rookie'?3:s.difficulty==='fighter'?2:1,raw=r.cadence[index%r.cadence.length]-(s.phase===3?1:0);return Math.max(signature?2:minimum,raw)}
- function plan(beatAt){
-  const index=s.enemyIndex++,r=rival(),f=CoreFighters.get(s.enemy.fighter),signature=rivalActive()&&index%r.signatureEvery===r.signatureEvery-1,signatureMove=Object.values(f.recipes)[f.id==='brick'?1:2].move;
-  s.incoming={id:++serial,beatAt,contactAt:beatAt+115,signature,move:signature?signatureMove:r.moves[index%r.moves.length],started:false,resolved:false,cancelled:false,double:interval(index,signature)===1,warned:false};
+ // Two committed future attacks cover one-beat runs and up to 0.49s output latency at 160 BPM.
+ function makeThreat(beatAt,index){
+  const r=rival(),f=CoreFighters.get(s.enemy.fighter),signature=rivalActive()&&index%r.signatureEvery===r.signatureEvery-1,signatureMove=Object.values(f.recipes)[f.id==='brick'?1:2].move;
+  return {id:++serial,index,beatAt,contactAt:beatAt+115,signature,move:signature?signatureMove:r.moves[index%r.moves.length],started:false,resolved:false,cancelled:false,double:interval(index,signature)===1,warned:false,audioQueued:false};
+ }
+ function queueWarning(inc){if(inc&&!inc.audioQueued&&!inc.cancelled){inc.audioQueued=true;emit('warning',inc.beatAt,inc.id)}}
+ function gapFor(inc){return rivalActive()?interval(inc.index,inc.signature):profile().intervals[inc.index%profile().intervals.length]}
+ function preview(){
+  if(rivalActive())while(s.upcoming.length<2){const last=s.upcoming.at(-1)??s.incoming,next=makeThreat(last.beatAt+gapFor(last)*BEAT,last.index+1);s.upcoming.push(next);queueWarning(next)}
+  s.nextIncoming=s.upcoming[0]??null;
+ }
+ function threats(){return s.incoming?[s.incoming,...s.upcoming]:[]}
+ function cancelThreats(){for(const inc of threats()){inc.cancelled=true;emit('cancelWarning',inc.id)}s.incoming=null;s.nextIncoming=null;s.upcoming=[]}
+ function plan(beatAt){s.incoming=makeThreat(beatAt,s.enemyIndex++);queueWarning(s.incoming);preview()}
+ function advance(inc){
+  const next=s.upcoming[0];
+  if(next&&next.index===inc.index+1&&next.beatAt>inc.beatAt){s.incoming=s.upcoming.shift();s.enemyIndex=next.index+1;preview()}
+  else{for(const queued of s.upcoming)emit('cancelWarning',queued.id);s.upcoming=[];s.nextIncoming=null;plan(inc.beatAt+gapFor(inc)*BEAT)}
  }
  function reset(now,difficulty=s.difficulty,fighterId=s.fighterId,training=false,practiceOptions=null){
   s.difficulty=DIFFICULTIES[difficulty]?difficulty:'rookie';const d=profile(),f=CoreFighters.get(fighterId),ids=Object.keys(CoreFighters.roster),enemyId=practiceOptions&&ids.includes(practiceOptions.enemy)?practiceOptions.enemy:ids[(ids.indexOf(f.id)+1)%ids.length],enemy=CoreFighters.get(enemyId),start=(Math.floor(now/BEAT)+1)*BEAT+3*BEAT;
   const practice=practiceOptions?{mode:practiceOptions.mode==='rival'?'rival':'dummy',enemy:enemy.id,level:null}:null;training=training||!!practice;
-  Object.assign(s,{fighterId:f.id,super:0,training,practice,mode:'fight',now,start,end:start+45000,player:actor(137,1,Math.round(d.hp*f.hp),f.id),enemy:actor(221,-1,Math.round(d.enemyHP*enemy.hp),enemyId),energy:0,level:1,enemyEnergy:0,enemyLevel:1,musicLevel:1,tempoTarget:120,lastGrooveBeat:0,lessonTempo:false,phase:1,series:null,buffer:null,block:false,incoming:null,enemyIndex:0,guard:null,repeat:{key:null,count:0},counterUntil:0,feedback:null,freeze:null,flash:0,impacts:[],particles:[],trails:[],history:[],events:[],lastStep:now,lastEarned:now,streak:0,coach:0,stats:{perfect:0,good:0,off:0,combos:0,variety:[],dodges:0,blocks:0,taken:0,counters:0,score:0,maxLevel:1,attempts:0,supers:0,guarded:0,interrupts:0,lateThreats:0},fills:0});
-  s.lastGrooveBeat=Math.floor(start/BEAT);emit('resetTempo');plan(start+7*BEAT);if(practice?.mode==='dummy')s.incoming=null;emit('level',1);return s;
+  Object.assign(s,{fighterId:f.id,super:0,training,practice,mode:'fight',now,start,end:start+45000,player:actor(137,1,Math.round(d.hp*f.hp),f.id),enemy:actor(221,-1,Math.round(d.enemyHP*enemy.hp),enemyId),energy:0,level:1,enemyEnergy:0,enemyLevel:1,musicLevel:1,tempoTarget:120,lastGrooveBeat:0,lessonTempo:false,phase:1,series:null,buffer:null,block:false,incoming:null,nextIncoming:null,upcoming:[],enemyIndex:0,guard:null,repeat:{key:null,count:0},counterUntil:0,feedback:null,freeze:null,flash:0,impacts:[],particles:[],trails:[],history:[],events:[],lastStep:now,lastEarned:now,streak:0,coach:0,stats:{perfect:0,good:0,off:0,combos:0,variety:[],dodges:0,blocks:0,taken:0,counters:0,score:0,maxLevel:1,attempts:0,supers:0,guarded:0,interrupts:0,lateThreats:0},fills:0});
+  s.lastGrooveBeat=Math.floor(start/BEAT);emit('resetTempo');if(rivalActive())plan(start+({rookie:8,fighter:6,master:4}[s.difficulty])*BEAT);emit('level',1);return s;
  }
  function getGuard(t){if(s.incoming&&!s.incoming.cancelled&&!s.incoming.resolved&&t>s.incoming.beatAt-180)return null;return s.guard&&t>=s.guard.start&&t<s.guard.end?s.guard.key:null}
  function warning(t){return s.incoming&&!s.incoming.resolved&&!s.incoming.cancelled&&t>=s.incoming.beatAt-700&&t<s.incoming.contactAt}
@@ -89,7 +104,7 @@ function create(hooks={}){
   if(a.counter){s.stats.counters++;energy(4,t);charge(8,t);message('КОНТРА','×1.45 УРОН',t,'counter')}
   react(e,t,a.strong,a.move);
   if(a.strong){
-   if(warning(t)){s.incoming.cancelled=true;s.stats.interrupts++;record('interrupt',t)}
+   if(warning(t)){s.incoming.cancelled=true;emit('cancelWarning',s.incoming.id);s.stats.interrupts++;record('interrupt',t)}
    const attacker=getPose(p,t),defender={...getPose(e,t),frame:26,x:-8,y:0},stop=a.super?110:85;a.visualStop={at:t,duration:stop};e.hit.from=defender;e.hit.start+=stop;e.hit.end+=stop;s.freeze={until:t+stop,at:t,player:attacker,enemy:defender};s.flash=t+100;
    if(guardBreak){s.guard=null;message('BREAK','ЗАЩИТА СЛОМАНА',t,'counter')}
   }
@@ -109,7 +124,7 @@ function create(hooks={}){
   if(s.block&&t>=p.stun){p.hp=Math.max(s.training?1:0,p.hp-4);s.stats.blocks++;enemyEnergy(2,t);message('БЛОК','УДЕРЖАНИЕ ЗАЩИЩАЕТ · ТОЧНЫЙ ТАП ДАЁТ КОНТРУ',t,'guard');emit('sfx','block');record('block',t);return}
   enemyEnergy(4,t);const damage=profile().damage+(incoming.double?2:0)+(incoming.signature?4:0);const armoured=p.action?.super&&!p.action.resolved;p.hp=Math.max(s.training?1:0,p.hp-(armoured?Math.ceil(damage*.5):damage));if(armoured){message('БРОНЯ','СУПЕР ПРОДОЛЖАЕТСЯ',t,'counter');emit('sfx','block');record('armour',t);return}s.stats.taken++;s.streak=0;energy(-9,t);charge(-6,t);breakSeries();s.buffer=null;react(p,t,!!incoming.signature,incoming.move);if(incoming.signature){const defender={...getPose(p,t),frame:26,x:-8,y:0};if(s.enemy.action)s.enemy.action.visualStop={at:t,duration:85};p.hit.from=defender;p.hit.start+=85;p.hit.end+=85;s.freeze={at:t,until:t+85,player:defender,enemy:getPose(s.enemy,t)};s.flash=t+100}p.ready=Math.max(p.ready,t+160);message('ПОПАДАНИЕ','КРАСНАЯ ДОЛЯ → УХОД',t,'hurt');burst(p.x+5,-104,t,false,'enemy');emit('sfx','hit',!!incoming.signature);record('hurt',t,{damage});
  }
- function finish(t){if(s.mode!=='fight')return;s.mode='ending';s.resultAt=t+650;s.block=false;s.buffer=null;breakSeries();s.winner=s.enemy.hp<=0?'player':s.player.hp<=0?'enemy':s.player.hp/s.player.maxHP>s.enemy.hp/s.enemy.maxHP?'player':'enemy';s.stats.time=Math.max(0,elapsed(s.start,t));if(s.winner==='player'){s.stats.winBonus=1200+Math.round(remaining(t)/1000)*20;s.stats.score+=s.stats.winBonus}s.rating=rating();}
+ function finish(t){if(s.mode!=='fight')return;cancelThreats();s.mode='ending';s.resultAt=t+650;s.block=false;s.buffer=null;breakSeries();s.winner=s.enemy.hp<=0?'player':s.player.hp<=0?'enemy':s.player.hp/s.player.maxHP>s.enemy.hp/s.enemy.maxHP?'player':'enemy';s.stats.time=Math.max(0,elapsed(s.start,t));if(s.winner==='player'){s.stats.winBonus=1200+Math.round(remaining(t)/1000)*20;s.stats.score+=s.stats.winBonus}s.rating=rating();}
  function rating(){const st=s.stats,n=st.perfect+st.good+st.off,accuracy=n?(st.perfect+st.good*.7)/n:0,defence=st.attempts?(st.dodges+st.blocks*.35)/st.attempts:0,points=accuracy*55+defence*20+st.variety.length/3*15+s.player.hp/s.player.maxHP*10;return {rank:points>=92?'S':points>=80?'A':points>=65?'B':points>=45?'C':'D',value:Math.round(points),accuracy:Math.round(accuracy*100)}}
  function review(){
   const st=s.stats,n=st.perfect+st.good+st.off,accuracy=n?(st.perfect+st.good*.7)/n:0;
@@ -131,22 +146,23 @@ function create(hooks={}){
   if(s.series&&t-s.series.lastInput>1250)breakSeries();
   if(s.buffer&&t>=s.player.ready){const b=s.buffer;s.buffer=null;if(elapsed(b.at,t)<=110)input(b.key,b.at,t)}
   // A long foreground stall must not burst several unheard threats on recovery.
-  if(s.incoming&&!s.incoming.resolved&&t-s.incoming.contactAt>200){s.incoming.resolved=true;s.incoming.cancelled=true;s.stats.lateThreats++;record('lateThreat',t);if(s.enemy.action?.enemyPending)s.enemy.action=null;plan((Math.ceil(t/BEAT)+2)*BEAT)}
+  if(s.incoming&&!s.incoming.resolved&&t-s.incoming.contactAt>200){s.stats.lateThreats++;record('lateThreat',t);cancelThreats();if(s.enemy.action?.enemyPending)s.enemy.action=null;plan((Math.ceil(t/BEAT)+3)*BEAT)}
   const inc=s.incoming;
   if(inc&&!inc.resolved){
-   if(warning(t)&&!inc.warned){inc.warned=true;emit('warning',inc.beatAt);record('warning',t)}
+   if(inc.index===undefined)inc.index=s.enemyIndex++;queueWarning(inc);
+   if(warning(t)&&!inc.warned){inc.warned=true;record('warning',t)}
    if(!inc.cancelled&&!inc.started&&t>=inc.contactAt-CoreFighters.move(s.enemy.fighter,inc.move).impact){const start=inc.contactAt-CoreFighters.move(s.enemy.fighter,inc.move).impact,from=getPose(s.enemy,start);inc.started=true;if(rivalActive()||s.lessonTempo)enemyEnergy(5,start);action(s.enemy,inc.move,start,{enemyPending:true,strong:inc.signature,from})}
   }
   const due=[];const a=s.player.action;if(a&&!a.resolved&&t>=a.start+CoreFighters.move(s.player.fighter,a.move).impact)due.push({t:a.start+CoreFighters.move(s.player.fighter,a.move).impact,type:'player',a});
   if(inc&&!inc.resolved&&t>=inc.contactAt)due.push({t:inc.contactAt,type:'enemy',a:inc});
-  due.sort((a,b)=>a.t-b.t);for(const event of due){if(event.type==='player'){if(s.player.action!==event.a)continue;event.a.resolved=true;playerImpact(event.a,event.t)}else {inc.resolved=true;if(s.enemy.action?.enemyPending)s.enemy.action.resolved=true;if(!inc.cancelled&&s.enemy.hp>0)enemyImpact(inc,event.t);const gap=!rivalActive()?profile().intervals[(s.enemyIndex-1)%profile().intervals.length]:interval(s.enemyIndex-1,inc.signature);plan(inc.beatAt+gap*BEAT)}}
+  due.sort((a,b)=>a.t-b.t);for(const event of due){if(event.type==='player'){if(s.player.action!==event.a)continue;event.a.resolved=true;playerImpact(event.a,event.t)}else {inc.resolved=true;if(s.enemy.action?.enemyPending)s.enemy.action.resolved=true;if(!inc.cancelled&&s.enemy.hp>0)enemyImpact(inc,event.t);advance(inc)}}
   if(!s.training&&(s.enemy.hp<=0||s.player.hp<=0)){finish(t);return}
   const guardKey=getGuard(t);if(s.enemy.guardKey!==guardKey&&!(s.enemy.action?.enemyPending&&!s.enemy.action.resolved)&&!s.enemy.hit){const from=getPose(s.enemy,t);s.enemy.guardBlend={from,at:t,to:!!guardKey,key:guardKey};s.enemy.guardKey=guardKey}
   const p=s.player;if(s.block&&(!p.defence||t>=p.defence.end)&&!p.guardBlend?.to){p.guardBlend={from:getPose(p,t),at:t,to:true}}
   if(s.enemy.hit&&t>=s.enemy.hit.end)s.enemy.hit=null;
   if(s.freeze&&t>s.freeze.until)s.freeze=null;s.impacts=s.impacts.filter(p=>t-p.at<190);s.particles=s.particles.filter(p=>t-p.at<440);s.trails=s.trails.filter(p=>t-p.at<145);
  }
- return {s,reset,step,charge,book,input,defend,release,setBlock,energy,grade:judge,rhythmError,elapsed,remaining,enemyEnergy,bpmAt:t=>hooks.bpmAt?.(t)??s.tempoTarget,getPose,getGuard,warning,action,playerImpact,enemyImpact,rating,review,rival,interval,practiceLevel};
+ return {s,reset,step,charge,book,input,defend,release,setBlock,energy,grade:judge,rhythmError,elapsed,remaining,enemyEnergy,bpmAt:t=>hooks.bpmAt?.(t)??s.tempoTarget,getPose,getGuard,warning,action,playerImpact,enemyImpact,rating,review,rival,interval,practiceLevel,cancelThreats,threats};
 }
 return {create,grade,error,RECIPES,trie,prefixMoves,DIFFICULTIES,BEAT};
 })();

@@ -17,7 +17,7 @@ function create(game,hooks={}){
   state.recipe=recipes[index===8?1:0];hooks.progress?.(index,false);return state;
  }
  function begin(fighter,now,resume=0){state.active=true;state.graduated=false;state.fighter=CoreFighters.get(fighter).id;state.completed=[];return enter(Math.max(0,Math.min(titles.length-1,resume)),now)}
- function done(now){if(state.waiting)return;state.waiting=true;state.progress=state.total;game.s.mode='lessonWait';game.s.incoming=null;game.s.block=false;game.s.buffer=null;state.completed.push(state.index);hooks.progress?.(state.index+1,state.index===titles.length-1)}
+ function done(now){if(state.waiting)return;state.waiting=true;state.progress=state.total;game.s.mode='lessonWait';game.cancelThreats();game.s.block=false;game.s.buffer=null;state.completed.push(state.index);hooks.progress?.(state.index+1,state.index===titles.length-1)}
  function tick(now){
   if(!state.active||state.waiting)return;const s=game.s,recipes=Object.keys(CoreFighters.get(state.fighter).recipes),index=state.index;
   const events=s.events.filter(e=>e.id>state.cursor);for(const e of events){state.cursor=Math.max(state.cursor,e.id);
@@ -38,7 +38,7 @@ function create(game,hooks={}){
   if(state.progress>=state.total)done(now);
  }
  function next(now){if(!state.active||!state.waiting)return false;if(state.index===titles.length-1){state.active=false;state.graduated=true;game.s.mode='idle';hooks.complete?.();return true}enter(state.index+1,now);return true}
- function exit(){state.active=false;state.waiting=false;game.s.mode='idle';game.s.incoming=null;game.s.block=false}
+ function exit(){state.active=false;state.waiting=false;game.s.mode='idle';game.cancelThreats();game.s.block=false}
  function description(){const f=CoreFighters.get(state.fighter),r=state.recipe.replaceAll('L','Р').replaceAll('H','Н').split('').join(' · ');return [
  'Нажми РУКУ на музыкальную долю три раза. PERFECT и GOOD засчитываются.',
  'Теперь два чистых удара НОГОЙ. OFF двигает бойца, но не наносит урон.',

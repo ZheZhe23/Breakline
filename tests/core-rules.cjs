@@ -2,7 +2,7 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict'),path=require('node:path'),crypto=require('node:crypto');
 const root=path.resolve(__dirname,'..'),read=p=>fs.readFileSync(root+'/'+p,'utf8'),env={performance:{now:()=>0}};vm.createContext(env);vm.runInContext(['fighters','transport','audio','rules','lessons'].map(n=>read('core/src/'+n+'.js')).join('\n')+'\n'+read('tests/reference/rig-v2.js')+';this.C=CoreRules;this.F=CoreFighters;this.L=CoreLessons;this.R=CoreRig;this.A=CoreAudio;',env);const {C,F,L,R,A}=env;
 let checks=0,legacyFrames=0,legacySegments=0;const ok=(v,m)=>{checks++;assert.ok(v,m)},eq=(a,b,m)=>{checks++;assert.equal(a,b,m)};
-function make(id='nova',d='fighter'){const fills=[],g=C.create({fill:(...x)=>fills.push(x)});g.reset(0,d,id);g.s.incoming=null;return {g,t:g.s.start,fills}}
+function make(id='nova',d='fighter'){const fills=[],g=C.create({fill:(...x)=>fills.push(x)});g.reset(0,d,id);g.cancelThreats();return {g,t:g.s.start,fills}}
 function attack(g,k,t){const r=g.input(k,t);if(r.accepted)g.step(r.action.start+F.move(g.s.fighterId,r.action.move).impact+20);return r}
 eq(crypto.createHash('sha256').update(read('index.html')).digest('hex'),'29340083b2fd3cdedf190ae80627022f870fdcb9126ae02953d34523f27b9d8a','main unchanged');
 ok(!read('core/index.html').includes('const CoreRig'),'release does not ship procedural skeleton');
@@ -130,7 +130,7 @@ const policies=[];
 for(const id of Object.keys(F.roster))for(const policy of ['reader','repeat']){
  const g=C.create();g.reset(0,'master',id);let cycle=0;
  for(let t=g.s.start;t<g.s.start+46000&&g.s.mode!=='result';t+=5){
-  if(t%500===0){if(policy==='reader'&&g.s.incoming&&!g.s.incoming.cancelled&&g.s.incoming.beatAt===t&&!(g.s.player.action?.super&&!g.s.player.action.resolved)){g.defend(t);g.release(t)}else if(t>=g.s.player.ready){const recipes=Object.keys(g.book().recipes),target=recipes[cycle%3],prefix=g.s.series?.prefix??'';let key=policy==='repeat'?'L':target.startsWith(prefix)?target[prefix.length]:target[0];if(g.s.super>=100&&(policy==='repeat'||!g.s.series))key='S';const r=g.input(key,t);if(r.action?.finish)cycle++}}g.step(t)
+  if(t%500===0){if(policy==='reader'&&g.s.incoming&&!g.s.incoming.cancelled&&g.s.incoming.beatAt===t&&!(g.s.player.action?.super&&!g.s.player.action.resolved)){g.defend(t);g.release(t)}else if(t>=g.s.player.ready){const recipes=Object.keys(g.book().recipes),target=recipes.find(r=>!g.s.stats.variety.includes(r))??recipes[cycle%3],prefix=g.s.series?.prefix??'';let key=policy==='repeat'?'L':target.startsWith(prefix)?target[prefix.length]:target[0];if(g.s.super>=100&&(policy==='repeat'||!g.s.series&&g.s.stats.variety.length===3))key='S';const r=g.input(key,t);if(r.action?.finish)cycle++}}g.step(t)
  }
  eq(g.s.mode,'result','bout terminates');eq(g.s.winner,policy==='reader'?'player':'enemy','skill advantage '+id);if(policy==='reader'){eq(g.s.stats.variety.length,3);ok(g.s.stats.supers>0);ok(g.s.stats.dodges>0)}policies.push({fighter:id,policy,winner:g.s.winner,combos:g.s.stats.combos,supers:g.s.stats.supers,score:g.s.stats.score});
 }

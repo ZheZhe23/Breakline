@@ -24,19 +24,19 @@ function create(context){
  function delayUntil(ticks,offset=0){return (transport.timeAt(ticks/500)+latency-offset/1000-ctx.currentTime)*1000}
  function rhythmError(ticks){const beat=ticks/500;return (transport.timeAt(beat)-transport.timeAt(Math.round(beat)))*1000}
  function elapsedMs(a,b){return (transport.timeAt(b/500)-transport.timeAt(a/500))*1000}
- const plans=[{at:origin,level:1}],fills=[],events=[],cues=[],accents=[],warnings=[];let next=0,requested=1,muted=false,timer=null;
+ const plans=[{at:origin,level:1}],fills=[],events=[],cues=[],accents=[],warnings=[],warningIds=[],warningVoices=new Map();let next=0,requested=1,muted=false,timer=null;
  const hz=n=>440*2**((n-69)/12),rootAt=step=>[38,38,39,36][Math.floor(step/32)%4];
  function safeBeat(now=ctx.currentTime,unit=1){return Math.max(0,Math.ceil((transport.beatAt(now+LOOK+.04)-1e-8)/unit)*unit)}
  function setTempo(target,now=ctx.currentTime){
   target=Math.max(120,Math.min(160,Math.round(target/10)*10));let bpm=transport.segments.at(-1).bpm,beat=Math.max(safeBeat(now,4),transport.segments.at(-1).beat+4);
   while(bpm<target){bpm+=10;transport.setTempo(bpm,beat);beat+=4}return transport.segments;
  }
- function resetTempo(now=ctx.currentTime){warnings.length=0;accents.length=0;return transport.setTempo(120,safeBeat(now))}
+ function resetTempo(now=ctx.currentTime){clearWarnings();accents.length=0;return transport.setTempo(120,safeBeat(now))}
  function tone(bus,at,freq,duration,volume,type='sine',filter=0,pan=0){
   const o=ctx.createOscillator(),g=ctx.createGain();if(type==='warm')o.setPeriodicWave(warm);else o.type=type;o.frequency.setValueAtTime(freq,at);
   g.gain.setValueAtTime(.0001,at);g.gain.exponentialRampToValueAtTime(Math.max(.0002,volume),at+(duration>1?.07:.008));g.gain.exponentialRampToValueAtTime(Math.max(.0002,volume*.45),at+duration*.65);g.gain.exponentialRampToValueAtTime(.0001,at+duration);
   if(filter){const f=ctx.createBiquadFilter();f.type='lowpass';f.frequency.setValueAtTime(filter,at);f.frequency.exponentialRampToValueAtTime(Math.max(250,filter*.35),at+duration);o.connect(f);f.connect(g)}else o.connect(g);
-  const panner=pan&&ctx.createStereoPanner?ctx.createStereoPanner():null;if(panner){panner.pan.value=pan;g.connect(panner);panner.connect(bus)}else g.connect(bus);o.start(at);o.stop(at+duration+.02);o.onended=()=>{o.disconnect();g.disconnect();panner?.disconnect()};
+  const panner=pan&&ctx.createStereoPanner?ctx.createStereoPanner():null;if(panner){panner.pan.value=pan;g.connect(panner);panner.connect(bus)}else g.connect(bus);o.start(at);o.stop(at+duration+.02);o.onended=()=>{o.disconnect();g.disconnect();panner?.disconnect()};return o;
  }
  function percussion(bus,at,duration,volume,cutoff=6500,type='highpass'){
   const s=ctx.createBufferSource(),f=ctx.createBiquadFilter(),g=ctx.createGain();s.buffer=noise;f.type=type;f.frequency.value=cutoff;
@@ -72,8 +72,11 @@ function create(context){
    events.push({step,at,level,bpm:transport.bpmAt(step/4)});if(events.length>256)events.shift();
   }
   for(const a of accents){if(!a.done&&transport.timeAt(a.beat)<now+LOOK){a.done=true;const at=transport.timeAt(a.beat);if(at<now-.02)continue;cues.push({kind:'fill',beat:a.beat,at});if(cues.length>64)cues.shift();const root=rootAt(Math.round(a.beat*4));percussion(fillBus,at,.055,.075-a.index*.008,1800,'highpass');tone(fillBus,at,hz(root+[12,10,7,0][a.index]),.085,.055,'warm',1700)}}
-  for(const w of warnings){if(!w.done&&transport.timeAt(w.beat)<now+LOOK){w.done=true;const at=transport.timeAt(w.beat);if(at>=now-.02){cues.push({kind:'warning',beat:w.beat,at});if(cues.length>64)cues.shift();tone(effects,at,660,.065,.045,'triangle');percussion(effects,at,.025,.035,3500,'highpass')}}}
-  while(accents.length&&accents[0].done)accents.shift();while(warnings.length&&warnings[0].done)warnings.shift();
+  for(const w of warnings){if(!w.done&&!w.cancelled&&transport.timeAt(w.beat)<now+LOOK){w.done=true;const at=transport.timeAt(w.beat);if(at>=now-.02){
+   const gate=ctx.createGain();gate.connect(effects);const cue={kind:'warning',id:w.id,beat:w.beat,at,cancelledBeforeStart:false};cues.push(cue);if(cues.length>64)cues.shift();const voice={at,gate,cue};warningVoices.set(w.id,voice);
+   const o=tone(gate,at,660,.065,.045,'triangle'),cleanup=o.onended;o.onended=()=>{cleanup();gate.disconnect();if(warningVoices.get(w.id)===voice)warningVoices.delete(w.id)};percussion(gate,at,.025,.035,3500,'highpass');
+  }}}
+  while(accents.length&&accents[0].done)accents.shift();while(warnings.length&&(warnings[0].done||warnings[0].cancelled))warnings.shift();
  }
  function requestFill(id,quality,now=ctx.currentTime){
   const beat=Math.ceil(transport.beatAt(now+LOOK+.01)*2)/2;
@@ -91,7 +94,15 @@ function create(context){
   kick(effects,at,strong?.36:.18);percussion(effects,at,strong?.18:.085,strong?.13:.075,850,'lowpass');
   if(strong){tone(effects,at,82,.35,.09,'triangle',500);percussion(effects,at+.09,.13,.033,1200,'bandpass')}
  }
- function warning(beatAt){const beat=beatAt/500-1;if(transport.timeAt(beat)>=ctx.currentTime+.005&&!warnings.some(w=>w.beat===beat)){warnings.push({beat,done:false});if(warnings.length>32)warnings.shift()}}
+ function warning(beatAt,id=beatAt){
+  const beat=beatAt/500-1;if(warningIds.includes(id)||transport.timeAt(beat)<ctx.currentTime+.005)return false;
+  warningIds.push(id);if(warningIds.length>64)warningIds.shift();warnings.push({beat,id,done:false,cancelled:false});return true;
+ }
+ function cancelWarning(id,now=ctx.currentTime){
+  for(const w of warnings)if(w.id===id)w.cancelled=true;
+  const voice=warningVoices.get(id);if(voice){voice.cue.cancelledBeforeStart=now<voice.at;voice.gate.gain.cancelScheduledValues(now);voice.gate.gain.setTargetAtTime(.0001,now,.003)}
+ }
+ function clearWarnings(){for(const w of warnings)w.cancelled=true;for(const id of warningVoices.keys())cancelWarning(id);warnings.length=0;warningIds.length=0}
  function superCharge(fighter,at=ctx.currentTime+.003){
   const scale=(transport.timeAt(transport.beatAt(at)+1)-at)/.5,o=ctx.createOscillator(),g=ctx.createGain(),f=ctx.createBiquadFilter();o.type=fighter==='brick'?'triangle':'sawtooth';const base=fighter==='brick'?42:fighter==='iris'?220:100;
   o.frequency.setValueAtTime(base,at);o.frequency.exponentialRampToValueAtTime(base*4,at+.44*scale);f.type='lowpass';f.frequency.setValueAtTime(500,at);f.frequency.exponentialRampToValueAtTime(fighter==='iris'?3400:1700,at+.44*scale);
@@ -105,7 +116,7 @@ function create(context){
  function mute(value){muted=value;master.gain.cancelScheduledValues(ctx.currentTime);master.gain.setTargetAtTime(value?.0001:.82,ctx.currentTime,.025)}
  function start(){if(!timer)timer=setInterval(()=>schedule(),25);schedule()}
  function stop(){if(timer)clearInterval(timer);timer=null}
- return {ctx,origin,BPM,BEAT,STEP,transport,bassBus,bedBus,setTempo,resetTempo,eventTime,delayUntil,rhythmError,elapsedMs,bpmAt:t=>transport.bpmAt(t/500),plans,events,cues,fills,buses,master,music,effects,fillBus,noise,levelAt,setLevel,schedule,requestFill,sfx,warning,superCharge,superHit,mute,start,stop,now,latency:()=>latency,get muted(){return muted}};
+ return {ctx,origin,BPM,BEAT,STEP,transport,bassBus,bedBus,setTempo,resetTempo,eventTime,delayUntil,rhythmError,elapsedMs,bpmAt:t=>transport.bpmAt(t/500),plans,events,cues,fills,buses,master,music,effects,fillBus,noise,levelAt,setLevel,schedule,requestFill,sfx,warning,cancelWarning,clearWarnings,superCharge,superHit,mute,start,stop,now,latency:()=>latency,get muted(){return muted}};
 }
 return {create,estimateLatency,BPM,BEAT,STEP};
 })();
