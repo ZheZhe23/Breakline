@@ -1,5 +1,5 @@
 {
-  "coreSha256": "7dca01a8a1c4bef2b676b5b41c503f032e79ac456952caf2e6fd5ec7dc2bd7db",
+  "coreSha256": "f33fd6369d7b2980f28761f62ec60b8c599d49b478cfb8fca974e8edf04d902c",
   "checks": 38,
   "paintSamples": {
     "menu": {
@@ -10,7 +10,7 @@
     "active": {
       "paints": 27,
       "ticks": 27,
-      "clock": 0.44988662131519286
+      "clock": 0.45278911564625846
     },
     "paused": {
       "paints": 0,
@@ -19,18 +19,18 @@
     },
     "afterResize": {
       "paints": 0,
-      "ticks": 28,
+      "ticks": 27,
       "clock": 0
     },
     "resumed": {
       "paints": 27,
       "ticks": 27,
-      "clock": 0.44988662131519286
+      "clock": 0.4585941043083901
     },
     "result": {
       "paints": 0,
       "ticks": 27,
-      "clock": 0.4585941043083901
+      "clock": 0.46149659863945613
     },
     "returned": {
       "paints": 0,
@@ -40,7 +40,7 @@
     "reduced": {
       "paints": 0,
       "ticks": 27,
-      "clock": 0.42956916099773235
+      "clock": 0.44988662131519286
     }
   },
   "lifecycle": "queued transitions, actual suspend/close/rejected resume, synthetic visibility",

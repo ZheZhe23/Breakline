@@ -1,0 +1,718 @@
+{
+  "coreSha256": "f33fd6369d7b2980f28761f62ec60b8c599d49b478cfb8fca974e8edf04d902c",
+  "checks": 187,
+  "audible": [
+    {
+      "bpm": 120,
+      "latency": 0,
+      "estimatedLatency": 0,
+      "rival": "nova",
+      "completed": 9,
+      "cues": 10,
+      "minimumCueRMS": 0.009545004632954438,
+      "missing": []
+    },
+    {
+      "bpm": 120,
+      "latency": 0,
+      "estimatedLatency": 0,
+      "rival": "brick",
+      "completed": 8,
+      "cues": 8,
+      "minimumCueRMS": 0.009545004632954438,
+      "missing": []
+    },
+    {
+      "bpm": 120,
+      "latency": 0,
+      "estimatedLatency": 0,
+      "rival": "iris",
+      "completed": 12,
+      "cues": 12,
+      "minimumCueRMS": 0.009545004632954438,
+      "missing": []
+    },
+    {
+      "bpm": 120,
+      "latency": 0.25,
+      "estimatedLatency": 0.25,
+      "rival": "nova",
+      "completed": 9,
+      "cues": 10,
+      "minimumCueRMS": 0.009545004632954438,
+      "missing": []
+    },
+    {
+      "bpm": 120,
+      "latency": 0.25,
+      "estimatedLatency": 0.25,
+      "rival": "brick",
+      "completed": 8,
+      "cues": 8,
+      "minimumCueRMS": 0.009545004632954438,
+      "missing": []
+    },
+    {
+      "bpm": 120,
+      "latency": 0.25,
+      "estimatedLatency": 0.25,
+      "rival": "iris",
+      "completed": 11,
+      "cues": 12,
+      "minimumCueRMS": 0.009545004632954438,
+      "missing": []
+    },
+    {
+      "bpm": 120,
+      "latency": 0.49,
+      "estimatedLatency": 0.49,
+      "rival": "nova",
+      "completed": 9,
+      "cues": 11,
+      "minimumCueRMS": 0.009541430397292265,
+      "missing": []
+    },
+    {
+      "bpm": 120,
+      "latency": 0.49,
+      "estimatedLatency": 0.49,
+      "rival": "brick",
+      "completed": 8,
+      "cues": 9,
+      "minimumCueRMS": 0.009545004632954438,
+      "missing": []
+    },
+    {
+      "bpm": 120,
+      "latency": 0.49,
+      "estimatedLatency": 0.49,
+      "rival": "iris",
+      "completed": 12,
+      "cues": 13,
+      "minimumCueRMS": 0.009541430397292265,
+      "missing": []
+    },
+    {
+      "bpm": 130,
+      "latency": 0,
+      "estimatedLatency": 0,
+      "rival": "nova",
+      "completed": 11,
+      "cues": 11,
+      "minimumCueRMS": 0.009530794119258687,
+      "missing": []
+    },
+    {
+      "bpm": 130,
+      "latency": 0,
+      "estimatedLatency": 0,
+      "rival": "brick",
+      "completed": 9,
+      "cues": 9,
+      "minimumCueRMS": 0.009530174908836711,
+      "missing": []
+    },
+    {
+      "bpm": 130,
+      "latency": 0,
+      "estimatedLatency": 0,
+      "rival": "iris",
+      "completed": 13,
+      "cues": 13,
+      "minimumCueRMS": 0.009530174908836711,
+      "missing": []
+    },
+    {
+      "bpm": 130,
+      "latency": 0.25,
+      "estimatedLatency": 0.25,
+      "rival": "nova",
+      "completed": 11,
+      "cues": 11,
+      "minimumCueRMS": 0.009530794119258687,
+      "missing": []
+    },
+    {
+      "bpm": 130,
+      "latency": 0.25,
+      "estimatedLatency": 0.25,
+      "rival": "brick",
+      "completed": 9,
+      "cues": 9,
+      "minimumCueRMS": 0.009530174908836725,
+      "missing": []
+    },
+    {
+      "bpm": 130,
+      "latency": 0.25,
+      "estimatedLatency": 0.25,
+      "rival": "iris",
+      "completed": 13,
+      "cues": 13,
+      "minimumCueRMS": 0.009530174908836725,
+      "missing": []
+    },
+    {
+      "bpm": 130,
+      "latency": 0.49,
+      "estimatedLatency": 0.49,
+      "rival": "nova",
+      "completed": 11,
+      "cues": 12,
+      "minimumCueRMS": 0.009530174908836711,
+      "missing": []
+    },
+    {
+      "bpm": 130,
+      "latency": 0.49,
+      "estimatedLatency": 0.49,
+      "rival": "brick",
+      "completed": 9,
+      "cues": 9,
+      "minimumCueRMS": 0.009530794116992447,
+      "missing": []
+    },
+    {
+      "bpm": 130,
+      "latency": 0.49,
+      "estimatedLatency": 0.49,
+      "rival": "iris",
+      "completed": 13,
+      "cues": 14,
+      "minimumCueRMS": 0.009530174908836711,
+      "missing": []
+    },
+    {
+      "bpm": 140,
+      "latency": 0,
+      "estimatedLatency": 0,
+      "rival": "nova",
+      "completed": 12,
+      "cues": 13,
+      "minimumCueRMS": 0.00952899230667808,
+      "missing": []
+    },
+    {
+      "bpm": 140,
+      "latency": 0,
+      "estimatedLatency": 0,
+      "rival": "brick",
+      "completed": 9,
+      "cues": 10,
+      "minimumCueRMS": 0.009528992306691082,
+      "missing": []
+    },
+    {
+      "bpm": 140,
+      "latency": 0,
+      "estimatedLatency": 0,
+      "rival": "iris",
+      "completed": 14,
+      "cues": 16,
+      "minimumCueRMS": 0.00952899230667808,
+      "missing": []
+    },
+    {
+      "bpm": 140,
+      "latency": 0.25,
+      "estimatedLatency": 0.25,
+      "rival": "nova",
+      "completed": 12,
+      "cues": 13,
+      "minimumCueRMS": 0.00952899230667808,
+      "missing": []
+    },
+    {
+      "bpm": 140,
+      "latency": 0.25,
+      "estimatedLatency": 0.25,
+      "rival": "brick",
+      "completed": 9,
+      "cues": 10,
+      "minimumCueRMS": 0.009528992306691082,
+      "missing": []
+    },
+    {
+      "bpm": 140,
+      "latency": 0.25,
+      "estimatedLatency": 0.25,
+      "rival": "iris",
+      "completed": 14,
+      "cues": 16,
+      "minimumCueRMS": 0.00952899230667808,
+      "missing": []
+    },
+    {
+      "bpm": 140,
+      "latency": 0.49,
+      "estimatedLatency": 0.49,
+      "rival": "nova",
+      "completed": 12,
+      "cues": 13,
+      "minimumCueRMS": 0.009528992306691082,
+      "missing": []
+    },
+    {
+      "bpm": 140,
+      "latency": 0.49,
+      "estimatedLatency": 0.49,
+      "rival": "brick",
+      "completed": 9,
+      "cues": 10,
+      "minimumCueRMS": 0.009529724479643661,
+      "missing": []
+    },
+    {
+      "bpm": 140,
+      "latency": 0.49,
+      "estimatedLatency": 0.49,
+      "rival": "iris",
+      "completed": 14,
+      "cues": 16,
+      "minimumCueRMS": 0.009528992306691082,
+      "missing": []
+    },
+    {
+      "bpm": 150,
+      "latency": 0,
+      "estimatedLatency": 0,
+      "rival": "nova",
+      "completed": 13,
+      "cues": 13,
+      "minimumCueRMS": 0.009539778885952642,
+      "missing": []
+    },
+    {
+      "bpm": 150,
+      "latency": 0,
+      "estimatedLatency": 0,
+      "rival": "brick",
+      "completed": 10,
+      "cues": 11,
+      "minimumCueRMS": 0.009539778885952642,
+      "missing": []
+    },
+    {
+      "bpm": 150,
+      "latency": 0,
+      "estimatedLatency": 0,
+      "rival": "iris",
+      "completed": 16,
+      "cues": 16,
+      "minimumCueRMS": 0.009539778885952642,
+      "missing": []
+    },
+    {
+      "bpm": 150,
+      "latency": 0.25,
+      "estimatedLatency": 0.25,
+      "rival": "nova",
+      "completed": 13,
+      "cues": 13,
+      "minimumCueRMS": 0.009539778885952642,
+      "missing": []
+    },
+    {
+      "bpm": 150,
+      "latency": 0.25,
+      "estimatedLatency": 0.25,
+      "rival": "brick",
+      "completed": 10,
+      "cues": 11,
+      "minimumCueRMS": 0.009539778885952642,
+      "missing": []
+    },
+    {
+      "bpm": 150,
+      "latency": 0.25,
+      "estimatedLatency": 0.25,
+      "rival": "iris",
+      "completed": 16,
+      "cues": 16,
+      "minimumCueRMS": 0.009539778885952642,
+      "missing": []
+    },
+    {
+      "bpm": 150,
+      "latency": 0.49,
+      "estimatedLatency": 0.49,
+      "rival": "nova",
+      "completed": 13,
+      "cues": 14,
+      "minimumCueRMS": 0.009539778907250798,
+      "missing": []
+    },
+    {
+      "bpm": 150,
+      "latency": 0.49,
+      "estimatedLatency": 0.49,
+      "rival": "brick",
+      "completed": 10,
+      "cues": 11,
+      "minimumCueRMS": 0.009539778885952642,
+      "missing": []
+    },
+    {
+      "bpm": 150,
+      "latency": 0.49,
+      "estimatedLatency": 0.49,
+      "rival": "iris",
+      "completed": 16,
+      "cues": 17,
+      "minimumCueRMS": 0.009539778885952642,
+      "missing": []
+    },
+    {
+      "bpm": 160,
+      "latency": 0,
+      "estimatedLatency": 0,
+      "rival": "nova",
+      "completed": 14,
+      "cues": 15,
+      "minimumCueRMS": 0.009538201380334918,
+      "missing": []
+    },
+    {
+      "bpm": 160,
+      "latency": 0,
+      "estimatedLatency": 0,
+      "rival": "brick",
+      "completed": 12,
+      "cues": 12,
+      "minimumCueRMS": 0.009540804821349126,
+      "missing": []
+    },
+    {
+      "bpm": 160,
+      "latency": 0,
+      "estimatedLatency": 0,
+      "rival": "iris",
+      "completed": 17,
+      "cues": 18,
+      "minimumCueRMS": 0.009538201380334918,
+      "missing": []
+    },
+    {
+      "bpm": 160,
+      "latency": 0.25,
+      "estimatedLatency": 0.25,
+      "rival": "nova",
+      "completed": 14,
+      "cues": 15,
+      "minimumCueRMS": 0.009538201380334918,
+      "missing": []
+    },
+    {
+      "bpm": 160,
+      "latency": 0.25,
+      "estimatedLatency": 0.25,
+      "rival": "brick",
+      "completed": 11,
+      "cues": 12,
+      "minimumCueRMS": 0.009540804821349126,
+      "missing": []
+    },
+    {
+      "bpm": 160,
+      "latency": 0.25,
+      "estimatedLatency": 0.25,
+      "rival": "iris",
+      "completed": 17,
+      "cues": 18,
+      "minimumCueRMS": 0.009538201380334918,
+      "missing": []
+    },
+    {
+      "bpm": 160,
+      "latency": 0.49,
+      "estimatedLatency": 0.49,
+      "rival": "nova",
+      "completed": 14,
+      "cues": 15,
+      "minimumCueRMS": 0.009538201593335915,
+      "missing": []
+    },
+    {
+      "bpm": 160,
+      "latency": 0.49,
+      "estimatedLatency": 0.49,
+      "rival": "brick",
+      "completed": 11,
+      "cues": 12,
+      "minimumCueRMS": 0.009538201380334918,
+      "missing": []
+    },
+    {
+      "bpm": 160,
+      "latency": 0.49,
+      "estimatedLatency": 0.49,
+      "rival": "iris",
+      "completed": 17,
+      "cues": 19,
+      "minimumCueRMS": 0.009538201593335915,
+      "missing": []
+    }
+  ],
+  "cancelled": {
+    "peak": 0.0000028978770387766417,
+    "cue": {
+      "kind": "warning",
+      "id": "scheduled",
+      "beat": 1,
+      "at": 0.65,
+      "cancelledBeforeStart": true
+    }
+  },
+  "resetPlan": {
+    "segments": [
+      {
+        "beat": 0,
+        "time": 0.15,
+        "bpm": 160
+      },
+      {
+        "beat": 3,
+        "time": 1.275,
+        "bpm": 120
+      },
+      {
+        "beat": 4,
+        "time": 1.775,
+        "bpm": 130
+      },
+      {
+        "beat": 8,
+        "time": 3.621153846153846,
+        "bpm": 140
+      },
+      {
+        "beat": 12,
+        "time": 5.335439560439561,
+        "bpm": 150
+      },
+      {
+        "beat": 16,
+        "time": 6.93543956043956,
+        "bpm": 160
+      }
+    ],
+    "next": {
+      "beat": 4,
+      "bpm": 130,
+      "inBeats": 0.7999999999999998
+    }
+  },
+  "layouts": [
+    {
+      "width": 320,
+      "height": 568,
+      "boxes": {
+        "hud": {
+          "x": 0,
+          "y": 0,
+          "right": 320,
+          "bottom": 135
+        },
+        "pace": {
+          "x": 12,
+          "y": 123,
+          "right": 308,
+          "bottom": 135
+        },
+        "tools": {
+          "x": 12,
+          "y": 143,
+          "right": 308,
+          "bottom": 187
+        },
+        "body": 320
+      }
+    },
+    {
+      "width": 360,
+      "height": 640,
+      "boxes": {
+        "hud": {
+          "x": 0,
+          "y": 0,
+          "right": 360,
+          "bottom": 135
+        },
+        "pace": {
+          "x": 16,
+          "y": 123,
+          "right": 344,
+          "bottom": 135
+        },
+        "tools": {
+          "x": 12,
+          "y": 143,
+          "right": 348,
+          "bottom": 187
+        },
+        "body": 360
+      }
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "boxes": {
+        "hud": {
+          "x": 0,
+          "y": 0,
+          "right": 390,
+          "bottom": 135
+        },
+        "pace": {
+          "x": 16,
+          "y": 123,
+          "right": 374,
+          "bottom": 135
+        },
+        "tools": {
+          "x": 12,
+          "y": 143,
+          "right": 378,
+          "bottom": 187
+        },
+        "body": 390
+      }
+    },
+    {
+      "width": 412,
+      "height": 915,
+      "boxes": {
+        "hud": {
+          "x": 0,
+          "y": 0,
+          "right": 412,
+          "bottom": 135
+        },
+        "pace": {
+          "x": 16,
+          "y": 123,
+          "right": 396,
+          "bottom": 135
+        },
+        "tools": {
+          "x": 12,
+          "y": 143,
+          "right": 400,
+          "bottom": 187
+        },
+        "body": 412
+      }
+    },
+    {
+      "width": 740,
+      "height": 360,
+      "boxes": {
+        "hud": {
+          "x": 0,
+          "y": 0,
+          "right": 740,
+          "bottom": 76
+        },
+        "pace": {
+          "x": 116,
+          "y": 64,
+          "right": 624,
+          "bottom": 76
+        },
+        "tools": {
+          "x": 409.8125,
+          "y": 84,
+          "right": 728,
+          "bottom": 128
+        },
+        "body": 740
+      }
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "boxes": {
+        "hud": {
+          "x": 0,
+          "y": 0,
+          "right": 844,
+          "bottom": 76
+        },
+        "pace": {
+          "x": 116,
+          "y": 64,
+          "right": 728,
+          "bottom": 76
+        },
+        "tools": {
+          "x": 469.09375,
+          "y": 84,
+          "right": 832,
+          "bottom": 128
+        },
+        "body": 844
+      }
+    }
+  ],
+  "results": [
+    {
+      "width": 320,
+      "height": 568,
+      "top": {
+        "title": {
+          "top": 38,
+          "bottom": 95.1875,
+          "left": 80.296875,
+          "right": 300
+        },
+        "rematch": {
+          "top": 415.1875,
+          "bottom": 463.1875,
+          "left": 20,
+          "right": 300
+        },
+        "body": 320
+      }
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "top": {
+        "title": {
+          "top": 158.203125,
+          "bottom": 186.796875,
+          "left": 100.203125,
+          "right": 326.90625
+        },
+        "rematch": {
+          "top": 571.5,
+          "bottom": 627.5,
+          "left": 24,
+          "right": 366
+        },
+        "body": 390
+      }
+    },
+    {
+      "width": 740,
+      "height": 360,
+      "top": {
+        "title": {
+          "top": 55.703125,
+          "bottom": 84.296875,
+          "left": 133.296875,
+          "right": 360
+        },
+        "rematch": {
+          "top": 298,
+          "bottom": 344,
+          "left": 75,
+          "right": 665
+        },
+        "body": 740
+      }
+    }
+  ],
+  "errors": [],
+  "androidHardwareTested": false
+}

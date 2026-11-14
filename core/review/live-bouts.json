@@ -1,5 +1,5 @@
 {
-  "coreSha256": "7dca01a8a1c4bef2b676b5b41c503f032e79ac456952caf2e6fd5ec7dc2bd7db",
+  "coreSha256": "f33fd6369d7b2980f28761f62ec60b8c599d49b478cfb8fca974e8edf04d902c",
   "kind": "real-time native touch policy against active AI; silent Chromium video; not a human or Android recording",
   "reports": [
     {
@@ -7,28 +7,161 @@
       "opponent": "brick",
       "winner": "player",
       "stats": {
-        "perfect": 18,
+        "perfect": 16,
         "good": 0,
         "off": 0,
-        "combos": 5,
+        "combos": 4,
         "variety": [
           "LLL",
           "LLH",
           "LHLH"
         ],
-        "dodges": 5,
+        "dodges": 6,
         "blocks": 0,
         "taken": 0,
         "counters": 5,
-        "score": 9521,
+        "score": 9222,
         "maxLevel": 5,
-        "attempts": 5,
+        "maxTempo": 130,
+        "timing": {
+          "samples": 16,
+          "absolute": 264.6854010213651,
+          "signed": 264.6854010213651,
+          "early": 0,
+          "late": 0
+        },
+        "attempts": 6,
         "supers": 2,
         "guarded": 0,
-        "interrupts": 3,
+        "interrupts": 2,
         "lateThreats": 0,
-        "time": 15325.886138322088,
+        "time": 15186.409836735256,
         "winBonus": 1800
+      },
+      "rating": {
+        "rank": "S",
+        "value": 100,
+        "accuracy": 100
+      },
+      "lateThreats": 0,
+      "tempo": 140,
+      "enemyGroove": 3,
+      "bpm": 130,
+      "tempoSegments": [
+        {
+          "beat": 0,
+          "time": 0.15,
+          "bpm": 120
+        },
+        {
+          "beat": 24,
+          "time": 12.15,
+          "bpm": 130
+        },
+        {
+          "beat": 36,
+          "time": 17.68846153846154,
+          "bpm": 140
+        }
+      ],
+      "nativeTaps": 22,
+      "errors": []
+    },
+    {
+      "fighter": "brick",
+      "opponent": "iris",
+      "winner": "player",
+      "stats": {
+        "perfect": 14,
+        "good": 0,
+        "off": 0,
+        "combos": 4,
+        "variety": [
+          "LLL",
+          "HHL",
+          "LHH"
+        ],
+        "dodges": 4,
+        "blocks": 0,
+        "taken": 0,
+        "counters": 3,
+        "score": 7742,
+        "maxLevel": 5,
+        "maxTempo": 130,
+        "timing": {
+          "samples": 14,
+          "absolute": 292.7135053226722,
+          "signed": 292.7135053226722,
+          "early": 0,
+          "late": 0
+        },
+        "attempts": 4,
+        "supers": 1,
+        "guarded": 0,
+        "interrupts": 4,
+        "lateThreats": 0,
+        "time": 12135.15848752853,
+        "winBonus": 1860
+      },
+      "rating": {
+        "rank": "S",
+        "value": 100,
+        "accuracy": 100
+      },
+      "lateThreats": 0,
+      "tempo": 130,
+      "enemyGroove": 2,
+      "bpm": 130,
+      "tempoSegments": [
+        {
+          "beat": 0,
+          "time": 0.15,
+          "bpm": 120
+        },
+        {
+          "beat": 24,
+          "time": 12.15,
+          "bpm": 130
+        }
+      ],
+      "nativeTaps": 18,
+      "errors": []
+    },
+    {
+      "fighter": "iris",
+      "opponent": "nova",
+      "winner": "player",
+      "stats": {
+        "perfect": 17,
+        "good": 0,
+        "off": 0,
+        "combos": 5,
+        "variety": [
+          "LLH",
+          "HLL",
+          "HLHH"
+        ],
+        "dodges": 4,
+        "blocks": 0,
+        "taken": 0,
+        "counters": 4,
+        "score": 8307,
+        "maxLevel": 5,
+        "maxTempo": 130,
+        "timing": {
+          "samples": 17,
+          "absolute": 331.06579330490325,
+          "signed": 331.06579330490325,
+          "early": 0,
+          "late": 0
+        },
+        "attempts": 4,
+        "supers": 1,
+        "guarded": 0,
+        "interrupts": 5,
+        "lateThreats": 0,
+        "time": 14106.78692290268,
+        "winBonus": 1820
       },
       "rating": {
         "rank": "S",
@@ -51,121 +184,7 @@
           "bpm": 130
         }
       ],
-      "nativeTaps": 23,
-      "errors": []
-    },
-    {
-      "fighter": "brick",
-      "opponent": "iris",
-      "winner": "player",
-      "stats": {
-        "perfect": 14,
-        "good": 0,
-        "off": 0,
-        "combos": 4,
-        "variety": [
-          "LLL",
-          "HHL",
-          "LHH"
-        ],
-        "dodges": 8,
-        "blocks": 0,
-        "taken": 0,
-        "counters": 5,
-        "score": 9535,
-        "maxLevel": 5,
-        "attempts": 8,
-        "supers": 2,
-        "guarded": 0,
-        "interrupts": 3,
-        "lateThreats": 0,
-        "time": 13957.395972789302,
-        "winBonus": 1820
-      },
-      "rating": {
-        "rank": "S",
-        "value": 100,
-        "accuracy": 100
-      },
-      "lateThreats": 0,
-      "tempo": 140,
-      "enemyGroove": 3,
-      "bpm": 140,
-      "tempoSegments": [
-        {
-          "beat": 0,
-          "time": 0.15,
-          "bpm": 120
-        },
-        {
-          "beat": 20,
-          "time": 10.15,
-          "bpm": 130
-        },
-        {
-          "beat": 28,
-          "time": 13.842307692307692,
-          "bpm": 140
-        }
-      ],
-      "nativeTaps": 22,
-      "errors": []
-    },
-    {
-      "fighter": "iris",
-      "opponent": "nova",
-      "winner": "player",
-      "stats": {
-        "perfect": 17,
-        "good": 0,
-        "off": 0,
-        "combos": 5,
-        "variety": [
-          "LLH",
-          "HLL",
-          "HLHH"
-        ],
-        "dodges": 6,
-        "blocks": 0,
-        "taken": 0,
-        "counters": 6,
-        "score": 9032,
-        "maxLevel": 5,
-        "attempts": 6,
-        "supers": 1,
-        "guarded": 0,
-        "interrupts": 3,
-        "lateThreats": 0,
-        "time": 14405.092646258689,
-        "winBonus": 1820
-      },
-      "rating": {
-        "rank": "S",
-        "value": 100,
-        "accuracy": 100
-      },
-      "lateThreats": 0,
-      "tempo": 140,
-      "enemyGroove": 2,
-      "bpm": 130,
-      "tempoSegments": [
-        {
-          "beat": 0,
-          "time": 0.15,
-          "bpm": 120
-        },
-        {
-          "beat": 24,
-          "time": 12.15,
-          "bpm": 130
-        },
-        {
-          "beat": 36,
-          "time": 17.68846153846154,
-          "bpm": 140
-        }
-      ],
-      "nativeTaps": 23,
+      "nativeTaps": 21,
       "errors": []
     }
   ]

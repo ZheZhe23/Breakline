@@ -1,0 +1,367 @@
+{
+  "coreSha256": "f33fd6369d7b2980f28761f62ec60b8c599d49b478cfb8fca974e8edf04d902c",
+  "checks": 436,
+  "reports": [
+    {
+      "bpm": 120,
+      "difficulty": "rookie",
+      "offset": -90,
+      "metrics": {
+        "samples": 8,
+        "meanAbs": 90,
+        "bias": -90,
+        "direction": "early"
+      },
+      "advice": "ЧУТЬ ПОЗЖЕ"
+    },
+    {
+      "bpm": 120,
+      "difficulty": "rookie",
+      "offset": 90,
+      "metrics": {
+        "samples": 8,
+        "meanAbs": 90,
+        "bias": 90,
+        "direction": "late"
+      },
+      "advice": "ЧУТЬ РАНЬШЕ"
+    },
+    {
+      "bpm": 120,
+      "difficulty": "fighter",
+      "offset": -90,
+      "metrics": {
+        "samples": 8,
+        "meanAbs": 90,
+        "bias": -90,
+        "direction": "early"
+      },
+      "advice": "ЧУТЬ ПОЗЖЕ"
+    },
+    {
+      "bpm": 120,
+      "difficulty": "fighter",
+      "offset": 90,
+      "metrics": {
+        "samples": 8,
+        "meanAbs": 90,
+        "bias": 90,
+        "direction": "late"
+      },
+      "advice": "ЧУТЬ РАНЬШЕ"
+    },
+    {
+      "bpm": 120,
+      "difficulty": "master",
+      "offset": -90,
+      "metrics": {
+        "samples": 8,
+        "meanAbs": 90,
+        "bias": -90,
+        "direction": "early"
+      },
+      "advice": "ЧУТЬ ПОЗЖЕ"
+    },
+    {
+      "bpm": 120,
+      "difficulty": "master",
+      "offset": 90,
+      "metrics": {
+        "samples": 8,
+        "meanAbs": 90,
+        "bias": 90,
+        "direction": "late"
+      },
+      "advice": "ЧУТЬ РАНЬШЕ"
+    },
+    {
+      "bpm": 130,
+      "difficulty": "rookie",
+      "offset": -90,
+      "metrics": {
+        "samples": 8,
+        "meanAbs": 90,
+        "bias": -90,
+        "direction": "early"
+      },
+      "advice": "ЧУТЬ ПОЗЖЕ"
+    },
+    {
+      "bpm": 130,
+      "difficulty": "rookie",
+      "offset": 90,
+      "metrics": {
+        "samples": 8,
+        "meanAbs": 90,
+        "bias": 90,
+        "direction": "late"
+      },
+      "advice": "ЧУТЬ РАНЬШЕ"
+    },
+    {
+      "bpm": 130,
+      "difficulty": "fighter",
+      "offset": -90,
+      "metrics": {
+        "samples": 8,
+        "meanAbs": 90,
+        "bias": -90,
+        "direction": "early"
+      },
+      "advice": "ЧУТЬ ПОЗЖЕ"
+    },
+    {
+      "bpm": 130,
+      "difficulty": "fighter",
+      "offset": 90,
+      "metrics": {
+        "samples": 8,
+        "meanAbs": 90,
+        "bias": 90,
+        "direction": "late"
+      },
+      "advice": "ЧУТЬ РАНЬШЕ"
+    },
+    {
+      "bpm": 130,
+      "difficulty": "master",
+      "offset": -90,
+      "metrics": {
+        "samples": 8,
+        "meanAbs": 90,
+        "bias": -90,
+        "direction": "early"
+      },
+      "advice": "ЧУТЬ ПОЗЖЕ"
+    },
+    {
+      "bpm": 130,
+      "difficulty": "master",
+      "offset": 90,
+      "metrics": {
+        "samples": 8,
+        "meanAbs": 90,
+        "bias": 90,
+        "direction": "late"
+      },
+      "advice": "ЧУТЬ РАНЬШЕ"
+    },
+    {
+      "bpm": 140,
+      "difficulty": "rookie",
+      "offset": -90,
+      "metrics": {
+        "samples": 8,
+        "meanAbs": 90,
+        "bias": -90,
+        "direction": "early"
+      },
+      "advice": "ЧУТЬ ПОЗЖЕ"
+    },
+    {
+      "bpm": 140,
+      "difficulty": "rookie",
+      "offset": 90,
+      "metrics": {
+        "samples": 8,
+        "meanAbs": 90,
+        "bias": 90,
+        "direction": "late"
+      },
+      "advice": "ЧУТЬ РАНЬШЕ"
+    },
+    {
+      "bpm": 140,
+      "difficulty": "fighter",
+      "offset": -90,
+      "metrics": {
+        "samples": 8,
+        "meanAbs": 90,
+        "bias": -90,
+        "direction": "early"
+      },
+      "advice": "ЧУТЬ ПОЗЖЕ"
+    },
+    {
+      "bpm": 140,
+      "difficulty": "fighter",
+      "offset": 90,
+      "metrics": {
+        "samples": 8,
+        "meanAbs": 90,
+        "bias": 90,
+        "direction": "late"
+      },
+      "advice": "ЧУТЬ РАНЬШЕ"
+    },
+    {
+      "bpm": 140,
+      "difficulty": "master",
+      "offset": -90,
+      "metrics": {
+        "samples": 8,
+        "meanAbs": 90,
+        "bias": -90,
+        "direction": "early"
+      },
+      "advice": "ЧУТЬ ПОЗЖЕ"
+    },
+    {
+      "bpm": 140,
+      "difficulty": "master",
+      "offset": 90,
+      "metrics": {
+        "samples": 8,
+        "meanAbs": 90,
+        "bias": 90,
+        "direction": "late"
+      },
+      "advice": "ЧУТЬ РАНЬШЕ"
+    },
+    {
+      "bpm": 150,
+      "difficulty": "rookie",
+      "offset": -90,
+      "metrics": {
+        "samples": 8,
+        "meanAbs": 90,
+        "bias": -90,
+        "direction": "early"
+      },
+      "advice": "ЧУТЬ ПОЗЖЕ"
+    },
+    {
+      "bpm": 150,
+      "difficulty": "rookie",
+      "offset": 90,
+      "metrics": {
+        "samples": 8,
+        "meanAbs": 90,
+        "bias": 90,
+        "direction": "late"
+      },
+      "advice": "ЧУТЬ РАНЬШЕ"
+    },
+    {
+      "bpm": 150,
+      "difficulty": "fighter",
+      "offset": -90,
+      "metrics": {
+        "samples": 8,
+        "meanAbs": 90,
+        "bias": -90,
+        "direction": "early"
+      },
+      "advice": "ЧУТЬ ПОЗЖЕ"
+    },
+    {
+      "bpm": 150,
+      "difficulty": "fighter",
+      "offset": 90,
+      "metrics": {
+        "samples": 8,
+        "meanAbs": 90,
+        "bias": 90,
+        "direction": "late"
+      },
+      "advice": "ЧУТЬ РАНЬШЕ"
+    },
+    {
+      "bpm": 150,
+      "difficulty": "master",
+      "offset": -90,
+      "metrics": {
+        "samples": 8,
+        "meanAbs": 90,
+        "bias": -90,
+        "direction": "early"
+      },
+      "advice": "ЧУТЬ ПОЗЖЕ"
+    },
+    {
+      "bpm": 150,
+      "difficulty": "master",
+      "offset": 90,
+      "metrics": {
+        "samples": 8,
+        "meanAbs": 90,
+        "bias": 90,
+        "direction": "late"
+      },
+      "advice": "ЧУТЬ РАНЬШЕ"
+    },
+    {
+      "bpm": 160,
+      "difficulty": "rookie",
+      "offset": -90,
+      "metrics": {
+        "samples": 8,
+        "meanAbs": 90,
+        "bias": -90,
+        "direction": "early"
+      },
+      "advice": "ЧУТЬ ПОЗЖЕ"
+    },
+    {
+      "bpm": 160,
+      "difficulty": "rookie",
+      "offset": 90,
+      "metrics": {
+        "samples": 8,
+        "meanAbs": 90,
+        "bias": 90,
+        "direction": "late"
+      },
+      "advice": "ЧУТЬ РАНЬШЕ"
+    },
+    {
+      "bpm": 160,
+      "difficulty": "fighter",
+      "offset": -90,
+      "metrics": {
+        "samples": 8,
+        "meanAbs": 90,
+        "bias": -90,
+        "direction": "early"
+      },
+      "advice": "ЧУТЬ ПОЗЖЕ"
+    },
+    {
+      "bpm": 160,
+      "difficulty": "fighter",
+      "offset": 90,
+      "metrics": {
+        "samples": 8,
+        "meanAbs": 90,
+        "bias": 90,
+        "direction": "late"
+      },
+      "advice": "ЧУТЬ РАНЬШЕ"
+    },
+    {
+      "bpm": 160,
+      "difficulty": "master",
+      "offset": -90,
+      "metrics": {
+        "samples": 8,
+        "meanAbs": 90,
+        "bias": -90,
+        "direction": "early"
+      },
+      "advice": "ЧУТЬ ПОЗЖЕ"
+    },
+    {
+      "bpm": 160,
+      "difficulty": "master",
+      "offset": 90,
+      "metrics": {
+        "samples": 8,
+        "meanAbs": 90,
+        "bias": 90,
+        "direction": "late"
+      },
+      "advice": "ЧУТЬ РАНЬШЕ"
+    }
+  ],
+  "scope": "real timing bias on all BPM/difficulties, original buffered timestamp, actual vs planned tempo, bounded storage"
+}

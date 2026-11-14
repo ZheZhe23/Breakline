@@ -1,5 +1,5 @@
 {
-  "coreSha256": "7dca01a8a1c4bef2b676b5b41c503f032e79ac456952caf2e6fd5ec7dc2bd7db",
+  "coreSha256": "f33fd6369d7b2980f28761f62ec60b8c599d49b478cfb8fca974e8edf04d902c",
   "checks": 128,
   "native": [
     {
@@ -44,13 +44,13 @@
       "width": 320,
       "height": 568,
       "teaching": false,
-      "scale": 1.118421052631579
+      "scale": 1.006578947368421
     },
     {
       "width": 360,
       "height": 640,
       "teaching": false,
-      "scale": 1.5328947368421053
+      "scale": 1.4210526315789473
     },
     {
       "width": 390,
@@ -68,25 +68,25 @@
       "width": 740,
       "height": 360,
       "teaching": false,
-      "scale": 0.9342105263157895
+      "scale": 0.8223684210526315
     },
     {
       "width": 844,
       "height": 390,
       "teaching": false,
-      "scale": 1.131578947368421
+      "scale": 1.019736842105263
     },
     {
       "width": 320,
       "height": 568,
       "teaching": true,
-      "scale": 0.8902138157894737
+      "scale": 0.7783717105263158
     },
     {
       "width": 360,
       "height": 640,
       "teaching": true,
-      "scale": 1.311266447368421
+      "scale": 1.199424342105263
     },
     {
       "width": 390,
@@ -104,13 +104,13 @@
       "width": 740,
       "height": 360,
       "teaching": true,
-      "scale": 0.9407894736842105
+      "scale": 0.8289473684210527
     },
     {
       "width": 844,
       "height": 390,
       "teaching": true,
-      "scale": 1.138157894736842
+      "scale": 1.0263157894736843
     }
   ],
   "registration": [
@@ -173,9 +173,9 @@
     "frames": 120,
     "dpr": 2,
     "desktopCPUThrottle": 4,
-    "p50": 13.100000000093132,
-    "p95": 15.799999999813735,
-    "max": 26.5,
+    "p50": 13.299999999813735,
+    "p95": 16,
+    "max": 45.5,
     "androidHardware": false
   },
   "memory": {
@@ -191,7 +191,7 @@
   "errors": [],
   "sound": {
     "peak": 0.8771759867668152,
-    "rms": 0.10012599698007188
+    "rms": 0.1001259994684637
   },
   "androidHardwareTested": false
 }

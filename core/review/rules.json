@@ -1,5 +1,5 @@
 {
-  "coreSha256": "7dca01a8a1c4bef2b676b5b41c503f032e79ac456952caf2e6fd5ec7dc2bd7db",
+  "coreSha256": "f33fd6369d7b2980f28761f62ec60b8c599d49b478cfb8fca974e8edf04d902c",
   "checks": 13002,
   "fighters": [
     "nova",
@@ -34,9 +34,9 @@
       "fighter": "nova",
       "policy": "reader",
       "winner": "player",
-      "combos": 5,
+      "combos": 4,
       "supers": 2,
-      "score": 9277
+      "score": 9034
     },
     {
       "fighter": "nova",
@@ -44,31 +44,31 @@
       "winner": "enemy",
       "combos": 2,
       "supers": 1,
-      "score": 3810
+      "score": 3188
     },
     {
       "fighter": "brick",
       "policy": "reader",
       "winner": "player",
-      "combos": 5,
+      "combos": 4,
       "supers": 1,
-      "score": 8584
+      "score": 7982
     },
     {
       "fighter": "brick",
       "policy": "repeat",
       "winner": "enemy",
-      "combos": 2,
+      "combos": 4,
       "supers": 1,
-      "score": 3289
+      "score": 3959
     },
     {
       "fighter": "iris",
       "policy": "reader",
       "winner": "player",
-      "combos": 4,
+      "combos": 3,
       "supers": 1,
-      "score": 8197
+      "score": 8212
     },
     {
       "fighter": "iris",
@@ -76,7 +76,7 @@
       "winner": "enemy",
       "combos": 0,
       "supers": 0,
-      "score": 1088
+      "score": 803
     }
   ],
   "rivalReports": [
@@ -86,42 +86,42 @@
       "style": "ДАВЛЕНИЕ",
       "timeline": [
         {
-          "beat": 5500,
+          "beat": 4000,
           "move": "cross",
           "strong": false
         },
         {
-          "beat": 8000,
+          "beat": 6500,
           "move": "hook",
           "strong": false
+        },
+        {
+          "beat": 8500,
+          "move": "shoulderRush",
+          "strong": true
         },
         {
           "beat": 10000,
-          "move": "shoulderRush",
-          "strong": true
-        },
-        {
-          "beat": 11500,
           "move": "cross",
           "strong": false
         },
         {
-          "beat": 13500,
+          "beat": 12000,
           "move": "hook",
           "strong": false
         },
         {
-          "beat": 16000,
+          "beat": 14500,
           "move": "shoulderRush",
           "strong": true
         },
         {
-          "beat": 18000,
+          "beat": 16500,
           "move": "cross",
           "strong": false
         },
         {
-          "beat": 19500,
+          "beat": 18000,
           "move": "hook",
           "strong": false
         }
@@ -133,42 +133,42 @@
       "style": "СМЕНА ТЕМПА",
       "timeline": [
         {
-          "beat": 5500,
+          "beat": 4000,
           "move": "bodyKick",
+          "strong": false
+        },
+        {
+          "beat": 6000,
+          "move": "cross",
+          "strong": false
+        },
+        {
+          "beat": 7000,
+          "move": "hook",
           "strong": false
         },
         {
           "beat": 7500,
-          "move": "cross",
-          "strong": false
-        },
-        {
-          "beat": 8500,
-          "move": "hook",
-          "strong": false
-        },
-        {
-          "beat": 9000,
           "move": "cartwheel",
           "strong": true
         },
         {
-          "beat": 11000,
+          "beat": 9500,
           "move": "cross",
           "strong": false
         },
         {
-          "beat": 12500,
+          "beat": 11000,
           "move": "hook",
           "strong": false
         },
         {
-          "beat": 13000,
+          "beat": 11500,
           "move": "bodyKick",
           "strong": false
         },
         {
-          "beat": 15000,
+          "beat": 13500,
           "move": "cartwheel",
           "strong": true
         }
@@ -180,42 +180,42 @@
       "style": "ТЕХНИК",
       "timeline": [
         {
-          "beat": 5500,
+          "beat": 4000,
           "move": "cross",
+          "strong": false
+        },
+        {
+          "beat": 6000,
+          "move": "bodyKick",
           "strong": false
         },
         {
           "beat": 7500,
-          "move": "bodyKick",
-          "strong": false
-        },
-        {
-          "beat": 9000,
           "move": "hook",
           "strong": false
         },
         {
-          "beat": 11000,
+          "beat": 9500,
           "move": "spinKick",
           "strong": true
         },
         {
-          "beat": 12000,
+          "beat": 10500,
           "move": "bodyKick",
           "strong": false
         },
         {
-          "beat": 14000,
+          "beat": 12500,
           "move": "hook",
           "strong": false
         },
         {
-          "beat": 15500,
+          "beat": 14000,
           "move": "cross",
           "strong": false
         },
         {
-          "beat": 17500,
+          "beat": 16000,
           "move": "spinKick",
           "strong": true
         }
