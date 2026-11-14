@@ -18,8 +18,8 @@ const html=fs.readFileSync(root+'/core/index.html','utf8').replace('// CORE_TEST
    let selector=null;
    if(state.incoming?.at===beat&&!state.incoming.cancelled&&!state.incoming.resolved&&!state.armour&&!(state.series&&state.clean&&state.confirmed>0&&beat>=state.ready&&beat>=state.stun))selector='#defend';
    else if(beat>=state.ready&&beat>=state.stun){const target=state.recipes.find(r=>!state.variety.includes(r))??state.recipes[cycle%3],key=state.charge>=100&&!state.series&&state.variety.length===3?'S':target.startsWith(state.series)?target[state.series.length]:target[0],finish=state.series.length+1===target.length;selector=!state.clean||state.series&&!target.startsWith(state.series)?'#defend':state.guard===key&&!finish&&!state.counter?null:key==='S'?'#special':key==='L'?'#hand':'#foot'}
-   const delay=await run(`audio.delayUntil(${beat},matchOffset)`);await page.waitForTimeout(Math.max(0,delay-10));
-   if(selector){await page.locator(selector).tap();nativeTaps++;const action=await run('({id:s.history.at(-1)?.id??-1,finish:!!s.player.action?.finish})');if(selector!=='#defend'&&action.id>state.last&&action.finish)cycle++}
+   const box=selector?await page.locator(selector).boundingBox():null,delay=await run(`audio.delayUntil(${beat},matchOffset)`);await page.waitForTimeout(Math.max(0,delay-8));
+   if(selector){await page.touchscreen.tap(box.x+box.width/2,box.y+box.height/2);nativeTaps++;const action=await run('({id:s.history.at(-1)?.id??-1,finish:!!s.player.action?.finish})');if(selector!=='#defend'&&action.id>state.last&&action.finish)cycle++}
    else await page.waitForTimeout(45);
   }
   await page.waitForFunction(()=>window.__core('s.mode==="result"'),{},{timeout:10000});

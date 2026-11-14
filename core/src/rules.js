@@ -111,7 +111,7 @@ function create(hooks={}){
  }
  function defend(at,executionAt=at){
   const p=s.player;if(s.mode!=='fight'||at<s.start||elapsed(at,executionAt)>110||at<p.stun||p.defence&&at<p.defence.start+300)return false;
-  const from={...getPose(p,executionAt),...CoreFighters.velocity(p,executionAt)};p.defence={start:executionAt,end:executionAt+330,from,quality:judge(at),beat:Math.round(at/BEAT),used:false,savedSeries:s.series};p.guardBlend=null;p.action=null;p.hit=null;s.buffer=null;breakSeries(executionAt);s.block=true;emit('sfx','dodge');return true;
+  const from={...getPose(p,executionAt),...CoreFighters.velocity(p,executionAt)};p.defence={start:executionAt,inputAt:at,end:executionAt+330,from,quality:judge(at),beat:Math.round(at/BEAT),used:false,savedSeries:s.series};p.guardBlend=null;p.action=null;p.hit=null;s.buffer=null;breakSeries(executionAt);s.block=true;emit('sfx','dodge');return true;
  }
  function release(t){s.block=false;const p=s.player;if(p.guardBlend?.to)p.guardBlend={from:getPose(p,t),at:t,to:false}}
  function setBlock(value,t){if(value){s.block=true}else release(t)}
@@ -149,7 +149,7 @@ function create(hooks={}){
   if(s.comboLock?.owner==='player'||t<s.enemy.stun)return;
   const enemyPoint=CoreFighters.contact(s.enemy,t);if(s.enemy.action&&Math.abs(s.player.x-(s.enemy.x-enemyPoint.x))>32){whiff(s.enemy,t,'range');return}
   const p=s.player;p.hit=null;s.stats.attempts++;const d=p.defence;
-  if(d&&!d.used&&d.beat===Math.round(incoming.beatAt/BEAT)&&d.quality!=='OFF'&&d.start<=t&&d.end>=t){
+  if(d&&!d.used&&d.beat===Math.round(incoming.beatAt/BEAT)&&d.quality!=='OFF'&&(d.inputAt??d.start)<=t&&d.end>=t){
    d.used=true;s.stats.dodges++;const perfect=d.quality==='PERFECT';energy(perfect?8:4,t);charge(perfect?12:6,t);s.counterUntil=perfect?t+1050:0;s.stats.score+=perfect?180:90;message(perfect?'ИДЕАЛЬНЫЙ УХОД':'УХОД',perfect?'ТВОЯ КОНТРА →':'ЧИСТО',t,perfect?'counter':'good');emit('sfx',perfect?'counterReady':'dodge');record('dodge',t,{quality:d.quality});if(perfect)whiff(s.enemy,t,'perfect-dodge');return;
   }
   if(s.block&&t>=p.stun){p.hp=Math.max(s.training?1:0,p.hp-4);s.stats.blocks++;enemyEnergy(2,t);message('БЛОК','УДЕРЖАНИЕ ЗАЩИЩАЕТ · ТОЧНЫЙ ТАП ДАЁТ КОНТРУ',t,'guard');emit('sfx','block');record('block',t);return}
