@@ -352,7 +352,7 @@ function create(hooks={}){
  function action(a,move,t,meta={}){const from={...getPose(a,t),...CoreFighters.velocity(a,t)};a.recovery=null;a.visualReturn=null;a.hit=null;a.evade=null;a.defence=null;a.guardBlend=null;a.action={id:++serial,move,start:t,from,resolved:false,...meta};a.ready=t+CoreFighters.move(a.fighter,move).recovery;return a.action}
  function releaseLock(t,reason='break'){
   const lock=s.comboLock;if(!lock)return;const target=lock.owner==='player'?s.enemy:s.player,from=getPose(target,t);s.comboLock=null;
-  target.stun=target.recovery?.end>t?target.recovery.end:Math.min(target.stun,t);target.hit=null;target.visualReturn={start:t,end:t+160,from};
+  target.stun=target.recovery?.end>t?target.recovery.end:Math.min(target.stun,t);target.hit=null;target.guardKey=null;target.visualReturn={start:t,end:t+160,from};
   record('comboRelease',t,{reason,owner:lock.owner});
  }
  function breakSeries(t=s.now,reason='break'){s.series=null;if(s.comboLock?.owner==='player')releaseLock(t,reason)}
@@ -365,7 +365,7 @@ function create(hooks={}){
   const until=pending?s.player.action.start+CoreFighters.move(s.player.fighter,s.player.action.move).impact+200:lockDeadline(series);
   s.comboLock={owner:'player',seriesId:series.id,until,pending,guard,expectedBeat:series.lastBeat+1};suppressThreats(until);s.enemy.stun=Math.max(s.enemy.stun,s.comboLock.until);record(fresh?'comboLock':'comboExtend',t,{seriesId:series.id,pending});return true;
  }
- function recover(a,t,kind,stop=0){const from={...getPose(a,t),...CoreFighters.velocity(a,t)},move=a.action?.move??'jab';a.recovery={start:t,end:t+BEAT,kind,from,move,stop};a.visualReturn=null;a.stun=Math.max(a.stun,t+BEAT);a.ready=Math.max(a.ready,t+BEAT);a.defence=null;a.hit=null;a.evade=null;a.guardBlend=null;if(a===s.player){s.block=false;s.buffer=null}}
+ function recover(a,t,kind,stop=0){const from={...getPose(a,t),...CoreFighters.velocity(a,t)},move=a.action?.move??'jab';a.recovery={start:t,end:t+BEAT,kind,from,move,stop};a.visualReturn=null;a.stun=Math.max(a.stun,t+BEAT);a.ready=Math.max(a.ready,t+BEAT);a.defence=null;a.hit=null;a.evade=null;a.guardBlend=null;a.guardKey=null;if(a===s.player){s.block=false;s.buffer=null}}
  function whiff(a,t,reason){if(a===s.player)breakSeries(t,reason);else{releaseLock(t,reason);suppressThreats(t+BEAT)}recover(a,t,'whiff');record('whiff',t,{owner:a===s.player?'player':'enemy',reason});}
  function comboRecovery(t,owner='player',stop=85){
   releaseLock(t,'finish');s.series=null;recover(s.player,t,owner==='player'?'attacker':'defender',stop);recover(s.enemy,t,owner==='enemy'?'attacker':'defender',stop);suppressThreats(t+BEAT);record('comboRecovery',t,{owner,until:t+BEAT});
@@ -475,6 +475,7 @@ function create(hooks={}){
   if(inc&&!inc.resolved&&t>=inc.contactAt)due.push({t:inc.contactAt,type:'enemy',a:inc});
   due.sort((a,b)=>a.t-b.t);for(const event of due){if(event.type==='player'){if(s.player.action!==event.a)continue;event.a.resolved=true;playerImpact(event.a,event.t)}else {inc.resolved=true;if(s.enemy.action?.enemyPending)s.enemy.action.resolved=true;if(!inc.cancelled&&s.enemy.hp>0)enemyImpact(inc,event.t);if(s.incoming===inc)advance(inc)}}
   if(!s.training&&(s.enemy.hp<=0||s.player.hp<=0)){finish(t);return}
+  for(const actor of [s.player,s.enemy])if(actor.recovery&&t>=actor.recovery.end){actor.recovery=null;if(actor.action?.resolved)actor.action=null}
   const guardKey=getGuard(t);if(s.enemy.guardKey!==guardKey&&!(s.enemy.action?.enemyPending&&!s.enemy.action.resolved)&&!s.enemy.hit){const from=getPose(s.enemy,t);s.enemy.guardBlend={from,at:t,to:!!guardKey,key:guardKey};s.enemy.guardKey=guardKey}
   const p=s.player;if(s.block&&(!p.defence||t>=p.defence.end)&&!p.guardBlend?.to){p.guardBlend={from:getPose(p,t),at:t,to:true}}
   if(s.enemy.hit&&t>=s.enemy.hit.end&&!s.comboLock)s.enemy.hit=null;
