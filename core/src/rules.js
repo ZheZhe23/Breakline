@@ -14,8 +14,11 @@ function grade(at,difficulty='fighter'){const d=DIFFICULTIES[difficulty]??DIFFIC
 function create(hooks={}){
  const elapsed=(a,b)=>hooks.elapsedMs?.(a,b)??b-a,rhythmError=at=>hooks.rhythmError?.(at)??error(at),judge=at=>{const d=profile(),e=Math.abs(rhythmError(at));return e<=d.perfect?'PERFECT':e<=d.good?'GOOD':'OFF'};
  let serial=0;const actor=(x,facing,hp,fighter='nova')=>({x,facing,fighter,hp,maxHP:hp,action:null,ready:0,stun:0,hit:null,evade:null,defence:null,guardBlend:null});
- const s={fighterId:'nova',super:0,training:false,practice:null,mode:'idle',difficulty:'rookie',now:0,start:0,end:0,player:actor(137,1,150),enemy:actor(221,-1,220),energy:0,level:1,enemyEnergy:0,enemyLevel:1,musicLevel:1,tempoTarget:120,lastGrooveBeat:0,lessonTempo:false,phase:1,series:null,buffer:null,block:false,incoming:null,nextIncoming:null,upcoming:[],enemyIndex:0,guard:null,repeat:{key:null,count:0},counterUntil:0,feedback:null,freeze:null,flash:0,impacts:[],particles:[],trails:[],history:[],events:[],lastStep:0,lastEarned:0,streak:0,coach:0,stats:{perfect:0,good:0,off:0,combos:0,variety:[],dodges:0,blocks:0,taken:0,counters:0,score:0,maxLevel:1,attempts:0,supers:0,guarded:0,interrupts:0,lateThreats:0},fills:0};
+ const s={fighterId:'nova',super:0,training:false,practice:null,mode:'idle',difficulty:'rookie',now:0,start:0,end:0,player:actor(137,1,150),enemy:actor(221,-1,220),energy:0,level:1,enemyEnergy:0,enemyLevel:1,musicLevel:1,tempoTarget:120,lastGrooveBeat:0,lessonTempo:false,phase:1,series:null,buffer:null,block:false,incoming:null,nextIncoming:null,upcoming:[],enemyIndex:0,guard:null,repeat:{key:null,count:0},counterUntil:0,feedback:null,freeze:null,flash:0,impacts:[],particles:[],trails:[],history:[],events:[],lastStep:0,lastEarned:0,streak:0,coach:0,stats:{perfect:0,good:0,off:0,combos:0,variety:[],dodges:0,blocks:0,taken:0,counters:0,score:0,maxLevel:1,maxTempo:120,timing:{samples:0,absolute:0,signed:0,early:0,late:0},attempts:0,supers:0,guarded:0,interrupts:0,lateThreats:0},fills:0};
  const emit=(name,...args)=>hooks[name]?.(...args),profile=()=>DIFFICULTIES[s.difficulty],book=()=>CoreFighters.get(s.fighterId);
+ function recordTiming(at){const e=rhythmError(at),m=s.stats.timing;m.samples++;m.absolute+=Math.abs(e);m.signed+=e;if(e<-profile().perfect)m.early++;else if(e>profile().perfect)m.late++}
+ function timing(){const m=s.stats.timing,n=m.samples,bias=n?m.signed/n:0;return {samples:n,meanAbs:n?Math.round(m.absolute/n):null,bias:Math.round(bias),direction:n>=6&&m.early>=3&&m.early>m.late*1.5&&bias<-20?'early':n>=6&&m.late>=3&&m.late>m.early*1.5&&bias>20?'late':'balanced'}}
+ function timingAdvice(){const m=timing();return m.direction==='late'?'Чаще опаздываешь. Лови сам удар бочки, не жди оценки на экране.':m.direction==='early'?'Чаще спешишь. Дождись удара бочки, не добавляй нажатие перед ним.':'Слушай бочку и нажимай в момент удара. Между долями дополнительный ввод не помогает.'}
  function charge(amount,t){s.super=clamp(s.super+amount,0,100)}
  function record(type,t,extra={}){s.events.push({id:++serial,type,t,...extra});if(s.events.length>128)s.events.shift()}
  function message(label,detail,t,kind='good'){s.feedback={label,detail,at:t,kind}}
@@ -53,7 +56,7 @@ function create(hooks={}){
  function reset(now,difficulty=s.difficulty,fighterId=s.fighterId,training=false,practiceOptions=null){
   s.difficulty=DIFFICULTIES[difficulty]?difficulty:'rookie';const d=profile(),f=CoreFighters.get(fighterId),ids=Object.keys(CoreFighters.roster),enemyId=practiceOptions&&ids.includes(practiceOptions.enemy)?practiceOptions.enemy:ids[(ids.indexOf(f.id)+1)%ids.length],enemy=CoreFighters.get(enemyId),start=(Math.floor(now/BEAT)+1)*BEAT+3*BEAT;
   const practice=practiceOptions?{mode:practiceOptions.mode==='rival'?'rival':'dummy',enemy:enemy.id,level:null}:null;training=training||!!practice;
-  Object.assign(s,{fighterId:f.id,super:0,training,practice,mode:'fight',now,start,end:start+45000,player:actor(137,1,Math.round(d.hp*f.hp),f.id),enemy:actor(221,-1,Math.round(d.enemyHP*enemy.hp),enemyId),energy:0,level:1,enemyEnergy:0,enemyLevel:1,musicLevel:1,tempoTarget:120,lastGrooveBeat:0,lessonTempo:false,phase:1,series:null,buffer:null,block:false,incoming:null,nextIncoming:null,upcoming:[],enemyIndex:0,guard:null,repeat:{key:null,count:0},counterUntil:0,feedback:null,freeze:null,flash:0,impacts:[],particles:[],trails:[],history:[],events:[],lastStep:now,lastEarned:now,streak:0,coach:0,stats:{perfect:0,good:0,off:0,combos:0,variety:[],dodges:0,blocks:0,taken:0,counters:0,score:0,maxLevel:1,attempts:0,supers:0,guarded:0,interrupts:0,lateThreats:0},fills:0});
+  Object.assign(s,{fighterId:f.id,super:0,training,practice,mode:'fight',now,start,end:start+45000,player:actor(137,1,Math.round(d.hp*f.hp),f.id),enemy:actor(221,-1,Math.round(d.enemyHP*enemy.hp),enemyId),energy:0,level:1,enemyEnergy:0,enemyLevel:1,musicLevel:1,tempoTarget:120,lastGrooveBeat:0,lessonTempo:false,phase:1,series:null,buffer:null,block:false,incoming:null,nextIncoming:null,upcoming:[],enemyIndex:0,guard:null,repeat:{key:null,count:0},counterUntil:0,feedback:null,freeze:null,flash:0,impacts:[],particles:[],trails:[],history:[],events:[],lastStep:now,lastEarned:now,streak:0,coach:0,stats:{perfect:0,good:0,off:0,combos:0,variety:[],dodges:0,blocks:0,taken:0,counters:0,score:0,maxLevel:1,maxTempo:120,timing:{samples:0,absolute:0,signed:0,early:0,late:0},attempts:0,supers:0,guarded:0,interrupts:0,lateThreats:0},fills:0});
   s.lastGrooveBeat=Math.floor(start/BEAT);emit('resetTempo');if(rivalActive())plan(start+({rookie:8,fighter:6,master:4}[s.difficulty])*BEAT);emit('level',1);return s;
  }
  function getGuard(t){if(s.incoming&&!s.incoming.cancelled&&!s.incoming.resolved&&t>s.incoming.beatAt-180)return null;return s.guard&&t>=s.guard.start&&t<s.guard.end?s.guard.key:null}
@@ -77,9 +80,9 @@ function create(hooks={}){
   }
   const counter=executionAt<s.counterUntil&&quality!=='OFF';if(counter){s.counterUntil=0;if(!finish&&key==='L')move='cross'}
   const strong=!!finish||key==='S',a=action(p,move,executionAt,{key,inputAt:at,quality,strong,super:key==='S',finish,series,seriesStep:series?.steps??0,standalone,counter});
-  s.stats[quality.toLowerCase()]++;if(quality==='OFF'){s.streak=0;energy(-5,executionAt);message('МИМО РИТМА',rhythmError(at)>0?'ЧУТЬ РАНЬШЕ':'ЧУТЬ ПОЗЖЕ',executionAt,'off');emit('sfx','off')}else {s.streak++;message(quality,Math.round(rhythmError(at))+' ms',executionAt,quality==='PERFECT'?'perfect':'good');emit('sfx','swing');emit('sfx',key==='H'?'kickAccent':'handAccent')}
+  recordTiming(at);s.stats[quality.toLowerCase()]++;if(quality==='OFF'){s.streak=0;energy(-5,executionAt);message('МИМО РИТМА',rhythmError(at)>0?'ЧУТЬ РАНЬШЕ':'ЧУТЬ ПОЗЖЕ',executionAt,'off');emit('sfx','off')}else {s.streak++;message(quality,Math.round(rhythmError(at))+' ms',executionAt,quality==='PERFECT'?'perfect':'good');emit('sfx','swing');emit('sfx',key==='H'?'kickAccent':'handAccent')}
   if(key==='S')message(book().superName,'СУПЕР · '+book().name,executionAt,'super');
-  s.history.push({id:a.id,key,move,prefix:series?.prefix??'',quality,strong,counter,standalone,inputAt:at,start:executionAt});if(s.history.length>120)s.history.shift();if(finish)breakSeries();return {accepted:true,action:a};
+  s.history.push({id:a.id,key,move,prefix:series?.prefix??'',quality,strong,counter,standalone,inputAt:at,start:executionAt,errorMs:rhythmError(at)});if(s.history.length>120)s.history.shift();if(finish)breakSeries();return {accepted:true,action:a};
  }
  function defend(at,executionAt=at){
   const p=s.player;if(s.mode!=='fight'||at<s.start||elapsed(at,executionAt)>110||at<p.stun||p.defence&&at<p.defence.start+300)return false;
@@ -128,7 +131,8 @@ function create(hooks={}){
  function rating(){const st=s.stats,n=st.perfect+st.good+st.off,accuracy=n?(st.perfect+st.good*.7)/n:0,defence=st.attempts?(st.dodges+st.blocks*.35)/st.attempts:0,points=accuracy*55+defence*20+st.variety.length/3*15+s.player.hp/s.player.maxHP*10;return {rank:points>=92?'S':points>=80?'A':points>=65?'B':points>=45?'C':'D',value:Math.round(points),accuracy:Math.round(accuracy*100)}}
  function review(){
   const st=s.stats,n=st.perfect+st.good+st.off,accuracy=n?(st.perfect+st.good*.7)/n:0;
-  if(n<4||accuracy<.65)return {title:'СНАЧАЛА — ДОЛЯ',detail:'Слушай бочку и нажимай в момент удара. Между долями дополнительный ввод не помогает.',goal:'СЛЕДУЮЩАЯ ЦЕЛЬ · 8 из 10 атак без OFF'};
+  if(n<4||accuracy<.65)return {title:'СНАЧАЛА — ДОЛЯ',detail:timingAdvice(),goal:'СЛЕДУЮЩАЯ ЦЕЛЬ · 8 из 10 атак без OFF'};
+  const rhythm=timing();if(rhythm.direction!=='balanced'&&st.perfect/Math.max(1,n)<.6)return {title:rhythm.direction==='late'?'ЧУТЬ РАНЬШЕ':'ЧУТЬ ПОЗЖЕ',detail:timingAdvice()+' Средняя ошибка — '+rhythm.meanAbs+' мс.',goal:'СЛЕДУЮЩАЯ ЦЕЛЬ · 5 PERFECT в одном бою'};
   if(st.attempts>=3&&st.dodges<st.attempts*.4)return {title:'ПРОЧИТАЙ СОПЕРНИКА',detail:CoreFighters.get(s.enemy.fighter).name+' предупреждает об атаке красной долей. Точный тап УХОД сохраняет здоровье и открывает контрудар.',goal:'СЛЕДУЮЩАЯ ЦЕЛЬ · 3 точных ухода'};
   if(st.variety.length<3){const recipe=Object.keys(book().recipes).find(r=>!st.variety.includes(r));return {title:st.guarded?'СМЕНИ ТРАЕКТОРИЮ':'ДОБАВЬ НОВЫЙ ФИНАЛ',detail:'Попробуй '+recipe.replaceAll('L','Р').replaceAll('H','Н').split('').join(' · ')+'. После финала пропусти долю; уход остаётся доступным.',goal:'СЛЕДУЮЩАЯ ЦЕЛЬ · все 3 разных финала'}}
   if(!st.supers)return {title:'ПРЕВРАТИ РИТМ В СУПЕР',detail:'Чистые попадания, комбо и уходы наполняют отдельный заряд. На 100% нажми СУПЕР в долю.',goal:'СЛЕДУЮЩАЯ ЦЕЛЬ · одно попадание супером'};
@@ -139,6 +143,7 @@ function create(hooks={}){
  function step(t){
   const dt=clamp(t-s.lastStep,0,50);s.lastStep=t;s.now=t;
   if(s.mode==='ending'&&t>=s.resultAt){s.mode='result';emit('finish',s.winner,s.stats,s.rating)}if(s.mode!=='fight'||t<s.start)return;
+  s.stats.maxTempo=Math.max(s.stats.maxTempo,Math.round(hooks.bpmAt?.(t)??120));
   if(!s.training&&remaining(t)<=0){finish(t);return}
   const grooveBeat=Math.floor(t/BEAT);if(grooveBeat>s.lastGrooveBeat){if(rivalActive())enemyEnergy(Math.min(4,grooveBeat-s.lastGrooveBeat),t);s.lastGrooveBeat=grooveBeat}
   if(t-s.lastEarned>2200)energy(-dt*.003,t);
@@ -162,7 +167,7 @@ function create(hooks={}){
   if(s.enemy.hit&&t>=s.enemy.hit.end)s.enemy.hit=null;
   if(s.freeze&&t>s.freeze.until)s.freeze=null;s.impacts=s.impacts.filter(p=>t-p.at<190);s.particles=s.particles.filter(p=>t-p.at<440);s.trails=s.trails.filter(p=>t-p.at<145);
  }
- return {s,reset,step,charge,book,input,defend,release,setBlock,energy,grade:judge,rhythmError,elapsed,remaining,enemyEnergy,bpmAt:t=>hooks.bpmAt?.(t)??s.tempoTarget,getPose,getGuard,warning,action,playerImpact,enemyImpact,rating,review,rival,interval,practiceLevel,cancelThreats,threats};
+ return {s,reset,step,charge,book,input,defend,release,setBlock,energy,grade:judge,rhythmError,elapsed,remaining,enemyEnergy,bpmAt:t=>hooks.bpmAt?.(t)??s.tempoTarget,getPose,getGuard,warning,action,playerImpact,enemyImpact,rating,review,rival,interval,practiceLevel,cancelThreats,threats,timing};
 }
 return {create,grade,error,RECIPES,trie,prefixMoves,DIFFICULTIES,BEAT};
 })();
