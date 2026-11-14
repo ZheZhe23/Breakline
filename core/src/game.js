@@ -3,7 +3,10 @@
 const $=id=>document.getElementById(id),app=$('app'),canvas=$('arena'),ctx=canvas.getContext('2d'),motionQuery=matchMedia('(prefers-reduced-motion: reduce)');
 let reduced=motionQuery.matches;
 const defaults={difficulty:'rookie',fighter:'nova',lesson:0,trainingComplete:false,haptic:true,latency:0,bests:{}},prefs=(()=>{try{const p=JSON.parse(localStorage.getItem('breakline.afterhours.v3')||localStorage.getItem('breakline.afterhours.v2')||'null');return p&&typeof p==='object'?{...defaults,...p,bests:p.bests&&typeof p.bests==='object'?p.bests:{}}:{...defaults}}catch{return {...defaults}}})();
-if(!CoreRules.DIFFICULTIES[prefs.difficulty])prefs.difficulty='rookie';prefs.latency=Math.max(-250,Math.min(250,Number(prefs.latency)||0));
+if(!CoreRules.DIFFICULTIES[prefs.difficulty])prefs.difficulty='rookie';prefs.fighter=CoreFighters.get(prefs.fighter).id;
+prefs.latency=Math.max(-250,Math.min(250,Number(prefs.latency)||0));prefs.lesson=Number.isInteger(Number(prefs.lesson))&&Number(prefs.lesson)>=0&&Number(prefs.lesson)<12?Number(prefs.lesson):0;prefs.trainingComplete=prefs.trainingComplete===true;prefs.haptic=prefs.haptic!==false;
+const validBests={};for(const id of Object.keys(CoreFighters.roster))for(const d of Object.keys(CoreRules.DIFFICULTIES)){const key=id+':'+d,v=prefs.bests[key];if(v&&Number.isFinite(v.score)&&v.score>=0&&['S','A','B','C','D'].includes(v.rank))validBests[key]={score:Math.min(Number.MAX_SAFE_INTEGER,Math.floor(v.score)),rank:v.rank}}prefs.bests=validBests;
+for(const key of Object.keys(prefs))if(!Object.hasOwn(defaults,key))delete prefs[key];
 const save=()=>{try{localStorage.setItem('breakline.afterhours.v3',JSON.stringify(prefs))}catch{}};
 let audio=null,paused=false,starting=false,matchOffset=0,selected=prefs.difficulty,selectedFighter=CoreFighters.get(prefs.fighter).id,w=390,h=844,dpr=1,scale=1,ground=600,worldLeft=0,railWidth=360,backdrop=null,hudBottom=110,drawCount=0,auditErrors=0,focusRecipe=null,dojoOptions={mode:'dummy',enemy:null},lastHaptic=-1000,lastTrail=-1000,paintDirty=true,paintCount=0,loopTicks=0,lastLoopState='',audioQueue=Promise.resolve(),audioCommand=0,audioDesired=false,lifecycleEpoch=0;
 const now=()=>audio?audio.now()+matchOffset:0;
@@ -20,8 +23,12 @@ function requestAudio(running){
   return command===audioCommand&&instance===audio&&(running?ac.state==='running':ac.state==='suspended');
  });audioQueue=operation.catch(()=>{});return operation;
 }
-function watchAudio(ac){ac.addEventListener('statechange',()=>{if(audio?.ctx===ac&&ac.state!=='running'&&!paused&&['fight','ending','lessonWait'].includes(s.mode))pause()})}
-function audioProblem(closed=false){$('audio-error').hidden=false;$('audio-error').textContent=closed?'Браузер отключил аудио. Нажми «Начать заново», чтобы восстановить звук.':'Звук пока не включился. Нажми «Вернуться в бой» ещё раз.';invalidate()}
+function watchAudio(ac){ac.addEventListener('statechange',()=>{
+ if(audio?.ctx!==ac)return;const active=['fight','ending','lessonWait'].includes(s.mode);
+ if(ac.state==='closed'){audio.stop();if(active){if(!paused)pause();else{audioDesired=false;audioProblem(true)}}}
+ else if(ac.state!=='running'&&!paused&&active)pause();
+})}
+function audioProblem(closed=false){$('pause-overlay').classList.add('audio-recovery');$('pause-overlay').classList.toggle('audio-closed',closed);$('resume').disabled=closed;$('audio-error').hidden=false;$('audio-error').textContent=closed?'Браузер отключил аудио. Нажми «'+$('restart').textContent+'», чтобы восстановить звук.':'Звук пока не включился. Нажми «Вернуться в бой» ещё раз.';invalidate()}
 motionQuery.addEventListener('change',e=>{reduced=e.matches;invalidate()});
 function vibrate(strong=false){const t=now();if(prefs.haptic&&navigator.vibrate&&t-lastHaptic>110){navigator.vibrate(strong?[13,12,17]:8);lastHaptic=t}}
 const game=CoreRules.create({level:l=>audio?.setLevel(l),sfx:(kind,strong)=>{audio?.sfx(kind,strong);if(kind==='hit'||kind==='counter')vibrate(strong)},fill:(id,q)=>audio?.requestFill(id,q),warning:beat=>audio?.warning(beat-matchOffset),superCharge:id=>audio?.superCharge(id),superHit:id=>{audio?.superHit(id);vibrate(true)},finish:showResult});
@@ -37,18 +44,23 @@ for(const f of Object.values(CoreFighters.roster)){const b=document.createElemen
 selectFighter(selectedFighter);selectDifficulty(selected);for(const n of document.querySelectorAll('.difficulty[data-difficulty]'))n.onclick=()=>selectDifficulty(n.dataset.difficulty);
 function resize(){w=app.clientWidth;h=app.clientHeight;dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);const rect=app.getBoundingClientRect();hudBottom=document.querySelector('.energy').getBoundingClientRect().bottom-rect.top;ground=document.querySelector('.bottom').getBoundingClientRect().top-rect.top-9;const landscape=w>550&&h<510,teaching=lessons.state.active,reserve=teaching&&!landscape?Math.max(100,$('lesson-panel').getBoundingClientRect().height+28):s.practice?62:42;scale=Math.max(.4,Math.min(w/210,(ground-hudBottom-reserve)/152,2.2));worldLeft=w*(teaching&&landscape?.64:.5)-180*scale;$('lesson-panel').style.top=(landscape?hudBottom+14:hudBottom+8)+'px';$('practice-tools').style.top=(hudBottom+8)+'px';railWidth=document.querySelector('.beat-rail').clientWidth;backdrop=createBackdrop();const head=ground-150*scale;$('feedback').style.top=Math.max(hudBottom+3+reserve,head-48)+'px';$('intent').style.top=Math.max(hudBottom+8,head-25)+'px';$('guard-hint').style.top=Math.max(hudBottom+35,head+5)+'px';invalidate()}
 new ResizeObserver(resize).observe(app);
+function startBusy(value){for(const b of document.querySelectorAll('#start,#training-start,#practice-start,#practice-go,#practice-cancel,.fighter-card,[data-difficulty],[data-opponent],[data-practice-mode]'))b.disabled=value;$('start-overlay').setAttribute('aria-busy',String(value));$('practice-panel').setAttribute('aria-busy',String(value))}
 async function startFight(difficulty=selected,training=false,resumeLesson=0,practice=null){
- if(starting)return;starting=true;paused=true;const epoch=++lifecycleEpoch,fighterId=selectedFighter;$('start').disabled=true;
+ if(starting)return;starting=true;paused=true;const epoch=++lifecycleEpoch,fighterId=selectedFighter;let phase='audio';startBusy(true);
  try{
   if(!audio||audio.ctx.state==='closed'){
    const muted=audio?.muted??false;audio?.stop();const AC=window.AudioContext||window.webkitAudioContext;if(!AC)throw Error('Браузер не поддерживает Web Audio');
    const ac=new AC({latencyHint:'interactive'});audio=CoreAudio.create(ac);if(muted)audio.mute(true);watchAudio(ac);
   }
-  const running=await requestAudio(true);if(epoch!==lifecycleEpoch)return;if(!running)throw Error('Не удалось включить звук');audio.start();
-  const ids=Object.keys(CoreFighters.roster),enemy=practice?.enemy??ids[(ids.indexOf(fighterId)+1)%ids.length];await Promise.all([CoreSprites.load(fighterId),CoreSprites.load(enemy),CoreSprites.load('stage')]);if(epoch!==lifecycleEpoch)return;CoreSprites.retain([fighterId,enemy]);
+  const running=await requestAudio(true);if(epoch!==lifecycleEpoch)return;if(!running)throw Error('Не удалось включить звук');audio.start();phase='assets';
+  const ids=Object.keys(CoreFighters.roster),enemy=practice?.enemy??ids[(ids.indexOf(fighterId)+1)%ids.length];await Promise.all([CoreSprites.load(fighterId),CoreSprites.load(enemy),CoreSprites.load('stage')]);if(epoch!==lifecycleEpoch)return;if(audio.ctx.state!=='running'){phase='audio';throw Error('audio interrupted during load')}CoreSprites.retain([fighterId,enemy]);
   prefs.difficulty=difficulty;prefs.fighter=fighterId;selectedFighter=fighterId;save();selected=difficulty;matchOffset=prefs.latency;paused=false;focusRecipe=null;auditErrors=0;lastLessonState='';lessons.exit();if(training)lessons.begin(fighterId,now(),resumeLesson);else game.reset(now(),difficulty,fighterId,!!practice,practice);app.classList.toggle('learning',training);app.classList.toggle('dojo',!!practice);$('practice-tools').hidden=!practice;$('lesson-panel').hidden=!training;updateRecipes(fighterId);updateLesson();
-  for(const id of ['start-overlay','pause-overlay','result-overlay','practice-panel'])$(id).hidden=true;resize();$('start-error').hidden=true;$('audio-error').hidden=true;if(document.hidden)await pause();
- }catch(e){$('start-error').hidden=false;$('start-error').textContent='Нажми ещё раз, чтобы включить звук. '+e.message}finally{starting=false;$('start').disabled=false}
+  for(const id of ['start-overlay','pause-overlay','result-overlay','practice-panel'])$(id).hidden=true;resize();$('start-error').hidden=true;$('audio-error').hidden=true;$('pause-overlay').classList.remove('audio-recovery','audio-closed');if(document.hidden)await pause();
+ }catch(e){
+  if(epoch!==lifecycleEpoch)return;lessons.exit();s.practice=null;s.buffer=null;s.player.action=null;s.freeze=null;held.clear();paused=false;app.classList.remove('learning','dojo');
+  for(const id of ['pause-overlay','result-overlay','practice-panel','practice-tools','lesson-panel'])$(id).hidden=true;
+  $('start-overlay').hidden=false;$('start-error').hidden=false;$('start-error').textContent=phase==='audio'?'Не удалось включить звук. Повтори запуск в Chrome.':'Не удалось загрузить бойцов. Повтори запуск или обнови страницу.';resize();
+ }finally{starting=false;startBusy(false)}
 }
 // Free practice uses the same input windows and recovery, with isolated resources.
 function showPracticeSetup(){
@@ -63,15 +75,15 @@ $('practice-charge').onclick=()=>{if(s.practice&&!paused)game.charge(100,now())}
 $('practice-exit').onclick=()=>{if(paused)return;game.release(now());lessons.exit();s.practice=null;app.classList.remove('dojo','learning');$('practice-tools').hidden=true;$('lesson-panel').hidden=true;$('start-overlay').hidden=false;resize()};
 async function pause(){
  if(!audio||!['fight','ending','lessonWait'].includes(s.mode)||paused&&!audioDesired)return;
- const epoch=++lifecycleEpoch;paused=true;game.release(now());s.buffer=null;held.clear();$('defend').classList.remove('pressed');$('pause-overlay').hidden=false;$('resume').disabled=false;syncSettings();invalidate();
- if(audio.ctx.state==='closed'){audioDesired=false;audioProblem(true);return}
+ const epoch=++lifecycleEpoch;paused=true;game.release(now());s.buffer=null;held.clear();$('defend').classList.remove('pressed');$('pause-overlay').hidden=false;$('pause-overlay').classList.remove('audio-recovery','audio-closed');$('audio-error').hidden=true;$('resume').disabled=false;syncSettings();invalidate();
+ if(audio.ctx.state==='closed'){audioDesired=false;audio.stop();audioProblem(true);return}
  try{await requestAudio(false);if(epoch===lifecycleEpoch)invalidate()}catch{if(epoch===lifecycleEpoch)audioProblem(audio.ctx.state==='closed')}
 }
 async function resume(){
  if(!audio||!paused||document.hidden)return;const epoch=++lifecycleEpoch;$('resume').disabled=true;
- try{const running=await requestAudio(true);if(epoch!==lifecycleEpoch)return;if(!running){audioProblem();return}paused=false;$('pause-overlay').hidden=true;$('audio-error').hidden=true;invalidate()}
+ try{const running=await requestAudio(true);if(epoch!==lifecycleEpoch)return;if(!running){audioProblem();return}paused=false;$('pause-overlay').hidden=true;$('audio-error').hidden=true;$('pause-overlay').classList.remove('audio-recovery','audio-closed');invalidate()}
  catch{if(epoch===lifecycleEpoch){paused=true;audioProblem(audio.ctx.state==='closed')}}
- finally{if(epoch===lifecycleEpoch)$('resume').disabled=false}
+ finally{if(epoch===lifecycleEpoch)$('resume').disabled=audio?.ctx.state==='closed'}
 }
 function syncSettings(){$('restart').textContent=lessons.state.active?'НАЧАТЬ УРОК ЗАНОВО':s.practice?'СБРОСИТЬ ПРАКТИКУ':'НАЧАТЬ ЗАНОВО';$('haptic-toggle').textContent=prefs.haptic?'ВКЛ':'ВЫКЛ';$('haptic-toggle').setAttribute('aria-pressed',String(prefs.haptic));$('latency').value=prefs.latency;$('latency-value').textContent=prefs.latency+' ms'}
 $('haptic-toggle').onclick=()=>{prefs.haptic=!prefs.haptic;save();syncSettings()};$('latency').oninput=()=>{prefs.latency=Number($('latency').value);save();syncSettings()};
@@ -94,7 +106,7 @@ $('defend').addEventListener('pointerdown',e=>{e.preventDefault();if(!canInput()
 function release(){game.release(now());$('defend').classList.remove('pressed')}
 for(const type of ['pointerup','pointercancel','lostpointercapture'])$('defend').addEventListener(type,release);$('defend').onclick=e=>{if(e.detail===0&&canInput()){const t=now();game.step(t);game.defend(eventAt(e,t),t);game.release(t)}};
 for(const n of document.querySelectorAll('.combo'))n.onclick=()=>{focusRecipe=n.dataset.recipe};
-const held=new Set();window.addEventListener('keydown',e=>{if(e.code==='Space'&&e.target.closest?.('button')&&!['hand','foot','defend','special'].includes(e.target.id))return;if(e.code!=='Escape'&&(paused||['idle','result','lessonWait'].includes(s.mode)))return;if(['KeyJ','KeyK','KeyI','Space','Escape'].includes(e.code))e.preventDefault();if(held.has(e.code))return;held.add(e.code);if(e.code==='Escape'){paused?resume():pause();return}if(!canInput())return;if(e.code==='KeyJ')press('L',e);if(e.code==='KeyK')press('H',e);if(e.code==='KeyI')press('S',e);if(e.code==='Space'){const t=now();game.step(t);game.defend(eventAt(e,t),t);$('defend').classList.add('pressed')}});window.addEventListener('keyup',e=>{held.delete(e.code);if(e.code==='Space')release()});window.addEventListener('blur',()=>{held.clear();release();pause()});document.addEventListener('visibilitychange',()=>{if(document.hidden){held.clear();release();pause()}});
+const held=new Set();window.addEventListener('keydown',e=>{if(starting)return;if(e.code==='Space'&&e.target.closest?.('button')&&!['hand','foot','defend','special'].includes(e.target.id))return;if(e.code!=='Escape'&&(paused||['idle','result','lessonWait'].includes(s.mode)))return;if(['KeyJ','KeyK','KeyI','Space','Escape'].includes(e.code))e.preventDefault();if(held.has(e.code))return;held.add(e.code);if(e.code==='Escape'){paused?resume():pause();return}if(!canInput())return;if(e.code==='KeyJ')press('L',e);if(e.code==='KeyK')press('H',e);if(e.code==='KeyI')press('S',e);if(e.code==='Space'){const t=now();game.step(t);game.defend(eventAt(e,t),t);$('defend').classList.add('pressed')}});window.addEventListener('keyup',e=>{held.delete(e.code);if(e.code==='Space')release()});window.addEventListener('blur',()=>{held.clear();release();pause()});document.addEventListener('visibilitychange',()=>{if(document.hidden){held.clear();release();pause()}});
 function createBackdrop(){
  const c=document.createElement('canvas');c.width=w*dpr;c.height=h*dpr;const b=c.getContext('2d');b.scale(dpr,dpr);b.fillStyle='#100f1c';b.fillRect(0,0,w,h);
  const stage=CoreSprites.image('stage');if(stage){const ratio=Math.max(w/stage.width,(ground+30)/(stage.height*.82)),dx=(w-stage.width*ratio)*.5,dy=ground-stage.height*ratio*.82;b.drawImage(stage,dx,dy,stage.width*ratio,stage.height*ratio);b.fillStyle='#0b071936';b.fillRect(0,0,w,h)}
