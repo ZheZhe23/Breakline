@@ -1,5 +1,5 @@
 {
-  "coreSha256": "f33fd6369d7b2980f28761f62ec60b8c599d49b478cfb8fca974e8edf04d902c",
+  "coreSha256": "9c3b73aa32484d6877fc90b2c6610a0b4c376817138bcdd5e830b16407c67bb4",
   "checks": 128,
   "native": [
     {
@@ -80,7 +80,7 @@
       "width": 320,
       "height": 568,
       "teaching": true,
-      "scale": 0.7783717105263158
+      "scale": 0.6735197368421053
     },
     {
       "width": 360,
@@ -173,9 +173,9 @@
     "frames": 120,
     "dpr": 2,
     "desktopCPUThrottle": 4,
-    "p50": 13.299999999813735,
-    "p95": 16,
-    "max": 45.5,
+    "p50": 12.300000000279397,
+    "p95": 14.799999999813735,
+    "max": 35.10000000009313,
     "androidHardware": false
   },
   "memory": {
@@ -191,7 +191,7 @@
   "errors": [],
   "sound": {
     "peak": 0.8771759867668152,
-    "rms": 0.1001259994684637
+    "rms": 0.10012599990983923
   },
   "androidHardwareTested": false
 }

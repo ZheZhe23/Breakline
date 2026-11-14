@@ -1,5 +1,5 @@
 {
-  "coreSha256": "f33fd6369d7b2980f28761f62ec60b8c599d49b478cfb8fca974e8edf04d902c",
+  "coreSha256": "9c3b73aa32484d6877fc90b2c6610a0b4c376817138bcdd5e830b16407c67bb4",
   "checks": 13002,
   "fighters": [
     "nova",
@@ -11,19 +11,19 @@
   "lessonReports": [
     {
       "fighter": "nova",
-      "seconds": 45.125,
+      "seconds": 47.625,
       "inputs": 29,
       "completed": 13
     },
     {
       "fighter": "brick",
-      "seconds": 44.625,
+      "seconds": 45.625,
       "inputs": 28,
       "completed": 13
     },
     {
       "fighter": "iris",
-      "seconds": 45.125,
+      "seconds": 47.625,
       "inputs": 29,
       "completed": 13
     }
@@ -34,41 +34,41 @@
       "fighter": "nova",
       "policy": "reader",
       "winner": "player",
-      "combos": 4,
-      "supers": 2,
-      "score": 9034
+      "combos": 6,
+      "supers": 3,
+      "score": 11112
     },
     {
       "fighter": "nova",
       "policy": "repeat",
       "winner": "enemy",
-      "combos": 2,
+      "combos": 5,
       "supers": 1,
-      "score": 3188
+      "score": 3812
     },
     {
       "fighter": "brick",
       "policy": "reader",
       "winner": "player",
       "combos": 4,
-      "supers": 1,
-      "score": 7982
+      "supers": 2,
+      "score": 10032
     },
     {
       "fighter": "brick",
       "policy": "repeat",
       "winner": "enemy",
-      "combos": 4,
-      "supers": 1,
-      "score": 3959
+      "combos": 6,
+      "supers": 2,
+      "score": 5681
     },
     {
       "fighter": "iris",
       "policy": "reader",
       "winner": "player",
-      "combos": 3,
-      "supers": 1,
-      "score": 8212
+      "combos": 6,
+      "supers": 2,
+      "score": 10136
     },
     {
       "fighter": "iris",
@@ -76,7 +76,7 @@
       "winner": "enemy",
       "combos": 0,
       "supers": 0,
-      "score": 803
+      "score": 1281
     }
   ],
   "rivalReports": [

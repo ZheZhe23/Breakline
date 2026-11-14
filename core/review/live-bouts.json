@@ -1,5 +1,5 @@
 {
-  "coreSha256": "f33fd6369d7b2980f28761f62ec60b8c599d49b478cfb8fca974e8edf04d902c",
+  "coreSha256": "9c3b73aa32484d6877fc90b2c6610a0b4c376817138bcdd5e830b16407c67bb4",
   "kind": "real-time native touch policy against active AI; silent Chromium video; not a human or Android recording",
   "reports": [
     {
@@ -7,36 +7,36 @@
       "opponent": "brick",
       "winner": "player",
       "stats": {
-        "perfect": 16,
+        "perfect": 28,
         "good": 0,
         "off": 0,
-        "combos": 4,
+        "combos": 7,
         "variety": [
           "LLL",
           "LLH",
           "LHLH"
         ],
-        "dodges": 6,
+        "dodges": 8,
         "blocks": 0,
         "taken": 0,
-        "counters": 5,
-        "score": 9222,
+        "counters": 8,
+        "score": 13337,
         "maxLevel": 5,
-        "maxTempo": 130,
+        "maxTempo": 240,
         "timing": {
-          "samples": 16,
-          "absolute": 264.6854010213651,
-          "signed": 264.6854010213651,
+          "samples": 28,
+          "absolute": 245.97244215805247,
+          "signed": -242.46735442057954,
           "early": 0,
           "late": 0
         },
-        "attempts": 6,
-        "supers": 2,
+        "attempts": 8,
+        "supers": 3,
         "guarded": 0,
-        "interrupts": 2,
+        "interrupts": 1,
         "lateThreats": 0,
-        "time": 15186.409836735256,
-        "winBonus": 1800
+        "time": 19428.44629931973,
+        "winBonus": 1720
       },
       "rating": {
         "rank": "S",
@@ -44,9 +44,9 @@
         "accuracy": 100
       },
       "lateThreats": 0,
-      "tempo": 140,
+      "tempo": 240,
       "enemyGroove": 3,
-      "bpm": 130,
+      "bpm": 240,
       "tempoSegments": [
         {
           "beat": 0,
@@ -54,17 +54,72 @@
           "bpm": 120
         },
         {
-          "beat": 24,
-          "time": 12.15,
+          "beat": 8,
+          "time": 4.15,
           "bpm": 130
         },
         {
-          "beat": 36,
-          "time": 17.68846153846154,
+          "beat": 12,
+          "time": 5.996153846153847,
           "bpm": 140
+        },
+        {
+          "beat": 16,
+          "time": 7.7104395604395615,
+          "bpm": 150
+        },
+        {
+          "beat": 20,
+          "time": 9.310439560439562,
+          "bpm": 160
+        },
+        {
+          "beat": 24,
+          "time": 10.810439560439562,
+          "bpm": 170
+        },
+        {
+          "beat": 28,
+          "time": 12.222204266321915,
+          "bpm": 180
+        },
+        {
+          "beat": 32,
+          "time": 13.55553759965525,
+          "bpm": 190
+        },
+        {
+          "beat": 36,
+          "time": 14.818695494392092,
+          "bpm": 200
+        },
+        {
+          "beat": 40,
+          "time": 16.01869549439209,
+          "bpm": 210
+        },
+        {
+          "beat": 44,
+          "time": 17.161552637249233,
+          "bpm": 220
+        },
+        {
+          "beat": 48,
+          "time": 18.252461728158323,
+          "bpm": 230
+        },
+        {
+          "beat": 52,
+          "time": 19.29593998902789,
+          "bpm": 240
+        },
+        {
+          "beat": 62,
+          "time": 21.79593998902789,
+          "bpm": 90
         }
       ],
-      "nativeTaps": 22,
+      "nativeTaps": 36,
       "errors": []
     },
     {
@@ -72,36 +127,36 @@
       "opponent": "iris",
       "winner": "player",
       "stats": {
-        "perfect": 14,
+        "perfect": 22,
         "good": 0,
         "off": 0,
-        "combos": 4,
+        "combos": 6,
         "variety": [
           "LLL",
           "HHL",
           "LHH"
         ],
-        "dodges": 4,
+        "dodges": 3,
         "blocks": 0,
         "taken": 0,
         "counters": 3,
-        "score": 7742,
+        "score": 10334,
         "maxLevel": 5,
-        "maxTempo": 130,
+        "maxTempo": 210,
         "timing": {
-          "samples": 14,
-          "absolute": 292.7135053226722,
-          "signed": 292.7135053226722,
+          "samples": 22,
+          "absolute": 149.6067972908124,
+          "signed": -146.30183202102833,
           "early": 0,
           "late": 0
         },
-        "attempts": 4,
-        "supers": 1,
+        "attempts": 3,
+        "supers": 2,
         "guarded": 0,
-        "interrupts": 4,
+        "interrupts": 2,
         "lateThreats": 0,
-        "time": 12135.15848752853,
-        "winBonus": 1860
+        "time": 14487.585947845899,
+        "winBonus": 1820
       },
       "rating": {
         "rank": "S",
@@ -109,9 +164,9 @@
         "accuracy": 100
       },
       "lateThreats": 0,
-      "tempo": 130,
+      "tempo": 240,
       "enemyGroove": 2,
-      "bpm": 130,
+      "bpm": 210,
       "tempoSegments": [
         {
           "beat": 0,
@@ -119,12 +174,57 @@
           "bpm": 120
         },
         {
-          "beat": 24,
-          "time": 12.15,
+          "beat": 8,
+          "time": 4.15,
           "bpm": 130
+        },
+        {
+          "beat": 12,
+          "time": 5.996153846153847,
+          "bpm": 140
+        },
+        {
+          "beat": 16,
+          "time": 7.7104395604395615,
+          "bpm": 150
+        },
+        {
+          "beat": 20,
+          "time": 9.310439560439562,
+          "bpm": 160
+        },
+        {
+          "beat": 24,
+          "time": 10.810439560439562,
+          "bpm": 170
+        },
+        {
+          "beat": 28,
+          "time": 12.222204266321915,
+          "bpm": 180
+        },
+        {
+          "beat": 32,
+          "time": 13.55553759965525,
+          "bpm": 190
+        },
+        {
+          "beat": 36,
+          "time": 14.818695494392092,
+          "bpm": 200
+        },
+        {
+          "beat": 40,
+          "time": 16.01869549439209,
+          "bpm": 210
+        },
+        {
+          "beat": 43,
+          "time": 16.87583835153495,
+          "bpm": 90
         }
       ],
-      "nativeTaps": 18,
+      "nativeTaps": 25,
       "errors": []
     },
     {
@@ -132,10 +232,10 @@
       "opponent": "nova",
       "winner": "player",
       "stats": {
-        "perfect": 17,
+        "perfect": 24,
         "good": 0,
         "off": 0,
-        "combos": 5,
+        "combos": 6,
         "variety": [
           "LLH",
           "HLL",
@@ -145,23 +245,23 @@
         "blocks": 0,
         "taken": 0,
         "counters": 4,
-        "score": 8307,
+        "score": 11317,
         "maxLevel": 5,
-        "maxTempo": 130,
+        "maxTempo": 220,
         "timing": {
-          "samples": 17,
-          "absolute": 331.06579330490325,
-          "signed": 331.06579330490325,
+          "samples": 24,
+          "absolute": 166.31857285011444,
+          "signed": -166.31857285011444,
           "early": 0,
           "late": 0
         },
         "attempts": 4,
-        "supers": 1,
+        "supers": 2,
         "guarded": 0,
-        "interrupts": 5,
+        "interrupts": 2,
         "lateThreats": 0,
-        "time": 14106.78692290268,
-        "winBonus": 1820
+        "time": 15934.24181179166,
+        "winBonus": 1780
       },
       "rating": {
         "rank": "S",
@@ -169,9 +269,9 @@
         "accuracy": 100
       },
       "lateThreats": 0,
-      "tempo": 130,
+      "tempo": 240,
       "enemyGroove": 2,
-      "bpm": 130,
+      "bpm": 220,
       "tempoSegments": [
         {
           "beat": 0,
@@ -179,12 +279,62 @@
           "bpm": 120
         },
         {
-          "beat": 28,
-          "time": 14.15,
+          "beat": 8,
+          "time": 4.15,
           "bpm": 130
+        },
+        {
+          "beat": 12,
+          "time": 5.996153846153847,
+          "bpm": 140
+        },
+        {
+          "beat": 16,
+          "time": 7.7104395604395615,
+          "bpm": 150
+        },
+        {
+          "beat": 20,
+          "time": 9.310439560439562,
+          "bpm": 160
+        },
+        {
+          "beat": 24,
+          "time": 10.810439560439562,
+          "bpm": 170
+        },
+        {
+          "beat": 28,
+          "time": 12.222204266321915,
+          "bpm": 180
+        },
+        {
+          "beat": 32,
+          "time": 13.55553759965525,
+          "bpm": 190
+        },
+        {
+          "beat": 36,
+          "time": 14.818695494392092,
+          "bpm": 200
+        },
+        {
+          "beat": 40,
+          "time": 16.01869549439209,
+          "bpm": 210
+        },
+        {
+          "beat": 44,
+          "time": 17.161552637249233,
+          "bpm": 220
+        },
+        {
+          "beat": 48,
+          "time": 18.252461728158323,
+          "bpm": 90
         }
       ],
-      "nativeTaps": 21,
+      "nativeTaps": 28,
       "errors": []
     }
   ]
