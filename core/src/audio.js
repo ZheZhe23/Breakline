@@ -2,8 +2,8 @@
 const CoreAudio = (() => {
 'use strict';
 const BPM=120,BEAT=.5,STEP=BEAT/4,LOOK=.12;
-// Four opening bars to settle in; two full bars per later +10 BPM step.
-const RAMP=Object.freeze({introBeats:16,stepBeats:8,stepBpm:10,maxBpm:240});
+// Owner-selected pacing: +15 BPM after every four full bars (16 quarter notes).
+const RAMP=Object.freeze({introBeats:16,stepBeats:16,stepBpm:15,maxBpm:240});
 function estimateLatency(ctx,when){
  const fallback=Math.min(.4,Math.max(0,(ctx.baseLatency||0)+(ctx.outputLatency||0)));
  try{const ts=ctx.getOutputTimestamp?.();if(ts&&ts.contextTime>0&&ts.performanceTime>0){const delay=ctx.currentTime-(ts.contextTime+(when-ts.performanceTime)/1000);if(delay>=0&&delay<.5)return delay}}catch{}
@@ -30,8 +30,8 @@ function create(context,initialScene='battle'){
  const hz=n=>440*2**((n-69)/12),rootAt=step=>[38,38,39,36][Math.floor(step/32)%4];
  function safeBeat(now=ctx.currentTime,unit=1){return Math.max(0,Math.ceil((transport.beatAt(now+LOOK+.04)-1e-8)/unit)*unit)}
  function setTempo(target,now=ctx.currentTime){
-  target=Math.max(120,Math.min(240,Math.round(target/10)*10));let bpm=transport.segments.at(-1).bpm,beat=Math.max(safeBeat(now,4),(Math.floor(transport.segments.at(-1).beat/4)+1)*4);
-  while(bpm<target){bpm+=10;transport.setTempo(bpm,beat);beat+=4}return transport.segments;
+  target=Math.max(120,Math.min(240,Math.round(target)));let bpm=transport.segments.at(-1).bpm,beat=Math.max(safeBeat(now,4),(Math.floor(transport.segments.at(-1).beat/4)+1)*4);
+  while(bpm<target){bpm=Math.min(target,bpm+RAMP.stepBpm);transport.setTempo(bpm,beat);beat+=RAMP.stepBeats}return transport.segments;
  }
  function startRamp(startTicks,cap=RAMP.maxBpm,profile=RAMP){
   const now=ctx.currentTime,first=Math.max(safeBeat(now,4),Math.ceil((startTicks/500+profile.introBeats)/4)*4);let bpm=120;

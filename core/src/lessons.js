@@ -33,7 +33,7 @@ function create(game,hooks={}){
    if(index===10&&e.type==='super')state.progress=1;
    if(index===12){const k=e.type==='combo'?'combo':e.type==='dodge'?'dodge':e.type==='super'?'super':null;if(k&&!state.seen.includes(k)){state.seen.push(k);state.progress=state.seen.length}}
   }
-  if(index===11&&now>=s.start&&s.demoRamp&&now/500>=s.demoRamp.first&&s.tempoTarget>=130&&(game.bpmAt(now)>=130))state.progress=1;
+  if(index===11&&now>=s.start&&s.demoRamp&&now/500>=s.demoRamp.first&&s.tempoTarget>=135&&(game.bpmAt(now)>=135))state.progress=1;
   if(index===9){if(s.level===5){if(!state.levelAt)state.levelAt=now;if(now-state.levelAt>650)state.progress=1}else state.levelAt=0}
   if(state.progress>=state.total)done(now);
  }
@@ -51,7 +51,7 @@ function create(game,hooks={}){
  'Освой ещё два финала. Сейчас '+r+'. Чистая серия даёт заряд и музыкальный ответ.',
  'Groove усиливает эффекты и пять слоёв музыки. Точно атакуй, чтобы поднять уровень с 4 до 5.',
  'Супер заряжен. Нажми СУПЕР в долю. Контакт через долю, полное восстановление — через две с половиной от ввода. Броня уменьшает урон при подготовке. Уход отменяет приём без возврата заряда. Groove не тратится.',
- 'Первые четыре такта — 120 BPM. Затем +10 раз в два такта, до 240 ближе к финалу. Здесь короткий пример: держи блок и услышь 120 → 130. Groove и супер темп не сбрасывают.',
+ 'Каждые четыре такта темп растёт на 15 BPM: 120 → 135 → 150. Держи блок и услышь первую смену после четырёх тактов. Groove и супер темп не сбрасывают.',
  'Свободная тренировка: выполни чистое комбо, уход и супер. Раненые бойцы здесь не проигрывают. В дуэли счёт и ранг растут от точности, защиты и разных финалов.'
  ][state.index]}
  return {state,begin,enter,tick,next,exit,description,titles};

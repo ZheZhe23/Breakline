@@ -198,8 +198,8 @@ return {create};
 const CoreAudio = (() => {
 'use strict';
 const BPM=120,BEAT=.5,STEP=BEAT/4,LOOK=.12;
-// Four opening bars to settle in; two full bars per later +10 BPM step.
-const RAMP=Object.freeze({introBeats:16,stepBeats:8,stepBpm:10,maxBpm:240});
+// Owner-selected pacing: +15 BPM after every four full bars (16 quarter notes).
+const RAMP=Object.freeze({introBeats:16,stepBeats:16,stepBpm:15,maxBpm:240});
 function estimateLatency(ctx,when){
  const fallback=Math.min(.4,Math.max(0,(ctx.baseLatency||0)+(ctx.outputLatency||0)));
  try{const ts=ctx.getOutputTimestamp?.();if(ts&&ts.contextTime>0&&ts.performanceTime>0){const delay=ctx.currentTime-(ts.contextTime+(when-ts.performanceTime)/1000);if(delay>=0&&delay<.5)return delay}}catch{}
@@ -226,8 +226,8 @@ function create(context,initialScene='battle'){
  const hz=n=>440*2**((n-69)/12),rootAt=step=>[38,38,39,36][Math.floor(step/32)%4];
  function safeBeat(now=ctx.currentTime,unit=1){return Math.max(0,Math.ceil((transport.beatAt(now+LOOK+.04)-1e-8)/unit)*unit)}
  function setTempo(target,now=ctx.currentTime){
-  target=Math.max(120,Math.min(240,Math.round(target/10)*10));let bpm=transport.segments.at(-1).bpm,beat=Math.max(safeBeat(now,4),(Math.floor(transport.segments.at(-1).beat/4)+1)*4);
-  while(bpm<target){bpm+=10;transport.setTempo(bpm,beat);beat+=4}return transport.segments;
+  target=Math.max(120,Math.min(240,Math.round(target)));let bpm=transport.segments.at(-1).bpm,beat=Math.max(safeBeat(now,4),(Math.floor(transport.segments.at(-1).beat/4)+1)*4);
+  while(bpm<target){bpm=Math.min(target,bpm+RAMP.stepBpm);transport.setTempo(bpm,beat);beat+=RAMP.stepBeats}return transport.segments;
  }
  function startRamp(startTicks,cap=RAMP.maxBpm,profile=RAMP){
   const now=ctx.currentTime,first=Math.max(safeBeat(now,4),Math.ceil((startTicks/500+profile.introBeats)/4)*4);let bpm=120;
@@ -359,7 +359,7 @@ function create(hooks={}){
  const emit=(name,...args)=>hooks[name]?.(...args),profile=()=>DIFFICULTIES[s.difficulty],book=()=>CoreFighters.get(s.fighterId);
  function windows(t){const d=profile(),scale=Math.min(1,160/(hooks.bpmAt?.(t)??120));return {perfect:d.perfect*scale,good:d.good*scale}}
  function practiceTempo(value,t){if(!s.practice)return false;s.practice.tempo=value==='auto'?'auto':[120,160,200,240].includes(value)?value:120;s.tempoTarget=s.practice.tempo==='auto'?240:s.practice.tempo;emit(s.practice.tempo==='auto'?'autoTempo':'pinTempo',s.practice.tempo==='auto'?t:s.practice.tempo);return true}
- function demoRamp(t,cap=130){s.tempoTarget=cap;s.demoRamp={first:Math.ceil((s.start/500+4)/4)*4,cap};emit('autoTempo',s.start,cap,{introBeats:4,stepBeats:4})}
+ function demoRamp(t,cap=135){s.tempoTarget=cap;s.demoRamp={first:Math.ceil((s.start/500+16)/4)*4,cap};emit('autoTempo',s.start,cap,{introBeats:16,stepBeats:16})}
  function bpmAt(t){return hooks.bpmAt?.(t)??(s.demoRamp&&t/500>=s.demoRamp.first?s.demoRamp.cap:120)}
  function recordTiming(at){const e=rhythmError(at),m=s.stats.timing;m.samples++;m.absolute+=Math.abs(e);m.signed+=e;if(e<-windows(at).perfect)m.early++;else if(e>windows(at).perfect)m.late++}
  function timing(){const m=s.stats.timing,n=m.samples,bias=n?m.signed/n:0;return {samples:n,meanAbs:n?Math.round(m.absolute/n):null,bias:Math.round(bias),direction:n>=6&&m.early>=3&&m.early>m.late*1.5&&bias<-20?'early':n>=6&&m.late>=3&&m.late>m.early*1.5&&bias>20?'late':'balanced'}}
@@ -580,7 +580,7 @@ function create(game,hooks={}){
    if(index===10&&e.type==='super')state.progress=1;
    if(index===12){const k=e.type==='combo'?'combo':e.type==='dodge'?'dodge':e.type==='super'?'super':null;if(k&&!state.seen.includes(k)){state.seen.push(k);state.progress=state.seen.length}}
   }
-  if(index===11&&now>=s.start&&s.demoRamp&&now/500>=s.demoRamp.first&&s.tempoTarget>=130&&(game.bpmAt(now)>=130))state.progress=1;
+  if(index===11&&now>=s.start&&s.demoRamp&&now/500>=s.demoRamp.first&&s.tempoTarget>=135&&(game.bpmAt(now)>=135))state.progress=1;
   if(index===9){if(s.level===5){if(!state.levelAt)state.levelAt=now;if(now-state.levelAt>650)state.progress=1}else state.levelAt=0}
   if(state.progress>=state.total)done(now);
  }
@@ -598,7 +598,7 @@ function create(game,hooks={}){
  'Освой ещё два финала. Сейчас '+r+'. Чистая серия даёт заряд и музыкальный ответ.',
  'Groove усиливает эффекты и пять слоёв музыки. Точно атакуй, чтобы поднять уровень с 4 до 5.',
  'Супер заряжен. Нажми СУПЕР в долю. Контакт через долю, полное восстановление — через две с половиной от ввода. Броня уменьшает урон при подготовке. Уход отменяет приём без возврата заряда. Groove не тратится.',
- 'Первые четыре такта — 120 BPM. Затем +10 раз в два такта, до 240 ближе к финалу. Здесь короткий пример: держи блок и услышь 120 → 130. Groove и супер темп не сбрасывают.',
+ 'Каждые четыре такта темп растёт на 15 BPM: 120 → 135 → 150. Держи блок и услышь первую смену после четырёх тактов. Groove и супер темп не сбрасывают.',
  'Свободная тренировка: выполни чистое комбо, уход и супер. Раненые бойцы здесь не проигрывают. В дуэли счёт и ранг растут от точности, защиты и разных финалов.'
  ][state.index]}
  return {state,begin,enter,tick,next,exit,description,titles};
