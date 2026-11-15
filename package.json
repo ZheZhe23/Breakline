@@ -9,7 +9,7 @@
     "render:half": "node tests/render-half-beat.cjs",
     "build:core": "node tools/build-core.cjs",
     "check:core": "node tests/core-syntax.cjs",
-    "test:core": "node tests/core-syntax.cjs && node tests/core-rules.cjs && node tests/core-combo-hold.cjs && node tests/core-threats.cjs && node tests/core-feedback.cjs && node tests/core-loader.cjs && node tests/core-browser.cjs && node tests/core-practice.cjs && node tests/core-runtime.cjs && node tests/core-groove.cjs && node tests/core-readability.cjs && node tests/core-overclock.cjs && node tests/core-airflow.cjs",
+    "test:core": "node tests/core-syntax.cjs && node tests/core-rules.cjs && node tests/core-combo-hold.cjs && node tests/core-threats.cjs && node tests/core-feedback.cjs && node tests/core-loader.cjs && node tests/core-browser.cjs && node tests/core-practice.cjs && node tests/core-runtime.cjs && node tests/core-groove.cjs && node tests/core-readability.cjs && node tests/core-overclock.cjs && node tests/core-airflow.cjs && node tests/core-revolve.cjs",
     "render:core": "node tests/render-core.cjs",
     "render:iris": "node tests/render-core.cjs --iris",
     "test:core:live": "node tests/core-live-bout.cjs",
@@ -17,7 +17,7 @@
     "test:core:runtime": "node tests/core-loader.cjs && node tests/core-runtime.cjs",
     "test:core:groove": "node tests/core-groove.cjs",
     "test:core:readability": "node tests/core-threats.cjs && node tests/core-feedback.cjs && node tests/core-readability.cjs",
-    "test:core:overclock": "node tests/core-combo-hold.cjs && node tests/core-overclock.cjs && node tests/core-airflow.cjs"
+    "test:core:overclock": "node tests/core-combo-hold.cjs && node tests/core-overclock.cjs && node tests/core-airflow.cjs && node tests/core-revolve.cjs"
   },
   "devDependencies": {
     "playwright": "1.62.1"

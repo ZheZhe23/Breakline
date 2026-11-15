@@ -80,7 +80,7 @@ function create(hooks={}){
   if(s.comboLock&&s.comboLock.seriesId!==series.id)releaseLock(t,'new-series');
   pending=pending&&(!s.comboLock||s.comboLock.pending);const guard=s.comboLock?s.comboLock.guard:getGuard(t);if(pending&&guard===series.prefix.at(-1))return false;
   const fresh=!s.comboLock;if(fresh){const from=getPose(s.enemy,t);s.enemy.recovery=null;s.enemy.visualReturn=null;s.enemy.hit={start:t,end:t+230,from};}
-  const until=pending?s.player.action.start+CoreFighters.move(s.player.fighter,s.player.action.move).impact+200:lockDeadline(series);
+  const until=pending||series.node.finish?s.player.action.start+CoreFighters.move(s.player.fighter,s.player.action.move).impact+200:lockDeadline(series);
   s.comboLock={owner:'player',seriesId:series.id,until,pending,guard,expectedBeat:series.lastBeat+1};suppressThreats(until);s.enemy.stun=Math.max(s.enemy.stun,s.comboLock.until);record(fresh?'comboLock':'comboExtend',t,{seriesId:series.id,pending});return true;
  }
  function recover(a,t,kind,stop=0){const from={...getPose(a,t),...CoreFighters.velocity(a,t)},move=a.action?.move??'jab';a.recovery={start:t,end:t+BEAT,kind,from,move,stop};a.visualReturn=null;a.stun=Math.max(a.stun,t+BEAT);a.ready=Math.max(a.ready,t+BEAT);a.defence=null;a.hit=null;a.evade=null;a.guardBlend=null;a.guardKey=null;if(a===s.player){s.block=false;s.buffer=null}}
