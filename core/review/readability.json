@@ -1,5 +1,5 @@
 {
-  "coreSha256": "9c3b73aa32484d6877fc90b2c6610a0b4c376817138bcdd5e830b16407c67bb4",
+  "coreSha256": "11b732f2cd86e7c337b50f7d52bd6dc0becbe6a5e69cea63de05e80aef4a4a53",
   "checks": 295,
   "audible": [
     {
@@ -109,7 +109,7 @@
       "rival": "brick",
       "completed": 9,
       "cues": 9,
-      "minimumCueRMS": 0.009530174908836725,
+      "minimumCueRMS": 0.009530174908836711,
       "missing": []
     },
     {
@@ -579,7 +579,7 @@
       "rival": "nova",
       "completed": 17,
       "cues": 19,
-      "minimumCueRMS": 0.009543041539989283,
+      "minimumCueRMS": 0.009543041539905614,
       "missing": []
     },
     {

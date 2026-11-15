@@ -1,5 +1,5 @@
 {
-  "coreSha256": "9c3b73aa32484d6877fc90b2c6610a0b4c376817138bcdd5e830b16407c67bb4",
+  "coreSha256": "11b732f2cd86e7c337b50f7d52bd6dc0becbe6a5e69cea63de05e80aef4a4a53",
   "checks": 38,
   "paintSamples": {
     "menu": {
@@ -14,7 +14,7 @@
     },
     "paused": {
       "paints": 0,
-      "ticks": 28,
+      "ticks": 27,
       "clock": 0
     },
     "afterResize": {
@@ -30,7 +30,7 @@
     "result": {
       "paints": 0,
       "ticks": 27,
-      "clock": 0.45278911564625846
+      "clock": 0.44988662131519286
     },
     "returned": {
       "paints": 0,

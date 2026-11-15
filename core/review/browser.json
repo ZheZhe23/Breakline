@@ -1,5 +1,5 @@
 {
-  "coreSha256": "9c3b73aa32484d6877fc90b2c6610a0b4c376817138bcdd5e830b16407c67bb4",
+  "coreSha256": "11b732f2cd86e7c337b50f7d52bd6dc0becbe6a5e69cea63de05e80aef4a4a53",
   "checks": 128,
   "native": [
     {
@@ -44,73 +44,73 @@
       "width": 320,
       "height": 568,
       "teaching": false,
-      "scale": 1.006578947368421
+      "scale": 0.7631578947368421
     },
     {
       "width": 360,
       "height": 640,
       "teaching": false,
-      "scale": 1.4210526315789473
+      "scale": 1.0894736842105264
     },
     {
       "width": 390,
       "height": 844,
       "teaching": false,
-      "scale": 1.8571428571428572
+      "scale": 1.2580645161290323
     },
     {
       "width": 412,
       "height": 915,
       "teaching": false,
-      "scale": 1.9619047619047618
+      "scale": 1.3290322580645162
     },
     {
       "width": 740,
       "height": 360,
       "teaching": false,
-      "scale": 0.8223684210526315
+      "scale": 0.6578947368421053
     },
     {
       "width": 844,
       "height": 390,
       "teaching": false,
-      "scale": 1.019736842105263
+      "scale": 0.8157894736842105
     },
     {
       "width": 320,
       "height": 568,
       "teaching": true,
-      "scale": 0.6735197368421053
+      "scale": 0.5388157894736842
     },
     {
       "width": 360,
       "height": 640,
       "teaching": true,
-      "scale": 1.199424342105263
+      "scale": 0.9595394736842106
     },
     {
       "width": 390,
       "height": 844,
       "teaching": true,
-      "scale": 1.8571428571428572
+      "scale": 1.2580645161290323
     },
     {
       "width": 412,
       "height": 915,
       "teaching": true,
-      "scale": 1.9619047619047618
+      "scale": 1.3290322580645162
     },
     {
       "width": 740,
       "height": 360,
       "teaching": true,
-      "scale": 0.8289473684210527
+      "scale": 0.6631578947368421
     },
     {
       "width": 844,
       "height": 390,
       "teaching": true,
-      "scale": 1.0263157894736843
+      "scale": 0.8210526315789474
     }
   ],
   "registration": [
@@ -173,9 +173,9 @@
     "frames": 120,
     "dpr": 2,
     "desktopCPUThrottle": 4,
-    "p50": 12.300000000279397,
-    "p95": 14.799999999813735,
-    "max": 35.10000000009313,
+    "p50": 12.400000000372529,
+    "p95": 14.099999999627471,
+    "max": 27.90000000037253,
     "androidHardware": false
   },
   "memory": {
@@ -191,7 +191,7 @@
   "errors": [],
   "sound": {
     "peak": 0.8771759867668152,
-    "rms": 0.10012599990983923
+    "rms": 0.1001259998214789
   },
   "androidHardwareTested": false
 }

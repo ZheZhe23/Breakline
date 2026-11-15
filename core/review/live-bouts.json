@@ -1,5 +1,5 @@
 {
-  "coreSha256": "9c3b73aa32484d6877fc90b2c6610a0b4c376817138bcdd5e830b16407c67bb4",
+  "coreSha256": "11b732f2cd86e7c337b50f7d52bd6dc0becbe6a5e69cea63de05e80aef4a4a53",
   "kind": "real-time native touch policy against active AI; silent Chromium video; not a human or Android recording",
   "reports": [
     {
@@ -20,13 +20,13 @@
         "blocks": 0,
         "taken": 0,
         "counters": 8,
-        "score": 13337,
+        "score": 13237,
         "maxLevel": 5,
-        "maxTempo": 240,
+        "maxTempo": 170,
         "timing": {
           "samples": 28,
-          "absolute": 245.97244215805247,
-          "signed": -242.46735442057954,
+          "absolute": 195.96893748509814,
+          "signed": -185.5128077089887,
           "early": 0,
           "late": 0
         },
@@ -35,8 +35,8 @@
         "guarded": 0,
         "interrupts": 1,
         "lateThreats": 0,
-        "time": 19428.44629931973,
-        "winBonus": 1720
+        "time": 24314.61518367347,
+        "winBonus": 1620
       },
       "rating": {
         "rank": "S",
@@ -46,7 +46,7 @@
       "lateThreats": 0,
       "tempo": 240,
       "enemyGroove": 3,
-      "bpm": 240,
+      "bpm": 180,
       "tempoSegments": [
         {
           "beat": 0,
@@ -54,68 +54,38 @@
           "bpm": 120
         },
         {
-          "beat": 8,
-          "time": 4.15,
+          "beat": 20,
+          "time": 10.15,
           "bpm": 130
         },
         {
-          "beat": 12,
-          "time": 5.996153846153847,
+          "beat": 28,
+          "time": 13.842307692307692,
           "bpm": 140
         },
         {
-          "beat": 16,
-          "time": 7.7104395604395615,
+          "beat": 36,
+          "time": 17.27087912087912,
           "bpm": 150
         },
         {
-          "beat": 20,
-          "time": 9.310439560439562,
+          "beat": 44,
+          "time": 20.47087912087912,
           "bpm": 160
         },
         {
-          "beat": 24,
-          "time": 10.810439560439562,
+          "beat": 52,
+          "time": 23.47087912087912,
           "bpm": 170
         },
         {
-          "beat": 28,
-          "time": 12.222204266321915,
+          "beat": 60,
+          "time": 26.294408532643825,
           "bpm": 180
         },
         {
-          "beat": 32,
-          "time": 13.55553759965525,
-          "bpm": 190
-        },
-        {
-          "beat": 36,
-          "time": 14.818695494392092,
-          "bpm": 200
-        },
-        {
-          "beat": 40,
-          "time": 16.01869549439209,
-          "bpm": 210
-        },
-        {
-          "beat": 44,
-          "time": 17.161552637249233,
-          "bpm": 220
-        },
-        {
-          "beat": 48,
-          "time": 18.252461728158323,
-          "bpm": 230
-        },
-        {
-          "beat": 52,
-          "time": 19.29593998902789,
-          "bpm": 240
-        },
-        {
           "beat": 62,
-          "time": 21.79593998902789,
+          "time": 26.961075199310493,
           "bpm": 90
         }
       ],
@@ -140,13 +110,13 @@
         "blocks": 0,
         "taken": 0,
         "counters": 3,
-        "score": 10334,
+        "score": 10274,
         "maxLevel": 5,
-        "maxTempo": 210,
+        "maxTempo": 150,
         "timing": {
           "samples": 22,
-          "absolute": 149.6067972908124,
-          "signed": -146.30183202102833,
+          "absolute": 146.57500784724496,
+          "signed": -143.63032129644714,
           "early": 0,
           "late": 0
         },
@@ -155,8 +125,8 @@
         "guarded": 0,
         "interrupts": 2,
         "lateThreats": 0,
-        "time": 14487.585947845899,
-        "winBonus": 1820
+        "time": 17374.598158730347,
+        "winBonus": 1760
       },
       "rating": {
         "rank": "S",
@@ -166,7 +136,7 @@
       "lateThreats": 0,
       "tempo": 240,
       "enemyGroove": 2,
-      "bpm": 210,
+      "bpm": 150,
       "tempoSegments": [
         {
           "beat": 0,
@@ -174,53 +144,23 @@
           "bpm": 120
         },
         {
-          "beat": 8,
-          "time": 4.15,
+          "beat": 20,
+          "time": 10.15,
           "bpm": 130
         },
         {
-          "beat": 12,
-          "time": 5.996153846153847,
+          "beat": 28,
+          "time": 13.842307692307692,
           "bpm": 140
         },
         {
-          "beat": 16,
-          "time": 7.7104395604395615,
+          "beat": 36,
+          "time": 17.27087912087912,
           "bpm": 150
         },
         {
-          "beat": 20,
-          "time": 9.310439560439562,
-          "bpm": 160
-        },
-        {
-          "beat": 24,
-          "time": 10.810439560439562,
-          "bpm": 170
-        },
-        {
-          "beat": 28,
-          "time": 12.222204266321915,
-          "bpm": 180
-        },
-        {
-          "beat": 32,
-          "time": 13.55553759965525,
-          "bpm": 190
-        },
-        {
-          "beat": 36,
-          "time": 14.818695494392092,
-          "bpm": 200
-        },
-        {
-          "beat": 40,
-          "time": 16.01869549439209,
-          "bpm": 210
-        },
-        {
           "beat": 43,
-          "time": 16.87583835153495,
+          "time": 20.07087912087912,
           "bpm": 90
         }
       ],
@@ -245,13 +185,13 @@
         "blocks": 0,
         "taken": 0,
         "counters": 4,
-        "score": 11317,
+        "score": 10910,
         "maxLevel": 5,
-        "maxTempo": 220,
+        "maxTempo": 160,
         "timing": {
           "samples": 24,
-          "absolute": 166.31857285011444,
-          "signed": -166.31857285011444,
+          "absolute": 147.80474097796946,
+          "signed": -145.93952485814833,
           "early": 0,
           "late": 0
         },
@@ -260,8 +200,8 @@
         "guarded": 0,
         "interrupts": 2,
         "lateThreats": 0,
-        "time": 15934.24181179166,
-        "winBonus": 1780
+        "time": 19426.870786848074,
+        "winBonus": 1720
       },
       "rating": {
         "rank": "S",
@@ -271,7 +211,7 @@
       "lateThreats": 0,
       "tempo": 240,
       "enemyGroove": 2,
-      "bpm": 220,
+      "bpm": 160,
       "tempoSegments": [
         {
           "beat": 0,
@@ -279,58 +219,28 @@
           "bpm": 120
         },
         {
-          "beat": 8,
-          "time": 4.15,
+          "beat": 20,
+          "time": 10.15,
           "bpm": 130
         },
         {
-          "beat": 12,
-          "time": 5.996153846153847,
+          "beat": 28,
+          "time": 13.842307692307692,
           "bpm": 140
         },
         {
-          "beat": 16,
-          "time": 7.7104395604395615,
+          "beat": 36,
+          "time": 17.27087912087912,
           "bpm": 150
         },
         {
-          "beat": 20,
-          "time": 9.310439560439562,
+          "beat": 44,
+          "time": 20.47087912087912,
           "bpm": 160
         },
         {
-          "beat": 24,
-          "time": 10.810439560439562,
-          "bpm": 170
-        },
-        {
-          "beat": 28,
-          "time": 12.222204266321915,
-          "bpm": 180
-        },
-        {
-          "beat": 32,
-          "time": 13.55553759965525,
-          "bpm": 190
-        },
-        {
-          "beat": 36,
-          "time": 14.818695494392092,
-          "bpm": 200
-        },
-        {
-          "beat": 40,
-          "time": 16.01869549439209,
-          "bpm": 210
-        },
-        {
-          "beat": 44,
-          "time": 17.161552637249233,
-          "bpm": 220
-        },
-        {
           "beat": 48,
-          "time": 18.252461728158323,
+          "time": 21.97087912087912,
           "bpm": 90
         }
       ],

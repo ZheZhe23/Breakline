@@ -1,5 +1,5 @@
 {
-  "coreSha256": "9c3b73aa32484d6877fc90b2c6610a0b4c376817138bcdd5e830b16407c67bb4",
+  "coreSha256": "11b732f2cd86e7c337b50f7d52bd6dc0becbe6a5e69cea63de05e80aef4a4a53",
   "checks": 13002,
   "fighters": [
     "nova",
@@ -345,30 +345,30 @@
     {
       "fighter": "iris",
       "move": "crescentFinish",
-      "impact": 205,
+      "impact": 260,
       "duration": 760,
-      "maxRootPixelsPerMs": 0.022981870180156738
+      "maxRootPixelsPerMs": 0.1868536916547828
     },
     {
       "fighter": "iris",
       "move": "risingPalm",
-      "impact": 190,
+      "impact": 245,
       "duration": 760,
-      "maxRootPixelsPerMs": 0.19799558974221654
+      "maxRootPixelsPerMs": 0.163799174094119
     },
     {
       "fighter": "iris",
       "move": "cartwheel",
-      "impact": 230,
+      "impact": 280,
       "duration": 760,
-      "maxRootPixelsPerMs": 0.020482707751273588
+      "maxRootPixelsPerMs": 0.016826703831920975
     },
     {
       "fighter": "iris",
       "move": "prismSuper",
       "impact": 500,
       "duration": 1250,
-      "maxRootPixelsPerMs": 0.18946668610584716
+      "maxRootPixelsPerMs": 0.2999795918367347
     }
   ],
   "legacyFrames": 1232,
