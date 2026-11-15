@@ -109,7 +109,7 @@ function visual(a,t,flags={}){
  const f=get(a.fighter),act=a.action;
  if(flags.victory||flags.defeat)return {fighter:f.id,frame:flags.victory?29:26,x:0,y:0,flash:false};
  if(a.recovery){const r=a.recovery;if(t>=r.end)return {fighter:f.id,frame:0,x:0,y:0,flash:false};const span=r.end-r.start-r.stop,u=clamp((t-r.start-r.stop)/span,0,1),age=u*span,m=move(f.id,r.move),frame=u<.16?r.from.frame:r.kind==='defender'?(u<.55?26:u<.83?24:0):(u<.48?m.frames[4]:u<.78?m.frames[5]:u<.92?5:0);return {fighter:f.id,frame,x:carry(r.from.x,r.from.vx,age,span),y:carry(r.from.y,r.from.vy,age,span),flash:false,...(u<.16?{turn:r.from.turn??0,mount:r.from.mount}:f.id==='iris'&&r.kind!=='defender'?mounted(frame):{})}}
- if(a.visualReturn&&t<a.visualReturn.end){const r=a.visualReturn,age=t-r.start;return {fighter:f.id,frame:age<35?r.from.frame:age<110?5:0,x:carry(r.from.x,r.from.vx,age,160),y:carry(r.from.y,r.from.vy,age,160),flash:false}}
+ if(a.visualReturn&&t<a.visualReturn.end){const r=a.visualReturn,age=t-r.start;return {fighter:f.id,frame:age<35?r.from.frame:age<110?5:0,x:carry(r.from.x,r.from.vx,age,160),y:carry(r.from.y,r.from.vy,age,160),flash:false,...(age<35?{turn:r.from.turn??0,mount:r.from.mount}:{})}}
  let frame=0,x=0,y=0,flash=false,turn=0,mount=null;
  if(act){
   const m=move(a.fighter,act.move),stop=act.visualStop,lag=stop?clamp(t-stop.at,0,stop.duration):0,age=Math.max(0,t-act.start-lag),i=m.impact,from=act.from??{frame:0,x:0,y:0};
@@ -133,7 +133,7 @@ function visual(a,t,flags={}){
  if(flags.warning&&!act&&!a.hit&&!a.defence){frame=2;x=-2}
  // Reactions/defence override attack drawings and their support transform together.
  const override=a.hit&&(t<a.hit.end||flags.held)&&!a.hit.keepAttack||a.defence&&t<a.defence.end||a.evade&&t<a.evade.end||a.guardBlend?.to&&(!act||t>=act.start+move(a.fighter,act.move).duration);
- if(override){const event=a.hit&&(t<a.hit.end||flags.held)&&!a.hit.keepAttack?a.hit:a.evade&&t<a.evade.end?a.evade:a.defence&&t<a.defence.end?a.defence:a.guardBlend,age=t-(event.start??event.at);turn=age<22?event.from.turn??0:0;mount=age<22?event.from.mount??null:null}
+ if(override){const event=a.hit&&(t<a.hit.end||flags.held)&&!a.hit.keepAttack?a.hit:a.evade&&t<a.evade.end?a.evade:a.defence&&t<a.defence.end?a.defence:a.guardBlend,age=t-(event.start??event.at),hold=event===a.hit?22:event===a.guardBlend?40:35;turn=age<hold?event.from.turn??0:0;mount=age<hold?event.from.mount??null:null}
  return {fighter:f.id,frame:clamp(frame,0,47),x,y,flash,turn,mount};
 }
 function velocity(a,t){const before=visual(a,t-.5),after=visual(a,t+.5);return {vx:after.x-before.x,vy:after.y-before.y}}

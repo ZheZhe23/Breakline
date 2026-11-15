@@ -13,6 +13,10 @@ for(const name of names){const m=F.move('iris',name),a={fighter:'iris',action:{m
 }
 eq(new Set(names.slice(0,4).map(n=>F.move('iris',n).frames.join(','))).size,4,'four distinct finisher/super sequences');
 for(const name of ['jab','cross','bodyKick','uppercut','frontKick','spinKick','neonSuper']){const a={fighter:'nova',action:{move:name,start:0,from:{frame:0,x:0,y:0}}};for(let t=0;t<700;t+=35){const v=F.visual(a,t);ok(!v.turn&&!v.mount,'Nova stays on original choreography')}}
+// An interrupted supported pose keeps its transform for as long as its cel is retained.
+{const m=F.move('iris','cartwheel'),from=F.visual({fighter:'iris',action:{move:'cartwheel',start:0,from:{frame:0,x:0,y:0}}},m.impact*.62);
+ for(const [field,hold]of [['defence',35],['evade',35],['hit',22],['guardBlend',40],['visualReturn',35]]){const actor={fighter:'iris',[field]:{start:0,at:0,end:330,to:true,key:'L',from}};const v=F.visual(actor,hold-1);eq(v.frame,from.frame,'retained drawing '+field);eq(v.turn,from.turn,'retained rotation '+field);eq(v.mount,from.mount,'retained hand registration '+field);ok(!F.visual(actor,hold+1).mount,'new defence/reaction drawing clears old support '+field)}
+}
 for(const recipe of Object.keys(F.get('iris').recipes)){
  const g=R.create();g.reset(0,'master','iris',true,{mode:'dummy'});const start=g.s.start;
  for(let i=0;i<recipe.length;i++){g.step(start+i*500);const r=g.input(recipe[i],start+i*500);ok(r.accepted,'original Iris recipe legal');const m=F.move('iris',r.action.move);g.step(r.action.start+m.impact)}eq(g.s.stats.combos,1,'new choreography preserves clean recognition');const t=g.s.now,hp=g.s.enemy.hp;g.step(t+20);eq(g.s.enemy.hp,hp,'no repeat impact');g.step(t+500);eq(g.getPose(g.s.player,t+500).frame,0,'full landing by end of one-beat recovery');
