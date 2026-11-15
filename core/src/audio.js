@@ -2,6 +2,8 @@
 const CoreAudio = (() => {
 'use strict';
 const BPM=120,BEAT=.5,STEP=BEAT/4,LOOK=.12;
+// Four opening bars to settle in; two full bars per later +10 BPM step.
+const RAMP=Object.freeze({introBeats:16,stepBeats:8,stepBpm:10,maxBpm:240});
 function estimateLatency(ctx,when){
  const fallback=Math.min(.4,Math.max(0,(ctx.baseLatency||0)+(ctx.outputLatency||0)));
  try{const ts=ctx.getOutputTimestamp?.();if(ts&&ts.contextTime>0&&ts.performanceTime>0){const delay=ctx.currentTime-(ts.contextTime+(when-ts.performanceTime)/1000);if(delay>=0&&delay<.5)return delay}}catch{}
@@ -31,10 +33,10 @@ function create(context,initialScene='battle'){
   target=Math.max(120,Math.min(240,Math.round(target/10)*10));let bpm=transport.segments.at(-1).bpm,beat=Math.max(safeBeat(now,4),(Math.floor(transport.segments.at(-1).beat/4)+1)*4);
   while(bpm<target){bpm+=10;transport.setTempo(bpm,beat);beat+=4}return transport.segments;
  }
- function startRamp(startTicks,cap=240){
-  const now=ctx.currentTime,first=Math.max(safeBeat(now,4),Math.ceil((startTicks/500+4)/4)*4);let bpm=120;
+ function startRamp(startTicks,cap=RAMP.maxBpm,profile=RAMP){
+  const now=ctx.currentTime,first=Math.max(safeBeat(now,4),Math.ceil((startTicks/500+profile.introBeats)/4)*4);let bpm=120;
   // Only future, unscheduled measures change. The transport origin and phrase never restart.
-  transport.setTempo(120,safeBeat(now));for(let beat=first;bpm<cap;beat+=4){bpm+=10;transport.setTempo(Math.min(cap,bpm),beat)}return transport.segments;
+  transport.setTempo(120,safeBeat(now));for(let beat=first;bpm<cap;beat+=profile.stepBeats){bpm+=RAMP.stepBpm;transport.setTempo(Math.min(cap,bpm),beat)}return transport.segments;
  }
  function pinTempo(bpm,now=ctx.currentTime){return transport.setTempo(Math.max(120,Math.min(240,bpm)),safeBeat(now,4))}
  function sceneAt(at){const beat=transport.beatAt(at);let scene='battle';for(const plan of scenePlans){if(plan.beat<=beat+1e-7)scene=plan.scene;else break}return scene}
@@ -138,5 +140,5 @@ function create(context,initialScene='battle'){
  function stop(){if(timer)clearInterval(timer);timer=null}
  return {ctx,origin,BPM,BEAT,STEP,transport,bassBus,bedBus,menuMusic,scenePlans,sceneAt,setScene,startRamp,pinTempo,setTempo,nextTempo,resetTempo,eventTime,delayUntil,rhythmError,elapsedMs,bpmAt:t=>transport.bpmAt(t/500),plans,events,cues,fills,buses,master,music,effects,fillBus,noise,levelAt,setLevel,schedule,requestFill,sfx,warning,cancelWarning,clearWarnings,superCharge,superHit,mute,start,stop,now,latency:()=>latency,get muted(){return muted}};
 }
-return {create,estimateLatency,BPM,BEAT,STEP};
+return {create,estimateLatency,BPM,BEAT,STEP,RAMP};
 })();

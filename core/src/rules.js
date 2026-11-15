@@ -18,7 +18,7 @@ function create(hooks={}){
  const emit=(name,...args)=>hooks[name]?.(...args),profile=()=>DIFFICULTIES[s.difficulty],book=()=>CoreFighters.get(s.fighterId);
  function windows(t){const d=profile(),scale=Math.min(1,160/(hooks.bpmAt?.(t)??120));return {perfect:d.perfect*scale,good:d.good*scale}}
  function practiceTempo(value,t){if(!s.practice)return false;s.practice.tempo=value==='auto'?'auto':[120,160,200,240].includes(value)?value:120;s.tempoTarget=s.practice.tempo==='auto'?240:s.practice.tempo;emit(s.practice.tempo==='auto'?'autoTempo':'pinTempo',s.practice.tempo==='auto'?t:s.practice.tempo);return true}
- function demoRamp(t,cap=130){s.tempoTarget=cap;s.demoRamp={first:Math.ceil((s.start/500+4)/4)*4,cap};emit('autoTempo',s.start,cap)}
+ function demoRamp(t,cap=130){s.tempoTarget=cap;s.demoRamp={first:Math.ceil((s.start/500+4)/4)*4,cap};emit('autoTempo',s.start,cap,{introBeats:4,stepBeats:4})}
  function bpmAt(t){return hooks.bpmAt?.(t)??(s.demoRamp&&t/500>=s.demoRamp.first?s.demoRamp.cap:120)}
  function recordTiming(at){const e=rhythmError(at),m=s.stats.timing;m.samples++;m.absolute+=Math.abs(e);m.signed+=e;if(e<-windows(at).perfect)m.early++;else if(e>windows(at).perfect)m.late++}
  function timing(){const m=s.stats.timing,n=m.samples,bias=n?m.signed/n:0;return {samples:n,meanAbs:n?Math.round(m.absolute/n):null,bias:Math.round(bias),direction:n>=6&&m.early>=3&&m.early>m.late*1.5&&bias<-20?'early':n>=6&&m.late>=3&&m.late>m.early*1.5&&bias>20?'late':'balanced'}}
