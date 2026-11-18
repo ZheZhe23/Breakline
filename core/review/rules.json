@@ -1,6 +1,6 @@
 {
-  "coreSha256": "11b732f2cd86e7c337b50f7d52bd6dc0becbe6a5e69cea63de05e80aef4a4a53",
-  "checks": 13002,
+  "coreSha256": "3ca3b9b1e50107c53010bc863615abbbcda166456c7cb45a84beaedf15c8b716",
+  "checks": 13096,
   "fighters": [
     "nova",
     "brick",
@@ -11,19 +11,19 @@
   "lessonReports": [
     {
       "fighter": "nova",
-      "seconds": 47.625,
+      "seconds": 53.625,
       "inputs": 29,
       "completed": 13
     },
     {
       "fighter": "brick",
-      "seconds": 45.625,
+      "seconds": 51.625,
       "inputs": 28,
       "completed": 13
     },
     {
       "fighter": "iris",
-      "seconds": 47.625,
+      "seconds": 53.625,
       "inputs": 29,
       "completed": 13
     }
@@ -58,9 +58,9 @@
       "fighter": "brick",
       "policy": "repeat",
       "winner": "enemy",
-      "combos": 6,
+      "combos": 8,
       "supers": 2,
-      "score": 5681
+      "score": 6853
     },
     {
       "fighter": "iris",
@@ -68,7 +68,7 @@
       "winner": "player",
       "combos": 6,
       "supers": 2,
-      "score": 10136
+      "score": 9958
     },
     {
       "fighter": "iris",
@@ -359,16 +359,16 @@
     {
       "fighter": "iris",
       "move": "cartwheel",
-      "impact": 280,
-      "duration": 760,
-      "maxRootPixelsPerMs": 0.016826703831920975
+      "impact": 450,
+      "duration": 950,
+      "maxRootPixelsPerMs": 0.010470064755455866
     },
     {
       "fighter": "iris",
       "move": "prismSuper",
       "impact": 500,
       "duration": 1250,
-      "maxRootPixelsPerMs": 0.2999795918367347
+      "maxRootPixelsPerMs": 0.5249825000000072
     }
   ],
   "legacyFrames": 1232,

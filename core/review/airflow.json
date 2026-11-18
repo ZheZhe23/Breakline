@@ -1,6 +1,6 @@
 {
-  "coreSha256": "11b732f2cd86e7c337b50f7d52bd6dc0becbe6a5e69cea63de05e80aef4a4a53",
-  "checks": 5534,
+  "coreSha256": "3ca3b9b1e50107c53010bc863615abbbcda166456c7cb45a84beaedf15c8b716",
+  "checks": 5594,
   "motions": [
     {
       "name": "crescentFinish",
@@ -20,19 +20,19 @@
     },
     {
       "name": "cartwheel",
-      "impact": 280,
-      "maxTurn": 0.8499640509776901,
-      "maxTurnStep": 0.036413900874635696,
-      "supportFrames": 237,
+      "impact": 450,
+      "maxTurn": 1.0499642315094304,
+      "maxTurnStep": 0.025919632763666156,
+      "supportFrames": 266,
       "minY": 0
     },
     {
       "name": "prismSuper",
       "impact": 500,
-      "maxTurn": 0.72,
-      "maxTurnStep": 0.026977500000000043,
-      "supportFrames": 95,
-      "minY": -28
+      "maxTurn": 6.283185307179586,
+      "maxTurnStep": 0.05543731257798079,
+      "supportFrames": 0,
+      "minY": -70
     },
     {
       "name": "sweepKick",
@@ -51,64 +51,44 @@
         "seconds": -2
       },
       {
-        "bpm": 130,
+        "bpm": 135,
         "beat": 20,
         "seconds": 8
       },
       {
-        "bpm": 140,
-        "beat": 28,
-        "seconds": 11.692307692307692
-      },
-      {
         "bpm": 150,
         "beat": 36,
-        "seconds": 15.120879120879119
+        "seconds": 15.111111111111112
       },
       {
-        "bpm": 160,
-        "beat": 44,
-        "seconds": 18.32087912087912
-      },
-      {
-        "bpm": 170,
+        "bpm": 165,
         "beat": 52,
-        "seconds": 21.32087912087912
+        "seconds": 21.511111111111113
       },
       {
         "bpm": 180,
-        "beat": 60,
-        "seconds": 24.144408532643826
-      },
-      {
-        "bpm": 190,
         "beat": 68,
-        "seconds": 26.811075199310494
+        "seconds": 27.329292929292933
       },
       {
-        "bpm": 200,
-        "beat": 76,
-        "seconds": 29.33739098878418
+        "bpm": 195,
+        "beat": 84,
+        "seconds": 32.66262626262627
       },
       {
         "bpm": 210,
-        "beat": 84,
-        "seconds": 31.737390988784178
-      },
-      {
-        "bpm": 220,
-        "beat": 92,
-        "seconds": 34.02310527449846
-      },
-      {
-        "bpm": 230,
         "beat": 100,
-        "seconds": 36.20492345631664
+        "seconds": 37.58570318570319
+      },
+      {
+        "bpm": 225,
+        "beat": 116,
+        "seconds": 42.15713175713176
       },
       {
         "bpm": 240,
-        "beat": 108,
-        "seconds": 38.291879978055775
+        "beat": 132,
+        "seconds": 46.423798423798424
       }
     ],
     "demo": [
@@ -118,12 +98,13 @@
         "bpm": 120
       },
       {
-        "beat": 8,
-        "time": 4.15,
-        "bpm": 130
+        "beat": 20,
+        "time": 10.15,
+        "bpm": 135
       }
     ],
-    "maximumAt": 38.291879978055775
+    "maximumAt": 46.423798423798424,
+    "roundEndBpm": 225
   },
   "contacts": [
     {
@@ -144,18 +125,18 @@
     },
     {
       "name": "cartwheel",
-      "distance": 0.5768882040742496,
+      "distance": 0.48691679109488817,
       "contact": {
-        "x": 85.48000000000002,
-        "y": -97.32
+        "x": 84.81195363371378,
+        "y": -132.55086023825908
       }
     },
     {
       "name": "prismSuper",
-      "distance": 0,
+      "distance": 3.1776437161565096e-14,
       "contact": {
-        "x": 84,
-        "y": -80
+        "x": 84.00000000000001,
+        "y": -111.99999999999997
       }
     }
   ],
@@ -165,88 +146,88 @@
       "height": 568,
       "player": "nova",
       "enemy": "iris",
-      "minX": 98,
-      "maxX": 254,
+      "minX": 106,
+      "maxX": 208,
       "minY": 205,
       "maxY": 329,
       "hudBottom": 135,
       "ground": 330,
-      "scale": 0.7
+      "scale": 0.5115384615384615
     },
     {
       "width": 320,
       "height": 568,
       "player": "iris",
       "enemy": "iris",
-      "minX": 43,
-      "maxX": 275,
+      "minX": 94,
+      "maxX": 224,
       "minY": 205,
       "maxY": 321,
       "hudBottom": 135,
       "ground": 322,
-      "scale": 0.6578947368421053
+      "scale": 0.4807692307692308
     },
     {
       "width": 320,
       "height": 568,
       "player": "iris",
       "enemy": "nova",
-      "minX": 69,
-      "maxX": 216,
-      "minY": 205,
+      "minX": 113,
+      "maxX": 208,
+      "minY": 204,
       "maxY": 321,
       "hudBottom": 135,
       "ground": 322,
-      "scale": 0.6578947368421053
+      "scale": 0.4807692307692308
     },
     {
       "width": 360,
       "height": 640,
       "player": "nova",
       "enemy": "iris",
-      "minX": 90,
-      "maxX": 319,
+      "minX": 101,
+      "maxX": 251,
       "minY": 209,
       "maxY": 392,
       "hudBottom": 135,
       "ground": 393,
-      "scale": 1.0315789473684212
+      "scale": 0.7538461538461538
     },
     {
       "width": 360,
       "height": 640,
       "player": "iris",
       "enemy": "iris",
-      "minX": 12,
-      "maxX": 345,
-      "minY": 215,
+      "minX": 81,
+      "maxX": 276,
+      "minY": 208,
       "maxY": 383,
       "hudBottom": 135,
       "ground": 384,
-      "scale": 0.9473684210526315
+      "scale": 0.7192307692307692
     },
     {
       "width": 360,
       "height": 640,
       "player": "iris",
       "enemy": "nova",
-      "minX": 45,
-      "maxX": 263,
-      "minY": 209,
+      "minX": 110,
+      "maxX": 253,
+      "minY": 208,
       "maxY": 383,
       "hudBottom": 135,
       "ground": 384,
-      "scale": 0.9842105263157894
+      "scale": 0.7192307692307692
     },
     {
       "width": 390,
       "height": 844,
       "player": "nova",
       "enemy": "iris",
-      "minX": 85,
-      "maxX": 365,
-      "minY": 373,
-      "maxY": 597,
+      "minX": 64,
+      "maxX": 314,
+      "minY": 290,
+      "maxY": 596,
       "hudBottom": 135,
       "ground": 597,
       "scale": 1.2580645161290323
@@ -256,9 +237,9 @@
       "height": 844,
       "player": "iris",
       "enemy": "iris",
-      "minX": 13,
-      "maxX": 374,
-      "minY": 414,
+      "minX": 54,
+      "maxX": 333,
+      "minY": 346,
       "maxY": 596,
       "hudBottom": 135,
       "ground": 597,
@@ -269,10 +250,10 @@
       "height": 844,
       "player": "iris",
       "enemy": "nova",
-      "minX": 22,
-      "maxX": 302,
-      "minY": 373,
-      "maxY": 597,
+      "minX": 73,
+      "maxX": 323,
+      "minY": 290,
+      "maxY": 596,
       "hudBottom": 135,
       "ground": 597,
       "scale": 1.2580645161290323
@@ -282,10 +263,10 @@
       "height": 915,
       "player": "nova",
       "enemy": "iris",
-      "minX": 90,
-      "maxX": 385,
-      "minY": 431,
-      "maxY": 668,
+      "minX": 68,
+      "maxX": 332,
+      "minY": 343,
+      "maxY": 667,
       "hudBottom": 135,
       "ground": 668,
       "scale": 1.3290322580645162
@@ -295,9 +276,9 @@
       "height": 915,
       "player": "iris",
       "enemy": "iris",
-      "minX": 13,
-      "maxX": 395,
-      "minY": 475,
+      "minX": 57,
+      "maxX": 352,
+      "minY": 403,
       "maxY": 667,
       "hudBottom": 135,
       "ground": 668,
@@ -308,10 +289,10 @@
       "height": 915,
       "player": "iris",
       "enemy": "nova",
-      "minX": 23,
-      "maxX": 319,
-      "minY": 431,
-      "maxY": 668,
+      "minX": 77,
+      "maxX": 341,
+      "minY": 343,
+      "maxY": 667,
       "hudBottom": 135,
       "ground": 668,
       "scale": 1.3290322580645162
@@ -321,78 +302,78 @@
       "height": 360,
       "player": "nova",
       "enemy": "iris",
-      "minX": 321,
-      "maxX": 444,
+      "minX": 328,
+      "maxX": 407,
       "minY": 144,
       "maxY": 242,
       "hudBottom": 76,
       "ground": 243,
-      "scale": 0.5526315789473685
+      "scale": 0.40384615384615385
     },
     {
       "width": 740,
       "height": 360,
       "player": "iris",
       "enemy": "iris",
-      "minX": 272,
-      "maxX": 466,
+      "minX": 315,
+      "maxX": 424,
       "minY": 144,
       "maxY": 242,
       "hudBottom": 76,
       "ground": 243,
-      "scale": 0.5526315789473685
+      "scale": 0.40384615384615385
     },
     {
       "width": 740,
       "height": 360,
       "player": "iris",
       "enemy": "nova",
-      "minX": 294,
-      "maxX": 417,
+      "minX": 331,
+      "maxX": 410,
       "minY": 144,
       "maxY": 242,
       "hudBottom": 76,
       "ground": 243,
-      "scale": 0.5526315789473685
+      "scale": 0.40384615384615385
     },
     {
       "width": 844,
       "height": 390,
       "player": "nova",
       "enemy": "iris",
-      "minX": 359,
-      "maxX": 517,
+      "minX": 368,
+      "maxX": 470,
       "minY": 146,
       "maxY": 272,
       "hudBottom": 76,
       "ground": 273,
-      "scale": 0.7105263157894737
+      "scale": 0.5192307692307693
     },
     {
       "width": 844,
       "height": 390,
       "player": "iris",
       "enemy": "iris",
-      "minX": 296,
-      "maxX": 546,
+      "minX": 351,
+      "maxX": 491,
       "minY": 146,
       "maxY": 272,
       "hudBottom": 76,
       "ground": 273,
-      "scale": 0.7105263157894737
+      "scale": 0.5192307692307693
     },
     {
       "width": 844,
       "height": 390,
       "player": "iris",
       "enemy": "nova",
-      "minX": 324,
-      "maxX": 482,
+      "minX": 372,
+      "maxX": 474,
       "minY": 146,
       "maxY": 272,
       "hudBottom": 76,
       "ground": 273,
-      "scale": 0.7105263157894737
+      "scale": 0.5192307692307693
     }
   ],
   "errors": [],

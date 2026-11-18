@@ -1,5 +1,5 @@
 {
-  "coreSha256": "11b732f2cd86e7c337b50f7d52bd6dc0becbe6a5e69cea63de05e80aef4a4a53",
+  "coreSha256": "3ca3b9b1e50107c53010bc863615abbbcda166456c7cb45a84beaedf15c8b716",
   "checks": 128,
   "native": [
     {
@@ -44,13 +44,13 @@
       "width": 320,
       "height": 568,
       "teaching": false,
-      "scale": 0.7631578947368421
+      "scale": 0.5576923076923077
     },
     {
       "width": 360,
       "height": 640,
       "teaching": false,
-      "scale": 1.0894736842105264
+      "scale": 0.7961538461538461
     },
     {
       "width": 390,
@@ -68,25 +68,25 @@
       "width": 740,
       "height": 360,
       "teaching": false,
-      "scale": 0.6578947368421053
+      "scale": 0.4807692307692308
     },
     {
       "width": 844,
       "height": 390,
       "teaching": false,
-      "scale": 0.8157894736842105
+      "scale": 0.5961538461538461
     },
     {
       "width": 320,
       "height": 568,
       "teaching": true,
-      "scale": 0.5388157894736842
+      "scale": 0.4
     },
     {
       "width": 360,
       "height": 640,
       "teaching": true,
-      "scale": 0.9595394736842106
+      "scale": 0.7012019230769231
     },
     {
       "width": 390,
@@ -104,13 +104,13 @@
       "width": 740,
       "height": 360,
       "teaching": true,
-      "scale": 0.6631578947368421
+      "scale": 0.4846153846153846
     },
     {
       "width": 844,
       "height": 390,
       "teaching": true,
-      "scale": 0.8210526315789474
+      "scale": 0.6
     }
   ],
   "registration": [
@@ -173,9 +173,9 @@
     "frames": 120,
     "dpr": 2,
     "desktopCPUThrottle": 4,
-    "p50": 12.400000000372529,
-    "p95": 14.099999999627471,
-    "max": 27.90000000037253,
+    "p50": 13.600000000034925,
+    "p95": 18,
+    "max": 23.099999999976717,
     "androidHardware": false
   },
   "memory": {
@@ -191,7 +191,7 @@
   "errors": [],
   "sound": {
     "peak": 0.8771759867668152,
-    "rms": 0.1001259998214789
+    "rms": 0.10012599618567534
   },
   "androidHardwareTested": false
 }

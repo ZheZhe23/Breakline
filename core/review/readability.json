@@ -1,6 +1,6 @@
 {
-  "coreSha256": "11b732f2cd86e7c337b50f7d52bd6dc0becbe6a5e69cea63de05e80aef4a4a53",
-  "checks": 295,
+  "coreSha256": "3ca3b9b1e50107c53010bc863615abbbcda166456c7cb45a84beaedf15c8b716",
+  "checks": 429,
   "audible": [
     {
       "bpm": 120,
@@ -183,6 +183,96 @@
       "missing": []
     },
     {
+      "bpm": 135,
+      "latency": 0,
+      "estimatedLatency": 0,
+      "rival": "nova",
+      "completed": 11,
+      "cues": 11,
+      "minimumCueRMS": 0.009529295269495294,
+      "missing": []
+    },
+    {
+      "bpm": 135,
+      "latency": 0,
+      "estimatedLatency": 0,
+      "rival": "brick",
+      "completed": 9,
+      "cues": 9,
+      "minimumCueRMS": 0.009529295270560869,
+      "missing": []
+    },
+    {
+      "bpm": 135,
+      "latency": 0,
+      "estimatedLatency": 0,
+      "rival": "iris",
+      "completed": 13,
+      "cues": 14,
+      "minimumCueRMS": 0.009529295269495294,
+      "missing": []
+    },
+    {
+      "bpm": 135,
+      "latency": 0.25,
+      "estimatedLatency": 0.25,
+      "rival": "nova",
+      "completed": 11,
+      "cues": 11,
+      "minimumCueRMS": 0.009529295269495294,
+      "missing": []
+    },
+    {
+      "bpm": 135,
+      "latency": 0.25,
+      "estimatedLatency": 0.25,
+      "rival": "brick",
+      "completed": 9,
+      "cues": 9,
+      "minimumCueRMS": 0.009529295270560869,
+      "missing": []
+    },
+    {
+      "bpm": 135,
+      "latency": 0.25,
+      "estimatedLatency": 0.25,
+      "rival": "iris",
+      "completed": 13,
+      "cues": 14,
+      "minimumCueRMS": 0.009529295269495294,
+      "missing": []
+    },
+    {
+      "bpm": 135,
+      "latency": 0.49,
+      "estimatedLatency": 0.49,
+      "rival": "nova",
+      "completed": 11,
+      "cues": 12,
+      "minimumCueRMS": 0.009529295269495294,
+      "missing": []
+    },
+    {
+      "bpm": 135,
+      "latency": 0.49,
+      "estimatedLatency": 0.49,
+      "rival": "brick",
+      "completed": 9,
+      "cues": 9,
+      "minimumCueRMS": 0.009529295269495294,
+      "missing": []
+    },
+    {
+      "bpm": 135,
+      "latency": 0.49,
+      "estimatedLatency": 0.49,
+      "rival": "iris",
+      "completed": 13,
+      "cues": 15,
+      "minimumCueRMS": 0.009529295269495294,
+      "missing": []
+    },
+    {
       "bpm": 140,
       "latency": 0,
       "estimatedLatency": 0,
@@ -453,6 +543,96 @@
       "missing": []
     },
     {
+      "bpm": 165,
+      "latency": 0,
+      "estimatedLatency": 0,
+      "rival": "nova",
+      "completed": 14,
+      "cues": 15,
+      "minimumCueRMS": 0.009528697986058798,
+      "missing": []
+    },
+    {
+      "bpm": 165,
+      "latency": 0,
+      "estimatedLatency": 0,
+      "rival": "brick",
+      "completed": 12,
+      "cues": 12,
+      "minimumCueRMS": 0.009527102273450213,
+      "missing": []
+    },
+    {
+      "bpm": 165,
+      "latency": 0,
+      "estimatedLatency": 0,
+      "rival": "iris",
+      "completed": 18,
+      "cues": 19,
+      "minimumCueRMS": 0.009527102273450213,
+      "missing": []
+    },
+    {
+      "bpm": 165,
+      "latency": 0.25,
+      "estimatedLatency": 0.25,
+      "rival": "nova",
+      "completed": 14,
+      "cues": 15,
+      "minimumCueRMS": 0.009528697986058798,
+      "missing": []
+    },
+    {
+      "bpm": 165,
+      "latency": 0.25,
+      "estimatedLatency": 0.25,
+      "rival": "brick",
+      "completed": 11,
+      "cues": 12,
+      "minimumCueRMS": 0.009528697986058798,
+      "missing": []
+    },
+    {
+      "bpm": 165,
+      "latency": 0.25,
+      "estimatedLatency": 0.25,
+      "rival": "iris",
+      "completed": 17,
+      "cues": 19,
+      "minimumCueRMS": 0.009528697986058798,
+      "missing": []
+    },
+    {
+      "bpm": 165,
+      "latency": 0.49,
+      "estimatedLatency": 0.49,
+      "rival": "nova",
+      "completed": 14,
+      "cues": 15,
+      "minimumCueRMS": 0.009527102273450213,
+      "missing": []
+    },
+    {
+      "bpm": 165,
+      "latency": 0.49,
+      "estimatedLatency": 0.49,
+      "rival": "brick",
+      "completed": 12,
+      "cues": 12,
+      "minimumCueRMS": 0.009527102273450213,
+      "missing": []
+    },
+    {
+      "bpm": 165,
+      "latency": 0.49,
+      "estimatedLatency": 0.49,
+      "rival": "iris",
+      "completed": 18,
+      "cues": 19,
+      "minimumCueRMS": 0.009527102273450213,
+      "missing": []
+    },
+    {
       "bpm": 180,
       "latency": 0,
       "estimatedLatency": 0,
@@ -543,6 +723,96 @@
       "missing": []
     },
     {
+      "bpm": 195,
+      "latency": 0,
+      "estimatedLatency": 0,
+      "rival": "nova",
+      "completed": 17,
+      "cues": 18,
+      "minimumCueRMS": 0.009530174908836711,
+      "missing": []
+    },
+    {
+      "bpm": 195,
+      "latency": 0,
+      "estimatedLatency": 0,
+      "rival": "brick",
+      "completed": 14,
+      "cues": 14,
+      "minimumCueRMS": 0.009530174908836711,
+      "missing": []
+    },
+    {
+      "bpm": 195,
+      "latency": 0,
+      "estimatedLatency": 0,
+      "rival": "iris",
+      "completed": 22,
+      "cues": 22,
+      "minimumCueRMS": 0.009530174908836711,
+      "missing": []
+    },
+    {
+      "bpm": 195,
+      "latency": 0.25,
+      "estimatedLatency": 0.25,
+      "rival": "nova",
+      "completed": 17,
+      "cues": 18,
+      "minimumCueRMS": 0.009530174908836711,
+      "missing": []
+    },
+    {
+      "bpm": 195,
+      "latency": 0.25,
+      "estimatedLatency": 0.25,
+      "rival": "brick",
+      "completed": 14,
+      "cues": 14,
+      "minimumCueRMS": 0.009530174908836711,
+      "missing": []
+    },
+    {
+      "bpm": 195,
+      "latency": 0.25,
+      "estimatedLatency": 0.25,
+      "rival": "iris",
+      "completed": 22,
+      "cues": 22,
+      "minimumCueRMS": 0.009530174908836711,
+      "missing": []
+    },
+    {
+      "bpm": 195,
+      "latency": 0.49,
+      "estimatedLatency": 0.49,
+      "rival": "nova",
+      "completed": 17,
+      "cues": 18,
+      "minimumCueRMS": 0.009530174908836711,
+      "missing": []
+    },
+    {
+      "bpm": 195,
+      "latency": 0.49,
+      "estimatedLatency": 0.49,
+      "rival": "brick",
+      "completed": 14,
+      "cues": 15,
+      "minimumCueRMS": 0.009530174908836725,
+      "missing": []
+    },
+    {
+      "bpm": 195,
+      "latency": 0.49,
+      "estimatedLatency": 0.49,
+      "rival": "iris",
+      "completed": 22,
+      "cues": 23,
+      "minimumCueRMS": 0.009530174908836711,
+      "missing": []
+    },
+    {
       "bpm": 200,
       "latency": 0,
       "estimatedLatency": 0,
@@ -579,7 +849,7 @@
       "rival": "nova",
       "completed": 17,
       "cues": 19,
-      "minimumCueRMS": 0.009543041539905614,
+      "minimumCueRMS": 0.009543041539989283,
       "missing": []
     },
     {
@@ -630,6 +900,96 @@
       "completed": 22,
       "cues": 24,
       "minimumCueRMS": 0.009541430397292265,
+      "missing": []
+    },
+    {
+      "bpm": 210,
+      "latency": 0,
+      "estimatedLatency": 0,
+      "rival": "nova",
+      "completed": 19,
+      "cues": 19,
+      "minimumCueRMS": 0.009529724478947224,
+      "missing": []
+    },
+    {
+      "bpm": 210,
+      "latency": 0,
+      "estimatedLatency": 0,
+      "rival": "brick",
+      "completed": 16,
+      "cues": 16,
+      "minimumCueRMS": 0.009529724479643661,
+      "missing": []
+    },
+    {
+      "bpm": 210,
+      "latency": 0,
+      "estimatedLatency": 0,
+      "rival": "iris",
+      "completed": 24,
+      "cues": 24,
+      "minimumCueRMS": 0.009529724478947224,
+      "missing": []
+    },
+    {
+      "bpm": 210,
+      "latency": 0.25,
+      "estimatedLatency": 0.25,
+      "rival": "nova",
+      "completed": 19,
+      "cues": 19,
+      "minimumCueRMS": 0.009529724478947224,
+      "missing": []
+    },
+    {
+      "bpm": 210,
+      "latency": 0.25,
+      "estimatedLatency": 0.25,
+      "rival": "brick",
+      "completed": 15,
+      "cues": 16,
+      "minimumCueRMS": 0.009529724479643661,
+      "missing": []
+    },
+    {
+      "bpm": 210,
+      "latency": 0.25,
+      "estimatedLatency": 0.25,
+      "rival": "iris",
+      "completed": 23,
+      "cues": 24,
+      "minimumCueRMS": 0.009529724478947224,
+      "missing": []
+    },
+    {
+      "bpm": 210,
+      "latency": 0.49,
+      "estimatedLatency": 0.49,
+      "rival": "nova",
+      "completed": 19,
+      "cues": 20,
+      "minimumCueRMS": 0.009529724479643661,
+      "missing": []
+    },
+    {
+      "bpm": 210,
+      "latency": 0.49,
+      "estimatedLatency": 0.49,
+      "rival": "brick",
+      "completed": 15,
+      "cues": 16,
+      "minimumCueRMS": 0.009529724478947224,
+      "missing": []
+    },
+    {
+      "bpm": 210,
+      "latency": 0.49,
+      "estimatedLatency": 0.49,
+      "rival": "iris",
+      "completed": 23,
+      "cues": 25,
+      "minimumCueRMS": 0.009529724478947224,
       "missing": []
     },
     {
@@ -720,6 +1080,96 @@
       "completed": 25,
       "cues": 26,
       "minimumCueRMS": 0.009527102273450213,
+      "missing": []
+    },
+    {
+      "bpm": 225,
+      "latency": 0,
+      "estimatedLatency": 0,
+      "rival": "nova",
+      "completed": 21,
+      "cues": 21,
+      "minimumCueRMS": 0.009539778885952642,
+      "missing": []
+    },
+    {
+      "bpm": 225,
+      "latency": 0,
+      "estimatedLatency": 0,
+      "rival": "brick",
+      "completed": 17,
+      "cues": 17,
+      "minimumCueRMS": 0.009539778885952642,
+      "missing": []
+    },
+    {
+      "bpm": 225,
+      "latency": 0,
+      "estimatedLatency": 0,
+      "rival": "iris",
+      "completed": 25,
+      "cues": 26,
+      "minimumCueRMS": 0.009539778885952642,
+      "missing": []
+    },
+    {
+      "bpm": 225,
+      "latency": 0.25,
+      "estimatedLatency": 0.25,
+      "rival": "nova",
+      "completed": 20,
+      "cues": 21,
+      "minimumCueRMS": 0.009539778885952642,
+      "missing": []
+    },
+    {
+      "bpm": 225,
+      "latency": 0.25,
+      "estimatedLatency": 0.25,
+      "rival": "brick",
+      "completed": 17,
+      "cues": 17,
+      "minimumCueRMS": 0.009539778885952642,
+      "missing": []
+    },
+    {
+      "bpm": 225,
+      "latency": 0.25,
+      "estimatedLatency": 0.25,
+      "rival": "iris",
+      "completed": 25,
+      "cues": 26,
+      "minimumCueRMS": 0.009539778885952642,
+      "missing": []
+    },
+    {
+      "bpm": 225,
+      "latency": 0.49,
+      "estimatedLatency": 0.49,
+      "rival": "nova",
+      "completed": 20,
+      "cues": 21,
+      "minimumCueRMS": 0.009539778885952642,
+      "missing": []
+    },
+    {
+      "bpm": 225,
+      "latency": 0.49,
+      "estimatedLatency": 0.49,
+      "rival": "brick",
+      "completed": 17,
+      "cues": 17,
+      "minimumCueRMS": 0.009539778885952642,
+      "missing": []
+    },
+    {
+      "bpm": 225,
+      "latency": 0.49,
+      "estimatedLatency": 0.49,
+      "rival": "iris",
+      "completed": 25,
+      "cues": 27,
+      "minimumCueRMS": 0.009539778885952642,
       "missing": []
     },
     {
@@ -838,27 +1288,22 @@
       {
         "beat": 4,
         "time": 1.775,
-        "bpm": 130
+        "bpm": 135
       },
       {
-        "beat": 8,
-        "time": 3.621153846153846,
-        "bpm": 140
-      },
-      {
-        "beat": 12,
-        "time": 5.335439560439561,
+        "beat": 20,
+        "time": 8.886111111111111,
         "bpm": 150
       },
       {
-        "beat": 16,
-        "time": 6.93543956043956,
+        "beat": 36,
+        "time": 15.286111111111111,
         "bpm": 160
       }
     ],
     "next": {
       "beat": 4,
-      "bpm": 130,
+      "bpm": 135,
       "inBeats": 0.7999999999999998
     }
   },

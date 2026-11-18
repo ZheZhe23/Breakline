@@ -1,0 +1,891 @@
+{
+  "coreSha256": "3ca3b9b1e50107c53010bc863615abbbcda166456c7cb45a84beaedf15c8b716",
+  "checks": 1555,
+  "traces": [
+    {
+      "name": "cartwheel",
+      "t": 80,
+      "frame": 19,
+      "turn": 0,
+      "rootY": 0,
+      "phase": "entry"
+    },
+    {
+      "name": "cartwheel",
+      "t": 100,
+      "frame": 19,
+      "turn": 0,
+      "rootY": 0,
+      "phase": "entry"
+    },
+    {
+      "name": "cartwheel",
+      "t": 120,
+      "frame": 19,
+      "turn": 0,
+      "rootY": 0,
+      "phase": "entry"
+    },
+    {
+      "name": "cartwheel",
+      "t": 140,
+      "frame": 19,
+      "turn": 0,
+      "rootY": 0,
+      "phase": "entry"
+    },
+    {
+      "name": "cartwheel",
+      "t": 160,
+      "frame": 20,
+      "turn": -0.0013153440885776172,
+      "rootY": 0,
+      "phase": "support"
+    },
+    {
+      "name": "cartwheel",
+      "t": 180,
+      "frame": 20,
+      "turn": -0.09468830970888584,
+      "rootY": 0,
+      "phase": "support"
+    },
+    {
+      "name": "cartwheel",
+      "t": 200,
+      "frame": 20,
+      "turn": -0.29554263262003155,
+      "rootY": 0,
+      "phase": "support"
+    },
+    {
+      "name": "cartwheel",
+      "t": 220,
+      "frame": 20,
+      "turn": -0.5476789103170018,
+      "rootY": 0,
+      "phase": "support"
+    },
+    {
+      "name": "cartwheel",
+      "t": 240,
+      "frame": 20,
+      "turn": -0.7948977402947833,
+      "rootY": 0,
+      "phase": "support"
+    },
+    {
+      "name": "cartwheel",
+      "t": 260,
+      "frame": 20,
+      "turn": -0.9809997200483632,
+      "rootY": 0,
+      "phase": "support"
+    },
+    {
+      "name": "cartwheel",
+      "t": 280,
+      "frame": 21,
+      "turn": -1.0499642315094304,
+      "rootY": 0,
+      "phase": "inversion"
+    },
+    {
+      "name": "cartwheel",
+      "t": 300,
+      "frame": 21,
+      "turn": -1.0354608435524022,
+      "rootY": 0,
+      "phase": "inversion"
+    },
+    {
+      "name": "cartwheel",
+      "t": 320,
+      "frame": 21,
+      "turn": -0.9992863701151812,
+      "rootY": 0,
+      "phase": "inversion"
+    },
+    {
+      "name": "cartwheel",
+      "t": 340,
+      "frame": 21,
+      "turn": -0.9481605276257342,
+      "rootY": 0,
+      "phase": "inversion"
+    },
+    {
+      "name": "cartwheel",
+      "t": 360,
+      "frame": 21,
+      "turn": -0.888803032512028,
+      "rootY": 0,
+      "phase": "inversion"
+    },
+    {
+      "name": "cartwheel",
+      "t": 380,
+      "frame": 21,
+      "turn": -0.8279336012020293,
+      "rootY": 0,
+      "phase": "inversion"
+    },
+    {
+      "name": "cartwheel",
+      "t": 400,
+      "frame": 21,
+      "turn": -0.7722719501237048,
+      "rootY": 0,
+      "phase": "inversion"
+    },
+    {
+      "name": "cartwheel",
+      "t": 420,
+      "frame": 21,
+      "turn": -0.7285377957050212,
+      "rootY": 0,
+      "phase": "inversion"
+    },
+    {
+      "name": "cartwheel",
+      "t": 440,
+      "frame": 21,
+      "turn": -0.7034508543739454,
+      "rootY": 0,
+      "phase": "inversion"
+    },
+    {
+      "name": "cartwheel",
+      "t": 460,
+      "frame": 22,
+      "turn": -0.7,
+      "rootY": 0,
+      "phase": "strike"
+    },
+    {
+      "name": "cartwheel",
+      "t": 480,
+      "frame": 22,
+      "turn": -0.7,
+      "rootY": 0,
+      "phase": "strike"
+    },
+    {
+      "name": "cartwheel",
+      "t": 500,
+      "frame": 22,
+      "turn": -0.7,
+      "rootY": 0,
+      "phase": "strike"
+    },
+    {
+      "name": "cartwheel",
+      "t": 520,
+      "frame": 22,
+      "turn": -0.7,
+      "rootY": 0,
+      "phase": "strike"
+    },
+    {
+      "name": "cartwheel",
+      "t": 540,
+      "frame": 20,
+      "turn": -0.692138671875,
+      "rootY": 0,
+      "phase": "chamber"
+    },
+    {
+      "name": "cartwheel",
+      "t": 560,
+      "frame": 20,
+      "turn": -0.635400390625,
+      "rootY": 0,
+      "phase": "chamber"
+    },
+    {
+      "name": "cartwheel",
+      "t": 580,
+      "frame": 20,
+      "turn": -0.537646484375,
+      "rootY": 0,
+      "phase": "chamber"
+    },
+    {
+      "name": "cartwheel",
+      "t": 600,
+      "frame": 20,
+      "turn": -0.41528320312500006,
+      "rootY": 0,
+      "phase": "chamber"
+    },
+    {
+      "name": "cartwheel",
+      "t": 620,
+      "frame": 20,
+      "turn": -0.28471679687499996,
+      "rootY": 0,
+      "phase": "chamber"
+    },
+    {
+      "name": "cartwheel",
+      "t": 640,
+      "frame": 20,
+      "turn": -0.162353515625,
+      "rootY": 0,
+      "phase": "chamber"
+    },
+    {
+      "name": "cartwheel",
+      "t": 660,
+      "frame": 20,
+      "turn": -0.06459960937499998,
+      "rootY": 0,
+      "phase": "chamber"
+    },
+    {
+      "name": "cartwheel",
+      "t": 680,
+      "frame": 20,
+      "turn": -0.007861328124999956,
+      "rootY": 0,
+      "phase": "chamber"
+    },
+    {
+      "name": "cartwheel",
+      "t": 700,
+      "frame": 19,
+      "turn": 0,
+      "rootY": 0,
+      "phase": "landing"
+    },
+    {
+      "name": "cartwheel",
+      "t": 720,
+      "frame": 19,
+      "turn": 0,
+      "rootY": 0,
+      "phase": "landing"
+    },
+    {
+      "name": "cartwheel",
+      "t": 740,
+      "frame": 19,
+      "turn": 0,
+      "rootY": 0,
+      "phase": "landing"
+    },
+    {
+      "name": "cartwheel",
+      "t": 760,
+      "frame": 19,
+      "turn": 0,
+      "rootY": 0,
+      "phase": "landing"
+    },
+    {
+      "name": "cartwheel",
+      "t": 780,
+      "frame": 19,
+      "turn": 0,
+      "rootY": 0,
+      "phase": "landing"
+    },
+    {
+      "name": "cartwheel",
+      "t": 800,
+      "frame": 19,
+      "turn": 0,
+      "rootY": 0,
+      "phase": "landing"
+    },
+    {
+      "name": "cartwheel",
+      "t": 820,
+      "frame": 19,
+      "turn": 0,
+      "rootY": 0,
+      "phase": "landing"
+    },
+    {
+      "name": "cartwheel",
+      "t": 840,
+      "frame": 17,
+      "turn": 0,
+      "rootY": 0,
+      "phase": "landing"
+    },
+    {
+      "name": "cartwheel",
+      "t": 860,
+      "frame": 17,
+      "turn": 0,
+      "rootY": 0,
+      "phase": "landing"
+    },
+    {
+      "name": "cartwheel",
+      "t": 880,
+      "frame": 17,
+      "turn": 0,
+      "rootY": 0,
+      "phase": "landing"
+    },
+    {
+      "name": "cartwheel",
+      "t": 900,
+      "frame": 17,
+      "turn": 0,
+      "rootY": 0,
+      "phase": "landing"
+    },
+    {
+      "name": "cartwheel",
+      "t": 920,
+      "frame": 0,
+      "turn": 0,
+      "rootY": 0,
+      "phase": "ready"
+    },
+    {
+      "name": "cartwheel",
+      "t": 940,
+      "frame": 0,
+      "turn": 0,
+      "rootY": 0,
+      "phase": "ready"
+    },
+    {
+      "name": "prismSuper",
+      "t": 80,
+      "frame": 14,
+      "turn": 0,
+      "rootY": 0,
+      "phase": "takeoff",
+      "spin": 0
+    },
+    {
+      "name": "prismSuper",
+      "t": 100,
+      "frame": 14,
+      "turn": 0,
+      "rootY": -1.9600000000000002,
+      "phase": "takeoff",
+      "spin": 0
+    },
+    {
+      "name": "prismSuper",
+      "t": 120,
+      "frame": 14,
+      "turn": -0.015986121787043523,
+      "rootY": -7.280000000000002,
+      "phase": "somersault",
+      "spin": -0.015986121787043523
+    },
+    {
+      "name": "prismSuper",
+      "t": 140,
+      "frame": 20,
+      "turn": 0.741879907759944,
+      "rootY": -15.12,
+      "phase": "somersault",
+      "spin": -0.13812009224005606
+    },
+    {
+      "name": "prismSuper",
+      "t": 160,
+      "frame": 20,
+      "turn": 0.5123191988979989,
+      "rootY": -24.640000000000008,
+      "phase": "somersault",
+      "spin": -0.3676808011020011
+    },
+    {
+      "name": "prismSuper",
+      "t": 180,
+      "frame": 20,
+      "turn": 0.19067842854268335,
+      "rootY": -35,
+      "phase": "somersault",
+      "spin": -0.6893215714573167
+    },
+    {
+      "name": "prismSuper",
+      "t": 200,
+      "frame": 20,
+      "turn": -0.20769572639044143,
+      "rootY": -45.36,
+      "phase": "somersault",
+      "spin": -1.0876957263904414
+    },
+    {
+      "name": "prismSuper",
+      "t": 220,
+      "frame": 20,
+      "turn": -0.6674565889858132,
+      "rootY": -54.879999999999995,
+      "phase": "somersault",
+      "spin": -1.5474565889858132
+    },
+    {
+      "name": "prismSuper",
+      "t": 240,
+      "frame": 20,
+      "turn": -1.17325748232787,
+      "rootY": -62.720000000000006,
+      "phase": "somersault",
+      "spin": -2.05325748232787
+    },
+    {
+      "name": "prismSuper",
+      "t": 260,
+      "frame": 20,
+      "turn": -1.709751729501051,
+      "rootY": -68.03999999999999,
+      "phase": "somersault",
+      "spin": -2.589751729501051
+    },
+    {
+      "name": "prismSuper",
+      "t": 280,
+      "frame": 20,
+      "turn": -2.2615926535897932,
+      "rootY": -70,
+      "phase": "somersault",
+      "spin": -3.141592653589793
+    },
+    {
+      "name": "prismSuper",
+      "t": 300,
+      "frame": 20,
+      "turn": -2.8134335776785355,
+      "rootY": -70,
+      "phase": "somersault",
+      "spin": -3.6934335776785354
+    },
+    {
+      "name": "prismSuper",
+      "t": 320,
+      "frame": 20,
+      "turn": -3.349927824851716,
+      "rootY": -70,
+      "phase": "somersault",
+      "spin": -4.229927824851716
+    },
+    {
+      "name": "prismSuper",
+      "t": 340,
+      "frame": 20,
+      "turn": -3.855728718193774,
+      "rootY": -70,
+      "phase": "somersault",
+      "spin": -4.735728718193774
+    },
+    {
+      "name": "prismSuper",
+      "t": 360,
+      "frame": 14,
+      "turn": -5.195489580789146,
+      "rootY": -70,
+      "phase": "somersault",
+      "spin": -5.195489580789146
+    },
+    {
+      "name": "prismSuper",
+      "t": 380,
+      "frame": 14,
+      "turn": -5.59386373572227,
+      "rootY": -70,
+      "phase": "somersault",
+      "spin": -5.59386373572227
+    },
+    {
+      "name": "prismSuper",
+      "t": 400,
+      "frame": 14,
+      "turn": -5.9155045060775855,
+      "rootY": -70,
+      "phase": "somersault",
+      "spin": -5.9155045060775855
+    },
+    {
+      "name": "prismSuper",
+      "t": 420,
+      "frame": 14,
+      "turn": -6.14506521493953,
+      "rootY": -70,
+      "phase": "somersault",
+      "spin": -6.14506521493953
+    },
+    {
+      "name": "prismSuper",
+      "t": 440,
+      "frame": 14,
+      "turn": -6.267199185392542,
+      "rootY": -69.4460641399417,
+      "phase": "somersault",
+      "spin": -6.267199185392542
+    },
+    {
+      "name": "prismSuper",
+      "t": 460,
+      "frame": 14,
+      "turn": -6.283185307179586,
+      "rootY": -66.06413994169097,
+      "phase": "extension",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 480,
+      "frame": 14,
+      "turn": -6.283185307179586,
+      "rootY": -61.98250728862973,
+      "phase": "extension",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 500,
+      "frame": 28,
+      "turn": -6.283185307179586,
+      "rootY": -60,
+      "phase": "strike",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 520,
+      "frame": 28,
+      "turn": -6.283185307179586,
+      "rootY": -60,
+      "phase": "strike",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 540,
+      "frame": 28,
+      "turn": -6.283185307179586,
+      "rootY": -60,
+      "phase": "strike",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 560,
+      "frame": 28,
+      "turn": -6.283185307179586,
+      "rootY": -60,
+      "phase": "strike",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 580,
+      "frame": 28,
+      "turn": -6.283185307179586,
+      "rootY": -60,
+      "phase": "strike",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 600,
+      "frame": 28,
+      "turn": -6.283185307179586,
+      "rootY": -60,
+      "phase": "strike",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 620,
+      "frame": 28,
+      "turn": -6.283185307179586,
+      "rootY": -60,
+      "phase": "strike",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 640,
+      "frame": 28,
+      "turn": -6.283185307179586,
+      "rootY": -60,
+      "phase": "strike",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 660,
+      "frame": 28,
+      "turn": -6.283185307179586,
+      "rootY": -60,
+      "phase": "strike",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 680,
+      "frame": 16,
+      "turn": -6.283185307179586,
+      "rootY": -59.66959809320293,
+      "phase": "landing",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 700,
+      "frame": 16,
+      "turn": -6.283185307179586,
+      "rootY": -57.20391222158297,
+      "phase": "landing",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 720,
+      "frame": 16,
+      "turn": -6.283185307179586,
+      "rootY": -52.72622667872113,
+      "phase": "landing",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 740,
+      "frame": 16,
+      "turn": -6.283185307179586,
+      "rootY": -46.709953151968435,
+      "phase": "landing",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 760,
+      "frame": 16,
+      "turn": -6.283185307179586,
+      "rootY": -39.62850332867592,
+      "phase": "landing",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 780,
+      "frame": 16,
+      "turn": -6.283185307179586,
+      "rootY": -31.95528889619462,
+      "phase": "landing",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 800,
+      "frame": 16,
+      "turn": -6.283185307179586,
+      "rootY": -24.163721541875574,
+      "phase": "landing",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 820,
+      "frame": 16,
+      "turn": -6.283185307179586,
+      "rootY": -16.72721295306978,
+      "phase": "landing",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 840,
+      "frame": 16,
+      "turn": -6.283185307179586,
+      "rootY": -10.119174817128304,
+      "phase": "landing",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 860,
+      "frame": 16,
+      "turn": -6.283185307179586,
+      "rootY": -4.81301882140216,
+      "phase": "landing",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 880,
+      "frame": 16,
+      "turn": -6.283185307179586,
+      "rootY": -1.2821566532423816,
+      "phase": "landing",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 900,
+      "frame": 17,
+      "turn": -6.283185307179586,
+      "rootY": 0,
+      "phase": "ready",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 920,
+      "frame": 17,
+      "turn": -6.283185307179586,
+      "rootY": 0,
+      "phase": "ready",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 940,
+      "frame": 17,
+      "turn": -6.283185307179586,
+      "rootY": 0,
+      "phase": "ready",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 960,
+      "frame": 17,
+      "turn": -6.283185307179586,
+      "rootY": 0,
+      "phase": "ready",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 980,
+      "frame": 17,
+      "turn": -6.283185307179586,
+      "rootY": 0,
+      "phase": "ready",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 1000,
+      "frame": 17,
+      "turn": -6.283185307179586,
+      "rootY": 0,
+      "phase": "ready",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 1020,
+      "frame": 17,
+      "turn": -6.283185307179586,
+      "rootY": 0,
+      "phase": "ready",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 1040,
+      "frame": 17,
+      "turn": -6.283185307179586,
+      "rootY": 0,
+      "phase": "ready",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 1060,
+      "frame": 17,
+      "turn": -6.283185307179586,
+      "rootY": 0,
+      "phase": "ready",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 1080,
+      "frame": 17,
+      "turn": -6.283185307179586,
+      "rootY": 0,
+      "phase": "ready",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 1100,
+      "frame": 5,
+      "turn": -6.283185307179586,
+      "rootY": 0,
+      "phase": "ready",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 1120,
+      "frame": 5,
+      "turn": -6.283185307179586,
+      "rootY": 0,
+      "phase": "ready",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 1140,
+      "frame": 5,
+      "turn": -6.283185307179586,
+      "rootY": 0,
+      "phase": "ready",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 1160,
+      "frame": 5,
+      "turn": -6.283185307179586,
+      "rootY": 0,
+      "phase": "ready",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 1180,
+      "frame": 5,
+      "turn": -6.283185307179586,
+      "rootY": 0,
+      "phase": "ready",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 1200,
+      "frame": 5,
+      "turn": -6.283185307179586,
+      "rootY": 0,
+      "phase": "ready",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 1220,
+      "frame": 5,
+      "turn": -6.283185307179586,
+      "rootY": 0,
+      "phase": "ready",
+      "spin": -6.283185307179586
+    },
+    {
+      "name": "prismSuper",
+      "t": 1240,
+      "frame": 5,
+      "turn": -6.283185307179586,
+      "rootY": 0,
+      "phase": "ready",
+      "spin": -6.283185307179586
+    }
+  ],
+  "errors": [],
+  "androidHardwareTested": false
+}
